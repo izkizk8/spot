@@ -4,7 +4,14 @@
 
 **spot** is a cross-platform mobile and web application built with **Expo SDK 55** and **React Native 0.83**. It targets iOS, Android, and the web from a single TypeScript codebase using file-based routing via `expo-router`. The project is in its early starter-app phase and ships two screens — a **Home** landing page with an animated Expo logo and getting-started hints, and an **Explore** page with collapsible documentation links.
 
-The repository follows an **agent-first development workflow** using **Spec Kit 0.8.1** for Specification-Driven Development (SDD). A ratified **constitution (v1.0.1)** enforces 5 principles: Cross-Platform Parity, Token-Based Theming, Platform File Splitting, StyleSheet Discipline, and Test-First for New Features. **22 Copilot agent commands** drive the full lifecycle from specification through retrospective.
+The repository follows an **agent-first development workflow** with a four-plugin AI stack:
+
+| Plugin | Role |
+|--------|------|
+| **Spec Kit** 0.8.1 (`.specify/`) | SDD lifecycle engine — 22 commands, 6 extensions, constitution v1.0.1 |
+| **Superpowers** 5.0.7 (`obra/superpowers`) | 14 engineering skills (TDD, debugging, brainstorming, code review, etc.) |
+| **Context Engineering** (`@awesome-copilot`) | `@context-architect` agent for multi-file change planning |
+| **RUG Agentic Workflow** (`@awesome-copilot`) | `@rug` orchestrator → `@SWE` + `@QA` subagents |
 
 ## Project Architecture
 
@@ -21,7 +28,7 @@ The repository follows an **agent-first development workflow** using **Spec Kit 
 | **Package Manager** | pnpm (nodeLinker: hoisted) |
 | **Compiler** | React Compiler enabled (`experiments.reactCompiler: true`) |
 | **Build Tool** | Expo CLI / Metro bundler |
-| **AI Workflow** | Spec Kit 0.8.1 with 6 extensions, 22 Copilot agents |
+| **AI Workflow** | Spec Kit 0.8.1 + Superpowers + Context Engineering + RUG |
 
 ### Source Layout
 
@@ -144,26 +151,38 @@ Defined in `src/constants/theme.ts`:
 
 ## AI Development Workflow
 
-This project uses **Spec Kit** for AI-driven Specification-Driven Development. The full lifecycle:
+This project uses a **four-plugin AI stack** for agent-first development:
+
+### Plugin Stack
+
+| Plugin | Version | What It Provides |
+|--------|---------|------------------|
+| **Spec Kit** | 0.8.1 | SDD lifecycle: 22 commands, 6 extensions (git, memory-loader, repoindex, archive, retrospective, status) |
+| **Superpowers** | 5.0.7 | 14 auto-invoked skills: TDD, systematic-debugging, brainstorming, writing-plans, executing-plans, code-review, verification, parallel-agents, subagent-dev, git-worktrees, skill-writing |
+| **Context Engineering** | 1.0.0 | `@context-architect` — analyzes file dependencies and ripple effects before multi-file changes |
+| **RUG Agentic Workflow** | 1.0.0 | `@rug` orchestrator → `@SWE` (implementation) + `@QA` (verification) subagents |
+
+### SDD Lifecycle
 
 ```
 /speckit.specify → /speckit.clarify → /speckit.plan → /speckit.tasks → /speckit.analyze → /speckit.implement → /speckit.retrospective.analyze
 ```
 
-**22 Copilot agent commands** organized in 6 categories:
+### When to Use Which Agent
 
-| Category | Commands | Purpose |
-|----------|----------|---------|
-| Core SDD | 9 | specify, clarify, plan, tasks, implement, analyze, checklist, constitution, taskstoissues |
-| Git Workflow | 5 | initialize, feature branch, validate, remote, auto-commit |
-| Memory | 1 | memory-loader (auto-loads context before every command) |
-| Repo Index | 3 | overview, architecture, module |
-| Post-Implementation | 2 | retrospective, archive |
-| Status | 2 | status, status.show |
+| Scenario | Agent/Command |
+|----------|---------------|
+| New feature (full lifecycle) | `/speckit.specify` → SDD workflow |
+| Complex multi-file change | `@context-architect` first, then implement |
+| Large task decomposition | `@rug` to orchestrate `@SWE` + `@QA` |
+| Bug investigation | Superpowers: systematic-debugging (auto) |
+| Writing tests first | Superpowers: TDD (auto) |
+| Code review | Superpowers: requesting-code-review (auto) |
+| Quick fix (single file) | Direct edit — no ceremony |
 
 **Constitution v1.0.1** enforces: Cross-Platform Parity, Token-Based Theming, Platform File Splitting, StyleSheet Discipline, Test-First for New Features (with docs-only exemption).
 
-See [speckit_profile.md](speckit_profile.md) for the complete command reference and workflow details.
+See [speckit_profile.md](speckit_profile.md) for complete command reference, workflow diagrams, and hook configuration.
 
 ## Getting Started
 

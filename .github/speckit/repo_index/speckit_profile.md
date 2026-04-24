@@ -4,15 +4,40 @@
 
 ### Module Purpose
 
-Spec Kit is the **Specification-Driven Development (SDD) workflow engine** for this project. It provides a structured lifecycle for turning a natural-language feature idea into a specification, implementation plan, task list, and finally code — all orchestrated through AI agent commands in GitHub Copilot Chat. Every command is backed by a `.agent.md` file (defining the agent mode) and a `.prompt.md` file (the execution prompt).
+Spec Kit is the **Specification-Driven Development (SDD) workflow engine** for this project. It works alongside three companion plugins to provide a complete AI development stack:
+
+| Plugin | Role | Commands/Skills |
+|--------|------|----------------|
+| **Spec Kit** (`.specify/`) | SDD lifecycle engine | 22 Copilot commands (specify, plan, tasks, implement, etc.) |
+| **Superpowers** (`obra/superpowers`) | Engineering methodology skills | 14 skills (TDD, debugging, brainstorming, code review, etc.) |
+| **Context Engineering** (`@awesome-copilot`) | Multi-file change planning | `@context-architect` agent |
+| **RUG Agentic Workflow** (`@awesome-copilot`) | Multi-agent orchestration | `@rug` → `@SWE` + `@QA` subagents |
 
 ### How AI Development Works in This Project
 
 1. **You describe what you want to build** in natural language
-2. **AI agents execute the SDD lifecycle** — each phase has a dedicated command
-3. **Lifecycle hooks auto-fire** — memory is loaded before every command, artifacts are auto-committed after
-4. **The constitution gates every plan** — 5 non-negotiable principles are checked before design proceeds
-5. **Knowledge persists across features** — durable memory captures lessons; feature memory captures context
+2. **Choose the right agent** based on task complexity (see decision matrix below)
+3. **Spec Kit commands drive the SDD lifecycle** — each phase has a dedicated command
+4. **Superpowers skills auto-activate** when the task matches (TDD, debugging, code review)
+5. **`@context-architect`** plans multi-file changes before edits begin
+6. **`@rug`** orchestrates complex work by delegating to `@SWE` and `@QA` subagents
+7. **Lifecycle hooks auto-fire** — constitution is loaded before every command, artifacts are auto-committed after
+8. **The constitution gates every plan** — 5 non-negotiable principles are checked
+
+### When to Use Which Agent
+
+| Scenario | Agent/Command | Why |
+|----------|--------------|-----|
+| New feature (full lifecycle) | `/speckit.specify` → SDD workflow | Structured spec → plan → tasks → implement with review gates |
+| Complex multi-file change | `@context-architect` first, then implement | Identifies all affected files, dependency graphs, ripple effects before edits |
+| Large task decomposition | `@rug` to orchestrate `@SWE` + `@QA` | Decomposes work, delegates to subagents with fresh context windows, validates outcomes |
+| Bug investigation | Superpowers: systematic-debugging | Auto-invoked — structured hypothesis → test → narrow → fix cycle |
+| Writing tests first | Superpowers: test-driven-development | Auto-invoked — red → green → refactor cycle |
+| Code review | Superpowers: requesting-code-review | Auto-invoked — structured review with actionable feedback |
+| Brainstorming solutions | Superpowers: brainstorming | Auto-invoked — divergent → convergent thinking |
+| Quick fix (single file) | Direct edit — no ceremony needed | Skip SDD overhead for trivial changes |
+| Repo understanding | `/speckit.repoindex.overview` or `.module` | Generate structured docs from codebase analysis |
+| Project status | `/speckit.status` | Show current phase, artifacts, task progress |
 
 ---
 
@@ -80,8 +105,12 @@ These are the primary commands that drive feature development:
 
 ```mermaid
 flowchart TD
-    A["💡 Feature Idea"] --> B["/speckit.specify"]
-    B --> C{Review spec?}
+    A["💡 Feature Idea"] --> B{Complexity?}
+    B -->|Multi-file, need context| B1["@context-architect"]
+    B1 --> B2["Understand affected files & deps"]
+    B2 --> C1["/speckit.specify"]
+    B -->|Standard feature| C1
+    C1 --> C{Review spec?}
     C -->|Needs clarification| D["/speckit.clarify"]
     D --> C
     C -->|Approved| E["/speckit.plan"]
@@ -92,11 +121,16 @@ flowchart TD
     H --> I{Consistent?}
     I -->|Issues found| J["Fix spec/plan/tasks"]
     J --> H
-    I -->|All clear| K["/speckit.implement"]
-    K --> L["/speckit.retrospective.analyze"]
+    I -->|All clear| K{Implementation strategy?}
+    K -->|Standard| K1["/speckit.implement"]
+    K -->|Complex, multi-agent| K2["@rug → @SWE + @QA"]
+    K1 --> L["/speckit.retrospective.analyze"]
+    K2 --> L
     L --> N["Merge to main"]
     N --> O["/speckit.archive.run"]
 ```
+
+**Superpowers skills** (TDD, debugging, code review, brainstorming, etc.) auto-activate during any phase when the task matches.
 
 ### Detailed Command Flow with Hooks
 
@@ -291,7 +325,9 @@ Auto-commit is **enabled for all `after_*` events** (except `after_taskstoissues
 
 ---
 
-## Installed Extensions (6)
+## Installed Extensions (6) + Companion Plugins (3)
+
+### Spec Kit Extensions
 
 | Extension | Version | Author | Commands | Purpose |
 |-----------|---------|--------|----------|---------|
@@ -301,6 +337,14 @@ Auto-commit is **enabled for all `after_*` events** (except `after_taskstoissues
 | **archive** | 1.0.0 | Stanislav Deviatov | 1 | Post-merge feature archival |
 | **retrospective** | 1.0.0 | emi-dm | 1 | Spec adherence and drift analysis |
 | **status** | 1.0.0 | KhawarHabibKhan | 1 | SDD workflow progress dashboard |
+
+### Companion Plugins
+
+| Plugin | Version | What It Provides | How It Integrates |
+|--------|---------|-----------------|-------------------|
+| **Superpowers** | 5.0.7 | 14 skills: TDD, systematic-debugging, brainstorming, writing-plans, executing-plans, requesting-code-review, receiving-code-review, verification-before-completion, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees, finishing-a-development-branch, writing-skills, using-superpowers | Auto-invoked by skill matching. Works alongside any SDD phase. TDD skill reinforces Constitution Principle V. |
+| **Context Engineering** | 1.0.0 | `@context-architect` agent | Use before `/speckit.specify` for complex multi-file features. Produces a file impact analysis that informs the spec. |
+| **RUG Agentic Workflow** | 1.0.0 | `@rug` orchestrator → `@SWE` + `@QA` subagents | Alternative to `/speckit.implement` for complex implementations. RUG decomposes tasks, delegates to SWE (code) and QA (verification), validates outcomes. |
 
 ## Quality Status
 

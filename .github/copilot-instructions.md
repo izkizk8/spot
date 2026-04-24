@@ -12,11 +12,41 @@ No test framework is configured yet. The `test/` and `e2e/` directories exist bu
 
 ## Agent-First Tooling
 
-This project uses an agent-first development workflow:
+This project uses an agent-first development workflow with three layers:
 
-- **Superpowers plugin**: Engineering methodology skills (TDD, debugging, code review) — install with `copilot plugin install obra/superpowers`.
-- **Spec Kit** (`.specify/`): Specification-Driven Development. Use `/speckit.constitution`, `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, `/speckit.implement` slash commands for the SDD workflow.
-- **Constitution**: Project principles live in `.specify/memory/constitution.md`. Consult before making architectural decisions.
+### Plugins (installed)
+
+| Plugin | What It Provides |
+|--------|-----------------|
+| **Spec Kit** (`.specify/`) | SDD lifecycle: `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`. 22 commands, 6 extensions. See [speckit_profile.md](.github/speckit/repo_index/speckit_profile.md) for full reference. |
+| **Superpowers** (`obra/superpowers`) | 14 engineering skills: TDD, systematic debugging, brainstorming, writing plans, code review, verification, parallel agents, subagent-driven dev, git worktrees, skill writing. Auto-invoked when relevant. |
+| **Context Engineering** (`context-engineering@awesome-copilot`) | `@context-architect` agent for multi-file change planning — identifies relevant files, dependency graphs, ripple effects before edits. |
+| **RUG Agentic Workflow** (`rug-agentic-workflow@awesome-copilot`) | `@rug` orchestrator agent — decomposes work, delegates to `@SWE` and `@QA` subagents, validates outcomes. Never writes code itself. |
+
+### Constitution
+
+Project principles live in `.specify/memory/constitution.md` (v1.0.1). Consult before making architectural decisions. See [speckit_profile.md](.github/speckit/repo_index/speckit_profile.md#constitution-v101-active) for the 5 principles.
+
+### When to Use Which Agent
+
+| Scenario | Agent/Command |
+|----------|--------------|
+| New feature (full lifecycle) | `/speckit.specify` → SDD workflow |
+| Complex multi-file change | `@context-architect` first, then implement |
+| Large task decomposition | `@rug` to orchestrate `@SWE` + `@QA` |
+| Bug investigation | Superpowers: systematic-debugging (auto-invoked) |
+| Code review | Superpowers: requesting-code-review / receiving-code-review |
+| Quick fix (single file) | Direct edit — no ceremony needed |
+| Repo understanding | `/speckit.repoindex.overview` or `/speckit.repoindex.module` |
+| Project status | `/speckit.status` |
+
+### Documentation Index
+
+| Document | What It Contains |
+|----------|-----------------|
+| [speckit_profile.md](.github/speckit/repo_index/speckit_profile.md) | Complete command reference, workflow diagrams, hook config, constitution |
+| [overview.md](.github/speckit/repo_index/overview.md) | Project overview, tech stack, getting started, architecture diagram |
+| [architecture.md](.github/speckit/repo_index/architecture.md) | Deep architecture analysis, components, dependencies, performance, tech debt |
 
 ## Architecture
 
