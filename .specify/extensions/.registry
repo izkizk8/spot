@@ -18,6 +18,101 @@
       },
       "registered_skills": [],
       "installed_at": "2026-04-24T15:41:26.161244+00:00"
+    },
+    "memory-loader": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:d1caef45965accd4316d8aede0a4ac67f910017ea3c501814cfc7e2d8177ab0b",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "copilot": [
+          "speckit.memory-loader.load"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-24T18:23:52.709091+00:00"
+    },
+    "memory-md": {
+      "version": "0.6.5",
+      "source": "local",
+      "manifest_hash": "sha256:c268ce375832988db8fa327d77311a60a48f0deb9f76c24a898b98958351bbf0",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "copilot": [
+          "speckit.memory-md.bootstrap",
+          "speckit.memory-md.plan-with-memory",
+          "speckit.memory-md.capture",
+          "speckit.memory-md.capture-from-diff",
+          "speckit.memory-md.audit",
+          "speckit.memory-md.log-finding"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-24T18:24:10.195993+00:00"
+    },
+    "repoindex": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:9cdda95b31e5f1e50b1749c3c5bd61ca07f0f5609bc66b44c652854c233a7c07",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "copilot": [
+          "speckit.repoindex.overview",
+          "speckit.repoindex-overview",
+          "speckit.repoindex.architecture",
+          "speckit.repoindex-architecture",
+          "speckit.repoindex.module",
+          "speckit.repoindex-module"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-24T18:24:26.671861+00:00"
+    },
+    "archive": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:d5748543c9872faa453f986434c8e69f49cf160936c3b6b2eee34e062fff5032",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "copilot": [
+          "speckit.archive.run"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-24T18:24:46.326993+00:00"
+    },
+    "retrospective": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:43dbaba249c6e7322de1130446632197bbcb21c3c9f08fbe16654e86f6d5d922",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "copilot": [
+          "speckit.retrospective.analyze"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-24T18:25:06.686721+00:00"
+    },
+    "status": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:25d080d9f1a0ea2fc62de2464479143c7c008b9131d32755f351413605d7946f",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "copilot": [
+          "speckit.status.show",
+          "speckit.status"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-24T18:25:27.472779+00:00"
     }
   }
 }
