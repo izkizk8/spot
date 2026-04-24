@@ -33,25 +33,6 @@
       "registered_skills": [],
       "installed_at": "2026-04-24T18:23:52.709091+00:00"
     },
-    "memory-md": {
-      "version": "0.6.5",
-      "source": "local",
-      "manifest_hash": "sha256:c268ce375832988db8fa327d77311a60a48f0deb9f76c24a898b98958351bbf0",
-      "enabled": true,
-      "priority": 10,
-      "registered_commands": {
-        "copilot": [
-          "speckit.memory-md.bootstrap",
-          "speckit.memory-md.plan-with-memory",
-          "speckit.memory-md.capture",
-          "speckit.memory-md.capture-from-diff",
-          "speckit.memory-md.audit",
-          "speckit.memory-md.log-finding"
-        ]
-      },
-      "registered_skills": [],
-      "installed_at": "2026-04-24T18:24:10.195993+00:00"
-    },
     "repoindex": {
       "version": "1.0.0",
       "source": "local",

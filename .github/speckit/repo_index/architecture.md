@@ -63,8 +63,7 @@ The app uses a **flat module structure** — there are no nested packages or wor
 | `src/constants/` | Design tokens and configuration constants. |
 | `src/hooks/` | Custom React hooks for theme and color scheme. |
 | `src/types/` | Shared TypeScript type definitions (currently empty). |
-| `docs/memory/` | Durable project memory: product context, architecture, decisions, bugs, worklog. |
-| `specs/` | Active feature specs with per-feature memory and synthesis files. |
+| `specs/` | Active feature specs with SDD artifacts. |
 
 ### Package Structure
 
@@ -161,9 +160,8 @@ No data persistence, API calls, or database access exist. The app is entirely st
 | `tsconfig.json` | TypeScript strict mode, path aliases |
 | `pnpm-workspace.yaml` | Package manager config (`nodeLinker: hoisted`) |
 | `src/global.css` | Web CSS custom properties for font families |
-| `.github/copilot-instructions.md` | AI agent context: build commands, architecture, conventions, memory workflow |
+| `.github/copilot-instructions.md` | AI agent context: build commands, architecture, conventions |
 | `.specify/memory/constitution.md` | Project constitution (principles and governance) |
-| `docs/memory/*.md` | Durable project memory (context, architecture, decisions, bugs, worklog) |
 
 ## 3. Architecture Overview
 
@@ -501,16 +499,14 @@ graph LR
 | **Unstable API usage** | Low | `expo-router/unstable-native-tabs` is an unstable API that may break on SDK upgrades. |
 | **Empty types directory** | Low | `src/types/` is empty — consider removing or populating with shared types. |
 | **Unused dependencies** | Low | `expo-glass-effect`, `expo-font`, `expo-constants`, `expo-status-bar`, `expo-linking` are declared but not imported in any source file. |
-| **Template-only memory** | Low | `docs/memory/DECISIONS.md`, `BUGS.md`, and `WORKLOG.md` contain only template placeholders. `PROJECT_CONTEXT.md` and `ARCHITECTURE.md` are now populated. |
 | **No ESLint config** | Low | Linting available via `npx expo lint` but no `.eslintrc` or ESLint config present. |
 
 ### Improvement Opportunities
 
 1. **Configure testing**: Add Jest + React Native Testing Library. The `test/` directory is ready.
 2. **Audit unused dependencies**: Remove `expo-glass-effect` and other unused packages to reduce install size.
-3. **Fill durable memory**: Populate `docs/memory/PROJECT_CONTEXT.md` and `ARCHITECTURE.md` with project-specific content.
-4. **Add ESLint configuration**: Run `npx expo lint` once to generate the config, then commit it.
-5. **Add error boundaries**: No error boundary exists — a crash in any component will unmount the entire app.
+3. **Add ESLint configuration**: Run `npx expo lint` once to generate the config, then commit it.
+4. **Add error boundaries**: No error boundary exists — a crash in any component will unmount the entire app.
 
 ### Best Practice Alignment
 
@@ -525,7 +521,6 @@ graph LR
 | Testing | ❌ Not configured |
 | Error boundaries | ❌ Not present |
 | Linting | ⚠️ Available but no config committed |
-| Durable memory | ⚠️ PROJECT_CONTEXT + ARCHITECTURE populated; DECISIONS/BUGS/WORKLOG still template |
 | CI/CD | ❌ Not configured |
 
 ---

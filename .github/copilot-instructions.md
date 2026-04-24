@@ -77,36 +77,8 @@ Strict mode is enabled. The React Compiler is also enabled (`experiments.reactCo
 
 Animations use `react-native-reanimated` (Keyframe API, `FadeIn`, etc.) and `react-native-worklets` for worklet scheduling.
 
-## Memory Layers
-
-This repository uses layered memory. For any non-trivial task, memory is part of the workflow, not optional documentation.
-
-- **Constitution / principles**: Read `.specify/memory/constitution.md` first. Store only stable operating principles there.
-- **Durable project memory**:
-  - `docs/memory/PROJECT_CONTEXT.md` — stable product/domain context
-  - `docs/memory/ARCHITECTURE.md` — system shape and boundaries
-  - `docs/memory/DECISIONS.md` — explicit tradeoffs and chosen direction
-  - `docs/memory/BUGS.md` — recurring failure modes and prevention
-  - `docs/memory/WORKLOG.md` — concise high-value milestone notes
-- **Active feature memory**:
-  - `specs/<feature>/memory.md` — feature-local constraints, open questions, carry-forward context
-  - `specs/<feature>/memory-synthesis.md` — compact AI-facing summary of constraints, decisions, conflicts
-- **Ephemeral run context**: Current prompt, diff, terminal output, temporary notes. Do not commit to durable memory.
-
-### Required Workflow
-
-Before `/speckit.specify`: Read constitution + durable memory. Produce or refresh `memory-synthesis.md`.
-
-Before `/speckit.plan` and `/speckit.tasks`: Read spec + `memory.md` + `memory-synthesis.md`. Do not proceed with unresolved hard conflicts.
-
-Before `/speckit.implement`: Re-read `memory-synthesis.md`. Treat watchpoints as requirements.
-
-After `/speckit.implement`: Review diff, tasks, tests. Update durable memory only when the lesson is durable, evidenced, reusable, and non-obvious.
-
-A task is not fully complete until memory has been reviewed.
-
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/001-fix-speckit-concerns/plan.md`
+at `specs/002-remove-memory-md/plan.md`
 <!-- SPECKIT END -->

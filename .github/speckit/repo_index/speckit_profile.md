@@ -1,382 +1,308 @@
-# Module: Spec Kit (.specify/) & Extensions
+# Module: Spec Kit — AI Development Workflow & Commands
 
 ## Business Context
 
 ### Module Purpose
 
-Spec Kit is the **Specification-Driven Development (SDD) workflow engine** embedded in this project. It provides a structured lifecycle for turning a natural-language feature idea into a specification, implementation plan, task list, and finally code — all orchestrated through AI agent commands and lifecycle hooks. The `.specify/` directory is the core runtime configuration, while `.github/agents/` and `.github/prompts/` contain the Copilot agent definitions that expose each command.
+Spec Kit is the **Specification-Driven Development (SDD) workflow engine** for this project. It provides a structured lifecycle for turning a natural-language feature idea into a specification, implementation plan, task list, and finally code — all orchestrated through AI agent commands in GitHub Copilot Chat. Every command is backed by a `.agent.md` file (defining the agent mode) and a `.prompt.md` file (the execution prompt).
 
-### Business Scenarios
+### How AI Development Works in This Project
 
-1. **New Feature Development** — A developer describes a feature; Spec Kit creates a feature branch, writes a structured spec, generates a plan, breaks it into tasks, and implements them with review gates between phases.
-2. **Project Governance** — A constitution file defines non-negotiable principles (TDD, architecture constraints) that are checked before every plan.
-3. **Knowledge Preservation** — Durable lessons, decisions, and bug patterns are captured into layered memory files so institutional knowledge persists across features.
-4. **Post-Merge Archival** — After a feature merges, its spec artifacts are archived into main project memory.
-5. **Retrospective Analysis** — After implementation, spec adherence and drift are measured to improve future SDD cycles.
-6. **Repository Indexing** — Generate overview, architecture, and module-level documentation for brownfield onboarding.
+1. **You describe what you want to build** in natural language
+2. **AI agents execute the SDD lifecycle** — each phase has a dedicated command
+3. **Lifecycle hooks auto-fire** — memory is loaded before every command, artifacts are auto-committed after
+4. **The constitution gates every plan** — 5 non-negotiable principles are checked before design proceeds
+5. **Knowledge persists across features** — durable memory captures lessons; feature memory captures context
 
-### Domain Concepts
+---
 
-| Concept | Description |
+## Quick Reference: All 22 Commands
+
+### Core SDD Lifecycle (9 commands)
+
+These are the primary commands that drive feature development:
+
+| # | Command | What It Does | Input | Output |
+|---|---------|-------------|-------|--------|
+| 1 | `/speckit.constitution` | Create/update project principles | Interactive Q&A or directives | `.specify/memory/constitution.md` |
+| 2 | `/speckit.specify "description"` | Generate feature specification | Natural-language feature description | `specs/NNN-name/spec.md` |
+| 3 | `/speckit.clarify` | Ask ≤5 clarification questions | Auto-scans spec for ambiguities | Updates `spec.md` with Clarifications section |
+| 4 | `/speckit.plan` | Generate implementation plan | Reads spec.md + constitution | `plan.md`, `research.md`, `data-model.md`, `quickstart.md` |
+| 5 | `/speckit.tasks` | Generate dependency-ordered task list | Reads plan.md + spec.md | `tasks.md` with phases and `[P]` parallel markers |
+| 6 | `/speckit.implement` | Execute all tasks sequentially | Reads tasks.md | Marks `[x]` as completed, edits source files |
+| 7 | `/speckit.analyze` | Cross-artifact consistency check | Reads spec + plan + tasks | Analysis report with coverage matrix |
+| 8 | `/speckit.checklist` | Generate custom verification checklist | User-specified checklist type | `checklists/<name>.md` |
+| 9 | `/speckit.taskstoissues` | Convert tasks to GitHub Issues | Reads tasks.md | GitHub Issues (external) |
+
+### Git Workflow (5 commands)
+
+| Command | What It Does | When It Runs |
+|---------|-------------|--------------|
+| `/speckit.git.initialize` | `git init` + initial commit | Auto: before `/speckit.constitution` |
+| `/speckit.git.feature` | Create branch `NNN-feature-name` | Auto: before `/speckit.specify` |
+| `/speckit.git.validate` | Check branch naming convention | On demand |
+| `/speckit.git.remote` | Detect Git remote URL | On demand |
+| `/speckit.git.commit` | Auto-commit with descriptive message | Auto: after every lifecycle command (8 events enabled) |
+
+### Memory Management (1 command)
+
+| Command | What It Does | When It Runs |
+|---------|-------------|--------------|
+| `/speckit.memory-loader.load` | Read `.specify/memory/` files into context | Auto: before every lifecycle command (mandatory) |
+
+### Repository Indexing (3 commands)
+
+| Command | What It Does | Output |
+|---------|-------------|--------|
+| `/speckit.repoindex.overview` | Generate project overview (tech, architecture, getting started) | `.github/speckit/repo_index/overview.md` |
+| `/speckit.repoindex.architecture` | Deep architecture analysis (components, deps, performance) | `.github/speckit/repo_index/architecture.md` |
+| `/speckit.repoindex.module "topic"` | Module-level analysis (business scenarios, APIs, data) | `.github/speckit/repo_index/<module>_profile.md` + `_fileindex.json` |
+
+### Post-Implementation (2 commands)
+
+| Command | What It Does | When It Runs |
+|---------|-------------|--------------|
+| `/speckit.retrospective.analyze` | Measure spec adherence vs actual implementation | Auto-offered: after `/speckit.implement` |
+| `/speckit.archive.run specs/NNN-name` | Archive feature spec into project memory | After merge to main |
+
+### Status (2 commands)
+
+| Command | What It Does |
 |---------|-------------|
-| **Constitution** | Project-level principles that gate all plans and implementations |
-| **Specification (spec.md)** | User stories, acceptance scenarios, requirements, and edge cases for a feature |
-| **Plan (plan.md)** | Technical design, project structure, data models, and contracts |
-| **Tasks (tasks.md)** | Ordered, dependency-aware task list organized by user story |
-| **Feature Branch** | Git branch with sequential (`001-`) or timestamp (`20260425-`) numbering |
-| **Hook** | Lifecycle callback (before/after a command) that auto-runs extensions |
-| **Memory** | Layered knowledge: constitution (stable), durable memory (cross-feature), feature memory (local) |
-| **Extension** | Pluggable capability registered via `extension.yml`, providing commands, hooks, and config |
+| `/speckit.status` | Show current phase, artifacts, task progress, extensions |
+| `/speckit.status.show` | Same as above (alias) |
 
-### Use Cases
+---
 
-1. **Start a new feature**: Developer runs `/speckit.specify "add user auth"` → git extension creates branch `001-add-user-auth` → memory-loader injects constitution → agent generates `spec.md`
-2. **Plan implementation**: `/speckit.plan` → reads spec, research, constitution → generates `plan.md`, `data-model.md`, `contracts/`
-3. **Generate tasks**: `/speckit.tasks` → reads plan + spec → generates `tasks.md` with phases and parallel markers
-4. **Implement**: `/speckit.implement` → processes tasks sequentially, marking `[x]` as completed
-5. **Review quality**: `/speckit.analyze` → cross-artifact consistency check across spec, plan, and tasks
-6. **Capture lessons**: `/speckit.memory-md.capture` → reflects on completed work → updates durable memory if high-signal
-7. **Archive feature**: `/speckit.archive.run specs/001-feature` → merges feature artifacts into project-level memory
-8. **Check status**: `/speckit.status` → shows current phase, artifact status, task progress, extensions
+## Complete Feature Development Workflow
 
-## Technical Overview
-
-### Module Type
-
-Configuration + AI Agent Orchestration (no runtime code — all execution is through Copilot agents and PowerShell scripts)
-
-### Key Technologies
-
-- **AI Integration**: GitHub Copilot agents (`.agent.md` files) + prompt files (`.prompt.md`)
-- **Scripting**: PowerShell (`.ps1`) for branch creation, auto-commit, prerequisite checking
-- **Configuration**: YAML (`extension.yml`, `extensions.yml`, `workflow.yml`, `git-config.yml`) + JSON (`init-options.json`, `.registry`, manifests)
-- **Templates**: Markdown templates for spec, plan, tasks, checklist, constitution
-
-### Spec Kit Version
-
-**0.8.1.dev0** (development build)
-
-### Module Structure
-
-```
-.specify/                           # Spec Kit core runtime
-├── init-options.json               # Project initialization config
-├── integration.json                # Active integration (copilot)
-├── extensions.yml                  # Hook registry — all before_*/after_* lifecycle hooks
-├── memory/
-│   └── constitution.md             # Project constitution (v1.0.0 — ratified)
-├── templates/
-│   ├── spec-template.md            # Feature specification template
-│   ├── plan-template.md            # Implementation plan template
-│   ├── tasks-template.md           # Task list template
-│   ├── checklist-template.md       # Custom checklist template
-│   └── constitution-template.md    # Constitution template
-├── scripts/powershell/
-│   ├── common.ps1                  # Shared functions (Find-SpecifyRoot, Get-RepoRoot, Get-CurrentBranch)
-│   ├── check-prerequisites.ps1     # Unified prerequisite validation
-│   ├── create-new-feature.ps1      # Feature branch creation
-│   └── setup-plan.ps1              # Plan directory setup
-├── workflows/
-│   ├── workflow-registry.json      # Registered workflows
-│   └── speckit/workflow.yml        # Full SDD cycle: specify → plan → tasks → implement
-├── integrations/
-│   ├── copilot.manifest.json       # Installed Copilot agent/prompt file hashes
-│   └── speckit.manifest.json       # Installed script/template file hashes
-├── extensions/
-│   ├── .registry                   # Extension registry with versions and hashes
-│   ├── .cache/                     # Extension download cache
-│   ├── git/                        # Git Branching Workflow extension
-│   ├── memory-loader/              # Memory Loader extension
-│   ├── memory-md/                  # Memory MD (durable markdown memory) extension
-│   ├── repoindex/                  # Repository Index extension
-│   ├── archive/                    # Archive extension
-│   ├── retrospective/              # Retrospective extension
-│   └── status/                     # Status extension
-│
-.github/agents/                     # 28 Copilot agent definitions
-│   ├── speckit.specify.agent.md
-│   ├── speckit.plan.agent.md
-│   ├── speckit.tasks.agent.md
-│   ├── speckit.implement.agent.md
-│   ├── speckit.analyze.agent.md
-│   ├── speckit.clarify.agent.md
-│   ├── speckit.checklist.agent.md
-│   ├── speckit.constitution.agent.md
-│   ├── speckit.taskstoissues.agent.md
-│   ├── speckit.git.*.agent.md          # 5 git commands
-│   ├── speckit.memory-loader.*.agent.md # 1 memory-loader command
-│   ├── speckit.memory-md.*.agent.md     # 6 memory-md commands
-│   ├── speckit.repoindex*.agent.md      # 3 repoindex commands
-│   ├── speckit.retrospective.*.agent.md # 1 retrospective command
-│   └── speckit.status*.agent.md         # 2 status commands
-│
-.github/prompts/                    # 28 Copilot prompt files (1:1 with agents)
-    ├── speckit.specify.prompt.md
-    ├── speckit.plan.prompt.md
-    └── ... (mirrors agents/)
-```
-
-## Components
-
-### Core Commands (Built-in)
-
-| Command | Agent File | Purpose |
-|---------|-----------|---------|
-| `speckit.specify` | `speckit.specify.agent.md` | Generate feature specification from natural-language description |
-| `speckit.clarify` | `speckit.clarify.agent.md` | Ask up to 5 clarification questions and encode answers into spec |
-| `speckit.plan` | `speckit.plan.agent.md` | Generate implementation plan with research, data model, contracts |
-| `speckit.tasks` | `speckit.tasks.agent.md` | Generate dependency-ordered task list from plan + spec |
-| `speckit.implement` | `speckit.implement.agent.md` | Execute all tasks, marking each complete |
-| `speckit.analyze` | `speckit.analyze.agent.md` | Cross-artifact consistency and quality analysis |
-| `speckit.checklist` | `speckit.checklist.agent.md` | Generate custom checklist for current feature |
-| `speckit.constitution` | `speckit.constitution.agent.md` | Create or update project constitution |
-| `speckit.taskstoissues` | `speckit.taskstoissues.agent.md` | Convert tasks to GitHub Issues |
-
-### Extension: git (v1.0.0)
-
-**Author**: spec-kit-core | **Purpose**: Feature branch creation, numbering, validation, and auto-commit
-
-| Command | Description |
-|---------|-------------|
-| `speckit.git.initialize` | Initialize a Git repository with initial commit |
-| `speckit.git.feature` | Create feature branch with sequential/timestamp numbering |
-| `speckit.git.validate` | Validate current branch follows naming conventions |
-| `speckit.git.remote` | Detect Git remote URL for GitHub integration |
-| `speckit.git.commit` | Auto-commit changes after Spec Kit commands (configurable per-event) |
-
-**Hooks registered**: `before_constitution` (initialize), `before_specify` (feature branch), `before_*/after_*` (auto-commit on most events)
-
-**Configuration**: `git-config.yml` — `branch_numbering` (sequential/timestamp), `auto_commit` per-event toggles and messages
-
-**Scripts**: PowerShell + Bash scripts for `create-new-feature`, `auto-commit`
-
-### Extension: memory-loader (v1.0.0)
-
-**Author**: KevinBrown5280 | **Purpose**: Load `.specify/memory/` files before every lifecycle command
-
-| Command | Description |
-|---------|-------------|
-| `speckit.memory-loader.load` | Read all `.md` files from `.specify/memory/` and output contents |
-
-**Hooks registered**: `before_specify`, `before_plan`, `before_tasks`, `before_implement`, `before_clarify`, `before_checklist`, `before_analyze` — all mandatory
-
-**Behavior**: Read-only. Outputs each memory file as a headed section. Skips silently if directory is empty.
-
-### Extension: memory-md (v0.6.5)
-
-**Author**: DyanGalih | **Purpose**: Repository-native Markdown memory — capture durable decisions, bugs, and project context
-
-| Command | Description |
-|---------|-------------|
-| `speckit.memory-md.bootstrap` | Set up layered memory structure (`docs/memory/`, `specs/`, templates) |
-| `speckit.memory-md.plan-with-memory` | Read memory, synthesize constraints, gate planning on conflicts |
-| `speckit.memory-md.capture` | Capture durable lessons from completed work with evidence requirements |
-| `speckit.memory-md.capture-from-diff` | Review code diffs, persist only durable evidenced lessons |
-| `speckit.memory-md.audit` | Audit memory quality: stale, duplicate, trivial, contradictory entries |
-| `speckit.memory-md.log-finding` | Turn audit finding into tracker-ready GitHub/GitLab/Jira issue |
-
-**Memory layers** (bootstrapped via `speckit.memory-md.bootstrap`):
-- `docs/memory/PROJECT_CONTEXT.md` — stable product/domain context ✓ created (template)
-- `docs/memory/ARCHITECTURE.md` — system shape and boundaries ✓ created (template)
-- `docs/memory/DECISIONS.md` — explicit tradeoffs and chosen direction ✓ created (template)
-- `docs/memory/BUGS.md` — recurring failure modes and prevention ✓ created (template)
-- `docs/memory/WORKLOG.md` — concise high-value milestone notes ✓ created (template)
-- Feature-level `memory.md` + `memory-synthesis.md` — per-feature context (created per feature)
-- `specs/README.md` — spec folder conventions guide ✓ created
-
-### Extension: repoindex (v1.0.0)
-
-**Author**: Yiyu Liu | **Purpose**: Generate repository index documents for brownfield development onboarding
-
-| Command | Description |
-|---------|-------------|
-| `speckit.repoindex.overview` | Generate project overview (tech stack, architecture, getting started) |
-| `speckit.repoindex.architecture` | Generate deep architecture analysis (components, dependencies, performance) |
-| `speckit.repoindex.module` | Generate module-level analysis (business scenarios, APIs, data models) |
-
-**Output directory**: `.github/speckit/repo_index/`
-
-### Extension: archive (v1.0.0)
-
-**Author**: Stanislav Deviatov | **Purpose**: Archive merged feature specs into main project memory
-
-| Command | Description |
-|---------|-------------|
-| `speckit.archive.run` | Archive feature specification into `.specify/memory/` after merge |
-
-**Input**: Feature spec directory path (e.g., `specs/007-invoice-settings`) + optional scope modifiers (`--spec-only`, `--plan-only`, `--changelog-only`, `--agent-only`)
-
-**Process**: Reads merged feature spec/plan → resolves gaps and conflicts with existing memory → updates constitution-aligned project memory
-
-### Extension: retrospective (v1.0.0)
-
-**Author**: emi-dm | **Purpose**: Post-implementation spec adherence and drift analysis
-
-| Command | Description |
-|---------|-------------|
-| `speckit.retrospective.analyze` | Generate `retrospective.md` measuring spec adherence vs. actual implementation |
-
-**Hooks**: `after_implement` (optional, prompted)
-
-**Requirements**: Requires `speckit.tasks`, `speckit.implement`, `speckit.constitution`, `speckit.specify`, `speckit.checklist` commands
-
-**Thresholds**: ≥80% task completion → full retrospective; <50% → requires confirmation; Human gate required before any spec modifications
-
-**Handoffs**: Can chain to → `speckit.constitution` (update principles), `speckit.specify` (new feature), `speckit.checklist` (new checklist)
-
-### Extension: status (v1.0.0)
-
-**Author**: KhawarHabibKhan | **Purpose**: Show unified SDD workflow progress dashboard
-
-| Command | Description |
-|---------|-------------|
-| `speckit.status.show` / `speckit.status` | Show project status: feature, artifacts, tasks, phase, extensions |
-
-**Phase detection**: No spec → Not Started; spec only → Plan; plan exists → Tasks; tasks in progress → Implement; all done → Complete
-
-## Workflow
-
-### Full SDD Lifecycle
+### Step-by-Step: From Idea to Merged Code
 
 ```mermaid
-sequenceDiagram
-    participant Dev as Developer
-    participant Git as git extension
-    participant Mem as memory-loader
-    participant Core as Spec Kit Core
-    participant Retro as retrospective
-
-    Dev->>Git: /speckit.git.feature
-    Git-->>Dev: Branch 001-feature-name created
-
-    Dev->>Core: /speckit.specify "feature description"
-    Note over Mem: before_specify hook
-    Mem->>Core: Load constitution + memory
-    Core-->>Dev: spec.md generated
-    Note over Git: after_specify hook
-    Git-->>Dev: Auto-commit (if enabled)
-
-    Dev->>Core: /speckit.plan
-    Note over Mem: before_plan hook
-    Mem->>Core: Load constitution + memory
-    Core-->>Dev: plan.md + research.md + data-model.md generated
-
-    Dev->>Core: /speckit.tasks
-    Note over Mem: before_tasks hook
-    Core-->>Dev: tasks.md generated
-
-    Dev->>Core: /speckit.implement
-    Note over Mem: before_implement hook
-    Core-->>Dev: Tasks executed, marked [x]
-    Note over Retro: after_implement hook
-    Retro-->>Dev: retrospective.md (optional)
+flowchart TD
+    A["💡 Feature Idea"] --> B["/speckit.specify"]
+    B --> C{Review spec?}
+    C -->|Needs clarification| D["/speckit.clarify"]
+    D --> C
+    C -->|Approved| E["/speckit.plan"]
+    E --> F{Review plan?}
+    F -->|Needs changes| E
+    F -->|Approved| G["/speckit.tasks"]
+    G --> H["/speckit.analyze"]
+    H --> I{Consistent?}
+    I -->|Issues found| J["Fix spec/plan/tasks"]
+    J --> H
+    I -->|All clear| K["/speckit.implement"]
+    K --> L["/speckit.retrospective.analyze"]
+    L --> N["Merge to main"]
+    N --> O["/speckit.archive.run"]
 ```
 
-### Hook Execution Order
+### Detailed Command Flow with Hooks
 
-Every core command follows this pattern:
+Each command follows this pattern:
 
 ```
-before_* hooks → command execution → after_* hooks
+before_* hooks → COMMAND EXECUTION → after_* hooks
 ```
 
-For example, `/speckit.plan`:
-1. `before_plan` → `speckit.git.commit` (optional, auto-commit outstanding changes)
-2. `before_plan` → `speckit.memory-loader.load` (mandatory, load memory)
-3. **Execute plan command** → generate plan.md
-4. `after_plan` → `speckit.git.commit` (optional, commit plan changes)
+#### Phase 1: Specify
 
-### Extension Registration Flow
-
-```mermaid
-flowchart LR
-    ExtYml["extension.yml<br/>(per extension)"] --> Registry[".registry<br/>(JSON)"]
-    ExtYml --> HooksYml["extensions.yml<br/>(merged hooks)"]
-    ExtYml --> AgentFiles[".github/agents/<br/>(agent.md files)"]
-    ExtYml --> PromptFiles[".github/prompts/<br/>(prompt.md files)"]
-    AgentFiles --> Copilot["GitHub Copilot<br/>Agent System"]
-    PromptFiles --> Copilot
+```
+User: /speckit.specify "add user authentication"
+  ├── [HOOK] speckit.git.feature        → Creates branch 002-add-user-auth
+  ├── [HOOK] speckit.memory-loader.load → Loads constitution + memory
+  ├── [EXEC] Generate spec.md           → User stories, acceptance scenarios, requirements
+  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add specification"
 ```
 
-## Dependencies
+**Output**: `specs/002-add-user-auth/spec.md`
 
-### Internal Dependencies
+#### Phase 2: Clarify (optional, repeatable)
 
-- **`.specify/memory/constitution.md`** → Read by `memory-loader` before every command
-- **`.specify/templates/*`** → Used by core commands to scaffold new artifacts
-- **`.specify/scripts/powershell/common.ps1`** → Shared by `check-prerequisites.ps1` and `create-new-feature.ps1`
-- **`.github/copilot-instructions.md`** — References Spec Kit workflow, memory layers, and required memory workflow in project-level AI context
-- **`docs/memory/*.md`** → Read by `memory-loader` (via durable memory layer) and by agents following the Required Workflow in `copilot-instructions.md`
-- **`specs/README.md`** → Documents feature spec folder structure and memory conventions
-
-### Extension Inter-Dependencies
-
-```mermaid
-graph LR
-    Git["git<br/>v1.0.0"] -->|"before_specify"| Specify["Core: specify"]
-    MemLoader["memory-loader<br/>v1.0.0"] -->|"before_*"| AllCommands["All Core Commands"]
-    Retro["retrospective<br/>v1.0.0"] -->|"after_implement"| Implement["Core: implement"]
-    Retro -->|"requires"| Tasks["Core: tasks"]
-    Retro -->|"requires"| Specify
-    Retro -->|"requires"| Constitution["Core: constitution"]
-    Archive["archive<br/>v1.0.0"] -->|"reads"| Specs["specs/ directory"]
-    Archive -->|"writes"| Memory[".specify/memory/"]
-    MemMD["memory-md<br/>v0.6.5"] -->|"manages"| DocsMemory["docs/memory/"]
-    Status["status<br/>v1.0.0"] -->|"reads"| Specs & Memory
-    RepoIndex["repoindex<br/>v1.0.0"] -->|"reads"| SourceCode["src/ (app code)"]
+```
+User: /speckit.clarify
+  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
+  ├── [HOOK] speckit.memory-loader.load → Load context
+  ├── [EXEC] Scan spec for ambiguities  → Ask ≤5 questions, encode answers
+  └── [HOOK] speckit.git.commit         → "[Spec Kit] Clarify specification"
 ```
 
-### External Dependencies
+**Output**: Updated `spec.md` with Clarifications section
 
-| Dependency | Used By | Purpose |
-|-----------|---------|---------|
-| **Git** | git extension | Branch creation, validation, auto-commit |
-| **GitHub Copilot** | All agents | AI execution engine for all commands |
-| **PowerShell** | git, core scripts | Script execution (branch creation, prerequisites) |
+#### Phase 3: Plan
 
-### Configuration Dependencies
+```
+User: /speckit.plan
+  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
+  ├── [HOOK] speckit.memory-loader.load → Load context
+  ├── [EXEC] Constitution Check         → GATE: all 5 principles must PASS
+  ├── [EXEC] Phase 0: Research          → Generate research.md
+  ├── [EXEC] Phase 1: Design            → Generate data-model.md, quickstart.md
+  ├── [EXEC] Write plan.md              → Technical context, project structure
+  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add implementation plan"
+```
 
-| Variable / File | Required | Description |
-|----------------|----------|-------------|
-| `.specify/init-options.json` | Yes | Spec Kit version, integration type, branch numbering strategy |
-| `.specify/integration.json` | Yes | Active integration (copilot) and version |
-| `.specify/extensions.yml` | Yes | Hook registry — all lifecycle hooks |
-| `.specify/extensions/.registry` | Yes | Extension version tracking and integrity hashes |
-| `git-config.yml` | No | Auto-commit toggles and branch numbering |
+**Output**: `plan.md`, `research.md`, `data-model.md`, `quickstart.md`
 
-## File Organization
+#### Phase 4: Tasks
 
-### Component Distribution
+```
+User: /speckit.tasks
+  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
+  ├── [HOOK] speckit.memory-loader.load → Load context
+  ├── [EXEC] Read plan + spec           → Generate phased, dependency-ordered tasks
+  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add tasks"
+```
 
-- Core config: 3 files (`init-options.json`, `integration.json`, `extensions.yml`)
-- Templates: 5 files
-- Scripts: 4 PowerShell files
-- Workflows: 2 files
-- Memory: 1 file (constitution)
-- Extensions: 7 extensions (~85 files across commands, configs, docs, scripts)
-- Agent definitions: 28 files (`.github/agents/`)
-- Prompt definitions: 28 files (`.github/prompts/`)
-- Integration manifests: 2 files
+**Output**: `tasks.md` with `- [ ] T001 [P] [US1] description` format
 
-**Total**: ~131 files in `.specify/` + 56 files in `.github/agents/` and `.github/prompts/`
+#### Phase 5: Analyze (optional, recommended)
 
-### Key Files
+```
+User: /speckit.analyze
+  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
+  ├── [HOOK] speckit.memory-loader.load → Load context
+  ├── [EXEC] Cross-check spec ↔ plan ↔ tasks → Coverage matrix, drift detection
+  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add analysis report"
+```
 
-1. **`extensions.yml`** — The central hook registry. All lifecycle hooks from all extensions are merged here. Controls what runs before/after every command.
-2. **`.registry`** — Extension integrity database. Records version, SHA-256 hash, installation timestamp, and registered commands for each extension.
-3. **`copilot.manifest.json`** — Maps every `.github/agents/*.agent.md` and `.github/prompts/*.prompt.md` to its SHA-256 hash for integrity checking.
-4. **`common.ps1`** — Shared PowerShell functions (`Find-SpecifyRoot`, `Get-RepoRoot`, `Get-CurrentBranch`) used by all scripts.
-5. **`workflow.yml`** — Defines the full SDD cycle (specify → review → plan → review → tasks → implement) with gate/abort control.
+**Output**: Analysis report with requirement coverage, ambiguities, inconsistencies
 
-## Quality Observations
+#### Phase 6: Implement
 
-### Strengths
+```
+User: /speckit.implement
+  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
+  ├── [HOOK] speckit.memory-loader.load → Load context
+  ├── [EXEC] Process tasks T001→T00N    → Edit files, mark [x] in tasks.md
+  ├── [HOOK] speckit.git.commit         → "[Spec Kit] Implementation progress"
+  └── [HOOK] speckit.retrospective.analyze → Offered (optional)
+```
 
-- **Well-structured extension system** — Each extension has a clear `extension.yml` manifest, isolated commands, and typed hooks.
-- **Lifecycle hooks** — Consistent before/after pattern ensures memory is always loaded and commits are always offered.
-- **Integrity tracking** — SHA-256 hashes in `.registry` and manifests enable tamper detection.
-- **Template-driven** — All artifacts use structured templates with clear placeholder instructions.
-- **Gradual adoption** — Each command can be used independently; the full workflow is optional.
+**Output**: Source code changes + all tasks marked `[x]`
+
+#### Phase 7: Retrospective (optional)
+
+```
+User: /speckit.retrospective.analyze
+  ├── [EXEC] Compare spec vs actual     → Adherence %, drift table, deviations
+  └── [HANDOFF] Can chain to:
+      ├── /speckit.constitution         → Update principles based on learnings
+      ├── /speckit.specify              → New feature from findings
+      └── /speckit.checklist            → Checklist from findings
+```
+
+**Output**: `retrospective.md` with adherence score, deviation analysis, recommendations
+
+#### Phase 8: Archive
+
+```
+User: /speckit.archive.run specs/NNN-feature-name
+  ├── [EXEC] Read feature artifacts     → Merge into .specify/memory/
+  └── [OUTPUT] Project-level memory     → Updated with feature knowledge
+```
+
+---
+
+## File Layout
+
+### Feature Spec Directory (per feature)
+
+```
+specs/NNN-feature-name/
+├── spec.md              # User stories, requirements, acceptance scenarios
+├── plan.md              # Technical design, project structure, constitution check
+├── tasks.md             # Phased task list with [P] parallel markers
+├── research.md          # Technology research and decisions
+├── data-model.md        # Entity descriptions (if applicable)
+├── quickstart.md        # Verification steps after implementation
+├── retrospective.md     # Post-implementation spec adherence analysis
+└── checklists/
+    └── requirements.md  # Spec quality validation checklist
+```
+
+### Governance Memory
+
+```
+.specify/memory/
+└── constitution.md      # v1.0.1 — 5 principles + governance
+```
+
+### Spec Kit Infrastructure
+
+```
+.specify/
+├── init-options.json    # Integration: copilot, branch numbering: sequential
+├── integration.json     # Active integration and Spec Kit version (0.8.1.dev0)
+├── extensions.yml       # Hook registry — all lifecycle events
+├── feature.json         # Currently active feature directory pointer
+├── templates/           # 5 templates (spec, plan, tasks, checklist, constitution)
+├── scripts/powershell/  # 4 scripts (common, check-prerequisites, create-new-feature, setup-plan)
+├── workflows/speckit/   # Full SDD cycle workflow definition
+├── integrations/        # Copilot + Spec Kit manifest files (SHA-256 integrity)
+└── extensions/          # 6 extensions (git, memory-loader, repoindex, archive, retrospective, status)
+
+.github/agents/          # 22 Copilot agent definitions (.agent.md)
+.github/prompts/         # 22 Copilot prompt files (.prompt.md)
+```
+
+---
+
+## Hook Configuration (Current State)
+
+### Auto-Commit Configuration
+
+Auto-commit is **enabled for all `after_*` events** (except `after_taskstoissues`). All `before_*` events remain disabled to avoid committing work-in-progress.
+
+| Event | before_* | after_* | Message |
+|-------|----------|---------|---------|
+| constitution | — | ✓ enabled | `[Spec Kit] Add project constitution` |
+| specify | — | ✓ enabled | `[Spec Kit] Add specification` |
+| clarify | — | ✓ enabled | `[Spec Kit] Clarify specification` |
+| plan | — | ✓ enabled | `[Spec Kit] Add implementation plan` |
+| tasks | — | ✓ enabled | `[Spec Kit] Add tasks` |
+| implement | — | ✓ enabled | `[Spec Kit] Implementation progress` |
+| checklist | — | ✓ enabled | `[Spec Kit] Add checklist` |
+| analyze | — | ✓ enabled | `[Spec Kit] Add analysis report` |
+| taskstoissues | — | ✗ disabled | — |
+
+### Memory Loading
+
+`speckit.memory-loader.load` fires **before every lifecycle command** (mandatory, not optional). It reads all `.md` files from `.specify/memory/` and outputs them as context.
+
+### Retrospective Hook
+
+`speckit.retrospective.analyze` is **offered after `/speckit.implement`** (optional, prompted). Generates spec adherence analysis with deviation scoring.
+
+---
+
+## Constitution v1.0.1 (Active)
+
+| # | Principle | Key Rule |
+|---|-----------|----------|
+| I | **Cross-Platform Parity** | Every feature MUST work on iOS, Android, and Web |
+| II | **Token-Based Theming** | All colors/spacing from `theme.ts`; use `ThemedText`/`ThemedView` |
+| III | **Platform File Splitting** | Non-trivial platform differences use `.web.tsx` suffix |
+| IV | **StyleSheet Discipline** | `StyleSheet.create()` for all styles; `Spacing` scale for dimensions |
+| V | **Test-First for New Features** | New features MUST include tests. **Exemption**: docs/config-only features use manual verification instead |
+
+**Governance**: Constitution supersedes conflicting conventions. Amendments require version bump + rationale. Plans MUST pass Constitution Check gate.
+
+---
+
+## Installed Extensions (6)
+
+| Extension | Version | Author | Commands | Purpose |
+|-----------|---------|--------|----------|---------|
+| **git** | 1.0.0 | spec-kit-core | 5 | Branch creation, naming, auto-commit |
+| **memory-loader** | 1.0.0 | KevinBrown5280 | 1 | Load `.specify/memory/` before commands |
+| **repoindex** | 1.0.0 | Yiyu Liu | 3 | Repository documentation generation |
+| **archive** | 1.0.0 | Stanislav Deviatov | 1 | Post-merge feature archival |
+| **retrospective** | 1.0.0 | emi-dm | 1 | Spec adherence and drift analysis |
+| **status** | 1.0.0 | KhawarHabibKhan | 1 | SDD workflow progress dashboard |
+
+## Quality Status
 
 ### Concerns
 
@@ -388,4 +314,4 @@ _(No open recommendations)_
 
 ---
 
-**Generated**: April 25, 2026 (refreshed) | **Spec Kit Extension**: repoindex v1.0.0
+**Generated**: April 25, 2026 | **Spec Kit Version**: 0.8.1.dev0 | **Constitution**: v1.0.1
