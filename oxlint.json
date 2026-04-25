@@ -1,0 +1,44 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  "plugins": ["typescript", "unicorn", "oxc", "react", "jest", "import"],
+  "categories": {
+    "correctness": "error",
+    "suspicious": "error"
+  },
+  "env": {
+    "builtin": true,
+    "browser": true,
+    "es2024": true,
+    "jest": true,
+    "node": true
+  },
+  "settings": {
+    "react": {
+      "version": "19.2"
+    },
+    "jest": {
+      "version": "29"
+    }
+  },
+  "ignorePatterns": [
+    "node_modules/**",
+    ".expo/**",
+    "dist/**",
+    "build/**",
+    "coverage/**",
+    "web-build/**",
+    "ios/**",
+    "android/**",
+    "test-results/**"
+  ],
+  "rules": {
+    "no-unused-vars": "error",
+    "import/no-unassigned-import": "off",
+    "react/react-in-jsx-scope": "off",
+    "react/rules-of-hooks": "error",
+    "react/exhaustive-deps": "error",
+    "jest/no-focused-tests": "error",
+    "jest/valid-expect": "error",
+    "jest/expect-expect": "error"
+  }
+}

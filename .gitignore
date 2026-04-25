@@ -6,8 +6,10 @@ node_modules/
 # Expo
 .expo/
 dist/
+build/
 web-build/
 expo-env.d.ts
+coverage/
 
 # Native
 .kotlin/
@@ -25,12 +27,21 @@ expo-env.d.ts
 npm-debug.*
 yarn-debug.*
 yarn-error.*
+*.log
 
 # macOS
 .DS_Store
+Thumbs.db
 *.pem
 
+# editor and temporary files
+*.tmp
+*.swp
+.vscode/
+.idea/
+
 # local env files
+.env*
 .env*.local
 
 # typescript

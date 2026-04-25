@@ -4,15 +4,19 @@
 
 - **Package manager**: pnpm (with `nodeLinker: hoisted`)
 - **Install**: `pnpm install`
-- **Start dev server**: `npx expo start`
-- **Lint**: `npx expo lint`
-- **Platform targets**: `npx expo start --ios`, `--android`, `--web`
-- **iOS simulator build**: `npx eas build --platform ios --profile development`
-- **iOS unsigned IPA (sideload)**: `npx eas build --platform ios --profile sideload` (free, no Apple credentials — uses custom build YAML)
-- **iOS device testing (quick)**: Use Expo Go — `npx expo start`, scan QR on iPhone
+- **Start dev server**: `pnpm start`
+- **Platform targets**: `pnpm ios`, `pnpm android`, `pnpm web`
+- **Format**: `pnpm format` / `pnpm format:check` (OXC formatter)
+- **Lint**: `pnpm lint` (OXC lint plus official React Hooks ESLint rules)
+- **Typecheck**: `pnpm typecheck`
+- **Unit tests**: `pnpm test` / `pnpm test:watch` (Jest Expo + React Native Testing Library)
+- **Full local quality gate**: `pnpm check`
+- **iOS simulator build**: `pnpm ios:simulator`
+- **iOS unsigned IPA (sideload)**: `pnpm ios:ipa` (free, no Apple credentials — uses custom build YAML; remote/quota-consuming)
+- **iOS device testing (quick)**: Use Expo Go — `pnpm start`, scan QR on iPhone
 - **Sideloading guide**: See [docs/eas-build-guide.md](docs/eas-build-guide.md) for unsigned IPA → Sideloadly → iPhone workflow
 
-No test framework is configured yet. The `test/` and `e2e/` directories exist but are empty.
+The unit test framework is configured under `test/unit/` with executable examples and shared setup in `test/setup.ts`. The `e2e/` directory exists but does not have a configured runner yet.
 
 ## Agent-First Tooling
 
@@ -20,12 +24,12 @@ This project uses an agent-first development workflow with three layers:
 
 ### Plugins (installed)
 
-| Plugin | What It Provides |
-|--------|-----------------|
-| **Spec Kit** (`.specify/`) | SDD lifecycle: `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`. 22 commands, 6 extensions. See [speckit_profile.md](./speckit/repo_index/speckit_profile.md) for full reference. |
-| **Superpowers** (`obra/superpowers`) | 14 engineering skills: TDD, systematic debugging, brainstorming, writing plans, code review, verification, parallel agents, subagent-driven dev, git worktrees, skill writing. Auto-invoked when relevant. |
-| **Context Engineering** (`context-engineering@awesome-copilot`) | `@context-architect` agent for multi-file change planning — identifies relevant files, dependency graphs, ripple effects before edits. |
-| **RUG Agentic Workflow** (`rug-agentic-workflow@awesome-copilot`) | `@rug` orchestrator agent — decomposes work, delegates to `@SWE` and `@QA` subagents, validates outcomes. Never writes code itself. |
+| Plugin                                                            | What It Provides                                                                                                                                                                                                |
+| ----------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Spec Kit** (`.specify/`)                                        | SDD lifecycle: `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`. 22 commands, 6 extensions. See [speckit_profile.md](./speckit/repo_index/speckit_profile.md) for full reference. |
+| **Superpowers** (`obra/superpowers`)                              | 14 engineering skills: TDD, systematic debugging, brainstorming, writing plans, code review, verification, parallel agents, subagent-driven dev, git worktrees, skill writing. Auto-invoked when relevant.      |
+| **Context Engineering** (`context-engineering@awesome-copilot`)   | `@context-architect` agent for multi-file change planning — identifies relevant files, dependency graphs, ripple effects before edits.                                                                          |
+| **RUG Agentic Workflow** (`rug-agentic-workflow@awesome-copilot`) | `@rug` orchestrator agent — decomposes work, delegates to `@SWE` and `@QA` subagents, validates outcomes. Never writes code itself.                                                                             |
 
 ### Constitution
 
@@ -33,24 +37,24 @@ Project principles live in `.specify/memory/constitution.md` (v1.0.1). Consult b
 
 ### When to Use Which Agent
 
-| Scenario | Agent/Command |
-|----------|--------------|
-| New feature (full lifecycle) | `/speckit.specify` → SDD workflow |
-| Complex multi-file change | `@context-architect` first, then implement |
-| Large task decomposition | `@rug` to orchestrate `@SWE` + `@QA` |
-| Bug investigation | Superpowers: systematic-debugging (auto-invoked) |
-| Code review | Superpowers: requesting-code-review / receiving-code-review |
-| Quick fix (single file) | Direct edit — no ceremony needed |
-| Repo understanding | `/speckit.repoindex.overview` or `/speckit.repoindex.module` |
-| Project status | `/speckit.status` |
+| Scenario                     | Agent/Command                                                |
+| ---------------------------- | ------------------------------------------------------------ |
+| New feature (full lifecycle) | `/speckit.specify` → SDD workflow                            |
+| Complex multi-file change    | `@context-architect` first, then implement                   |
+| Large task decomposition     | `@rug` to orchestrate `@SWE` + `@QA`                         |
+| Bug investigation            | Superpowers: systematic-debugging (auto-invoked)             |
+| Code review                  | Superpowers: requesting-code-review / receiving-code-review  |
+| Quick fix (single file)      | Direct edit — no ceremony needed                             |
+| Repo understanding           | `/speckit.repoindex.overview` or `/speckit.repoindex.module` |
+| Project status               | `/speckit.status`                                            |
 
 ### Documentation Index
 
-| Document | What It Contains |
-|----------|-----------------|
-| [speckit_profile.md](./speckit/repo_index/speckit_profile.md) | Complete command reference, workflow diagrams, hook config, constitution |
-| [overview.md](./speckit/repo_index/overview.md) | Project overview, tech stack, getting started, architecture diagram |
-| [architecture.md](./speckit/repo_index/architecture.md) | Deep architecture analysis, components, dependencies, performance, tech debt |
+| Document                                                      | What It Contains                                                             |
+| ------------------------------------------------------------- | ---------------------------------------------------------------------------- |
+| [speckit_profile.md](./speckit/repo_index/speckit_profile.md) | Complete command reference, workflow diagrams, hook config, constitution     |
+| [overview.md](./speckit/repo_index/overview.md)               | Project overview, tech stack, getting started, architecture diagram          |
+| [architecture.md](./speckit/repo_index/architecture.md)       | Deep architecture analysis, components, dependencies, performance, tech debt |
 
 ## Architecture
 
@@ -112,7 +116,9 @@ Strict mode is enabled. The React Compiler is also enabled (`experiments.reactCo
 Animations use `react-native-reanimated` (Keyframe API, `FadeIn`, etc.) and `react-native-worklets` for worklet scheduling.
 
 <!-- SPECKIT START -->
+
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/004-eas-build-ipa/plan.md`
+at `specs/005-infra-tooling-upgrade/plan.md`
+
 <!-- SPECKIT END -->
