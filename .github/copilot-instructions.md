@@ -7,6 +7,10 @@
 - **Start dev server**: `npx expo start`
 - **Lint**: `npx expo lint`
 - **Platform targets**: `npx expo start --ios`, `--android`, `--web`
+- **iOS simulator build**: `npx eas build --platform ios --profile development`
+- **iOS unsigned IPA (sideload)**: `npx eas build --platform ios --profile sideload` (free, no Apple credentials — uses custom build YAML)
+- **iOS device testing (quick)**: Use Expo Go — `npx expo start`, scan QR on iPhone
+- **Sideloading guide**: See [docs/eas-build-guide.md](docs/eas-build-guide.md) for unsigned IPA → Sideloadly → iPhone workflow
 
 No test framework is configured yet. The `test/` and `e2e/` directories exist but are empty.
 
@@ -18,14 +22,14 @@ This project uses an agent-first development workflow with three layers:
 
 | Plugin | What It Provides |
 |--------|-----------------|
-| **Spec Kit** (`.specify/`) | SDD lifecycle: `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`. 22 commands, 6 extensions. See [speckit_profile.md](.github/speckit/repo_index/speckit_profile.md) for full reference. |
+| **Spec Kit** (`.specify/`) | SDD lifecycle: `/speckit.specify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.implement`. 22 commands, 6 extensions. See [speckit_profile.md](./speckit/repo_index/speckit_profile.md) for full reference. |
 | **Superpowers** (`obra/superpowers`) | 14 engineering skills: TDD, systematic debugging, brainstorming, writing plans, code review, verification, parallel agents, subagent-driven dev, git worktrees, skill writing. Auto-invoked when relevant. |
 | **Context Engineering** (`context-engineering@awesome-copilot`) | `@context-architect` agent for multi-file change planning — identifies relevant files, dependency graphs, ripple effects before edits. |
 | **RUG Agentic Workflow** (`rug-agentic-workflow@awesome-copilot`) | `@rug` orchestrator agent — decomposes work, delegates to `@SWE` and `@QA` subagents, validates outcomes. Never writes code itself. |
 
 ### Constitution
 
-Project principles live in `.specify/memory/constitution.md` (v1.0.1). Consult before making architectural decisions. See [speckit_profile.md](.github/speckit/repo_index/speckit_profile.md#constitution-v101-active) for the 5 principles.
+Project principles live in `.specify/memory/constitution.md` (v1.0.1). Consult before making architectural decisions. See [speckit_profile.md](./speckit/repo_index/speckit_profile.md) for the 5 principles.
 
 ### When to Use Which Agent
 
@@ -44,9 +48,9 @@ Project principles live in `.specify/memory/constitution.md` (v1.0.1). Consult b
 
 | Document | What It Contains |
 |----------|-----------------|
-| [speckit_profile.md](.github/speckit/repo_index/speckit_profile.md) | Complete command reference, workflow diagrams, hook config, constitution |
-| [overview.md](.github/speckit/repo_index/overview.md) | Project overview, tech stack, getting started, architecture diagram |
-| [architecture.md](.github/speckit/repo_index/architecture.md) | Deep architecture analysis, components, dependencies, performance, tech debt |
+| [speckit_profile.md](./speckit/repo_index/speckit_profile.md) | Complete command reference, workflow diagrams, hook config, constitution |
+| [overview.md](./speckit/repo_index/overview.md) | Project overview, tech stack, getting started, architecture diagram |
+| [architecture.md](./speckit/repo_index/architecture.md) | Deep architecture analysis, components, dependencies, performance, tech debt |
 
 ## Architecture
 
@@ -110,5 +114,5 @@ Animations use `react-native-reanimated` (Keyframe API, `FadeIn`, etc.) and `rea
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/002-remove-memory-md/plan.md`
+at `specs/004-eas-build-ipa/plan.md`
 <!-- SPECKIT END -->

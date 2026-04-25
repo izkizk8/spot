@@ -1,0 +1,124 @@
+{
+  "moduleName": "eas-sideload",
+  "modulePath": ".eas/build/ + eas.json + docs/eas-build-guide.md",
+  "analyzedAt": "2026-04-25T03:00:00Z",
+  "fileCount": 8,
+  "components": {
+    "entryPoints": [
+      {
+        "path": "eas.json",
+        "purpose": "EAS Build configuration with sideload profile pointing to custom YAML",
+        "responsibilities": [
+          "Define 'development' profile (simulator: true)",
+          "Define 'sideload' profile (withoutCredentials + config: unsigned-ios.yml)",
+          "Define 'production' profile (empty, for future App Store)"
+        ],
+        "dependencies": [".eas/build/unsigned-ios.yml"]
+      }
+    ],
+    "controllers": [],
+    "services": [
+      {
+        "path": ".eas/build/unsigned-ios.yml",
+        "purpose": "Custom EAS Build workflow that produces unsigned IPA without Apple credentials",
+        "responsibilities": [
+          "eas/checkout — check out source",
+          "eas/install_node_modules — pnpm install",
+          "eas/resolve_build_config — resolve EAS config",
+          "eas/prebuild — generate native ios/ directory",
+          "pod install — install CocoaPods",
+          "xcodebuild with CODE_SIGNING_REQUIRED=NO -sdk iphoneos — build arm64 device binary",
+          "Package .app into Payload/ and zip as unsigned.ipa",
+          "eas/upload_artifact — upload IPA to EAS dashboard"
+        ],
+        "dependencies": ["eas.json", "app.json"]
+      }
+    ],
+    "repositories": [],
+    "models": [],
+    "configurations": [
+      {
+        "path": "app.json",
+        "purpose": "Expo app configuration with iOS bundle identifier",
+        "responsibilities": [
+          "ios.bundleIdentifier: com.izkizk8.spot",
+          "ios.infoPlist.ITSAppUsesNonExemptEncryption: false"
+        ],
+        "dependencies": []
+      },
+      {
+        "path": ".github/copilot-instructions.md",
+        "purpose": "AI-readable project reference with build commands",
+        "responsibilities": [
+          "Documents 'npx eas build --profile sideload' command",
+          "Links to docs/eas-build-guide.md"
+        ],
+        "dependencies": ["docs/eas-build-guide.md"]
+      }
+    ],
+    "utilities": [],
+    "tests": [],
+    "documentation": [
+      {
+        "path": "docs/eas-build-guide.md",
+        "purpose": "Complete Windows → iOS sideloading guide",
+        "responsibilities": [
+          "TL;DR method comparison table",
+          "Step-by-step unsigned IPA build workflow",
+          "Sideloadly re-sign and install instructions",
+          "AltStore alternative",
+          "Free Apple ID limitations (7-day cert, 3 app limit)",
+          "Troubleshooting table",
+          "Quick reference commands"
+        ],
+        "dependencies": ["eas.json", ".eas/build/unsigned-ios.yml"]
+      },
+      {
+        "path": "specs/004-eas-build-ipa/research.md",
+        "purpose": "Research findings from 7 build attempts with root cause analysis",
+        "responsibilities": [
+          "Finding 1: withoutCredentials alone fails — custom YAML required",
+          "Finding 2: Custom builds work on free EAS plan",
+          "Finding 3: Working custom build YAML steps",
+          "Finding 4: Sideloading workflow diagram",
+          "Finding 5: EAS pricing — free plan sufficient"
+        ],
+        "dependencies": []
+      },
+      {
+        "path": "specs/004-eas-build-ipa/spec.md",
+        "purpose": "Feature specification with 3 user stories and 7 requirements",
+        "responsibilities": [
+          "US1: Configure EAS Build basics",
+          "US2: Build unsigned IPA via custom workflow",
+          "US3: Document sideloading workflow",
+          "FR-001 through FR-007",
+          "SC-001 through SC-004"
+        ],
+        "dependencies": []
+      },
+      {
+        "path": "specs/004-eas-build-ipa/plan.md",
+        "purpose": "Implementation plan with custom build workflow approach",
+        "responsibilities": [
+          "Technical context and constraints",
+          "Constitution check",
+          "Custom build YAML approach description"
+        ],
+        "dependencies": ["specs/004-eas-build-ipa/spec.md"]
+      },
+      {
+        "path": "specs/004-eas-build-ipa/tasks.md",
+        "purpose": "17 implementation tasks, all complete",
+        "responsibilities": [
+          "Phase 1: Setup (T001-T003)",
+          "Phase 2: US1 EAS basics (T004-T006)",
+          "Phase 3: US2 unsigned IPA (T007-T010)",
+          "Phase 4: US3 documentation (T011-T013)",
+          "Phase 5: Verification (T014-T017)"
+        ],
+        "dependencies": ["specs/004-eas-build-ipa/plan.md"]
+      }
+    ]
+  }
+}

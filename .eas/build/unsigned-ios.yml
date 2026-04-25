@@ -1,0 +1,50 @@
+build:
+  name: Unsigned iOS device build
+  steps:
+    - eas/checkout
+    - eas/install_node_modules
+    - eas/resolve_build_config
+    - eas/prebuild
+    - run:
+        name: Install pods
+        working_directory: ./ios
+        command: pod install
+    - run:
+        name: Build unsigned IPA
+        working_directory: ./ios
+        command: |
+          set -euo pipefail
+
+          SCHEME=$(xcodebuild -list -json | python3 -c "
+          import sys, json
+          data = json.load(sys.stdin)
+          if 'workspace' in data:
+              print(data['workspace']['schemes'][0])
+          else:
+              print(data['project']['schemes'][0])
+          ")
+          echo "Building scheme: $SCHEME"
+
+          xcodebuild \
+            -workspace spot.xcworkspace \
+            -scheme "$SCHEME" \
+            -configuration Release \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS="" \
+            -quiet
+
+          APP_PATH=$(find build/Build/Products/Release-iphoneos -name "*.app" -type d | head -1)
+          echo "App built at: $APP_PATH"
+
+          mkdir -p ../Payload
+          cp -r "$APP_PATH" ../Payload/
+          cd ..
+          zip -r unsigned.ipa Payload
+          echo "IPA created: unsigned.ipa"
+    - eas/upload_artifact:
+        inputs:
+          path: unsigned.ipa

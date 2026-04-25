@@ -1,18 +1,25 @@
 <!--
 Sync Impact Report
-  Version change: 1.0.0 → 1.0.1 (PATCH: clarification)
-  Modified principles:
-    - V. Test-First for New Features: added Exemption clause
-      for documentation/configuration-only features
-  Added sections: none
+  Version change: 1.0.1 → 1.1.0 (MINOR: expanded workflow)
+  Modified principles: none
+  Added sections:
+    - Development Workflow: added Validate-Before-Spec
+      mandate for build/infrastructure features
+    - Development Workflow: added spec back-patching
+      guidance for discovery-heavy features
   Removed sections: none
   Templates requiring updates:
-    - .specify/templates/plan-template.md ✅ no update needed
-    - .specify/templates/spec-template.md ✅ no update needed
-    - .specify/templates/tasks-template.md ✅ no update needed
-  Evidence: retrospective.md from 001-fix-speckit-concerns
-    identified justified exception pattern for docs-only features
-  Follow-up TODOs: none
+    - .specify/templates/plan-template.md ⚠ pending
+      (add "Build Validation" step to research phase)
+    - .specify/templates/spec-template.md ✅ no change
+    - .specify/templates/tasks-template.md ✅ no change
+  Evidence: retrospective.md from 004-eas-build-ipa
+    identified that 4 builds failed because spec assumed
+    withoutCredentials alone would work; research phase
+    should have validated with a proof-of-concept build
+  Follow-up TODOs:
+    - Update plan-template.md with build validation
+      step in Phase 0 research
 -->
 
 # spot Constitution
@@ -120,6 +127,21 @@ config work on a test framework that doesn't exist yet.
   specify → plan → tasks → implement
 - The constitution MUST be consulted during the plan
   phase (Constitution Check in `plan-template.md`)
+- **Validate-Before-Spec**: For features involving
+  build pipelines, infrastructure, or external service
+  integrations, the plan phase MUST include at least
+  one proof-of-concept validation (e.g., a test build,
+  API call, or deployment) before the spec is finalized.
+  Specs MAY be written with assumptions, but those
+  assumptions MUST be validated during research and
+  the spec back-patched with findings before task
+  generation proceeds.
+- **Spec back-patching**: When implementation reveals
+  that spec assumptions were wrong (discovery features),
+  the spec MUST be updated to reflect reality before
+  the feature is considered complete. Back-patched
+  specs MUST include a Note or Clarification entry
+  documenting what changed and why.
 - Durable lessons are captured in `docs/memory/` only
   when evidenced, reusable, and non-obvious
 - Feature memory (`specs/<feature>/memory.md` +
@@ -144,4 +166,4 @@ Version bumps follow semantic versioning:
 All feature plans MUST pass the Constitution Check
 gate before proceeding to task generation.
 
-**Version**: 1.0.1 | **Ratified**: 2026-04-25 | **Last Amended**: 2026-04-25
+**Version**: 1.1.0 | **Ratified**: 2026-04-25 | **Last Amended**: 2026-04-25
