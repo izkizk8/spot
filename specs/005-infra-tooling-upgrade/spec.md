@@ -2,7 +2,7 @@
 
 **Feature Branch**: `005-infra-tooling-upgrade`  
 **Created**: 2026-04-25  
-**Status**: Draft  
+**Status**: Complete (Archived 2026-04-26 -> .specify/memory/)  
 **Input**: User description: "整理下脚本，把eas ipa写进package.json脚本里 基本基础建设搭建，使用oxc format lint，加入ut testing framework 使用最新技术比如typescript等，进行全面基础设施升级"
 
 ## Clarifications

@@ -2,7 +2,7 @@
 
 **Feature Branch**: `002-remove-memory-md`
 **Created**: 2026-04-25
-**Status**: Draft
+**Status**: Complete (Archived 2026-04-26 -> .specify/memory/)
 **Input**: User decision: "memory-md adds process overhead with marginal value at solo-developer scale. Remove it entirely."
 
 ## User Scenarios & Testing *(mandatory)*

@@ -2,7 +2,7 @@
 
 **Feature Branch**: `001-fix-speckit-concerns`  
 **Created**: 2026-04-25  
-**Status**: Draft  
+**Status**: Complete (Archived 2026-04-26 -> .specify/memory/)  
 **Input**: User description: "Fix Spec Kit profile concerns: fill durable memory, enable auto-commit, deduplicate agents, update stale documentation"
 
 ## User Scenarios & Testing *(mandatory)*

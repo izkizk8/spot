@@ -2,7 +2,7 @@
 
 **Feature Branch**: `004-eas-build-ipa`
 **Created**: 2026-04-25
-**Status**: Complete
+**Status**: Complete (Archived 2026-04-26 -> .specify/memory/)
 **Input**: User description: "I only have Windows. I want to use EAS Build to produce an unsigned IPA, then self-sign and sideload it to iOS."
 
 ## User Scenarios & Testing *(mandatory)*
