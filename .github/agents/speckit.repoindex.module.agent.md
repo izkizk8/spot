@@ -159,7 +159,7 @@ flowchart TD
 
 ### Module Profile Document (.md)
 
-**Location**: `.github/speckit/repo_index/<module_name>_profile.md`
+**Location**: `docs/<module_name>_profile.md`
 
 ```markdown
 # Module: [Module Name]
@@ -355,7 +355,7 @@ erDiagram
 
 ### File Index JSON
 
-**Location**: `.github/speckit/repo_index/<module_name>_fileindex.json`
+**Location**: `docs/_index/<module_name>_fileindex.json`
 
 ```json
 {
@@ -705,11 +705,11 @@ Determine file purpose by:
 9. Classifies all files by component
 10. Generates module profile markdown
 11. Generates file index JSON
-12. Saves both to `.github/speckit/repo_index/`
+12. Saves both to `docs/`
 
 **Outputs:**
-- `.github/speckit/repo_index/web_profile.md` - Complete module documentation
-- `.github/speckit/repo_index/web_fileindex.json` - Structured file classification
+- `docs/web_profile.md` - Complete module documentation
+- `docs/_index/web_fileindex.json` - Structured file classification
 
 ## Quality Criteria
 

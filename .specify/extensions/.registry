@@ -94,6 +94,425 @@
       },
       "registered_skills": [],
       "installed_at": "2026-04-24T18:25:27.472779+00:00"
+    },
+    "doctor": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:45150c8ac10b6b002ebea9de34a203911951fe3a89cb8635a2a149082c02eeed",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.doctor.check",
+          "speckit.doctor"
+        ],
+        "codex": [
+          "speckit.doctor.check",
+          "speckit.doctor"
+        ],
+        "copilot": [
+          "speckit.doctor.check",
+          "speckit.doctor"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T12:59:19.277166+00:00"
+    },
+    "superb": {
+      "version": "1.3.0",
+      "source": "local",
+      "manifest_hash": "sha256:67185f3f5a9e6617a3fc5e669e9dceeefe12f2a17eb7d5dd7099ac59e3297865",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.superb.check",
+          "speckit.superb.tdd",
+          "speckit.superb.review",
+          "speckit.superb.verify",
+          "speckit.superb.critique",
+          "speckit.superb.debug",
+          "speckit.superb.finish",
+          "speckit.superb.respond"
+        ],
+        "codex": [
+          "speckit.superb.check",
+          "speckit.superb.tdd",
+          "speckit.superb.review",
+          "speckit.superb.verify",
+          "speckit.superb.critique",
+          "speckit.superb.debug",
+          "speckit.superb.finish",
+          "speckit.superb.respond"
+        ],
+        "copilot": [
+          "speckit.superb.check",
+          "speckit.superb.tdd",
+          "speckit.superb.review",
+          "speckit.superb.verify",
+          "speckit.superb.critique",
+          "speckit.superb.debug",
+          "speckit.superb.finish",
+          "speckit.superb.respond"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:00:01.871161+00:00"
+    },
+    "status-report": {
+      "version": "1.3.4",
+      "source": "local",
+      "manifest_hash": "sha256:f8814b266dc310eacbde599014e815454591c79a9c3df8c76f5982ddc0bb3aef",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.status-report.show"
+        ],
+        "codex": [
+          "speckit.status-report.show"
+        ],
+        "copilot": [
+          "speckit.status-report.show"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:00:12.498684+00:00"
+    },
+    "spec-validate": {
+      "version": "1.0.1",
+      "source": "local",
+      "manifest_hash": "sha256:170187e5d80a7d0435b5924e601f65215a18f36914e6cb15cfd1e3662333ac92",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.spec-validate.validate",
+          "speckit.spec-validate.validate-tasks",
+          "speckit.spec-validate.review",
+          "speckit.spec-validate.gate",
+          "speckit.spec-validate.status",
+          "speckit.spec-validate.analytics"
+        ],
+        "codex": [
+          "speckit.spec-validate.validate",
+          "speckit.spec-validate.validate-tasks",
+          "speckit.spec-validate.review",
+          "speckit.spec-validate.gate",
+          "speckit.spec-validate.status",
+          "speckit.spec-validate.analytics"
+        ],
+        "copilot": [
+          "speckit.spec-validate.validate",
+          "speckit.spec-validate.validate-tasks",
+          "speckit.spec-validate.review",
+          "speckit.spec-validate.gate",
+          "speckit.spec-validate.status",
+          "speckit.spec-validate.analytics"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:00:15.598260+00:00"
+    },
+    "agent-assign": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:5e5c8ca8e58d032fa4485c4c06f270623911fd12f1e8a7e0dec971531d7a8802",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.agent-assign.assign",
+          "speckit.agent-assign.validate",
+          "speckit.agent-assign.execute"
+        ],
+        "codex": [
+          "speckit.agent-assign.assign",
+          "speckit.agent-assign.validate",
+          "speckit.agent-assign.execute"
+        ],
+        "copilot": [
+          "speckit.agent-assign.assign",
+          "speckit.agent-assign.validate",
+          "speckit.agent-assign.execute"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:00:33.906370+00:00"
+    },
+    "bugfix": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:52d11bc3b1912949516c4cfdd730acc138c362699aa6eb1357c7343e85d37f6c",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.bugfix.report",
+          "speckit.bugfix.patch",
+          "speckit.bugfix.verify"
+        ],
+        "codex": [
+          "speckit.bugfix.report",
+          "speckit.bugfix.patch",
+          "speckit.bugfix.verify"
+        ],
+        "copilot": [
+          "speckit.bugfix.report",
+          "speckit.bugfix.patch",
+          "speckit.bugfix.verify"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:00:50.673782+00:00"
+    },
+    "catalog-ci": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:137639906e3fc31a44a9a0af32d08ba457becb18f7f2f24afb6d463809718c48",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.catalog-ci.validate",
+          "speckit.catalog-ci.check-urls",
+          "speckit.catalog-ci.diff",
+          "speckit.catalog-ci.lint"
+        ],
+        "codex": [
+          "speckit.catalog-ci.validate",
+          "speckit.catalog-ci.check-urls",
+          "speckit.catalog-ci.diff",
+          "speckit.catalog-ci.lint"
+        ],
+        "copilot": [
+          "speckit.catalog-ci.validate",
+          "speckit.catalog-ci.check-urls",
+          "speckit.catalog-ci.diff",
+          "speckit.catalog-ci.lint"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:01:08.166474+00:00"
+    },
+    "cleanup": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:b15a5e3b4e5b43f867c093d962492f502b01503d0ec174611d0797854b017578",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.cleanup.run",
+          "speckit.cleanup"
+        ],
+        "codex": [
+          "speckit.cleanup.run",
+          "speckit.cleanup"
+        ],
+        "copilot": [
+          "speckit.cleanup.run",
+          "speckit.cleanup"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:01:50.146231+00:00"
+    },
+    "fix-findings": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:bc06144e0f8d1bb18b8920cd1a438b3ccf182f1166c42c5c20ba86858c4e4129",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.fix-findings.run",
+          "speckit.fix-findings"
+        ],
+        "codex": [
+          "speckit.fix-findings.run",
+          "speckit.fix-findings"
+        ],
+        "copilot": [
+          "speckit.fix-findings.run",
+          "speckit.fix-findings"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:02:08.638256+00:00"
+    },
+    "fleet": {
+      "version": "1.1.0",
+      "source": "local",
+      "manifest_hash": "sha256:329033853690a066ec7c0c2c88ca13a9e4bd971d17270e1a51e0bc49d59f2852",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.fleet.run",
+          "speckit.fleet.review"
+        ],
+        "codex": [
+          "speckit.fleet.run",
+          "speckit.fleet.review"
+        ],
+        "copilot": [
+          "speckit.fleet.run",
+          "speckit.fleet.review"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:02:24.150109+00:00"
+    },
+    "learn": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:88e5b334106c25aa5ee1e0564e8f684b39a33b799d35f4ff5a3567189ea94607",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.learn.review",
+          "speckit.learn.clarify"
+        ],
+        "codex": [
+          "speckit.learn.review",
+          "speckit.learn.clarify"
+        ],
+        "copilot": [
+          "speckit.learn.review",
+          "speckit.learn.clarify"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:02:42.152003+00:00"
+    },
+    "plan-review-gate": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:86dad247d74beadc50c18cbadbe730d13d4cc8370110d3082f101fe8295e3d38",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.plan-review-gate.check"
+        ],
+        "codex": [
+          "speckit.plan-review-gate.check"
+        ],
+        "copilot": [
+          "speckit.plan-review-gate.check"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:02:58.690569+00:00"
+    },
+    "retro": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:f27959726b2bb9b5257b8a164f0096e94c03c443b2e99ccde14af220f9781457",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.retro.run"
+        ],
+        "codex": [
+          "speckit.retro.run"
+        ],
+        "copilot": [
+          "speckit.retro.run"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:03:15.902225+00:00"
+    },
+    "review": {
+      "version": "1.0.1",
+      "source": "local",
+      "manifest_hash": "sha256:3f9eedfc8079662edfb8d1f9c07a161be4e66111ea57621061f1658e91710d83",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.review.run",
+          "speckit.review.code",
+          "speckit.review.comments",
+          "speckit.review.tests",
+          "speckit.review.errors",
+          "speckit.review.types",
+          "speckit.review.simplify"
+        ],
+        "codex": [
+          "speckit.review.run",
+          "speckit.review.code",
+          "speckit.review.comments",
+          "speckit.review.tests",
+          "speckit.review.errors",
+          "speckit.review.types",
+          "speckit.review.simplify"
+        ],
+        "copilot": [
+          "speckit.review.run",
+          "speckit.review.code",
+          "speckit.review.comments",
+          "speckit.review.tests",
+          "speckit.review.errors",
+          "speckit.review.types",
+          "speckit.review.simplify"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:03:34.122091+00:00"
+    },
+    "orchestrator": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:160a5a7c80d6a1c4d618389be48836c696aa9ec1c2a5777f1e307f1909d2d81c",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.orchestrator.status",
+          "speckit.orchestrator.next",
+          "speckit.orchestrator.conflicts",
+          "speckit.orchestrator.sync"
+        ],
+        "codex": [
+          "speckit.orchestrator.status",
+          "speckit.orchestrator.next",
+          "speckit.orchestrator.conflicts",
+          "speckit.orchestrator.sync"
+        ],
+        "copilot": [
+          "speckit.orchestrator.status",
+          "speckit.orchestrator.next",
+          "speckit.orchestrator.conflicts",
+          "speckit.orchestrator.sync"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:04:07.042236+00:00"
+    },
+    "checkpoint": {
+      "version": "1.0.0",
+      "source": "local",
+      "manifest_hash": "sha256:f1f8587fcfee109d13e5fd2837df498439695218b32d00083f6e98095fca64c0",
+      "enabled": true,
+      "priority": 10,
+      "registered_commands": {
+        "agy": [
+          "speckit.checkpoint.commit"
+        ],
+        "codex": [
+          "speckit.checkpoint.commit"
+        ],
+        "copilot": [
+          "speckit.checkpoint.commit"
+        ]
+      },
+      "registered_skills": [],
+      "installed_at": "2026-04-26T13:05:26.606142+00:00"
     }
   }
 }

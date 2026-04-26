@@ -1,56 +1,80 @@
-# Welcome to your Expo app 👋
+# spot
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+A universal **Expo SDK 55** app (iOS / Android / web) built with `expo-router`, TypeScript strict, and the React Compiler. Developed agent-first using Spec Kit's SDD workflow.
 
-## Get started
-
-1. Install dependencies
-
-   ```bash
-   npm install
-   ```
-
-2. Start the app
-
-   ```bash
-   npx expo start
-   ```
-
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+## Quick Start
 
 ```bash
-npm run reset-project
+pnpm install
+pnpm start            # Metro dev server
+pnpm ios              # iOS simulator
+pnpm android          # Android emulator
+pnpm web              # Web
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Quality gate before committing:
 
-### Other setup steps
+```bash
+pnpm check            # format:check + lint + typecheck + test
+```
 
-- To set up ESLint for linting, run `npx expo lint`, or follow our guide on ["Using ESLint and Prettier"](https://docs.expo.dev/guides/using-eslint/)
-- If you'd like to set up unit testing, follow our guide on ["Unit Testing with Jest"](https://docs.expo.dev/develop/unit-testing/)
-- Learn more about the TypeScript setup in this template in our guide on ["Using TypeScript"](https://docs.expo.dev/guides/typescript/)
+iOS device sideload (no Apple credentials needed):
 
-## Learn more
+```bash
+pnpm ios:ipa          # builds unsigned IPA via EAS — see docs/_howto/sideload-iphone.md
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+## Project Layout
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```
+src/
+  app/          file-based routes (expo-router)
+  components/   shared UI (Themed*, app-tabs, ...)
+  constants/    design tokens (Colors, Spacing, Fonts)
+  hooks/        useTheme, useColorScheme
+test/unit/      Jest Expo + React Native Testing Library
+specs/          SDD feature specs (one folder per feature)
+docs/           living documentation (start at docs/README.md)
+.specify/       Spec Kit engine + extensions
+.github/        agent instructions, prompts, sub-agents
+```
 
-## Join the community
+## Documentation
 
-Join our community of developers creating universal apps.
+Three layers, three audiences — see [`docs/README.md`](docs/README.md) for the full map.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+| Need | Go To |
+|------|-------|
+| First-time orientation | this README |
+| Tech stack, architecture, dependencies | [`docs/overview.md`](docs/overview.md) · [`architecture.md`](docs/architecture.md) |
+| Build / lint / test toolchain | `package.json` + ADR [`0002`](docs/_decisions/0002-toolchain.md) |
+| Sideloading an iOS build | [`docs/_howto/sideload-iphone.md`](docs/_howto/sideload-iphone.md) |
+| Working with the agent layer | [`docs/speckit_profile.md`](docs/speckit_profile.md) + [`sdd-extensions.md`](docs/sdd-extensions.md) + ADR [`0001`](docs/_decisions/0001-agent-first-stack.md) |
+| Spec Kit commands, hooks, extensions | [`docs/speckit_profile.md`](docs/speckit_profile.md) · [`sdd-extensions.md`](docs/sdd-extensions.md) |
+
+## Conventions
+
+- Use `ThemedText` / `ThemedView` (not raw `Text` / `View`).
+- Use `Spacing` scale from `src/constants/theme.ts` (no raw px).
+- Native vs web split via `.web.tsx` suffix — bundler resolves automatically.
+- Adding a tab requires editing **both** `src/components/app-tabs.tsx` and `app-tabs.web.tsx`.
+- Project principles live in `.specify/memory/constitution.md` (v1.0.1) and gate every plan.
+
+## Agent-First Development
+
+This project is built using a stacked agent workflow:
+
+| Layer | Tool | Purpose |
+|-------|------|---------|
+| SDD lifecycle | **Spec Kit** (`/speckit.*`) | Spec → plan → tasks → implement |
+| Engineering skills | **Superpowers** (auto-invoked) | TDD, debugging, code review, brainstorming |
+| Multi-file planning | `@context-architect` | Map ripple effects before edits |
+| Multi-agent orchestration | `@rug` → `@SWE` + `@QA` | Decompose, delegate, verify |
+
+For a typical feature: `/speckit.specify "..."` → `/speckit.clarify` → `/speckit.plan` → `/speckit.tasks` → `/speckit.analyze` → `/speckit.implement`.
+
+Quick status: `/speckit.status` · Health check: `/speckit.doctor.check` · Full reference: [`docs/speckit_profile.md`](docs/speckit_profile.md) + [`sdd-extensions.md`](docs/sdd-extensions.md).
+
+## License
+
+See repository root for license details.

@@ -218,7 +218,7 @@ flowchart TD
 6. Generates comprehensive overview document
 
 **Output:**
-Complete markdown document saved to `.github/speckit/repo_index/overview.md`
+Complete markdown document saved to `docs/overview.md`
 
 ## Customization
 

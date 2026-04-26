@@ -411,7 +411,7 @@ Categorize dependencies into:
 9. Synthesizes comprehensive documentation
 
 **Output:**
-Complete architecture documentation saved to `.github/speckit/repo_index/architecture.md`
+Complete architecture documentation saved to `docs/architecture.md`
 
 ## Quality Criteria
 
