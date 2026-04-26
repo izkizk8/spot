@@ -14,7 +14,7 @@
 - **iOS simulator build**: `pnpm ios:simulator`
 - **iOS unsigned IPA (sideload)**: `pnpm ios:ipa` (free, no Apple credentials — uses custom build YAML; remote/quota-consuming)
 - **iOS device testing (quick)**: Use Expo Go — `pnpm start`, scan QR on iPhone
-- **Sideloading guide**: See [docs/eas-build-guide.md](docs/eas-build-guide.md) for unsigned IPA → Sideloadly → iPhone workflow
+- **Sideloading guide**: See [docs/eas-build-guide.md](../docs/eas-build-guide.md) for unsigned IPA → Sideloadly → iPhone workflow
 
 The unit test framework is configured under `test/unit/` with executable examples and shared setup in `test/setup.ts`. The `e2e/` directory exists but does not have a configured runner yet.
 
