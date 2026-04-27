@@ -40,11 +40,7 @@ describe('ConfigPanel', () => {
   it('clamps counter input to [-9999, 9999]', () => {
     const onPush = jest.fn();
     const { getByLabelText } = render(
-      <ConfigPanel
-        value={DEFAULT_CONFIG}
-        onPush={onPush}
-        pushEnabled={true}
-      />,
+      <ConfigPanel value={DEFAULT_CONFIG} onPush={onPush} pushEnabled={true} />,
     );
     fireEvent.changeText(getByLabelText('Counter'), '99999');
     fireEvent.press(getByLabelText('Push to widget'));

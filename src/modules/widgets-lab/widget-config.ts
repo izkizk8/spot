@@ -39,7 +39,9 @@ export function validate(input: unknown): WidgetConfig {
   const tint = TINTS.includes(partial.tint as Tint) ? (partial.tint as Tint) : DEFAULT_CONFIG.tint;
 
   const showcaseValue =
-    typeof partial.showcaseValue === 'string' ? partial.showcaseValue : DEFAULT_CONFIG.showcaseValue;
+    typeof partial.showcaseValue === 'string'
+      ? partial.showcaseValue
+      : DEFAULT_CONFIG.showcaseValue;
 
   return {
     showcaseValue,

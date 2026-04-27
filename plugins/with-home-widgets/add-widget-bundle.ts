@@ -25,11 +25,7 @@
  * @see specs/014-home-widgets/tasks.md T019
  */
 
-import {
-  ConfigPlugin,
-  withDangerousMod,
-  withXcodeProject,
-} from '@expo/config-plugins';
+import { ConfigPlugin, withDangerousMod, withXcodeProject } from '@expo/config-plugins';
 import * as fs from 'fs';
 import * as path from 'path';
 
@@ -118,11 +114,7 @@ const withBundleInXcode: ConfigPlugin = (config) => {
   return withXcodeProject(config, (cfg) => {
     const project = cfg.modResults as unknown as {
       pbxTargetByName: (name: string) => { uuid: string } | null;
-      addPbxGroup: (
-        files: unknown[],
-        name: string,
-        path: string,
-      ) => { uuid: string };
+      addPbxGroup: (files: unknown[], name: string, path: string) => { uuid: string };
       addToPbxGroup: (childUuid: string, parentUuid: string) => void;
       addFile: (
         filePath: string,

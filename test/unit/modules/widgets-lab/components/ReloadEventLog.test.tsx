@@ -26,12 +26,8 @@ describe('ReloadEventLog', () => {
   });
 
   it('renders newest-first; cap at exactly 10 entries', () => {
-    const events: readonly ReloadEvent[] = Array.from({ length: 10 }, (_, i) =>
-      makeEvent(i),
-    );
-    const { getAllByLabelText } = render(
-      <ReloadEventLog events={events} isAvailable={true} />,
-    );
+    const events: readonly ReloadEvent[] = Array.from({ length: 10 }, (_, i) => makeEvent(i));
+    const { getAllByLabelText } = render(<ReloadEventLog events={events} isAvailable={true} />);
     const items = getAllByLabelText(/^Reload event /);
     expect(items.length).toBe(10);
   });

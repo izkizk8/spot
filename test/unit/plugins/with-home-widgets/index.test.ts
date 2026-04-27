@@ -47,78 +47,64 @@ jest.mock('@expo/config-plugins', () => {
   const realOs = require('os');
   const realPath = require('path');
   return {
-    withXcodeProject: jest.fn(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (config: any, callback: any) => {
-        const project = {
-          pbxTargetByName: (name: string) =>
-            name === 'LiveActivityDemoWidget' ? { uuid: WIDGET_TARGET_UUID } : null,
-          getFirstTarget: () => ({ uuid: MAIN_TARGET_UUID }),
-          getFirstProject: () => ({
-            firstProject: { mainGroup: 'MAIN_GROUP' },
-          }),
-          addPbxGroup: (_files: unknown, name: string) => ({
-            uuid: `GROUP_${name}`,
-          }),
-          addToPbxGroup: () => undefined,
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          addFile: (filePath: string, _groupUuid: string, opts: any) => {
-            const ref = { filePath, target: opts?.target, uuid: `REF_${filePath}` };
-            config._pbx.addedFiles.push(ref);
-            return ref;
-          },
-          hasFile: (filePath: string) =>
-            // eslint-disable-next-line @typescript-eslint/no-explicit-any
-            config._pbx.addedFiles.some((f: any) => f.filePath === filePath),
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          addToPbxSourcesBuildPhase: (ref: any, targetUuid: string) => {
-            config._pbx.addedFiles.push({
-              filePath: ref.filePath,
-              target: targetUuid,
-              uuid: `BP_${ref.filePath}_${targetUuid}`,
-            });
-          },
-        };
-        const callbackResult = callback({ ...config, modResults: project, modRequest: {} });
-        // If async (returns Promise), ignore — preserve original config so _pbx is retained
-        if (callbackResult && typeof callbackResult.then === 'function') {
-          return config;
-        }
-        return callbackResult ?? config;
-      },
-    ),
-    withEntitlementsPlist: jest.fn(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (config: any, callback: any) => {
-        const modResults: Record<string, unknown> = {};
-        const result = callback({
-          ...config,
-          modResults,
-          modRequest: { projectName: 'spot' },
-        });
-        const groups =
-          (result.modResults['com.apple.security.application-groups'] as string[]) ?? [];
-        config._pbx.entitlements['main'] = groups;
-        return result;
-      },
-    ),
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    withInfoPlist: jest.fn((config: any) => config),
-    withDangerousMod: jest.fn(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (config: any, modSpec: any) => {
-        const fn = modSpec[1];
-        const tmpRoot = realFs.mkdtempSync(realPath.join(realOs.tmpdir(), 'whw-'));
-        const platformRoot = realPath.join(tmpRoot, 'ios');
-        realFs.mkdirSync(platformRoot, { recursive: true });
-        config._tmpRoot = tmpRoot;
-        fn({
-          ...config,
-          modRequest: { projectRoot: tmpRoot, platformProjectRoot: platformRoot },
-        });
+    withXcodeProject: jest.fn((config: any, callback: any) => {
+      const project = {
+        pbxTargetByName: (name: string) =>
+          name === 'LiveActivityDemoWidget' ? { uuid: WIDGET_TARGET_UUID } : null,
+        getFirstTarget: () => ({ uuid: MAIN_TARGET_UUID }),
+        getFirstProject: () => ({
+          firstProject: { mainGroup: 'MAIN_GROUP' },
+        }),
+        addPbxGroup: (_files: unknown, name: string) => ({
+          uuid: `GROUP_${name}`,
+        }),
+        addToPbxGroup: () => undefined,
+        addFile: (filePath: string, _groupUuid: string, opts: any) => {
+          const ref = { filePath, target: opts?.target, uuid: `REF_${filePath}` };
+          config._pbx.addedFiles.push(ref);
+          return ref;
+        },
+        hasFile: (filePath: string) =>
+          config._pbx.addedFiles.some((f: any) => f.filePath === filePath),
+        addToPbxSourcesBuildPhase: (ref: any, targetUuid: string) => {
+          config._pbx.addedFiles.push({
+            filePath: ref.filePath,
+            target: targetUuid,
+            uuid: `BP_${ref.filePath}_${targetUuid}`,
+          });
+        },
+      };
+      const callbackResult = callback({ ...config, modResults: project, modRequest: {} });
+      // If async (returns Promise), ignore — preserve original config so _pbx is retained
+      if (callbackResult && typeof callbackResult.then === 'function') {
         return config;
-      },
-    ),
+      }
+      return callbackResult ?? config;
+    }),
+    withEntitlementsPlist: jest.fn((config: any, callback: any) => {
+      const modResults: Record<string, unknown> = {};
+      const result = callback({
+        ...config,
+        modResults,
+        modRequest: { projectName: 'spot' },
+      });
+      const groups = (result.modResults['com.apple.security.application-groups'] as string[]) ?? [];
+      config._pbx.entitlements['main'] = groups;
+      return result;
+    }),
+    withInfoPlist: jest.fn((config: any) => config),
+    withDangerousMod: jest.fn((config: any, modSpec: any) => {
+      const fn = modSpec[1];
+      const tmpRoot = realFs.mkdtempSync(realPath.join(realOs.tmpdir(), 'whw-'));
+      const platformRoot = realPath.join(tmpRoot, 'ios');
+      realFs.mkdirSync(platformRoot, { recursive: true });
+      config._tmpRoot = tmpRoot;
+      fn({
+        ...config,
+        modRequest: { projectRoot: tmpRoot, platformProjectRoot: platformRoot },
+      });
+      return config;
+    }),
     IOSConfig: {
       BundleIdentifier: {
         getBundleIdentifier: jest.fn(() => 'com.test.app'),
@@ -193,8 +179,7 @@ describe('with-home-widgets plugin', () => {
       withHomeWidgets(config);
       const bundleAdded = config._pbx.addedFiles.some(
         (f) =>
-          path.basename(f.filePath) === 'SpotWidgetBundle.swift' &&
-          f.target === WIDGET_TARGET_UUID,
+          path.basename(f.filePath) === 'SpotWidgetBundle.swift' && f.target === WIDGET_TARGET_UUID,
       );
       expect(bundleAdded).toBe(true);
     });
@@ -202,8 +187,6 @@ describe('with-home-widgets plugin', () => {
 
   describe('(d) live-activity bundle marker + reference', () => {
     it('writes SpotWidgetBundle.swift containing both widget references', () => {
-      const withHomeWidgets = require('../../../../plugins/with-home-widgets/index').default;
-      const config = makeConfig();
       // Provide a fake LiveActivityDemoWidget.swift in a tmp ios-widget/ dir
       const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'with-home-widgets-real-'));
       const widgetDir = path.join(tmpRoot, 'ios-widget');
@@ -215,7 +198,9 @@ describe('with-home-widgets plugin', () => {
         'utf8',
       );
 
-      const { applyBundleSynthesis } = require('../../../../plugins/with-home-widgets/add-widget-bundle');
+      const {
+        applyBundleSynthesis,
+      } = require('../../../../plugins/with-home-widgets/add-widget-bundle');
       applyBundleSynthesis(tmpRoot);
 
       const bundlePath = path.join(widgetDir, 'SpotWidgetBundle.swift');

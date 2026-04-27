@@ -26,11 +26,7 @@ export const withHomeWidgetsSwiftSources: ConfigPlugin = (config) => {
   return withXcodeProject(config, (cfg) => {
     const project = cfg.modResults as unknown as {
       pbxTargetByName: (name: string) => { uuid: string } | null;
-      addPbxGroup: (
-        files: unknown[],
-        name: string,
-        path: string,
-      ) => { uuid: string };
+      addPbxGroup: (files: unknown[], name: string, path: string) => { uuid: string };
       addToPbxGroup: (childUuid: string, parentUuid: string) => void;
       addFile: (
         filePath: string,

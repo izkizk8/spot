@@ -160,8 +160,8 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-014-widgets\`)
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T040 Update `specs/014-home-widgets/quickstart.md` if any plan-vs-spec naming deltas surfaced during implementation (per plan.md "Spec back-patching" note about `home-widgets` → `widgets` directory and consolidated `WidgetPreview`). **Acceptance**: Quickstart steps reference the actual paths shipped.
-- [ ] T041 Run `pnpm check` (typecheck + lint + tests) from repo root. **Acceptance**: Exit code 0; zero TS errors; zero new ESLint warnings; all new Jest suites green; existing 007 / 013 suites unaffected.
+- [x] T040 Update `specs/014-home-widgets/quickstart.md` if any plan-vs-spec naming deltas surfaced during implementation (per plan.md "Spec back-patching" note about `home-widgets` → `widgets` directory and consolidated `WidgetPreview`). **Acceptance**: Quickstart steps reference the actual paths shipped.
+- [x] T041 Run `pnpm check` (typecheck + lint + tests) from repo root. **Acceptance**: Exit code 0; zero TS errors; zero new ESLint warnings; all new Jest suites green; existing 007 / 013 suites unaffected.
 
 ---
 

@@ -8,11 +8,7 @@
  * @see specs/014-home-widgets/tasks.md T017
  */
 
-import {
-  ConfigPlugin,
-  IOSConfig,
-  withEntitlementsPlist,
-} from '@expo/config-plugins';
+import { ConfigPlugin, IOSConfig, withEntitlementsPlist } from '@expo/config-plugins';
 
 const APP_GROUPS_KEY = 'com.apple.security.application-groups';
 
@@ -21,8 +17,7 @@ function suiteFor(bundleId: string): string {
 }
 
 export const withHomeWidgetsAppGroup: ConfigPlugin = (config) => {
-  const bundleId =
-    IOSConfig.BundleIdentifier.getBundleIdentifier(config) ?? 'com.example.spot';
+  const bundleId = IOSConfig.BundleIdentifier.getBundleIdentifier(config) ?? 'com.example.spot';
   const suite = suiteFor(bundleId);
 
   return withEntitlementsPlist(config, (cfg) => {

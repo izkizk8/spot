@@ -40,14 +40,12 @@ export function ReloadEventLog({ events, isAvailable }: ReloadEventLogProps) {
     <ThemedView style={styles.container}>
       <ThemedText style={styles.heading}>Reload events</ThemedText>
       {events.length === 0 ? (
-        <ThemedText style={styles.empty}>No reload events yet — push to populate the log.</ThemedText>
+        <ThemedText style={styles.empty}>
+          No reload events yet — push to populate the log.
+        </ThemedText>
       ) : (
         events.map((e) => (
-          <ThemedView
-            key={e.id}
-            accessibilityLabel={`Reload event ${e.id}`}
-            style={styles.entry}
-          >
+          <ThemedView key={e.id} accessibilityLabel={`Reload event ${e.id}`} style={styles.entry}>
             <ThemedText style={styles.entryStatus}>
               {e.status === 'success' ? '✓' : '✗'} {formatTime(e.timestamp)}
             </ThemedText>

@@ -12,21 +12,19 @@
  * @see specs/014-home-widgets/tasks.md T022
  */
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { TINT_HEX } from '@/modules/widgets-lab/tints';
-import {
-  TINTS,
-  type Tint,
-  type WidgetConfig,
-  validate,
-} from '@/modules/widgets-lab/widget-config';
+import { TINTS, type Tint, type WidgetConfig, validate } from '@/modules/widgets-lab/widget-config';
 
 export interface ConfigPanelProps {
+  /** Initial / authoritative configuration. Parent should pass a stable
+   *  `key` whenever it wants the panel to reset to a new initial value
+   *  (e.g. after `bridge.getCurrentConfig` resolves). */
   readonly value: WidgetConfig;
   readonly onPush: (config: WidgetConfig) => void | Promise<void>;
   /** When false, Push button is rendered disabled regardless of input. */
@@ -34,15 +32,11 @@ export interface ConfigPanelProps {
 }
 
 export function ConfigPanel({ value, onPush, pushEnabled }: ConfigPanelProps) {
+  // Local in-flight editing state, seeded from the prop on mount only.
+  // Parent re-mounts via `key` to seed a fresh value (see screen.tsx).
   const [showcaseValue, setShowcaseValue] = useState(value.showcaseValue);
   const [counterText, setCounterText] = useState(String(value.counter));
   const [tint, setTint] = useState<Tint>(value.tint);
-
-  useEffect(() => {
-    setShowcaseValue(value.showcaseValue);
-    setCounterText(String(value.counter));
-    setTint(value.tint);
-  }, [value.showcaseValue, value.counter, value.tint]);
 
   const trimmed = showcaseValue.trim();
   const canPush = pushEnabled && trimmed.length > 0;

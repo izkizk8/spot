@@ -24,9 +24,7 @@ describe('StatusPanel', () => {
 
   it('formats next refresh time as roughly now + 30 minutes', () => {
     const before = Date.now();
-    const { getByLabelText } = render(
-      <StatusPanel isAvailable={true} config={DEFAULT_CONFIG} />,
-    );
+    const { getByLabelText } = render(<StatusPanel isAvailable={true} config={DEFAULT_CONFIG} />);
     const node = getByLabelText('Next refresh time');
     // The accessibility label is a stable hook; the displayed text is
     // locale-formatted. We just assert it renders some non-empty text.

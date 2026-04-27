@@ -17,10 +17,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import bridge from '@/native/widget-center';
 import { ConfigPanel } from '@/modules/widgets-lab/components/ConfigPanel';
-import {
-  ReloadEventLog,
-  type ReloadEvent,
-} from '@/modules/widgets-lab/components/ReloadEventLog';
+import { ReloadEventLog, type ReloadEvent } from '@/modules/widgets-lab/components/ReloadEventLog';
 import { SetupInstructions } from '@/modules/widgets-lab/components/SetupInstructions';
 import { StatusPanel } from '@/modules/widgets-lab/components/StatusPanel';
 import { WidgetPreview } from '@/modules/widgets-lab/components/WidgetPreview';
@@ -50,6 +47,10 @@ function nextEventId(): string {
 export default function WidgetsLabScreen() {
   const isAvailable = bridge.isAvailable();
   const [config, setConfig] = useState<WidgetConfig>(DEFAULT_CONFIG);
+  // Bumped whenever `config` changes from outside the ConfigPanel (i.e.
+  // after the initial bridge fetch). Used as a `key` to remount the panel
+  // so its internal edit state seeds from the new config.
+  const [configEpoch, setConfigEpoch] = useState(0);
   const [log, dispatch] = useReducer(logReducer, []);
 
   useEffect(() => {
@@ -58,7 +59,10 @@ export default function WidgetsLabScreen() {
     bridge
       .getCurrentConfig()
       .then((c) => {
-        if (mounted) setConfig(c);
+        if (mounted) {
+          setConfig(c);
+          setConfigEpoch((n) => n + 1);
+        }
       })
       .catch(() => {
         // Read failure: keep DEFAULT_CONFIG
@@ -68,37 +72,39 @@ export default function WidgetsLabScreen() {
     };
   }, [isAvailable]);
 
-  const handlePush = useCallback(
-    async (next: WidgetConfig): Promise<void> => {
-      setConfig(next);
-      try {
-        await bridge.setConfig(next);
-        await bridge.reloadAllTimelines();
-        dispatch({
-          type: 'push',
-          event: { id: nextEventId(), timestamp: Date.now(), status: 'success' },
-        });
-      } catch (e) {
-        const message = e instanceof Error ? e.message : String(e);
-        dispatch({
-          type: 'push',
-          event: {
-            id: nextEventId(),
-            timestamp: Date.now(),
-            status: 'failure',
-            errorMessage: message,
-          },
-        });
-      }
-    },
-    [],
-  );
+  const handlePush = useCallback(async (next: WidgetConfig): Promise<void> => {
+    setConfig(next);
+    try {
+      await bridge.setConfig(next);
+      await bridge.reloadAllTimelines();
+      dispatch({
+        type: 'push',
+        event: { id: nextEventId(), timestamp: Date.now(), status: 'success' },
+      });
+    } catch (e) {
+      const message = e instanceof Error ? e.message : String(e);
+      dispatch({
+        type: 'push',
+        event: {
+          id: nextEventId(),
+          timestamp: Date.now(),
+          status: 'failure',
+          errorMessage: message,
+        },
+      });
+    }
+  }, []);
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
       <StatusPanel isAvailable={isAvailable} config={config} />
       <ThemedView style={styles.section}>
-        <ConfigPanel value={config} onPush={handlePush} pushEnabled={isAvailable} />
+        <ConfigPanel
+          key={configEpoch}
+          value={config}
+          onPush={handlePush}
+          pushEnabled={isAvailable}
+        />
       </ThemedView>
       <SetupInstructions isAvailable={isAvailable} />
       <ThemedView style={styles.section}>

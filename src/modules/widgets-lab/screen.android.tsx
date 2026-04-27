@@ -28,11 +28,15 @@ const BANNER_TEXT = 'Home Screen widgets require iOS 14+. Configure and preview 
 
 export default function WidgetsLabScreen() {
   const [config, setConfig] = useState<WidgetConfig>(DEFAULT_CONFIG);
+  const [configEpoch, setConfigEpoch] = useState(0);
 
   useEffect(() => {
     let mounted = true;
     loadShadowConfig().then((c) => {
-      if (mounted) setConfig(c);
+      if (mounted) {
+        setConfig(c);
+        setConfigEpoch((n) => n + 1);
+      }
     });
     return () => {
       mounted = false;
@@ -52,7 +56,7 @@ export default function WidgetsLabScreen() {
         <ThemedText style={styles.bannerText}>{BANNER_TEXT}</ThemedText>
       </ThemedView>
       <ThemedView style={styles.section}>
-        <ConfigPanel value={config} onPush={handlePush} pushEnabled={false} />
+        <ConfigPanel key={configEpoch} value={config} onPush={handlePush} pushEnabled={false} />
       </ThemedView>
       <ThemedView style={styles.section}>
         <WidgetPreview config={config} />

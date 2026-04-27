@@ -11,7 +11,7 @@
  * @see specs/014-home-widgets/tasks.md T033
  */
 
-import React from 'react';
+import React, { useState } from 'react';
 import { StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -32,6 +32,11 @@ function formatTime(d: Date): string {
 }
 
 export function StatusPanel({ isAvailable, config, lastRefreshIso }: StatusPanelProps) {
+  // Lazy initial state: compute the projected next-refresh wall-clock time
+  // once at mount. Re-rendering does not advance it (acceptable for a
+  // status indicator; the value is approximate per plan §Resolved #3).
+  const [next] = useState(() => new Date(Date.now() + REFRESH_INTERVAL_MS));
+
   if (!isAvailable) {
     return (
       <ThemedView style={styles.banner}>
@@ -42,8 +47,6 @@ export function StatusPanel({ isAvailable, config, lastRefreshIso }: StatusPanel
     );
   }
 
-  const next = new Date(Date.now() + REFRESH_INTERVAL_MS);
-
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.heading}>Status</ThemedText>
@@ -51,10 +54,7 @@ export function StatusPanel({ isAvailable, config, lastRefreshIso }: StatusPanel
       <ThemedText style={styles.line}>
         {config.showcaseValue} · {config.counter} · {config.tint}
       </ThemedText>
-      <ThemedText
-        style={styles.line}
-        accessibilityLabel="Next refresh time"
-      >
+      <ThemedText style={styles.line} accessibilityLabel="Next refresh time">
         Next refresh ≈ {formatTime(next)}
       </ThemedText>
       {lastRefreshIso != null && (

@@ -30,9 +30,7 @@ describe('WidgetPreview', () => {
   it('re-renders when config prop changes', () => {
     const { getAllByText, rerender } = render(<WidgetPreview config={config} />);
     expect(getAllByText('Hi widget').length).toBeGreaterThanOrEqual(3);
-    rerender(
-      <WidgetPreview config={{ showcaseValue: 'New text', counter: 7, tint: 'pink' }} />,
-    );
+    rerender(<WidgetPreview config={{ showcaseValue: 'New text', counter: 7, tint: 'pink' }} />);
     expect(getAllByText('New text').length).toBeGreaterThanOrEqual(3);
     expect(getAllByText('7').length).toBeGreaterThanOrEqual(3);
   });
