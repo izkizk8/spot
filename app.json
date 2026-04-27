@@ -43,6 +43,7 @@
       "./plugins/with-live-activity",
       "./plugins/with-app-intents",
       "./plugins/with-home-widgets",
+      "./plugins/with-screentime",
       [
         "expo-sensors",
         {
