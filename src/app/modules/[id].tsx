@@ -1,13 +1,110 @@
-import React from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import React, { Component, type ErrorInfo, type ReactNode } from 'react';
+import { Platform, StyleSheet } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
+import { Spacing } from '@/constants/theme';
+import { MODULES } from '@/modules/registry';
+import type { ModuleManifest, ModulePlatform } from '@/modules/types';
 
-// Placeholder — replaced by the dynamic dispatcher in Phase 4 (T030).
-export default function ModuleDetailPlaceholder() {
+const CURRENT_PLATFORM: ModulePlatform | null =
+  Platform.OS === 'ios'
+    ? 'ios'
+    : Platform.OS === 'android'
+      ? 'android'
+      : Platform.OS === 'web'
+        ? 'web'
+        : null;
+
+function isAvailable(manifest: ModuleManifest): boolean {
+  if (CURRENT_PLATFORM == null) return false;
+  return manifest.platforms.includes(CURRENT_PLATFORM);
+}
+
+interface ModuleErrorBoundaryProps {
+  moduleId: string;
+  children: ReactNode;
+}
+
+interface ModuleErrorBoundaryState {
+  error: Error | null;
+}
+
+/**
+ * Crash isolation (SC-008): a runtime error inside a module's `render()`
+ * subtree is caught here so the user can navigate back instead of the
+ * entire app crashing.
+ */
+class ModuleErrorBoundary extends Component<ModuleErrorBoundaryProps, ModuleErrorBoundaryState> {
+  state: ModuleErrorBoundaryState = { error: null };
+
+  static getDerivedStateFromError(error: Error): ModuleErrorBoundaryState {
+    return { error };
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo): void {
+    if (__DEV__) {
+      console.error(`[modules] crash in module "${this.props.moduleId}"`, error, info);
+    }
+  }
+
+  render() {
+    if (this.state.error != null) {
+      return (
+        <ThemedView style={styles.center}>
+          <ThemedText type="subtitle">Something went wrong</ThemedText>
+          <ThemedText type="small" themeColor="textSecondary" style={styles.text}>
+            The module &ldquo;{this.props.moduleId}&rdquo; crashed. Tap back to return to the
+            modules list.
+          </ThemedText>
+        </ThemedView>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function NotAvailable({ id, reason }: { id: string; reason: string }) {
   return (
-    <ThemedView>
-      <ThemedText>Module detail</ThemedText>
+    <ThemedView style={styles.center}>
+      <ThemedText type="subtitle">Not available</ThemedText>
+      <ThemedText type="small" themeColor="textSecondary" style={styles.text}>
+        &ldquo;{id}&rdquo; — {reason}
+      </ThemedText>
     </ThemedView>
   );
 }
+
+export default function ModuleDetailScreen() {
+  const params = useLocalSearchParams<{ id?: string | string[] }>();
+  const rawId = params.id;
+  const id = Array.isArray(rawId) ? rawId[0] : rawId;
+
+  if (id == null) {
+    return <NotAvailable id="(missing)" reason="no module id provided." />;
+  }
+
+  const manifest = MODULES.find((m) => m.id === id);
+  if (manifest == null) {
+    return <NotAvailable id={id} reason="module is not registered." />;
+  }
+  if (!isAvailable(manifest)) {
+    return <NotAvailable id={id} reason="not supported on this platform." />;
+  }
+
+  return <ModuleErrorBoundary moduleId={manifest.id}>{manifest.render()}</ModuleErrorBoundary>;
+}
+
+const styles = StyleSheet.create({
+  center: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    padding: Spacing.four,
+    gap: Spacing.three,
+  },
+  text: {
+    textAlign: 'center',
+  },
+});

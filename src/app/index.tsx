@@ -1,4 +1,5 @@
-import { Platform, StyleSheet } from 'react-native';
+import { Link } from 'expo-router';
+import { Platform, Pressable, StyleSheet } from 'react-native';
 import Animated, { Easing, FadeInDown, FadeIn, useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
@@ -45,6 +46,17 @@ export default function HomeScreen() {
                 Explore the Modules tab to try Liquid Glass and what comes next. Use Settings to
                 pick System, Light, or Dark.
               </ThemedText>
+              <Link href="/modules" asChild>
+                <Pressable
+                  accessibilityRole="link"
+                  accessibilityLabel="Browse modules"
+                  style={({ pressed }) => [styles.cta, pressed && styles.ctaPressed]}
+                >
+                  <ThemedText type="smallBold" themeColor="text">
+                    Browse modules →
+                  </ThemedText>
+                </Pressable>
+              </Link>
             </ThemedView>
           </Animated.View>
         </ThemedView>
@@ -96,5 +108,14 @@ const styles = StyleSheet.create({
     gap: Spacing.two,
     padding: Spacing.four,
     borderRadius: Spacing.four,
+  },
+  cta: {
+    marginTop: Spacing.two,
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    alignSelf: 'flex-start',
+  },
+  ctaPressed: {
+    opacity: 0.7,
   },
 });
