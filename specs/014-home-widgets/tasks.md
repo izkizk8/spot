@@ -146,13 +146,13 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-014-widgets\`)
 
 ### Tests for User Story 4
 
-- [ ] T036 [P] [US4] Write `test/unit/modules/widgets-lab/screen.android.test.tsx` covering: renders banner ("Home Screen widgets require iOS 14+"); renders ConfigPanel (with Push button disabled per FR-024); renders WidgetPreview wired to AsyncStorage shadow store via `loadShadowConfig` / `saveShadowConfig`; does NOT render StatusPanel's refresh line, SetupInstructions, or ReloadEventLog (FR-031). **Acceptance**: Fails before T037.
-- [ ] T037 [P] [US4] Write `test/unit/modules/widgets-lab/screen.web.test.tsx` mirroring T036 for the web variant. **Acceptance**: Fails before T039.
+- [x] T036 [P] [US4] Write `test/unit/modules/widgets-lab/screen.android.test.tsx` covering: renders banner ("Home Screen widgets require iOS 14+"); renders ConfigPanel (with Push button disabled per FR-024); renders WidgetPreview wired to AsyncStorage shadow store via `loadShadowConfig` / `saveShadowConfig`; does NOT render StatusPanel's refresh line, SetupInstructions, or ReloadEventLog (FR-031). **Acceptance**: Fails before T037.
+- [x] T037 [P] [US4] Write `test/unit/modules/widgets-lab/screen.web.test.tsx` mirroring T036 for the web variant. **Acceptance**: Fails before T039.
 
 ### Implementation for User Story 4
 
-- [ ] T038 [US4] Create `src/modules/widgets-lab/screen.android.tsx` — banner + ConfigPanel (push disabled) + WidgetPreview backed by `widget-config`'s shadow store; no iOS-only chrome. **Acceptance**: T036 passes.
-- [ ] T039 [US4] Create `src/modules/widgets-lab/screen.web.tsx` — same shape as `.android.tsx`; uses platform-appropriate copy in the banner if needed. **Acceptance**: T037 passes.
+- [x] T038 [US4] Create `src/modules/widgets-lab/screen.android.tsx` — banner + ConfigPanel (push disabled) + WidgetPreview backed by `widget-config`'s shadow store; no iOS-only chrome. **Acceptance**: T036 passes.
+- [x] T039 [US4] Create `src/modules/widgets-lab/screen.web.tsx` — same shape as `.android.tsx`; uses platform-appropriate copy in the banner if needed. **Acceptance**: T037 passes.
 
 **Checkpoint**: Cross-platform parity achieved per Constitution Principle I; Android / Web / iOS < 14 demo the configure-and-preview half of the journey.
 
