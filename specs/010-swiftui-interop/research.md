@@ -191,3 +191,19 @@ If any of these resolve in a way that materially contradicts the spec
 (e.g. no `onChange` callback exists for some control), back-patch the
 spec per the constitution's Spec back-patching workflow before
 implementing.
+
+## API surface (resolved at implement time)
+
+**Source**: `Expo-UI-SwiftUI` skill invoked 2026-04-28 during T002.
+
+**Key findings**:
+- Components imported from `@expo/ui/swift-ui`
+- Modifiers imported from `@expo/ui/swift-ui/modifiers`
+- All SwiftUI trees must be wrapped in `Host` component
+- Use `RNHostView` to embed RN components inside SwiftUI trees
+- Each component's exact API documented at `https://docs.expo.dev/versions/v55.0.0/sdk/ui/swift-ui/{component-name}/index.md`
+
+**Implementation notes**:
+- Will fetch per-component docs as needed during implementation
+- The skill confirms general structure matches plan assumptions
+- No spec back-patching required based on skill output
