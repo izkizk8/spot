@@ -40,7 +40,13 @@
         }
       ],
       "expo-image",
-      "./plugins/with-live-activity"
+      "./plugins/with-live-activity",
+      [
+        "expo-sensors",
+        {
+          "motionPermission": "This app reads motion sensors to demonstrate the Sensors Playground."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true,
