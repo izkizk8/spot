@@ -23,9 +23,9 @@ description: "Task list for iOS Feature Showcase"
 
 **Purpose**: Add the one new runtime dependency and create the empty directory skeleton the rest of the work fills in. No business logic yet.
 
-- [ ] T001 Install AsyncStorage via `npx expo install @react-native-async-storage/async-storage` (updates `package.json` + `pnpm-lock.yaml`); confirm the installed version is the SDK 55–aligned one
-- [ ] T002 [P] Create empty directories `src/modules/`, `src/modules/liquid-glass-playground/`, `src/components/glass/`, `src/theme/`, `src/app/modules/`, `test/unit/modules/`, `test/unit/theme/`, `test/unit/shell/` (use `.gitkeep` files where needed so they can be committed before content lands)
-- [ ] T003 [P] Verify baseline `pnpm check` (format, lint, typecheck, jest) is green on the current branch before any feature code is added; capture the run as the pre-change baseline
+- [X] T001 Install AsyncStorage via `npx expo install @react-native-async-storage/async-storage` (updates `package.json` + `pnpm-lock.yaml`); confirm the installed version is the SDK 55–aligned one
+- [X] T002 [P] Create empty directories `src/modules/`, `src/modules/liquid-glass-playground/`, `src/components/glass/`, `src/theme/`, `src/app/modules/`, `test/unit/modules/`, `test/unit/theme/`, `test/unit/shell/` (use `.gitkeep` files where needed so they can be committed before content lands)
+- [X] T003 [P] Verify baseline `pnpm check` (format, lint, typecheck, jest) is green on the current branch before any feature code is added; capture the run as the pre-change baseline
 
 **Checkpoint**: Dependency in place, skeleton ready, baseline green.
 
@@ -37,18 +37,18 @@ description: "Task list for iOS Feature Showcase"
 
 **⚠️ CRITICAL**: No US task may begin until Phase 2 is done.
 
-- [ ] T004 Define the `ModuleManifest`, `ModulePlatform`, `ModuleIcon`, `SFSymbolName` types in `src/modules/types.ts` exactly as specified in `specs/006-ios-feature-showcase/contracts/module-manifest.md` (readonly fields, JSDoc preserved)
-- [ ] T005 Create the empty registry barrel `src/modules/registry.ts` exporting `export const MODULES: readonly ModuleManifest[] = [];` (the Liquid Glass entry is appended in T024); add the documented "Add new modules here ↓" comment from the contract
-- [ ] T006 [P] Create `src/theme/preference-provider.tsx` exporting `ThemePreferenceProvider`, internal context, and the AsyncStorage I/O for key `spot.theme.preference` (read once at boot, write on change, swallow write failures with a `__DEV__` console warning per FR-024). Default preference: `'system'`
-- [ ] T007 [P] Create `src/theme/use-theme-preference.ts` exporting `usePreference()` and `setPreference()` hooks backed by the context from T006
-- [ ] T008 Modify `src/hooks/use-theme.ts` so it derives `EffectiveColorScheme` from `usePreference()` (preference `'light'`/`'dark'` win; `'system'` falls back to `useColorScheme()` defaulting to `'light'` on `'unspecified'`) per data-model.md §EffectiveColorScheme. Public `useTheme()` signature MUST NOT change
-- [ ] T009 Modify `src/app/_layout.tsx` to wrap the existing root in `<ThemePreferenceProvider>` so every route sees the preference (this is the only edit the provider requires in the shell)
-- [ ] T010 [P] Add a `Modules` route stub `src/app/modules/index.tsx` rendering a placeholder `<ThemedView>` so `expo-router` typed routes regenerate and the tab can link to it; will be replaced in T029
-- [ ] T011 [P] Add a `Module detail` route stub `src/app/modules/[id].tsx` rendering a placeholder `<ThemedView>` for the same reason; will be replaced in T030
-- [ ] T012 [P] Add a `Settings` route stub `src/app/settings.tsx` rendering a placeholder `<ThemedView>` so the route is typed and reachable; will be replaced in T039
-- [ ] T013 Modify `src/components/app-tabs.tsx` (native NativeTabs) to add `Modules` and `Settings` triggers alongside the existing tabs, using SF Symbol icons via `expo-symbols`
-- [ ] T014 Modify `src/components/app-tabs.web.tsx` (custom web tabs) to add the same `Modules` and `Settings` entries with identical ids and labels (FR-026 — tab parity)
-- [ ] T015 [P] Write `test/unit/shell/tab-parity.test.ts`: import the tab id arrays from both `app-tabs.tsx` and `app-tabs.web.tsx` and assert deep equality. Test MUST fail if either file is edited without the other (FR-026 enforcement)
+- [X] T004 Define the `ModuleManifest`, `ModulePlatform`, `ModuleIcon`, `SFSymbolName` types in `src/modules/types.ts` exactly as specified in `specs/006-ios-feature-showcase/contracts/module-manifest.md` (readonly fields, JSDoc preserved)
+- [X] T005 Create the empty registry barrel `src/modules/registry.ts` exporting `export const MODULES: readonly ModuleManifest[] = [];` (the Liquid Glass entry is appended in T024); add the documented "Add new modules here ↓" comment from the contract
+- [X] T006 [P] Create `src/theme/preference-provider.tsx` exporting `ThemePreferenceProvider`, internal context, and the AsyncStorage I/O for key `spot.theme.preference` (read once at boot, write on change, swallow write failures with a `__DEV__` console warning per FR-024). Default preference: `'system'`
+- [X] T007 [P] Create `src/theme/use-theme-preference.ts` exporting `usePreference()` and `setPreference()` hooks backed by the context from T006
+- [X] T008 Modify `src/hooks/use-theme.ts` so it derives `EffectiveColorScheme` from `usePreference()` (preference `'light'`/`'dark'` win; `'system'` falls back to `useColorScheme()` defaulting to `'light'` on `'unspecified'`) per data-model.md §EffectiveColorScheme. Public `useTheme()` signature MUST NOT change
+- [X] T009 Modify `src/app/_layout.tsx` to wrap the existing root in `<ThemePreferenceProvider>` so every route sees the preference (this is the only edit the provider requires in the shell)
+- [X] T010 [P] Add a `Modules` route stub `src/app/modules/index.tsx` rendering a placeholder `<ThemedView>` so `expo-router` typed routes regenerate and the tab can link to it; will be replaced in T029
+- [X] T011 [P] Add a `Module detail` route stub `src/app/modules/[id].tsx` rendering a placeholder `<ThemedView>` for the same reason; will be replaced in T030
+- [X] T012 [P] Add a `Settings` route stub `src/app/settings.tsx` rendering a placeholder `<ThemedView>` so the route is typed and reachable; will be replaced in T039
+- [X] T013 Modify `src/components/app-tabs.tsx` (native NativeTabs) to add `Modules` and `Settings` triggers alongside the existing tabs, using SF Symbol icons via `expo-symbols`
+- [X] T014 Modify `src/components/app-tabs.web.tsx` (custom web tabs) to add the same `Modules` and `Settings` entries with identical ids and labels (FR-026 — tab parity)
+- [X] T015 [P] Write `test/unit/shell/tab-parity.test.ts`: import the tab id arrays from both `app-tabs.tsx` and `app-tabs.web.tsx` and assert deep equality. Test MUST fail if either file is edited without the other (FR-026 enforcement)
 
 **Checkpoint**: Types, registry barrel, theme provider, tab parity test, and routable placeholders all in place. User stories can now be worked on in parallel.
 

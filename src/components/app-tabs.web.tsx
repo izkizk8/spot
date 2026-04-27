@@ -16,17 +16,30 @@ import { ThemedView } from './themed-view';
 
 import { Colors, MaxContentWidth, Spacing } from '@/constants/theme';
 
+/**
+ * Logical tab ids in display order. Mirrored exactly in `app-tabs.tsx`
+ * — equality is mechanically enforced by `test/unit/shell/tab-parity.test.ts`
+ * (FR-026). When you change this list, change it in the native file too.
+ */
+export const TAB_IDS = ['index', 'explore', 'modules', 'settings'] as const;
+
 export default function AppTabs() {
   return (
     <Tabs>
       <TabSlot style={{ height: '100%' }} />
       <TabList asChild>
         <CustomTabList>
-          <TabTrigger name="home" href="/" asChild>
+          <TabTrigger name="index" href="/" asChild>
             <TabButton>Home</TabButton>
           </TabTrigger>
           <TabTrigger name="explore" href="/explore" asChild>
             <TabButton>Explore</TabButton>
+          </TabTrigger>
+          <TabTrigger name="modules" href="/modules" asChild>
+            <TabButton>Modules</TabButton>
+          </TabTrigger>
+          <TabTrigger name="settings" href="/settings" asChild>
+            <TabButton>Settings</TabButton>
           </TabTrigger>
         </CustomTabList>
       </TabList>
