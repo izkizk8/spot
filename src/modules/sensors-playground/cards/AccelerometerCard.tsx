@@ -45,7 +45,9 @@ export function AccelerometerCard() {
 
   // Register stable handle with the screen.
   const streamRef = useRef(stream);
-  streamRef.current = stream;
+  useEffect(() => {
+    streamRef.current = stream;
+  });
   const handle = useMemo<SensorCardHandle>(
     () => ({
       id: 'accelerometer',

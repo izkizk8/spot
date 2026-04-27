@@ -46,7 +46,9 @@ export function MagnetometerCard() {
   const latest = samples.length > 0 ? samples[samples.length - 1] : { x: 0, y: 0, z: 0 };
 
   const streamRef = useRef(stream);
-  streamRef.current = stream;
+  useEffect(() => {
+    streamRef.current = stream;
+  });
   const handle = useMemo<SensorCardHandle>(
     () => ({
       id: 'magnetometer',

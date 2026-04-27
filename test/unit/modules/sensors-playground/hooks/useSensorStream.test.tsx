@@ -31,13 +31,11 @@ jest.mock('expo-sensors', () => ({
 
 import { useSensorStream } from '@/modules/sensors-playground/hooks/useSensorStream';
 
-type SensorMock = ReturnType<typeof makeSensor> & {
-  addListener: jest.Mock<{ remove: jest.Mock }, [(raw: unknown) => void]>;
-};
+type SensorMock = ReturnType<typeof makeSensor>;
 
 function makeFreshSensor(overrides: Partial<SensorMock> = {}): SensorMock {
   const sub = { remove: jest.fn() };
-  const sensor: SensorMock = {
+  const base: SensorMock = {
     isAvailableAsync: jest.fn(async () => true),
     setUpdateInterval: jest.fn(),
     addListener: jest.fn(() => sub),
@@ -53,9 +51,8 @@ function makeFreshSensor(overrides: Partial<SensorMock> = {}): SensorMock {
       canAskAgain: true,
       expires: 'never',
     })),
-    ...(overrides as SensorMock),
   };
-  return sensor;
+  return { ...base, ...overrides } as SensorMock;
 }
 
 describe('useSensorStream', () => {
@@ -210,7 +207,7 @@ describe('useSensorStream', () => {
     await act(async () => {
       await result.current.start();
     });
-    const handler = sensor.addListener.mock.calls[0][0];
+    const handler = (sensor.addListener.mock.calls[0] as unknown as [(raw: unknown) => void])[0];
     await act(async () => {
       handler({ v: 1 });
       handler({ v: 2 });
@@ -234,7 +231,7 @@ describe('useSensorStream', () => {
     await act(async () => {
       await result.current.start();
     });
-    const handler = sensor.addListener.mock.calls[0][0];
+    const handler = (sensor.addListener.mock.calls[0] as unknown as [(raw: unknown) => void])[0];
     const listener = jest.fn();
     const unsub = result.current.subscribeToSnapshot(listener);
     await act(async () => {
@@ -263,8 +260,8 @@ describe('useSensorStream', () => {
     await act(async () => {
       await result.current.start();
     });
-    const sub = sensor.addListener.mock.results[0].value;
-    const handler = sensor.addListener.mock.calls[0][0];
+    const sub = sensor.addListener.mock.results[0]!.value;
+    const handler = (sensor.addListener.mock.calls[0] as unknown as [(raw: unknown) => void])[0];
     await act(async () => {
       handler({ v: 1 });
     });
@@ -290,7 +287,7 @@ describe('useSensorStream', () => {
     await act(async () => {
       await result.current.start();
     });
-    const sub = sensor.addListener.mock.results[0].value;
+    const sub = sensor.addListener.mock.results[0]!.value;
     unmount();
     expect(sub.remove).toHaveBeenCalledTimes(1);
   });

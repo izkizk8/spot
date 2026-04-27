@@ -24,7 +24,7 @@ class CircularBuffer<T> implements RingBuffer<T> {
       throw new Error(`RingBuffer capacity must be a positive integer (got ${capacity})`);
     }
     this.capacity = capacity;
-    this.slots = new Array<T | undefined>(capacity);
+    this.slots = Array.from({ length: capacity }) as (T | undefined)[];
   }
 
   get length(): number {
@@ -40,7 +40,7 @@ class CircularBuffer<T> implements RingBuffer<T> {
   snapshot(n: number): readonly T[] {
     if (n <= 0 || this.count === 0) return [];
     const take = Math.min(n, this.count);
-    const out: T[] = new Array<T>(take);
+    const out: T[] = Array.from({ length: take }) as T[];
     // Oldest of the slice first.
     // Index of the oldest item in the slice = writeIndex - take (mod capacity).
     const start = (this.writeIndex - take + this.capacity) % this.capacity;

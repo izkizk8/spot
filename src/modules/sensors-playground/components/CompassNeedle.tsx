@@ -16,11 +16,18 @@ export interface CompassNeedleProps {
 const EPSILON = 1e-3;
 
 export function CompassNeedle({ x, y }: CompassNeedleProps) {
+  // The "hold previous angle on near-zero magnitude" UX detail (FR-022) is
+  // inherently a render-time read of the prior frame's value. We use a ref
+  // to carry it across renders without forcing an extra re-render. The
+  // react-hooks/refs lint rule flags reads/writes during render; the disables
+  // below are deliberate per the spec's noise-suppression requirement.
   const lastAngleRef = useRef(0);
   const magnitude = Math.sqrt(x * x + y * y);
+  // eslint-disable-next-line react-hooks/refs
   let angle = lastAngleRef.current;
   if (magnitude >= EPSILON) {
     angle = (Math.atan2(y, x) * 180) / Math.PI;
+    // eslint-disable-next-line react-hooks/refs
     lastAngleRef.current = angle;
   }
   return (

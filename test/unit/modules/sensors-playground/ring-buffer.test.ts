@@ -6,11 +6,11 @@ import { createRingBuffer } from '@/modules/sensors-playground/ring-buffer';
 
 describe('createRingBuffer', () => {
   it('RB-1: throws on capacity 0', () => {
-    expect(() => createRingBuffer(0)).toThrow();
+    expect(() => createRingBuffer(0)).toThrow(/positive integer/);
   });
 
   it('RB-2: throws on negative capacity', () => {
-    expect(() => createRingBuffer(-3)).toThrow();
+    expect(() => createRingBuffer(-3)).toThrow(/positive integer/);
   });
 
   it('RB-3: starts with length 0', () => {

@@ -20,7 +20,7 @@ describe('PermissionNotice', () => {
   });
 
   it('kind="denied" renders a copy + Open Settings button which calls Linking.openSettings', () => {
-    const spy = jest.spyOn(Linking, 'openSettings').mockImplementation(() => {});
+    const spy = jest.spyOn(Linking, 'openSettings').mockImplementation(async () => {});
     const { getByText, getByTestId } = render(<PermissionNotice kind="denied" />);
     expect(getByText('Permission denied')).toBeTruthy();
     fireEvent.press(getByTestId('permission-open-settings'));

@@ -49,7 +49,9 @@ export function DeviceMotionCard() {
   const latest = samples.length > 0 ? samples[samples.length - 1] : { alpha: 0, beta: 0, gamma: 0 };
 
   const streamRef = useRef(stream);
-  streamRef.current = stream;
+  useEffect(() => {
+    streamRef.current = stream;
+  });
   const handle = useMemo<SensorCardHandle>(
     () => ({
       id: 'devicemotion',
@@ -74,9 +76,18 @@ export function DeviceMotionCard() {
     <ThemedView style={styles.card} testID="device-motion-card">
       <ThemedText type="subtitle">{TITLE}</ThemedText>
       <ThemedView style={styles.readouts}>
-        <ThemedText type="code" testID="readout-pitch">{`pitch: ${fmt(latest.beta * RAD_TO_DEG)}`}</ThemedText>
-        <ThemedText type="code" testID="readout-roll">{`roll: ${fmt(latest.gamma * RAD_TO_DEG)}`}</ThemedText>
-        <ThemedText type="code" testID="readout-yaw">{`yaw: ${fmt(latest.alpha * RAD_TO_DEG)}`}</ThemedText>
+        <ThemedText
+          type="code"
+          testID="readout-pitch"
+        >{`pitch: ${fmt(latest.beta * RAD_TO_DEG)}`}</ThemedText>
+        <ThemedText
+          type="code"
+          testID="readout-roll"
+        >{`roll: ${fmt(latest.gamma * RAD_TO_DEG)}`}</ThemedText>
+        <ThemedText
+          type="code"
+          testID="readout-yaw"
+        >{`yaw: ${fmt(latest.alpha * RAD_TO_DEG)}`}</ThemedText>
       </ThemedView>
       <SampleRatePicker value={rate} onChange={setRate} />
       <Pressable

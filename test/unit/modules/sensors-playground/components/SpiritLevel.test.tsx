@@ -4,10 +4,7 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-import {
-  SpiritLevel,
-  __TEST_ONLY__,
-} from '@/modules/sensors-playground/components/SpiritLevel';
+import { SpiritLevel, __TEST_ONLY__ } from '@/modules/sensors-playground/components/SpiritLevel';
 
 function flatten(style: unknown): Record<string, unknown> {
   if (!style) return {};

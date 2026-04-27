@@ -6,14 +6,7 @@
  */
 
 import { useCallback, useEffect, useRef, useState } from 'react';
-import {
-  Accelerometer,
-  DeviceMotion,
-  Gyroscope,
-  Magnetometer,
-  type EventSubscription,
-  type PermissionResponse,
-} from 'expo-sensors';
+import { Accelerometer, DeviceMotion, Gyroscope, Magnetometer } from 'expo-sensors';
 
 import { createRingBuffer, type RingBuffer } from '../ring-buffer';
 
@@ -29,17 +22,29 @@ export const RATE_TO_INTERVAL_MS: Record<SampleRate, number> = {
 };
 
 /**
+ * Minimal subscription handle returned by addListener. expo-sensors'
+ * SensorSubscription satisfies this. We deliberately keep the type local so
+ * the seam can also be satisfied by JS-only mocks in tests.
+ */
+export interface SensorSubscription {
+  remove(): void;
+}
+
+/** Permission response shape the hook reads. Loose to accept jest mocks. */
+export interface SensorPermissionResponse {
+  status: string;
+}
+
+/**
  * Minimal structural type that all four expo-sensors classes satisfy.
- * Avoids tight coupling so tests can mock with any matching shape.
+ * Loose by design so unit tests can mock the hook with any matching shape.
  */
 export interface SensorClassLike {
   isAvailableAsync(): Promise<boolean>;
   setUpdateInterval(intervalMs: number): void;
-  addListener(handler: (raw: unknown) => void): EventSubscription;
-  // Permission methods are optional — only DeviceMotion / Magnetometer expose them
-  // in a meaningful way on iOS.
-  getPermissionsAsync?: () => Promise<PermissionResponse>;
-  requestPermissionsAsync?: () => Promise<PermissionResponse>;
+  addListener(handler: (raw: unknown) => void): SensorSubscription;
+  getPermissionsAsync?: () => Promise<SensorPermissionResponse>;
+  requestPermissionsAsync?: () => Promise<SensorPermissionResponse>;
 }
 
 /** Re-export real sensor classes so cards never need to import expo-sensors directly. */
@@ -89,7 +94,7 @@ export function useSensorStream<TSample>(
   const [latest, setLatest] = useState<TSample | null>(null);
 
   const bufferRef = useRef<RingBuffer<TSample>>(createRingBuffer<TSample>(capacity));
-  const subscriptionRef = useRef<EventSubscription | null>(null);
+  const subscriptionRef = useRef<SensorSubscription | null>(null);
   const snapshotListenersRef = useRef<Set<() => void>>(new Set());
   const rateRef = useRef<SampleRate>(rate);
   const isRunningRef = useRef<boolean>(false);
@@ -193,7 +198,6 @@ export function useSensorStream<TSample>(
           notifyListeners();
         } catch (err) {
           // FR-035: don't re-throw from the handler.
-          // eslint-disable-next-line no-console
           console.warn('[useSensorStream] sample handler threw', err);
         }
       });
@@ -201,7 +205,6 @@ export function useSensorStream<TSample>(
       isRunningRef.current = true;
       setIsRunning(true);
     } catch (err) {
-      // eslint-disable-next-line no-console
       console.warn('[useSensorStream] addListener threw', err);
     }
   }, [notifyListeners]);
@@ -263,16 +266,18 @@ export function useSensorStream<TSample>(
 
   // Unmount cleanup — FR-036, SC-007.
   useEffect(() => {
+    const subRef = subscriptionRef;
+    const listenersRef = snapshotListenersRef;
     return () => {
-      if (subscriptionRef.current) {
+      if (subRef.current) {
         try {
-          subscriptionRef.current.remove();
+          subRef.current.remove();
         } catch {
           // ignore
         }
-        subscriptionRef.current = null;
+        subRef.current = null;
       }
-      snapshotListenersRef.current.clear();
+      listenersRef.current.clear();
     };
   }, []);
 

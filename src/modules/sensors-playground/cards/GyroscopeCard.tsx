@@ -42,26 +42,35 @@ export function GyroscopeCard() {
     return unsub;
   }, [stream]);
 
-  // Integrate yaw across snapshot deltas using the most-recent two samples
-  // and Δt = 1/rate. (research.md Decision 4 — naive Riemann sum is sufficient.)
-  const yawRef = useRef(0);
-  const lastSampleCountRef = useRef(0);
+  // Integrate yaw via state + effect so the lint rule is satisfied. The naive
+  // Riemann sum (research.md Decision 4) is sufficient at 60 Hz; the chart
+  // updates at the same render cadence as the bar chart.
+  const [yaw, setYaw] = useState(0);
   const samples = stream.snapshot(60);
-  if (samples.length > lastSampleCountRef.current) {
-    const delta = samples.length - lastSampleCountRef.current;
-    const dt = 1 / rate;
-    for (let i = samples.length - delta; i < samples.length; i++) {
-      yawRef.current += samples[i].z * dt;
+  const lastCountRef = useRef(0);
+  useEffect(() => {
+    const prev = lastCountRef.current;
+    if (samples.length === 0) {
+      lastCountRef.current = 0;
+      return;
     }
-    lastSampleCountRef.current = samples.length;
-  } else if (samples.length === 0) {
-    lastSampleCountRef.current = 0;
-  }
+    if (samples.length > prev) {
+      let acc = 0;
+      const dt = 1 / rate;
+      for (let i = prev; i < samples.length; i++) {
+        acc += samples[i].z * dt;
+      }
+      setYaw((y) => y + acc);
+      lastCountRef.current = samples.length;
+    }
+  }, [samples, rate]);
 
   const latest = samples.length > 0 ? samples[samples.length - 1] : { x: 0, y: 0, z: 0 };
 
   const streamRef = useRef(stream);
-  streamRef.current = stream;
+  useEffect(() => {
+    streamRef.current = stream;
+  });
   const handle = useMemo<SensorCardHandle>(
     () => ({
       id: 'gyroscope',
@@ -104,7 +113,7 @@ export function GyroscopeCard() {
         <ThemedText type="smallBold">{stream.isRunning ? 'Stop' : 'Start'}</ThemedText>
       </Pressable>
       <PermissionNotice kind={noticeKind} />
-      <RotationIndicator yaw={yawRef.current} />
+      <RotationIndicator yaw={yaw} />
     </ThemedView>
   );
 }
