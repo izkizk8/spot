@@ -9,17 +9,15 @@ import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 
 // Mock ChartView as a prop recorder
-const recordedChartViewProps: any[] = [];
-
 jest.mock('@/modules/swift-charts-lab/components/ChartView', () => {
-  const React = require('react');
+  const ReactLib = require('react');
   const recorder: any[] = [];
   // Export the recorder so tests can access it
   (global as any).__chartViewRecorder = recorder;
   return {
     ChartView: (props: any) => {
       recorder.push(props);
-      return React.createElement('View', { testID: 'mocked-chart-view' });
+      return ReactLib.createElement('View', { testID: 'mocked-chart-view' });
     },
   };
 });
@@ -255,18 +253,13 @@ describe('SwiftChartsLabScreen (iOS) — tint and gradient (US3)', () => {
   });
 
   it('tint change does NOT clear selectedIndex', () => {
-    render(<SwiftChartsLabScreen />);
-
-    const recorded = getRecorded();
-    // Since ChartView is mocked, we can't actually set selectedIndex via onSelect
-    // But we can verify that tint changes don't trigger the selection-clear logic
-    // by checking that changing tint preserves the initial selectedIndex (null)
-    
     const { getByLabelText } = render(<SwiftChartsLabScreen />);
-    fireEvent.press(getByLabelText('Tint: green'));
 
     // The key assertion: screen.tsx does NOT call setSelectedIndex when tint changes
-    // This test passes if no error is thrown and selectedIndex remains as set
+    fireEvent.press(getByLabelText('Tint: green'));
+
+    const recorded = getRecorded();
+    expect(recorded[0].selectedIndex).toBeNull(); // Verify initial state preserved
   });
 });
 
@@ -289,7 +282,7 @@ describe('SwiftChartsLabScreen (iOS) — mark selection (US4)', () => {
 
     const recorded = getRecorded();
     const chartViewProps = recorded[recorded.length - 1];
-    
+
     // Verify onSelect callback is provided
     expect(chartViewProps.onSelect).toBeDefined();
     expect(typeof chartViewProps.onSelect).toBe('function');
@@ -300,7 +293,7 @@ describe('SwiftChartsLabScreen (iOS) — mark selection (US4)', () => {
 
     // Change chart type
     fireEvent.press(getByLabelText('Chart type: Bar'));
-    
+
     const recorded = getRecorded();
     // Selection should remain null (or be cleared if it was set)
     expect(recorded[recorded.length - 1].selectedIndex).toBeNull();
@@ -310,7 +303,7 @@ describe('SwiftChartsLabScreen (iOS) — mark selection (US4)', () => {
     const { getByLabelText } = render(<SwiftChartsLabScreen />);
 
     fireEvent.press(getByLabelText('Randomize data'));
-    
+
     const recorded = getRecorded();
     expect(recorded[recorded.length - 1].selectedIndex).toBeNull();
   });

@@ -6,11 +6,11 @@
  */
 
 import {
-  type ChartType,
-  type TintId,
-  type Tint,
-  type DataPoint,
-  type Dataset,
+  initialDataset,
+  randomize,
+  addPoint,
+  removePoint,
+  nextMonthLabel,
   TINTS,
   CHART_TYPES,
   MIN_SERIES_SIZE,
@@ -19,12 +19,10 @@ import {
   VALUE_MAX,
   INITIAL_SIZE,
   INITIAL_MONTHS,
-  initialDataset,
-  randomize,
-  addPoint,
-  removePoint,
-  nextMonthLabel,
 } from '@/modules/swift-charts-lab/data';
+
+// Helper RNG function at module scope per linter
+const rng = () => Math.random();
 
 describe('data.ts — Constants', () => {
   it('MIN_SERIES_SIZE === 2', () => {
@@ -204,7 +202,6 @@ describe('data.ts — nextMonthLabel(prev)', () => {
 describe('data.ts — Composition: 30-step random walk', () => {
   it('keeps length in [2, 24], values in range, month labels distinct', () => {
     let ds = initialDataset();
-    const rng = () => Math.random();
 
     for (let step = 0; step < 30; step++) {
       const choice = rng();

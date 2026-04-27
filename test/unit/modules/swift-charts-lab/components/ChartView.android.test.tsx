@@ -32,9 +32,7 @@ describe('ChartView (Android fallback)', () => {
     const bar0 = getByTestId('chart-bar-0');
     // Style is an array - check that it contains backgroundColor
     const styles = Array.isArray(bar0.props.style) ? bar0.props.style : [bar0.props.style];
-    const hasBackgroundColor = styles.some(
-      (s: any) => s && s.backgroundColor === '#007AFF',
-    );
+    const hasBackgroundColor = styles.some((s: any) => s && s.backgroundColor === '#007AFF');
     expect(hasBackgroundColor).toBe(true);
   });
 
@@ -108,7 +106,7 @@ describe('ChartView (Android fallback)', () => {
   it('accepts selectedIndex and onSelect without crashing (no-op per Decision 5)', () => {
     const data = initialDataset();
     const onSelect = jest.fn();
-    
+
     expect(() => {
       render(
         <ChartView

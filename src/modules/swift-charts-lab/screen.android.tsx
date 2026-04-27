@@ -1,13 +1,13 @@
 /**
- * T010: screen.tsx — iOS variant (default)
+ * T027: screen.android.tsx — Android fallback screen
  *
- * Main screen composition for iOS 16+.
- * No "iOS 16+ only" banner. Uses real Swift Charts via ChartView.tsx.
+ * Same composition as iOS but with "iOS 16+ only" banner at top.
  */
 
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
+import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
@@ -29,32 +29,26 @@ import { DataControls } from './components/DataControls';
 import { TintPicker } from './components/TintPicker';
 
 export default function SwiftChartsLabScreen() {
-  // State
   const [chartType, setChartType] = useState<ChartType>('line');
   const [data, setData] = useState<Dataset>(initialDataset());
   const [tint, setTint] = useState<Tint>(TINTS[0]);
   const [gradientEnabled, setGradientEnabled] = useState(false);
-  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
+  const [selectedIndex] = useState<number | null>(null);
 
-  // Handlers that clear selection (FR-026)
   const handleChartTypeChange = (newType: ChartType) => {
     setChartType(newType);
-    setSelectedIndex(null);
   };
 
   const handleRandomize = () => {
     setData((d) => randomize(d));
-    setSelectedIndex(null);
   };
 
   const handleAdd = () => {
     setData((d) => addPoint(d));
-    setSelectedIndex(null);
   };
 
   const handleRemove = () => {
     setData((d) => removePoint(d));
-    setSelectedIndex(null);
   };
 
   const handleToggleGradient = () => {
@@ -63,7 +57,6 @@ export default function SwiftChartsLabScreen() {
 
   return (
     <ScrollView style={styles.container} contentContainerStyle={styles.content}>
-      {/* iOS 16+ only banner */}
       <ThemedView style={styles.banner}>
         <ThemedText style={styles.bannerText}>
           This module uses Apple's Swift Charts on iOS 16+; Android sees a React Native fallback.
@@ -82,7 +75,6 @@ export default function SwiftChartsLabScreen() {
           tint={tint}
           gradientEnabled={gradientEnabled}
           selectedIndex={selectedIndex}
-          onSelect={setSelectedIndex}
           minHeight={300}
         />
       </ThemedView>
@@ -117,7 +109,6 @@ const styles = StyleSheet.create({
   banner: {
     padding: Spacing.three,
     borderRadius: Spacing.two,
-    marginBottom: Spacing.two,
     backgroundColor: '#FFF3CD',
   },
   bannerText: {
@@ -129,4 +120,3 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.two,
   },
 });
-

@@ -30,9 +30,7 @@ describe('ChartView (Web fallback)', () => {
 
     const bar0 = getByTestId('chart-bar-0');
     const styles = Array.isArray(bar0.props.style) ? bar0.props.style : [bar0.props.style];
-    const hasBackgroundColor = styles.some(
-      (s: any) => s && s.backgroundColor === '#007AFF',
-    );
+    const hasBackgroundColor = styles.some((s: any) => s && s.backgroundColor === '#007AFF');
     expect(hasBackgroundColor).toBe(true);
   });
 
@@ -104,7 +102,7 @@ describe('ChartView (Web fallback)', () => {
   it('accepts selectedIndex and onSelect without crashing', () => {
     const data = initialDataset();
     const onSelect = jest.fn();
-    
+
     expect(() => {
       render(
         <ChartView

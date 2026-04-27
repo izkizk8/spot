@@ -5,14 +5,11 @@
  * to the local Swift extension. Must FAIL before T009 implements it.
  */
 
-import React from 'react';
-import { View } from 'react-native';
 import { render } from '@testing-library/react-native';
 import { initialDataset, TINTS } from '@/modules/swift-charts-lab/data';
 
 // Mock @expo/ui/swift-ui Host as a passthrough
 jest.mock('@expo/ui/swift-ui', () => {
-  const React = require('react');
   return {
     Host: ({ children }: any) => children,
   };
@@ -20,8 +17,8 @@ jest.mock('@expo/ui/swift-ui', () => {
 
 // Mock the native view manager to return a recording View
 jest.mock('expo-modules-core', () => {
-  const React = require('react');
-  const { View, StyleSheet } = require('react-native');
+  const ReactImpl = require('react');
+  const { View: ViewImpl, StyleSheet } = require('react-native');
   const actual = jest.requireActual('expo-modules-core');
   return {
     ...actual,
@@ -29,7 +26,11 @@ jest.mock('expo-modules-core', () => {
       return (props: any) => {
         // Flatten style array for test assertions
         const flatStyle = props.style ? StyleSheet.flatten(props.style) : {};
-        return React.createElement(View, { ...props, style: flatStyle, testID: 'native-chart-view' });
+        return ReactImpl.createElement(ViewImpl, {
+          ...props,
+          style: flatStyle,
+          testID: 'native-chart-view',
+        });
       };
     }),
   };
@@ -143,13 +144,7 @@ describe('ChartView (iOS)', () => {
     expect(nativeView.props.style.minHeight).toBe(300);
 
     rerender(
-      <ChartView
-        type="line"
-        data={data}
-        tint={TINTS[0]}
-        gradientEnabled={false}
-        minHeight={400}
-      />,
+      <ChartView type="line" data={data} tint={TINTS[0]} gradientEnabled={false} minHeight={400} />,
     );
 
     nativeView = getByTestId('native-chart-view');

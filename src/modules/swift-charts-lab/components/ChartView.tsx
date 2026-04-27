@@ -41,7 +41,8 @@ export function ChartView({
     (event: any) => {
       if (onSelect) {
         // Handle both { nativeEvent: { index } } and { index } shapes
-        const index = event.nativeEvent?.index !== undefined ? event.nativeEvent.index : event.index;
+        const index =
+          event.nativeEvent?.index !== undefined ? event.nativeEvent.index : event.index;
         onSelect(index ?? null);
       }
     },

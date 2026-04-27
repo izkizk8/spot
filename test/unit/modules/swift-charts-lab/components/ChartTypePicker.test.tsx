@@ -7,7 +7,6 @@
 
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import type { ChartType } from '@/modules/swift-charts-lab/data';
 
 // Import will fail until T008 creates the component
 import { ChartTypePicker } from '@/modules/swift-charts-lab/components/ChartTypePicker';

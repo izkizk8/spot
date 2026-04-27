@@ -50,7 +50,7 @@ export function ChartView({
         {data.map((d, i) => {
           const normalizedValue = maxValue > 0 ? Math.abs(d.value) / maxValue : 0;
           const bottom = 20 + normalizedValue * (chartHeight - 40);
-          
+
           // Create dynamic style with StyleSheet
           const dynamicDotStyle = StyleSheet.create({
             dot: {
@@ -61,11 +61,7 @@ export function ChartView({
           });
 
           return (
-            <View
-              key={i}
-              testID={`chart-dot-${i}`}
-              style={[styles.dot, dynamicDotStyle.dot]}
-            />
+            <View key={i} testID={`chart-dot-${i}`} style={[styles.dot, dynamicDotStyle.dot]} />
           );
         })}
       </ThemedView>
@@ -95,11 +91,7 @@ export function ChartView({
         });
 
         return (
-          <View
-            key={i}
-            testID={`chart-bar-${i}`}
-            style={[styles.bar, dynamicBarStyle.bar]}
-          >
+          <View key={i} testID={`chart-bar-${i}`} style={[styles.bar, dynamicBarStyle.bar]}>
             {/* Gradient overlay for bar type only */}
             {type === 'bar' && gradientEnabled && (
               <View
@@ -115,7 +107,7 @@ export function ChartView({
                 ]}
               />
             )}
-            
+
             {/* Top stripe for line/area */}
             {(type === 'line' || type === 'area') && (
               <View
