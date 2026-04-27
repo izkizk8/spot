@@ -34,8 +34,8 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-014-widgets\`)
 
 **Purpose**: Scaffold directories and the plugin package shell so subsequent file-creation tasks can run in parallel.
 
-- [ ] T001 [P] Create the empty directory tree expected by plan.md: `src/modules/widgets-lab/components/`, `plugins/with-home-widgets/`, `native/ios/widgets/`, `test/unit/modules/widgets-lab/components/`, `test/unit/native/`, `test/unit/plugins/with-home-widgets/`. **Acceptance**: All six directories exist and are tracked (add a `.gitkeep` if empty).
-- [ ] T002 [P] Create `plugins/with-home-widgets/package.json` with `name: "with-home-widgets"`, `main: "index.ts"`, no runtime deps (mirror `plugins/with-live-activity/package.json`). **Acceptance**: File parses as valid JSON, `main` points to `index.ts`.
+- [x] T001 [P] Create the empty directory tree expected by plan.md: `src/modules/widgets-lab/components/`, `plugins/with-home-widgets/`, `native/ios/widgets/`, `test/unit/modules/widgets-lab/components/`, `test/unit/native/`, `test/unit/plugins/with-home-widgets/`. **Acceptance**: All six directories exist and are tracked (add a `.gitkeep` if empty).
+- [x] T002 [P] Create `plugins/with-home-widgets/package.json` with `name: "with-home-widgets"`, `main: "index.ts"`, no runtime deps (mirror `plugins/with-live-activity/package.json`). **Acceptance**: File parses as valid JSON, `main` points to `index.ts`.
 
 **Checkpoint**: Empty scaffolding in place; foundational work can begin.
 
@@ -49,16 +49,16 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-014-widgets\`)
 
 ### Tests (write first, must FAIL before implementation)
 
-- [ ] T003 [P] Write `test/unit/modules/widgets-lab/widget-config.test.ts` covering: `TINTS.length === 4` with exact members `['blue','green','orange','pink']`; `DEFAULT_CONFIG` matches data-model.md; `validate()` clamps `counter` to `[-9999, 9999]`, falls back to default `tint` for unknown values, and accepts any string for `showcaseValue`. **Acceptance**: Test file present; `pnpm test widget-config` fails with module-not-found / undefined-export errors.
-- [ ] T004 [P] Write `test/unit/native/widget-center.test.ts` implementing all 7 cases enumerated in `contracts/widget-center-bridge.md` §"Test obligations" (web rejects, android rejects, iOS+module success paths, iOS+module rejection mapping `NOT_SUPPORTED`→`WidgetCenterNotSupportedError` and other→`WidgetCenterBridgeError`, iOS+module-absent path). Use `jest.mock('expo-modules-core')` to drive `requireOptionalNativeModule` and `jest.doMock` to swap `Platform.OS`. **Acceptance**: 7 distinct `it()` blocks; all fail before T006–T009 land.
+- [x] T003 [P] Write `test/unit/modules/widgets-lab/widget-config.test.ts` covering: `TINTS.length === 4` with exact members `['blue','green','orange','pink']`; `DEFAULT_CONFIG` matches data-model.md; `validate()` clamps `counter` to `[-9999, 9999]`, falls back to default `tint` for unknown values, and accepts any string for `showcaseValue`. **Acceptance**: Test file present; `pnpm test widget-config` fails with module-not-found / undefined-export errors.
+- [x] T004 [P] Write `test/unit/native/widget-center.test.ts` implementing all 7 cases enumerated in `contracts/widget-center-bridge.md` §"Test obligations" (web rejects, android rejects, iOS+module success paths, iOS+module rejection mapping `NOT_SUPPORTED`→`WidgetCenterNotSupportedError` and other→`WidgetCenterBridgeError`, iOS+module-absent path). Use `jest.mock('expo-modules-core')` to drive `requireOptionalNativeModule` and `jest.doMock` to swap `Platform.OS`. **Acceptance**: 7 distinct `it()` blocks; all fail before T006–T009 land.
 
 ### Implementation
 
-- [ ] T005 [P] Create `src/native/widget-center.types.ts` exporting `WidgetCenterNotSupportedError`, `WidgetCenterBridgeError`, `WidgetCenterBridge` interface, and re-exporting `WidgetConfig` / `Tint` from `@/modules/widgets-lab/widget-config` (forward declaration is fine — file lands in T006). **Acceptance**: `tsc --noEmit` passes for this file in isolation.
-- [ ] T006 [P] Create `src/modules/widgets-lab/widget-config.ts` defining `Tint`, `TINTS`, `WidgetConfig`, `DEFAULT_CONFIG`, `validate(input: unknown): WidgetConfig`, and an `AsyncStorage`-backed shadow store (`loadShadowConfig() / saveShadowConfig(c)` keyed `widgets-lab:config`). **Acceptance**: T003 passes; no ESLint errors.
-- [ ] T007 Create `src/native/widget-center.ts` (iOS implementation) — calls `requireOptionalNativeModule('SpotWidgetCenter')`, gates `isAvailable()` on `Platform.OS === 'ios'` + iOS-version ≥ 14 + module-non-null, maps native errors per the contract table. **Acceptance**: T004 iOS-path cases pass.
-- [ ] T008 [P] Create `src/native/widget-center.android.ts` exporting a default `WidgetCenterBridge` whose `isAvailable()` returns `false` and whose other 3 methods reject with `WidgetCenterNotSupportedError`. **Acceptance**: T004 android cases pass.
-- [ ] T009 [P] Create `src/native/widget-center.web.ts` mirroring the android stub. **Acceptance**: T004 web cases pass.
+- [x] T005 [P] Create `src/native/widget-center.types.ts` exporting `WidgetCenterNotSupportedError`, `WidgetCenterBridgeError`, `WidgetCenterBridge` interface, and re-exporting `WidgetConfig` / `Tint` from `@/modules/widgets-lab/widget-config` (forward declaration is fine — file lands in T006). **Acceptance**: `tsc --noEmit` passes for this file in isolation.
+- [x] T006 [P] Create `src/modules/widgets-lab/widget-config.ts` defining `Tint`, `TINTS`, `WidgetConfig`, `DEFAULT_CONFIG`, `validate(input: unknown): WidgetConfig`, and an `AsyncStorage`-backed shadow store (`loadShadowConfig() / saveShadowConfig(c)` keyed `widgets-lab:config`). **Acceptance**: T003 passes; no ESLint errors.
+- [x] T007 Create `src/native/widget-center.ts` (iOS implementation) — calls `requireOptionalNativeModule('SpotWidgetCenter')`, gates `isAvailable()` on `Platform.OS === 'ios'` + iOS-version ≥ 14 + module-non-null, maps native errors per the contract table. **Acceptance**: T004 iOS-path cases pass.
+- [x] T008 [P] Create `src/native/widget-center.android.ts` exporting a default `WidgetCenterBridge` whose `isAvailable()` returns `false` and whose other 3 methods reject with `WidgetCenterNotSupportedError`. **Acceptance**: T004 android cases pass.
+- [x] T009 [P] Create `src/native/widget-center.web.ts` mirroring the android stub. **Acceptance**: T004 web cases pass.
 
 **Checkpoint**: Bridge + config types are green. User stories may now start in parallel.
 
