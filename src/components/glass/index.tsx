@@ -30,13 +30,7 @@ function shapeStyle(shape: GlassShape): ViewStyle {
   }
 }
 
-export function Glass({
-  intensity = 0.6,
-  tint,
-  shape = 'rounded',
-  style,
-  children,
-}: GlassProps) {
+export function Glass({ intensity = 0.6, tint, shape = 'rounded', style, children }: GlassProps) {
   // expo-glass-effect requires iOS 17+. Fall back to a plain themed translucent
   // View when the runtime API is unavailable so the component never throws.
   if (!isLiquidGlassAvailable()) {

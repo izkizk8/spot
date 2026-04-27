@@ -43,7 +43,6 @@ export function ThemePreferenceProvider({ children }: ThemePreferenceProviderPro
       })
       .catch((err: unknown) => {
         if (__DEV__) {
-          // eslint-disable-next-line no-console
           console.warn('[theme] failed to read preference from AsyncStorage', err);
         }
       })
@@ -60,7 +59,6 @@ export function ThemePreferenceProvider({ children }: ThemePreferenceProviderPro
     // FR-024: write failures are logged in dev only; in-memory state still updates.
     AsyncStorage.setItem(THEME_PREFERENCE_STORAGE_KEY, next).catch((err: unknown) => {
       if (__DEV__) {
-        // eslint-disable-next-line no-console
         console.warn('[theme] failed to persist preference to AsyncStorage', err);
       }
     });

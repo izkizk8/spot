@@ -12,7 +12,13 @@ import { MODULES } from '@/modules/registry';
 import type { ModuleManifest, ModulePlatform } from '@/modules/types';
 
 const CURRENT_PLATFORM: ModulePlatform | null =
-  Platform.OS === 'ios' ? 'ios' : Platform.OS === 'android' ? 'android' : Platform.OS === 'web' ? 'web' : null;
+  Platform.OS === 'ios'
+    ? 'ios'
+    : Platform.OS === 'android'
+      ? 'android'
+      : Platform.OS === 'web'
+        ? 'web'
+        : null;
 
 function isAvailable(manifest: ModuleManifest): boolean {
   if (CURRENT_PLATFORM == null) return false;

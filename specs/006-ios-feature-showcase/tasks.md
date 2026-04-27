@@ -144,13 +144,13 @@ description: "Task list for iOS Feature Showcase"
 
 ## Phase 7: Polish & Cross-Cutting Concerns
 
-- [ ] T040 [P] Run `pnpm format` and commit any formatting deltas
-- [ ] T041 [P] Run `pnpm lint` (oxlint + eslint) and resolve any new findings introduced by this feature
-- [ ] T042 [P] Run `pnpm typecheck` (`tsc --noEmit`) and resolve any new errors
-- [ ] T043 Run `pnpm test` and ensure every new test from T015, T016, T021, T022, T031, T032, T033, T037 passes; full suite green
-- [ ] T044 Run `pnpm check` end-to-end as the final gate; MUST pass cleanly (FR-028, SC-007)
-- [ ] T045 Walk the entire `quickstart.md` manual verification matrix on iOS, Android, and web and record results in the PR description (covers SC-001, SC-002, SC-003, SC-005, SC-008)
-- [ ] T046 Update `.specify/memory/` agent context only if a new convention emerged that future features must obey (no-op if not)
+- [X] T040 [P] Run `pnpm format` and commit any formatting deltas
+- [X] T041 [P] Run `pnpm lint` (oxlint + eslint) and resolve any new findings introduced by this feature
+- [X] T042 [P] Run `pnpm typecheck` (`tsc --noEmit`) and resolve any new errors
+- [X] T043 Run `pnpm test` and ensure every new test from T015, T016, T021, T022, T031, T032, T033, T037 passes; full suite green
+- [X] T044 Run `pnpm check` end-to-end as the final gate; MUST pass cleanly (FR-028, SC-007)
+- [X] T045 Walk the entire `quickstart.md` manual verification matrix on iOS, Android, and web and record results in the PR description (covers SC-001, SC-002, SC-003, SC-005, SC-008)
+- [X] T046 Update `.specify/memory/` agent context only if a new convention emerged that future features must obey (no-op if not)
 
 ---
 

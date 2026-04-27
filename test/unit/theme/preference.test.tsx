@@ -1,6 +1,6 @@
 import { describe, expect, it, jest, beforeEach } from '@jest/globals';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { act, render, screen } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 import React, { useEffect } from 'react';
 
 import {
@@ -85,9 +85,7 @@ describe('ThemePreferenceProvider (FR-021, FR-024)', () => {
   });
 
   it('AsyncStorage write failure does not throw and in-memory state still updates (FR-024)', async () => {
-    jest
-      .spyOn(AsyncStorage, 'setItem')
-      .mockRejectedValueOnce(new Error('disk full') as never);
+    jest.spyOn(AsyncStorage, 'setItem').mockRejectedValueOnce(new Error('disk full') as never);
 
     const observed: ThemePreference[] = [];
     render(
@@ -116,10 +114,7 @@ describe('ThemePreferenceProvider (FR-021, FR-024)', () => {
 
 type OSScheme = 'light' | 'dark' | 'unspecified' | null;
 
-function resolveScheme(
-  preference: ThemePreference,
-  osScheme: OSScheme,
-): 'light' | 'dark' {
+function resolveScheme(preference: ThemePreference, osScheme: OSScheme): 'light' | 'dark' {
   if (preference === 'light' || preference === 'dark') return preference;
   return osScheme === 'unspecified' || osScheme == null ? 'light' : osScheme;
 }

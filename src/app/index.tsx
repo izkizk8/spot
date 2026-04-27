@@ -1,10 +1,5 @@
 import { Platform, StyleSheet } from 'react-native';
-import Animated, {
-  Easing,
-  FadeInDown,
-  FadeIn,
-  useReducedMotion,
-} from 'react-native-reanimated';
+import Animated, { Easing, FadeInDown, FadeIn, useReducedMotion } from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 import { ThemedText } from '@/components/themed-text';

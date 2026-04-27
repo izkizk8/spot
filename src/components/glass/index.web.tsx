@@ -24,13 +24,7 @@ function shapeStyle(shape: GlassShape): ViewStyle {
  * StyleSheet typings don't yet model it, so it is applied via an inline
  * style object scoped to this single file (FR-017).
  */
-export function Glass({
-  intensity = 0.6,
-  tint,
-  shape = 'rounded',
-  style,
-  children,
-}: GlassProps) {
+export function Glass({ intensity = 0.6, tint, shape = 'rounded', style, children }: GlassProps) {
   const blurPx = Math.round(4 + intensity * 24); // 0..1 -> 4..28 px
   // Inline backdrop-filter style: documented exception. Cast to ViewStyle
   // because RN's typings don't include the web-only property.

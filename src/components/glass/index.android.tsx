@@ -22,26 +22,13 @@ function shapeStyle(shape: GlassShape): ViewStyle {
  * + a 1px hairline border. Honors the same `tint` and `shape` props
  * (FR-016).
  */
-export function Glass({
-  intensity = 0.6,
-  tint,
-  shape = 'rounded',
-  style,
-  children,
-}: GlassProps) {
+export function Glass({ intensity = 0.6, tint, shape = 'rounded', style, children }: GlassProps) {
   // Map intensity to background alpha so the visual reads change.
   const alpha = Math.max(0.08, Math.min(0.45, 0.12 + intensity * 0.3));
   const baseBg = `rgba(255,255,255,${alpha.toFixed(3)})`;
 
   return (
-    <View
-      style={[
-        styles.surface,
-        shapeStyle(shape),
-        { backgroundColor: tint ?? baseBg },
-        style,
-      ]}
-    >
+    <View style={[styles.surface, shapeStyle(shape), { backgroundColor: tint ?? baseBg }, style]}>
       {children}
     </View>
   );

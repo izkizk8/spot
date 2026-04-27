@@ -37,7 +37,10 @@ function RadioOption({
         type={selected ? 'backgroundSelected' : 'backgroundElement'}
         style={styles.optionRow}
       >
-        <ThemedView style={styles.optionText} type={selected ? 'backgroundSelected' : 'backgroundElement'}>
+        <ThemedView
+          style={styles.optionText}
+          type={selected ? 'backgroundSelected' : 'backgroundElement'}
+        >
           <ThemedText type="smallBold">{option.label}</ThemedText>
           <ThemedText type="small" themeColor="textSecondary">
             {option.description}
