@@ -83,19 +83,19 @@ description: "Task list for iOS Feature Showcase"
 
 ### Tests for User Story 2 ⚠️ (write first, must fail before implementation)
 
-- [ ] T021 [P] [US2] Write `test/unit/modules/manifest.test.ts` validating every entry in the real `MODULES` array: `id` matches `/^[a-z][a-z0-9-]*$/`, `platforms` is non-empty subset of `{ios,android,web}`, `minIOS` matches `/^\d+(\.\d+){0,2}$/` if present, `render` is a function (data-model.md §ModuleManifest validation rules)
-- [ ] T022 [P] [US2] Write `test/unit/modules/platform-filtering.test.tsx` covering: a manifest declaring only `['ios']` rendered on Android shows the unsupported badge and tapping the card does not throw (FR-010, edge case "Unsupported-platform module")
+- [X] T021 [P] [US2] Write `test/unit/modules/manifest.test.ts` validating every entry in the real `MODULES` array: `id` matches `/^[a-z][a-z0-9-]*$/`, `platforms` is non-empty subset of `{ios,android,web}`, `minIOS` matches `/^\d+(\.\d+){0,2}$/` if present, `render` is a function (data-model.md §ModuleManifest validation rules)
+- [X] T022 [P] [US2] Write `test/unit/modules/platform-filtering.test.tsx` covering: a manifest declaring only `['ios']` rendered on Android shows the unsupported badge and tapping the card does not throw (FR-010, edge case "Unsupported-platform module")
 
 ### Implementation for User Story 2
 
-- [ ] T023 [P] [US2] Implement the `<Glass>` primitive at `src/components/glass/index.tsx` (iOS) using `expo-glass-effect`'s `<GlassView>`; props: `intensity`, `tint`, `shape`, `style`, `children`
-- [ ] T024 [P] [US2] Implement `src/components/glass/index.android.tsx` — translucent `View` (rgba background + elevation + 1px hairline border) honouring the same props (FR-016)
-- [ ] T025 [P] [US2] Implement `src/components/glass/index.web.tsx` — `View` with the inline `backdropFilter` style object (the single permitted StyleSheet exception, documented inline per plan.md §Constitution Check) honouring the same props (FR-017)
-- [ ] T026 [P] [US2] Create `src/modules/liquid-glass-playground/tints.ts` exporting the tint chip palette as `as const` constants
-- [ ] T027 [US2] Implement `src/modules/liquid-glass-playground/screen.tsx`: three distinct interactive `<Glass>` surfaces plus controls (blur intensity slider, tint chips bound to T026, shape segmented control). All control changes propagate to all three surfaces in real time (FR-014, FR-015). All styles via `StyleSheet.create()`
-- [ ] T028 [US2] Implement `src/modules/liquid-glass-playground/index.ts` exporting the default `ModuleManifest` (id `liquid-glass-playground`, SF Symbol `sparkles` + fallback glyph, `platforms: ['ios','android','web']`, `render: () => <PlaygroundScreen />`); update `src/modules/registry.ts` to import and append it
-- [ ] T029 [US2] Replace the empty-state-only `src/app/modules/index.tsx` with the full grid: render one card per `MODULES` entry preserving array order, showing title / description / icon / platform-availability badge derived from `platforms` and (on iOS) `minIOS`. Empty-state branch from T019 is preserved (FR-009, FR-010, FR-012)
-- [ ] T030 [US2] Implement `src/app/modules/[id].tsx`: look up the route id in `MODULES`; if found AND module available on current platform, invoke `manifest.render()`; otherwise render a graceful "not supported on this platform" view (FR-011, edge case "Module screen crash isolation"). Wrap the rendered module in a React error boundary so a runtime error inside the module screen lets the user navigate back (SC-008)
+- [X] T023 [P] [US2] Implement the `<Glass>` primitive at `src/components/glass/index.tsx` (iOS) using `expo-glass-effect`'s `<GlassView>`; props: `intensity`, `tint`, `shape`, `style`, `children`
+- [X] T024 [P] [US2] Implement `src/components/glass/index.android.tsx` — translucent `View` (rgba background + elevation + 1px hairline border) honouring the same props (FR-016)
+- [X] T025 [P] [US2] Implement `src/components/glass/index.web.tsx` — `View` with the inline `backdropFilter` style object (the single permitted StyleSheet exception, documented inline per plan.md §Constitution Check) honouring the same props (FR-017)
+- [X] T026 [P] [US2] Create `src/modules/liquid-glass-playground/tints.ts` exporting the tint chip palette as `as const` constants
+- [X] T027 [US2] Implement `src/modules/liquid-glass-playground/screen.tsx`: three distinct interactive `<Glass>` surfaces plus controls (blur intensity slider, tint chips bound to T026, shape segmented control). All control changes propagate to all three surfaces in real time (FR-014, FR-015). All styles via `StyleSheet.create()`
+- [X] T028 [US2] Implement `src/modules/liquid-glass-playground/index.ts` exporting the default `ModuleManifest` (id `liquid-glass-playground`, SF Symbol `sparkles` + fallback glyph, `platforms: ['ios','android','web']`, `render: () => <PlaygroundScreen />`); update `src/modules/registry.ts` to import and append it
+- [X] T029 [US2] Replace the empty-state-only `src/app/modules/index.tsx` with the full grid: render one card per `MODULES` entry preserving array order, showing title / description / icon / platform-availability badge derived from `platforms` and (on iOS) `minIOS`. Empty-state branch from T019 is preserved (FR-009, FR-010, FR-012)
+- [X] T030 [US2] Implement `src/app/modules/[id].tsx`: look up the route id in `MODULES`; if found AND module available on current platform, invoke `manifest.render()`; otherwise render a graceful "not supported on this platform" view (FR-011, edge case "Module screen crash isolation"). Wrap the rendered module in a React error boundary so a runtime error inside the module screen lets the user navigate back (SC-008)
 
 **Checkpoint**: Liquid Glass Playground is demonstrable on iOS with three live surfaces; Android and web render their fallbacks. Modules grid is fully driven by the registry.
 

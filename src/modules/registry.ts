@@ -1,5 +1,6 @@
 import type { ModuleManifest } from './types';
 // Add new modules here ↓ One import line per module.
+import liquidGlassPlayground from './liquid-glass-playground';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -20,5 +21,6 @@ import type { ModuleManifest } from './types';
  *   - source-order is the rendered order
  */
 export const MODULES: readonly ModuleManifest[] = [
+  liquidGlassPlayground,
   // ↑ Append new manifests here in the order they should appear.
 ];
