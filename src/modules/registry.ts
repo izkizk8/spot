@@ -3,6 +3,7 @@ import type { ModuleManifest } from './types';
 import liveActivityDemo from './live-activity-demo';
 import liquidGlassPlayground from './liquid-glass-playground';
 import hapticsPlayground from './haptics-playground';
+import sfSymbolsLab from './sf-symbols-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -26,5 +27,6 @@ export const MODULES: readonly ModuleManifest[] = [
   liquidGlassPlayground,
   liveActivityDemo,
   hapticsPlayground,
+  sfSymbolsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
