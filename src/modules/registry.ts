@@ -4,6 +4,7 @@ import liveActivityDemo from './live-activity-demo';
 import liquidGlassPlayground from './liquid-glass-playground';
 import hapticsPlayground from './haptics-playground';
 import sfSymbolsLab from './sf-symbols-lab';
+import swiftuiInterop from './swiftui-interop';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -28,5 +29,6 @@ export const MODULES: readonly ModuleManifest[] = [
   liveActivityDemo,
   hapticsPlayground,
   sfSymbolsLab,
+  swiftuiInterop,
   // ↑ Append new manifests here in the order they should appear.
 ];
