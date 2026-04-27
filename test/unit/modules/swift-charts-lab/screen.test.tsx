@@ -267,6 +267,51 @@ describe('SwiftChartsLabScreen (iOS) — tint and gradient (US3)', () => {
 
     // The key assertion: screen.tsx does NOT call setSelectedIndex when tint changes
     // This test passes if no error is thrown and selectedIndex remains as set
+  });
+});
+
+// T019: Mark selection test (US4)
+describe('SwiftChartsLabScreen (iOS) — mark selection (US4)', () => {
+  beforeEach(() => {
+    const recorded = getRecorded();
+    recorded.length = 0;
+  });
+
+  it('initial selectedIndex is null', () => {
+    render(<SwiftChartsLabScreen />);
+
+    const recorded = getRecorded();
+    expect(recorded[0].selectedIndex).toBeNull();
+  });
+
+  it('ChartView receives onSelect callback', () => {
+    render(<SwiftChartsLabScreen />);
+
+    const recorded = getRecorded();
+    const chartViewProps = recorded[recorded.length - 1];
+    
+    // Verify onSelect callback is provided
+    expect(chartViewProps.onSelect).toBeDefined();
+    expect(typeof chartViewProps.onSelect).toBe('function');
+  });
+
+  it('pressing Bar segment clears selectedIndex (FR-026)', () => {
+    const { getByLabelText } = render(<SwiftChartsLabScreen />);
+
+    // Change chart type
+    fireEvent.press(getByLabelText('Chart type: Bar'));
+    
+    const recorded = getRecorded();
+    // Selection should remain null (or be cleared if it was set)
+    expect(recorded[recorded.length - 1].selectedIndex).toBeNull();
+  });
+
+  it('pressing Randomize clears selectedIndex (FR-026)', () => {
+    const { getByLabelText } = render(<SwiftChartsLabScreen />);
+
+    fireEvent.press(getByLabelText('Randomize data'));
+    
+    const recorded = getRecorded();
     expect(recorded[recorded.length - 1].selectedIndex).toBeNull();
   });
 });

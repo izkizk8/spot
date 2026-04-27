@@ -6,6 +6,7 @@ import hapticsPlayground from './haptics-playground';
 import sfSymbolsLab from './sf-symbols-lab';
 import swiftuiInterop from './swiftui-interop';
 import sensorsPlayground from './sensors-playground';
+import swiftChartsLab from './swift-charts-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -32,5 +33,6 @@ export const MODULES: readonly ModuleManifest[] = [
   sfSymbolsLab,
   swiftuiInterop,
   sensorsPlayground,
+  swiftChartsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
