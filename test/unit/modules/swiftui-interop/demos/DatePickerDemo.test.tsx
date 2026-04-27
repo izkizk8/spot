@@ -11,7 +11,7 @@ let capturedOnChange: ((date: Date) => void) | undefined;
 jest.mock('@expo/ui/swift-ui', () => ({
   Host: ({ children }: { children: React.ReactNode }) => children,
   DatePicker: (props: any) => {
-    capturedOnChange = props.onChange;
+    capturedOnChange = props.onDateChange;
     return null;
   },
   RNHostView: ({ children }: { children: React.ReactNode }) => children,

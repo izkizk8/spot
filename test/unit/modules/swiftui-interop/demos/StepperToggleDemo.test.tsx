@@ -12,11 +12,11 @@ let capturedToggleOnChange: ((value: boolean) => void) | undefined;
 jest.mock('@expo/ui/swift-ui', () => ({
   Host: ({ children }: { children: React.ReactNode }) => children,
   Stepper: (props: any) => {
-    capturedStepperOnChange = props.onChange;
+    capturedStepperOnChange = props.onValueChange;
     return null;
   },
   Toggle: (props: any) => {
-    capturedToggleOnChange = props.onChange;
+    capturedToggleOnChange = props.onIsOnChange;
     return null;
   },
   RNHostView: ({ children }: { children: React.ReactNode }) => children,

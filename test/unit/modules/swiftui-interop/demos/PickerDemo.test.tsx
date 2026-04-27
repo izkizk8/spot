@@ -11,7 +11,7 @@ let capturedOnChange: ((selection: string) => void) | undefined;
 jest.mock('@expo/ui/swift-ui', () => ({
   Host: ({ children }: { children: React.ReactNode }) => children,
   Picker: (props: any) => {
-    capturedOnChange = props.onChange;
+    capturedOnChange = props.onSelectionChange;
     return null;
   },
   RNHostView: ({ children }: { children: React.ReactNode }) => children,
