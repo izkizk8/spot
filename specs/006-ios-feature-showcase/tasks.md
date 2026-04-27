@@ -62,14 +62,14 @@ description: "Task list for iOS Feature Showcase"
 
 ### Tests for User Story 1 ⚠️ (write first, must fail before implementation)
 
-- [ ] T016 [P] [US1] Write `test/unit/modules/registry.test.ts` covering: empty `MODULES` array is valid; ids deterministic source-order; no duplicate ids (uses a fixture registry, not the real one) — invariants from data-model.md §ModuleRegistry
+- [X] T016 [P] [US1] Write `test/unit/modules/registry.test.ts` covering: empty `MODULES` array is valid; ids deterministic source-order; no duplicate ids (uses a fixture registry, not the real one) — invariants from data-model.md §ModuleRegistry
 
 ### Implementation for User Story 1
 
-- [ ] T017 [US1] Replace `src/app/index.tsx` with a polished hero showcase composed of `ThemedView` + `ThemedText` only, sized exclusively from `Spacing` in `src/constants/theme.ts`. All styles via `StyleSheet.create()` (FR-003, FR-004)
-- [ ] T018 [P] [US1] Add Reanimated 4 + Worklets entrance motion to the hero (no Animated API). Motion MUST be reduced-motion aware via `useReducedMotion()`
-- [ ] T019 [P] [US1] Implement the empty-state path in `src/app/modules/index.tsx`: when `MODULES.length === 0`, render a friendly `<ThemedView>` with a one-line `<ThemedText>` empty message and an SF Symbol illustration (FR-012). Real grid lands in T029, so write this branch as a guarded early return
-- [ ] T020 [US1] Verify on iOS simulator, Android emulator, and web that Home renders, Modules shows empty state, and Settings is reachable; record the run in the PR description
+- [X] T017 [US1] Replace `src/app/index.tsx` with a polished hero showcase composed of `ThemedView` + `ThemedText` only, sized exclusively from `Spacing` in `src/constants/theme.ts`. All styles via `StyleSheet.create()` (FR-003, FR-004)
+- [X] T018 [P] [US1] Add Reanimated 4 + Worklets entrance motion to the hero (no Animated API). Motion MUST be reduced-motion aware via `useReducedMotion()`
+- [X] T019 [P] [US1] Implement the empty-state path in `src/app/modules/index.tsx`: when `MODULES.length === 0`, render a friendly `<ThemedView>` with a one-line `<ThemedText>` empty message and an SF Symbol illustration (FR-012). Real grid lands in T029, so write this branch as a guarded early return
+- [X] T020 [US1] Verify on iOS simulator, Android emulator, and web that Home renders, Modules shows empty state, and Settings is reachable; record the run in the PR description
 
 **Checkpoint**: Shell is independently demonstrable on all three platforms with zero modules. MVP achieved.
 

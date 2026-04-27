@@ -1,58 +1,57 @@
-import * as Device from 'expo-device';
 import { Platform, StyleSheet } from 'react-native';
+import Animated, {
+  Easing,
+  FadeInDown,
+  FadeIn,
+  useReducedMotion,
+} from 'react-native-reanimated';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { AnimatedIcon } from '@/components/animated-icon';
-import { HintRow } from '@/components/hint-row';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { WebBadge } from '@/components/web-badge';
 import { BottomTabInset, MaxContentWidth, Spacing } from '@/constants/theme';
 
-function getDevMenuHint() {
-  if (Platform.OS === 'web') {
-    return <ThemedText type="small">use browser devtools</ThemedText>;
-  }
-  if (Device.isDevice) {
-    return (
-      <ThemedText type="small">
-        shake device or press <ThemedText type="code">m</ThemedText> in terminal
-      </ThemedText>
-    );
-  }
-  const shortcut = Platform.OS === 'android' ? 'cmd+m (or ctrl+m)' : 'cmd+d';
-  return (
-    <ThemedText type="small">
-      press <ThemedText type="code">{shortcut}</ThemedText>
-    </ThemedText>
-  );
-}
+const ENTER_DURATION = 480;
 
 export default function HomeScreen() {
+  const reducedMotion = useReducedMotion();
+
+  const titleEnter = reducedMotion
+    ? FadeIn.duration(0)
+    : FadeInDown.duration(ENTER_DURATION).easing(Easing.out(Easing.cubic));
+  const subtitleEnter = reducedMotion
+    ? FadeIn.duration(0)
+    : FadeInDown.duration(ENTER_DURATION).delay(120).easing(Easing.out(Easing.cubic));
+  const cardEnter = reducedMotion
+    ? FadeIn.duration(0)
+    : FadeInDown.duration(ENTER_DURATION).delay(240).easing(Easing.out(Easing.cubic));
+
   return (
     <ThemedView style={styles.container}>
       <SafeAreaView style={styles.safeArea}>
         <ThemedView style={styles.heroSection}>
-          <AnimatedIcon />
-          <ThemedText type="title" style={styles.title}>
-            Welcome to&nbsp;Expo
-          </ThemedText>
-        </ThemedView>
+          <Animated.View entering={titleEnter} style={styles.titleWrap}>
+            <ThemedText type="title" style={styles.title}>
+              Spot
+            </ThemedText>
+          </Animated.View>
 
-        <ThemedText type="code" style={styles.code}>
-          get started
-        </ThemedText>
+          <Animated.View entering={subtitleEnter} style={styles.subtitleWrap}>
+            <ThemedText type="subtitle" style={styles.subtitle} themeColor="textSecondary">
+              An iOS feature showcase
+            </ThemedText>
+          </Animated.View>
 
-        <ThemedView type="backgroundElement" style={styles.stepContainer}>
-          <HintRow
-            title="Try editing"
-            hint={<ThemedText type="code">src/app/index.tsx</ThemedText>}
-          />
-          <HintRow title="Dev tools" hint={getDevMenuHint()} />
-          <HintRow
-            title="Fresh start"
-            hint={<ThemedText type="code">npm run reset-project</ThemedText>}
-          />
+          <Animated.View entering={cardEnter} style={styles.cardWrap}>
+            <ThemedView type="backgroundElement" style={styles.card}>
+              <ThemedText type="smallBold">Welcome</ThemedText>
+              <ThemedText type="small" themeColor="textSecondary">
+                Explore the Modules tab to try Liquid Glass and what comes next. Use Settings to
+                pick System, Light, or Dark.
+              </ThemedText>
+            </ThemedView>
+          </Animated.View>
         </ThemedView>
 
         {Platform.OS === 'web' && <WebBadge />}
@@ -64,8 +63,8 @@ export default function HomeScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
     flexDirection: 'row',
+    justifyContent: 'center',
   },
   safeArea: {
     flex: 1,
@@ -81,18 +80,26 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingHorizontal: Spacing.four,
     gap: Spacing.four,
+    alignSelf: 'stretch',
+  },
+  titleWrap: {
+    alignSelf: 'stretch',
+  },
+  subtitleWrap: {
+    alignSelf: 'stretch',
+  },
+  cardWrap: {
+    alignSelf: 'stretch',
   },
   title: {
     textAlign: 'center',
   },
-  code: {
-    textTransform: 'uppercase',
+  subtitle: {
+    textAlign: 'center',
   },
-  stepContainer: {
-    gap: Spacing.three,
-    alignSelf: 'stretch',
-    paddingHorizontal: Spacing.three,
-    paddingVertical: Spacing.four,
+  card: {
+    gap: Spacing.two,
+    padding: Spacing.four,
     borderRadius: Spacing.four,
   },
 });
