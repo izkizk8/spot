@@ -711,21 +711,32 @@ deferred to a future spec if pursued:
 
 ## Notes
 
-- [NEEDS CLARIFICATION: empty-name behaviour for GreetUserIntent]
-  The Edge Cases section requires the empty-name path to be
-  consistent on iOS and on the JS-only fallback, but does not pin
-  a specific behaviour. Recommended default during planning: the
-  Greet button is disabled while the name field is empty or
-  whitespace-only (no default substitution). Resolve in
-  `/speckit.clarify` or `/speckit.plan`.
-- [NEEDS CLARIFICATION: default mood selection on first render]
-  FR-020 requires a documented default selection in the mood
-  picker but does not pin which case. Recommended default during
-  planning: `neutral` (the middle option, least judgemental).
-  Resolve in `/speckit.clarify` or `/speckit.plan`.
-- [NEEDS CLARIFICATION: mood store hard cap] FR-015 requires a
-  documented default cap on `list()` when no limit is requested,
-  and FR-013 / FR-014 leave the on-disk cap implicit.
-  Recommended default during planning: 100 entries on disk; older
-  entries are truncated on `push`. Resolve in `/speckit.clarify`
-  or `/speckit.plan`.
+The three planning-time clarifications below were resolved
+autonomously during `/speckit.plan` using the recommended defaults
+captured by the original specifier. Each resolution is also recorded
+in `plan.md` (Resolved [NEEDS CLARIFICATION]) and in `research.md`
+(Decision 5).
+
+- **Resolved — empty-name behaviour for GreetUserIntent**: the Greet
+  button is **disabled** whenever the name input is empty or
+  whitespace-only (`name.trim().length === 0`). No default
+  substitution. The same disable rule applies on iOS (gating the
+  bridge call) and on the JS-only fallback (gating the inline
+  greeting). On iOS the `GreetUserIntent` Swift body still defends
+  itself by returning `'Hello, there!'` for any empty / whitespace
+  name reaching it from Siri or Shortcuts (where the JS button
+  cannot gate input), so the intent never returns an empty
+  greeting from the system surface either.
+- **Resolved — default mood selection on first render**: the mood
+  picker initialises to **`neutral`** — the middle option, least
+  judgemental, and the safest pre-selection in a self-test panel
+  where the user may tap Log mood without changing the picker.
+  Applies identically to the iOS self-test panel and to the
+  JS-only Mood Logger panel.
+- **Resolved — mood store hard cap**: the on-disk store is capped
+  at **100 entries**; on `push` once the array would exceed 100,
+  the oldest entries are truncated so length stays exactly 100.
+  `list()` without an explicit `limit` returns at most 100 entries
+  (the same cap). UI callers always pass `limit: 20` for the Mood
+  History list, so the on-disk cap is a defence-in-depth bound,
+  not a UI-visible one.
