@@ -109,15 +109,15 @@ description: "Task list for iOS Feature Showcase"
 
 ### Tests for User Story 3 ⚠️ (write first, must fail before implementation)
 
-- [ ] T031 [P] [US3] Write `test/unit/theme/preference.test.tsx` covering: default preference is `'system'`; `setPreference('dark')` updates context and writes the AsyncStorage key `spot.theme.preference`; boot reads the previously written value; AsyncStorage write failure does not throw and in-memory state still updates (FR-021, FR-024)
-- [ ] T032 [P] [US3] Extend the same test file (or a sibling) to assert `EffectiveColorScheme` derivation: `'light'`/`'dark'` win regardless of OS scheme; `'system'` follows `useColorScheme()`; `'unspecified'` defaults to `'light'`
-- [ ] T033 [P] [US3] Add a test asserting that when preference is `'light'` or `'dark'`, OS appearance changes do NOT change `EffectiveColorScheme` (FR-023, edge case "System appearance change while in non-System mode")
+- [X] T031 [P] [US3] Write `test/unit/theme/preference.test.tsx` covering: default preference is `'system'`; `setPreference('dark')` updates context and writes the AsyncStorage key `spot.theme.preference`; boot reads the previously written value; AsyncStorage write failure does not throw and in-memory state still updates (FR-021, FR-024)
+- [X] T032 [P] [US3] Extend the same test file (or a sibling) to assert `EffectiveColorScheme` derivation: `'light'`/`'dark'` win regardless of OS scheme; `'system'` follows `useColorScheme()`; `'unspecified'` defaults to `'light'`
+- [X] T033 [P] [US3] Add a test asserting that when preference is `'light'` or `'dark'`, OS appearance changes do NOT change `EffectiveColorScheme` (FR-023, edge case "System appearance change while in non-System mode")
 
 ### Implementation for User Story 3
 
-- [ ] T034 [US3] Replace the `src/app/settings.tsx` placeholder with the System / Light / Dark switcher UI — three radio-style options inside `ThemedView`, sourced from `usePreference()` and writing through `setPreference()`. All styles via `StyleSheet.create()`. Use `Spacing` only (FR-019)
-- [ ] T035 [US3] Verify (manual + observation in `preference-provider.tsx` from T006) that AsyncStorage writes occur on selection change and read occurs once at boot; ensure the provider exposes a `loaded` flag so the UI can suppress flicker until the persisted value is hydrated (FR-021, SC-004)
-- [ ] T036 [US3] Manually verify on iOS / Android / web that selecting a theme updates Home, Modules grid, and the open Liquid Glass Playground within 500 ms with no partial-update flicker (SC-003)
+- [X] T034 [US3] Replace the `src/app/settings.tsx` placeholder with the System / Light / Dark switcher UI — three radio-style options inside `ThemedView`, sourced from `usePreference()` and writing through `setPreference()`. All styles via `StyleSheet.create()`. Use `Spacing` only (FR-019)
+- [X] T035 [US3] Verify (manual + observation in `preference-provider.tsx` from T006) that AsyncStorage writes occur on selection change and read occurs once at boot; ensure the provider exposes a `loaded` flag so the UI can suppress flicker until the persisted value is hydrated (FR-021, SC-004)
+- [X] T036 [US3] Manually verify on iOS / Android / web that selecting a theme updates Home, Modules grid, and the open Liquid Glass Playground within 500 ms with no partial-update flicker (SC-003)
 
 **Checkpoint**: Theme switching works end-to-end and persists across restarts; the Liquid Glass Playground (US2) re-themes correctly because it consumes the same `useTheme()`.
 
@@ -131,12 +131,12 @@ description: "Task list for iOS Feature Showcase"
 
 ### Tests for User Story 4 ⚠️ (write first, must fail before implementation)
 
-- [ ] T037 [P] [US4] Extend `test/unit/modules/platform-filtering.test.tsx` (from T022) with a case asserting that a manifest declaring `platforms: ['ios']` and `minIOS: '17.0'` is treated as unavailable when the simulated iOS version is `16.0` (FR-006, edge case "Minimum iOS version not met")
+- [X] T037 [P] [US4] Extend `test/unit/modules/platform-filtering.test.tsx` (from T022) with a case asserting that a manifest declaring `platforms: ['ios']` and `minIOS: '17.0'` is treated as unavailable when the simulated iOS version is `16.0` (FR-006, edge case "Minimum iOS version not met")
 
 ### Implementation for User Story 4
 
-- [ ] T038 [US4] Document the "add a module in ≤ 10 minutes" path inline in `src/modules/registry.ts` as a comment block matching `quickstart.md` §"Add a new module" (single source of truth for the developer-facing contract). No new runtime code; this seals SC-006
-- [ ] T039 [US4] Manually walk the quickstart "add a new module" flow with a throwaway stub (do NOT commit the stub); time it; assert it completes in under 10 minutes touching only the new folder + one line in `registry.ts` (SC-006)
+- [X] T038 [US4] Document the "add a module in ≤ 10 minutes" path inline in `src/modules/registry.ts` as a comment block matching `quickstart.md` §"Add a new module" (single source of truth for the developer-facing contract). No new runtime code; this seals SC-006
+- [X] T039 [US4] Manually walk the quickstart "add a new module" flow with a throwaway stub (do NOT commit the stub); time it; assert it completes in under 10 minutes touching only the new folder + one line in `registry.ts` (SC-006)
 
 **Checkpoint**: All four user stories independently demonstrable.
 
