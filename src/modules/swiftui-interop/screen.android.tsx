@@ -25,7 +25,9 @@ export default function SwiftUIInteropScreen() {
     >
       {/* Android banner (FR-012) */}
       <ThemedView type="backgroundElement" style={styles.banner}>
-        <ThemedText type="smallBold">SwiftUI is iOS-only — here's the Material counterpart</ThemedText>
+        <ThemedText type="smallBold">
+          SwiftUI is iOS-only — here's the Material counterpart
+        </ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.demoSection}>

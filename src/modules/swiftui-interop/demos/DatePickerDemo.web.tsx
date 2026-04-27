@@ -36,10 +36,7 @@ export function DatePickerDemo() {
       </ThemedText>
 
       <ThemedView style={styles.controls}>
-        <Pressable
-          onPress={() => adjustDate(-1)}
-          accessibilityRole="button"
-        >
+        <Pressable onPress={() => adjustDate(-1)} accessibilityRole="button">
           <ThemedView type="backgroundSelected" style={styles.button}>
             <ThemedText type="small">−1 day</ThemedText>
           </ThemedView>
@@ -49,10 +46,7 @@ export function DatePickerDemo() {
           <ThemedText type="small">{formatDate(date)}</ThemedText>
         </ThemedView>
 
-        <Pressable
-          onPress={() => adjustDate(1)}
-          accessibilityRole="button"
-        >
+        <Pressable onPress={() => adjustDate(1)} accessibilityRole="button">
           <ThemedView type="backgroundSelected" style={styles.button}>
             <ThemedText type="small">+1 day</ThemedText>
           </ThemedView>

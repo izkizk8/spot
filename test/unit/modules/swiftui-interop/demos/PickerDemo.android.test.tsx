@@ -22,15 +22,15 @@ describe('PickerDemo (Android fallback)', () => {
 
   it('has interactive RN fallback control', () => {
     const { getByText, getAllByRole } = render(<PickerDemo />);
-    
+
     // Should have chip-based or picker-based fallback
     // Fire interaction and verify echo updates
     const chips = getAllByRole('button');
     expect(chips.length).toBeGreaterThan(0);
-    
+
     // Tap a chip
     fireEvent.press(chips[1]);
-    
+
     // Echo should update
     expect(getByText(/Selected:/)).toBeTruthy();
   });

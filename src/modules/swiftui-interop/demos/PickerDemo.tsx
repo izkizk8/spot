@@ -5,7 +5,7 @@
  */
 
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { Host, Picker, RNHostView } from '@expo/ui/swift-ui';
 
 import { ThemedText } from '@/components/themed-text';
@@ -32,21 +32,19 @@ export function PickerDemo() {
       </ThemedText>
 
       <View style={styles.demoRow}>
-        <Host matchContents style={styles.swiftUIContainer}>
+        <Host matchContents>
           <Picker
             selection={selected}
-            onChange={(value: string) => setSelected(value)}
+            onSelectionChange={(value: string) => setSelected(value)}
             label="Choose fruit"
           >
             {OPTIONS.map((opt) => (
-              <Picker.Label key={opt.id} value={opt.id}>
-                {opt.label}
-              </Picker.Label>
+              <Text key={opt.id}>{opt.label}</Text>
             ))}
           </Picker>
         </Host>
 
-        <RNHostView matchContents style={styles.echoContainer}>
+        <RNHostView matchContents>
           <ThemedView type="backgroundElement" style={styles.echo}>
             <ThemedText type="small">Selected: {selectedLabel}</ThemedText>
           </ThemedView>

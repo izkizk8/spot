@@ -23,7 +23,7 @@ import SwiftUIInteropScreen from '@/modules/swiftui-interop/screen';
 describe('SwiftUIInteropScreen (iOS)', () => {
   it('renders all 5 demo blocks in correct order', () => {
     const { getByTestId } = render(<SwiftUIInteropScreen />);
-    
+
     // All demos should be present
     expect(getByTestId('picker-demo')).toBeTruthy();
     expect(getByTestId('color-picker-demo')).toBeTruthy();
@@ -34,7 +34,7 @@ describe('SwiftUIInteropScreen (iOS)', () => {
 
   it('does not render iOS-only fallback banner', () => {
     const { queryByText } = render(<SwiftUIInteropScreen />);
-    
+
     // On iOS, there should be NO banner
     expect(queryByText(/iOS-only/i)).toBeNull();
     expect(queryByText(/Material counterpart/i)).toBeNull();
@@ -43,16 +43,16 @@ describe('SwiftUIInteropScreen (iOS)', () => {
 
   it('renders demos in canonical order (Picker → Color → Date → Slider → StepperToggle)', () => {
     const { getAllByTestId } = render(<SwiftUIInteropScreen />);
-    
+
     // Get all demo containers - they should appear in order
     const demos = [
       'picker-demo',
-      'color-picker-demo', 
+      'color-picker-demo',
       'date-picker-demo',
       'slider-demo',
       'stepper-toggle-demo',
     ];
-    
+
     demos.forEach((testId) => {
       expect(getAllByTestId(testId)).toBeTruthy();
     });

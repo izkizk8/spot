@@ -31,10 +31,10 @@ describe('ColorPickerDemo (iOS)', () => {
 
   it('updates RN swatch when SwiftUI ColorPicker changes', () => {
     const { getByTestId } = render(<ColorPickerDemo />);
-    
+
     const swatch = getByTestId('color-swatch');
     expect(swatch).toBeTruthy();
-    
+
     // Simulate SwiftUI color picker onChange
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {

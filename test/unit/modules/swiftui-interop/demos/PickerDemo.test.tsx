@@ -30,17 +30,17 @@ describe('PickerDemo (iOS)', () => {
   });
 
   it('updates RN echo when SwiftUI Picker changes', () => {
-    const { getByText, queryByText } = render(<PickerDemo />);
-    
+    const { getByText } = render(<PickerDemo />);
+
     // Initially should show first option
     const initialText = getByText(/Apple|Red|Small/i); // one of the default options
     expect(initialText).toBeTruthy();
-    
+
     // Simulate SwiftUI picker onChange callback
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {
       capturedOnChange('option-2'); // Assuming options have IDs like option-1, option-2, etc.
-      
+
       // Should update the echo (rerender needed in real scenario, but test mocks should capture state)
     }
   });

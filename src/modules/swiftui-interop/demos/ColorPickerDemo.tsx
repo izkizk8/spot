@@ -36,15 +36,15 @@ export function ColorPickerDemo() {
       </ThemedText>
 
       <View style={styles.demoRow}>
-        <Host matchContents style={styles.swiftUIContainer}>
+        <Host matchContents>
           <ColorPicker
-            color={color}
-            onChange={(value: string) => setColor(toRNColor(value))}
+            selection={color}
+            onSelectionChange={(value: string) => setColor(toRNColor(value))}
             label="Pick a color"
           />
         </Host>
 
-        <RNHostView matchContents style={styles.echoContainer}>
+        <RNHostView matchContents>
           <ThemedView
             testID="color-swatch"
             style={[

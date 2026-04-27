@@ -59,4 +59,3 @@ const styles = StyleSheet.create({
     borderRadius: Spacing.two,
   },
 });
-

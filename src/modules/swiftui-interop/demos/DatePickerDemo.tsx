@@ -35,28 +35,16 @@ export function DatePickerDemo() {
 
       <View style={styles.demoRow}>
         {/* Compact style */}
-        <Host matchContents style={styles.swiftUIContainer}>
+        <Host matchContents>
           <DatePicker
-            date={date}
-            onChange={(value: Date) => setDate(value)}
-            label="Pick date (compact)"
+            selection={date}
+            onDateChange={(value: Date) => setDate(value)}
+            title="Pick date"
             displayedComponents={['date']}
-            style="compact"
           />
         </Host>
 
-        {/* Wheel style */}
-        <Host matchContents style={styles.swiftUIContainer}>
-          <DatePicker
-            date={date}
-            onChange={(value: Date) => setDate(value)}
-            label="Pick date (wheel)"
-            displayedComponents={['date']}
-            style="wheel"
-          />
-        </Host>
-
-        <RNHostView matchContents style={styles.echoContainer}>
+        <RNHostView matchContents>
           <ThemedView type="backgroundElement" style={styles.echo}>
             <ThemedText type="small">{formatDate(date)}</ThemedText>
           </ThemedView>

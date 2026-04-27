@@ -31,10 +31,10 @@ describe('DatePickerDemo (iOS)', () => {
 
   it('updates RN echo when SwiftUI DatePicker changes', () => {
     const { getByText } = render(<DatePickerDemo />);
-    
+
     // Should show some date text initially
     expect(getByText(/202\d/)).toBeTruthy(); // Year in 2020s
-    
+
     // Simulate SwiftUI date picker onChange
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {

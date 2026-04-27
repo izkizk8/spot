@@ -31,10 +31,10 @@ describe('SliderDemo (iOS)', () => {
 
   it('updates RN bar when SwiftUI Slider changes', () => {
     const { getByTestId } = render(<SliderDemo />);
-    
+
     const bar = getByTestId('slider-bar');
     expect(bar).toBeTruthy();
-    
+
     // Simulate SwiftUI slider onChange
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {

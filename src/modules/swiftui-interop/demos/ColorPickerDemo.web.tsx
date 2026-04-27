@@ -12,8 +12,14 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
 const COLORS = [
-  '#FF6B35', '#F7931E', '#FDC830', '#4CAF50',
-  '#2196F3', '#9C27B0', '#E91E63', '#607D8B',
+  '#FF6B35',
+  '#F7931E',
+  '#FDC830',
+  '#4CAF50',
+  '#2196F3',
+  '#9C27B0',
+  '#E91E63',
+  '#607D8B',
 ] as const;
 
 export function ColorPickerDemo() {

@@ -25,17 +25,17 @@ export function SliderDemo() {
       </ThemedText>
 
       <View style={styles.demoRow}>
-        <Host matchContents style={styles.swiftUIContainer}>
+        <Host matchContents>
           <Slider
             value={value}
             min={0}
             max={100}
-            onChange={(newValue: number) => setValue(Math.round(newValue))}
+            onValueChange={(newValue: number) => setValue(Math.round(newValue))}
             label="Adjust slider"
           />
         </Host>
 
-        <RNHostView matchContents style={styles.echoContainer}>
+        <RNHostView matchContents>
           <ThemedView type="backgroundElement" style={styles.barContainer}>
             <ThemedView
               testID="slider-bar"

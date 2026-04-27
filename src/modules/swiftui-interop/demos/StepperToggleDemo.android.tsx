@@ -26,10 +26,7 @@ export function StepperToggleDemo() {
 
       <ThemedView style={styles.controls}>
         <ThemedView style={styles.stepper}>
-          <Pressable
-            onPress={() => setCount(Math.max(0, count - 1))}
-            accessibilityRole="button"
-          >
+          <Pressable onPress={() => setCount(Math.max(0, count - 1))} accessibilityRole="button">
             <ThemedView type="backgroundSelected" style={styles.button}>
               <ThemedText type="small">−</ThemedText>
             </ThemedView>
@@ -37,16 +34,12 @@ export function StepperToggleDemo() {
           <ThemedText type="small" style={styles.countLabel}>
             {count}
           </ThemedText>
-          <Pressable
-            onPress={() => setCount(Math.min(10, count + 1))}
-            accessibilityRole="button"
-          >
+          <Pressable onPress={() => setCount(Math.min(10, count + 1))} accessibilityRole="button">
             <ThemedView type="backgroundSelected" style={styles.button}>
               <ThemedText type="small">+</ThemedText>
             </ThemedView>
           </Pressable>
         </ThemedView>
-
 
         <Switch
           value={enabled}

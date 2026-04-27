@@ -24,26 +24,26 @@ export function StepperToggleDemo() {
       </ThemedText>
 
       <View style={styles.demoRow}>
-        <Host matchContents style={styles.swiftUIContainer}>
+        <Host matchContents>
           <Stepper
             value={count}
             min={0}
             max={10}
             step={1}
-            onChange={(value: number) => setCount(value)}
+            onValueChange={(value: number) => setCount(value)}
             label="Count"
           />
         </Host>
 
-        <Host matchContents style={styles.swiftUIContainer}>
+        <Host matchContents>
           <Toggle
             isOn={enabled}
-            onChange={(value: boolean) => setEnabled(value)}
+            onIsOnChange={(value: boolean) => setEnabled(value)}
             label="Enabled"
           />
         </Host>
 
-        <RNHostView matchContents style={styles.echoContainer}>
+        <RNHostView matchContents>
           <ThemedView type="backgroundElement" style={styles.echo}>
             <ThemedText type="small">
               Count: {count} • Status: {enabled ? 'on' : 'off'}

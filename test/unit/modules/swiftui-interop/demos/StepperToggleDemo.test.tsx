@@ -37,10 +37,10 @@ describe('StepperToggleDemo (iOS)', () => {
 
   it('updates RN readout when SwiftUI Stepper changes', () => {
     const { getByText } = render(<StepperToggleDemo />);
-    
+
     // Should show some count initially
     expect(getByText(/\d+/)).toBeTruthy();
-    
+
     // Simulate SwiftUI stepper onChange
     expect(capturedStepperOnChange).toBeDefined();
     if (capturedStepperOnChange) {
@@ -51,10 +51,10 @@ describe('StepperToggleDemo (iOS)', () => {
 
   it('updates RN readout when SwiftUI Toggle changes', () => {
     const { getByText } = render(<StepperToggleDemo />);
-    
+
     // Should show toggle state
     expect(getByText(/(on|off|true|false)/i)).toBeTruthy();
-    
+
     // Simulate SwiftUI toggle onChange
     expect(capturedToggleOnChange).toBeDefined();
     if (capturedToggleOnChange) {

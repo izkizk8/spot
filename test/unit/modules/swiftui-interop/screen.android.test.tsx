@@ -27,7 +27,7 @@ describe('SwiftUIInteropScreen (Android)', () => {
 
   it('renders all 5 fallback demos', () => {
     const { getByTestId } = render(<SwiftUIInteropScreen />);
-    
+
     expect(getByTestId('picker-demo')).toBeTruthy();
     expect(getByTestId('color-picker-demo')).toBeTruthy();
     expect(getByTestId('date-picker-demo')).toBeTruthy();
