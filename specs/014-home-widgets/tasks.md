@@ -101,14 +101,14 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-014-widgets\`)
 
 ### Tests for User Story 2
 
-- [ ] T023 [P] [US2] Write `test/unit/modules/widgets-lab/components/SetupInstructions.test.tsx` covering: renders an ordered list of steps; each step has an icon + title + description; mentions the widget kind name `SpotShowcaseWidget` literally; renders only when `isAvailable === true` (component returns `null` otherwise per FR-031). **Acceptance**: Tests fail before T024.
-- [ ] T024 [P] [US2] Write `test/unit/modules/widgets-lab/manifest.test.ts` asserting: `id === 'widgets-lab'`, `title === 'Widgets Lab'`, `platforms` includes `ios`/`android`/`web`, `minIOS === '14.0'`, `render` returns a React element. **Acceptance**: Fails before T026.
+- [x] T023 [P] [US2] Write `test/unit/modules/widgets-lab/components/SetupInstructions.test.tsx` covering: renders an ordered list of steps; each step has an icon + title + description; mentions the widget kind name `SpotShowcaseWidget` literally; renders only when `isAvailable === true` (component returns `null` otherwise per FR-031). **Acceptance**: Tests fail before T024.
+- [x] T024 [P] [US2] Write `test/unit/modules/widgets-lab/manifest.test.ts` asserting: `id === 'widgets-lab'`, `title === 'Widgets Lab'`, `platforms` includes `ios`/`android`/`web`, `minIOS === '14.0'`, `render` returns a React element. **Acceptance**: Fails before T026.
 
 ### Implementation for User Story 2
 
-- [ ] T025 [US2] Create `src/modules/widgets-lab/components/SetupInstructions.tsx` rendering the iOS-specific add-to-Home-Screen walkthrough; reads no external state; pure presentation component using `ThemedView` / `ThemedText` and the `Spacing` scale. **Acceptance**: T023 passes.
-- [ ] T026 [US2] Create `src/modules/widgets-lab/index.tsx` exporting the `ModuleManifest` literal exactly as in data-model.md §`ModuleManifest`; default-exports nothing — module is registered via named export `manifest`. **Acceptance**: T024 passes.
-- [ ] T027 [US2] Edit `src/modules/registry.ts` adding **one** import line (`import { manifest as widgetsLab } from './widgets-lab';`) and **one** array entry (`widgetsLab`) in the modules array, keeping alphabetical order. **Acceptance**: Module appears in the home registry list at runtime; no other registry entries are touched.
+- [x] T025 [US2] Create `src/modules/widgets-lab/components/SetupInstructions.tsx` rendering the iOS-specific add-to-Home-Screen walkthrough; reads no external state; pure presentation component using `ThemedView` / `ThemedText` and the `Spacing` scale. **Acceptance**: T023 passes.
+- [x] T026 [US2] Create `src/modules/widgets-lab/index.tsx` exporting the `ModuleManifest` literal exactly as in data-model.md §`ModuleManifest`; default-exports nothing — module is registered via named export `manifest`. **Acceptance**: T024 passes.
+- [x] T027 [US2] Edit `src/modules/registry.ts` adding **one** import line (`import { manifest as widgetsLab } from './widgets-lab';`) and **one** array entry (`widgetsLab`) in the modules array, keeping alphabetical order. **Acceptance**: Module appears in the home registry list at runtime; no other registry entries are touched.
 
 **Checkpoint**: Module is discoverable from the registry on every platform. iOS users see the SetupInstructions card with platform-specific guidance.
 
