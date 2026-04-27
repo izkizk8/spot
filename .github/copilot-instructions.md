@@ -80,6 +80,6 @@ Rules:
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/005-infra-tooling-upgrade/plan.md`
+at `specs/006-ios-feature-showcase/plan.md`
 
 <!-- SPECKIT END -->
