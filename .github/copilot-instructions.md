@@ -80,6 +80,6 @@ Rules:
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/011-sensors-playground/plan.md`
+at `specs/012-swift-charts-playground/plan.md`
 
 <!-- SPECKIT END -->
