@@ -27,9 +27,7 @@ export type EventLogState = readonly IntentInvocation[];
 
 export const EMPTY_LOG: EventLogState = [] as const;
 
-export type EventLogAction =
-  | { type: 'append'; invocation: IntentInvocation }
-  | { type: 'clear' };
+export type EventLogAction = { type: 'append'; invocation: IntentInvocation } | { type: 'clear' };
 
 export function eventLogReducer(state: EventLogState, action: EventLogAction): EventLogState {
   switch (action.type) {

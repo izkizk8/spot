@@ -48,7 +48,6 @@ function loadBridge(opts: {
       __esModule: true,
       requireOptionalNativeModule: () => native,
     }));
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     mod = require('@/native/app-intents') as BridgeModule;
   });
   if (!mod) throw new Error('failed to load bridge module');

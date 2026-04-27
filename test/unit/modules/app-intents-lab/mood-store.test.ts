@@ -49,7 +49,6 @@ jest.mock('@react-native-async-storage/async-storage', () => {
 });
 
 import AsyncStorageRaw from '@react-native-async-storage/async-storage';
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const asyncStorageModule = require('@react-native-async-storage/async-storage') as {
   __reset: () => void;
   __setThrowGet: (b: boolean) => void;

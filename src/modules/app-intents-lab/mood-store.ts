@@ -63,7 +63,7 @@ export async function list(opts?: { limit?: number }): Promise<readonly MoodReco
   if (limit <= 0) return [];
   const all = await readAll();
   // On-disk is oldest-first → reverse for newest-first then slice.
-  const newestFirst = [...all].reverse();
+  const newestFirst = all.toReversed();
   return newestFirst.slice(0, limit);
 }
 
