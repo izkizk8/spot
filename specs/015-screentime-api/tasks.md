@@ -34,11 +34,11 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 **Purpose**: Create the empty directory skeleton expected by every later phase. No production code yet.
 
-- [ ] T001 Create directory `src/modules/screentime-lab/` and `src/modules/screentime-lab/components/`
-- [ ] T002 [P] Create directory `src/native/` entries for screentime variants (no files yet — scaffolded in Foundational)
-- [ ] T003 [P] Create directory `plugins/with-screentime/`
-- [ ] T004 [P] Create directory `native/ios/screentime/`
-- [ ] T005 [P] Create test directories `test/unit/modules/screentime-lab/components/`, `test/unit/native/`, `test/unit/plugins/with-screentime/`
+- [X] T001 Create directory `src/modules/screentime-lab/` and `src/modules/screentime-lab/components/`
+- [X] T002 [P] Create directory `src/native/` entries for screentime variants (no files yet — scaffolded in Foundational)
+- [X] T003 [P] Create directory `plugins/with-screentime/`
+- [X] T004 [P] Create directory `native/ios/screentime/`
+- [X] T005 [P] Create test directories `test/unit/modules/screentime-lab/components/`, `test/unit/native/`, `test/unit/plugins/with-screentime/`
 
 **Checkpoint**: Empty skeleton ready. No imports resolve yet — that is expected.
 
@@ -52,12 +52,12 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 ### Foundational Tests (write FIRST, must FAIL before implementation)
 
-- [ ] T006 [P] Write reducer test `test/unit/modules/screentime-lab/screentime-state.test.ts` covering the full transition table from `data-model.md` §2 (every action, every guard, `BRIDGE_ERROR` does not mutate other fields, `lastError` cleared on next success, invariants in §1)
-- [ ] T007 [P] Write JS bridge contract test `test/unit/native/screentime.test.ts` asserting:
+- [X] T006 [P] Write reducer test `test/unit/modules/screentime-lab/screentime-state.test.ts` covering the full transition table from `data-model.md` §2 (every action, every guard, `BRIDGE_ERROR` does not mutate other fields, `lastError` cleared on next success, invariants in §1)
+- [X] T007 [P] Write JS bridge contract test `test/unit/native/screentime.test.ts` asserting:
   - `isAvailable()` is synchronous and returns `false` when the optional native module is absent
   - `entitlementsAvailable()` never throws (resolves `false` when probe rejects)
   - All other async methods reject with `EntitlementMissingError` when the probe returned `false`, and with `ScreenTimeNotSupportedError` on the android/web stubs (use jest mocking of `requireOptionalNativeModule` and platform module resolution)
-- [ ] T008 [P] Write config plugin test `test/unit/plugins/with-screentime/index.test.ts` asserting against fixture Expo configs:
+- [X] T008 [P] Write config plugin test `test/unit/plugins/with-screentime/index.test.ts` asserting against fixture Expo configs:
   - Adds `com.apple.developer.family-controls` entitlement to the main iOS target
   - Adds a `DeviceActivityMonitorExtension` target with bundle-ID suffix `.screentimemonitor`
   - Coexists with feature 007's `LiveActivityWidget` target and feature 014's `HomeWidget` target without collision
@@ -66,22 +66,22 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 ### Foundational Implementation
 
-- [ ] T009 [P] Create shared types + error classes `src/native/screentime.types.ts` per `contracts/screentime-bridge.contract.ts` (export `AuthorizationStatus`, `SelectionSummary`, `MonitoringSchedule`, `ScreenTimeBridge` interface, `ScreenTimeNotSupportedError`, `EntitlementMissingError`, `PickerCancelledError`)
-- [ ] T010 [US-Foundation] Implement reducer `src/modules/screentime-lab/screentime-state.ts` per `data-model.md` §1–§2 and `contracts/screentime-state.contract.ts` (pure functions, all 10 action types, all guards, exported `initialState`, exported `reducer`) — makes T006 pass
-- [ ] T011 Implement iOS JS bridge `src/native/screentime.ts` using `requireOptionalNativeModule('SpotScreenTime')`; on `null`, route every async method through a sentinel-rejecting wrapper that throws `EntitlementMissingError`; memoize `entitlementsAvailable()` for process lifetime — partially makes T007 pass (depends on T009)
-- [ ] T012 [P] Implement Android stub `src/native/screentime.android.ts`: `isAvailable() => false`, `entitlementsAvailable() => Promise.resolve(false)`, all other methods reject with `new ScreenTimeNotSupportedError()` — completes T007 (depends on T009)
-- [ ] T013 [P] Implement Web stub `src/native/screentime.web.ts`: same shape as android stub — completes T007 (depends on T009)
-- [ ] T014 [P] Create Swift `native/ios/screentime/ScreenTimeManager.swift` scaffold: expo-modules-core `Module` definition exposing the 9 bridge methods, every call wrapped in `do/catch`, `entitlementsAvailable()` probes `AuthorizationCenter.shared.authorizationStatus` inside `guard`, `OSLog` subsystem `com.spot.screentime` — scaffold-only, not unit-testable on Windows (R-001, R-005, FR-014, FR-015)
-- [ ] T015 [P] Create Swift `native/ios/screentime/FamilyActivityPickerView.swift` scaffold: `UIViewControllerRepresentable` wrapping `FamilyActivityPicker` via `UIHostingController`, returns base64-encoded `FamilyActivitySelection` or `PickerCancelledError` (R-002) — scaffold-only, not unit-testable on Windows
-- [ ] T016 [P] Create Swift `native/ios/screentime/DeviceActivityMonitorExtension.swift` scaffold: `DeviceActivityMonitor` subclass implementing `intervalDidStart` / `intervalDidEnd` / `eventDidReachThreshold`, all logging via `OSLog` subsystem `com.spot.screentime` category `monitor` (R-003, FR-014) — scaffold-only, not unit-testable on Windows
-- [ ] T017 [P] Create `native/ios/screentime/ScreenTime.podspec` registering the Swift sources with expo-modules-core
-- [ ] T018 [P] Create plugin entry point `plugins/with-screentime/index.ts` (default-exported `ConfigPlugin` composing the three sub-plugins below)
-- [ ] T019 [P] Create `plugins/with-screentime/add-entitlement.ts` adding `com.apple.developer.family-controls` to the iOS target's `.entitlements` (with comment about Apple approval requirement, FR-019)
-- [ ] T020 [P] Create `plugins/with-screentime/add-monitor-extension.ts` adding the `DeviceActivityMonitorExtension` target with bundle-ID suffix `.screentimemonitor`, `NSExtensionPointIdentifier = com.apple.deviceactivity.monitor-extension`, `IPHONEOS_DEPLOYMENT_TARGET = 16.0` (FR-020, R-003)
-- [ ] T021 [P] Create `plugins/with-screentime/consume-app-group.ts` reading (NOT writing) feature 014's App Group bundle marker and attaching the App Group entitlement to the new monitor extension target only; on missing marker, log a prebuild warning and continue (FR-021, R-004)
-- [ ] T022 Wire the four plugin files together in `plugins/with-screentime/index.ts` so that running it twice is idempotent (FR-022) — completes T008 (depends on T018, T019, T020, T021)
-- [ ] T023 Edit `app.json`: add `"./plugins/with-screentime"` to the `expo.plugins` array (single additive line, after the existing `with-live-activity` entry; FR-029)
-- [ ] T024 Edit `src/modules/registry.ts`: add the import line and the array entry for the screentime-lab manifest (single additive 1–2 line edit; FR-001, FR-029)
+- [X] T009 [P] Create shared types + error classes `src/native/screentime.types.ts` per `contracts/screentime-bridge.contract.ts` (export `AuthorizationStatus`, `SelectionSummary`, `MonitoringSchedule`, `ScreenTimeBridge` interface, `ScreenTimeNotSupportedError`, `EntitlementMissingError`, `PickerCancelledError`)
+- [X] T010 [US-Foundation] Implement reducer `src/modules/screentime-lab/screentime-state.ts` per `data-model.md` §1–§2 and `contracts/screentime-state.contract.ts` (pure functions, all 10 action types, all guards, exported `initialState`, exported `reducer`) — makes T006 pass
+- [X] T011 Implement iOS JS bridge `src/native/screentime.ts` using `requireOptionalNativeModule('SpotScreenTime')`; on `null`, route every async method through a sentinel-rejecting wrapper that throws `EntitlementMissingError`; memoize `entitlementsAvailable()` for process lifetime — partially makes T007 pass (depends on T009)
+- [X] T012 [P] Implement Android stub `src/native/screentime.android.ts`: `isAvailable() => false`, `entitlementsAvailable() => Promise.resolve(false)`, all other methods reject with `new ScreenTimeNotSupportedError()` — completes T007 (depends on T009)
+- [X] T013 [P] Implement Web stub `src/native/screentime.web.ts`: same shape as android stub — completes T007 (depends on T009)
+- [X] T014 [P] Create Swift `native/ios/screentime/ScreenTimeManager.swift` scaffold: expo-modules-core `Module` definition exposing the 9 bridge methods, every call wrapped in `do/catch`, `entitlementsAvailable()` probes `AuthorizationCenter.shared.authorizationStatus` inside `guard`, `OSLog` subsystem `com.spot.screentime` — scaffold-only, not unit-testable on Windows (R-001, R-005, FR-014, FR-015)
+- [X] T015 [P] Create Swift `native/ios/screentime/FamilyActivityPickerView.swift` scaffold: `UIViewControllerRepresentable` wrapping `FamilyActivityPicker` via `UIHostingController`, returns base64-encoded `FamilyActivitySelection` or `PickerCancelledError` (R-002) — scaffold-only, not unit-testable on Windows
+- [X] T016 [P] Create Swift `native/ios/screentime/DeviceActivityMonitorExtension.swift` scaffold: `DeviceActivityMonitor` subclass implementing `intervalDidStart` / `intervalDidEnd` / `eventDidReachThreshold`, all logging via `OSLog` subsystem `com.spot.screentime` category `monitor` (R-003, FR-014) — scaffold-only, not unit-testable on Windows
+- [X] T017 [P] Create `native/ios/screentime/ScreenTime.podspec` registering the Swift sources with expo-modules-core
+- [X] T018 [P] Create plugin entry point `plugins/with-screentime/index.ts` (default-exported `ConfigPlugin` composing the three sub-plugins below)
+- [X] T019 [P] Create `plugins/with-screentime/add-entitlement.ts` adding `com.apple.developer.family-controls` to the iOS target's `.entitlements` (with comment about Apple approval requirement, FR-019)
+- [X] T020 [P] Create `plugins/with-screentime/add-monitor-extension.ts` adding the `DeviceActivityMonitorExtension` target with bundle-ID suffix `.screentimemonitor`, `NSExtensionPointIdentifier = com.apple.deviceactivity.monitor-extension`, `IPHONEOS_DEPLOYMENT_TARGET = 16.0` (FR-020, R-003)
+- [X] T021 [P] Create `plugins/with-screentime/consume-app-group.ts` reading (NOT writing) feature 014's App Group bundle marker and attaching the App Group entitlement to the new monitor extension target only; on missing marker, log a prebuild warning and continue (FR-021, R-004)
+- [X] T022 Wire the four plugin files together in `plugins/with-screentime/index.ts` so that running it twice is idempotent (FR-022) — completes T008 (depends on T018, T019, T020, T021)
+- [X] T023 Edit `app.json`: add `"./plugins/with-screentime"` to the `expo.plugins` array (single additive line, after the existing `with-live-activity` entry; FR-029)
+- [X] T024 Edit `src/modules/registry.ts`: add the import line and the array entry for the screentime-lab manifest (single additive 1–2 line edit; FR-001, FR-029)
 
 **Checkpoint**: Reducer, bridge (3 platform variants), Swift scaffold, config plugin, app.json, and registry are wired. The module appears in the grid. Foundational tests T006 / T007 / T008 are green. User-story phases can now begin in parallel.
 
@@ -95,23 +95,23 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 ### Tests for User Story 1 (write FIRST, must FAIL before implementation)
 
-- [ ] T025 [P] [US1] Test `test/unit/modules/screentime-lab/components/EntitlementBanner.test.tsx`: renders nothing when `entitlementsAvailable === true`; renders banner copy + link to `quickstart.md` when `false`; uses `ThemedView` / `ThemedText` and the `Spacing` scale (FR-009, FR-028)
-- [ ] T026 [P] [US1] Test `test/unit/modules/screentime-lab/components/AuthorizationCard.test.tsx`: renders status pill reflecting `authStatus`; "Request Authorization" button dispatches the bridge call; on `EntitlementMissingError` rejection, status text reads "Entitlement required …"; button stays enabled (FR-005, FR-013, FR-023)
-- [ ] T027 [P] [US1] Test `test/unit/modules/screentime-lab/components/ActivityPickerCard.test.tsx`: renders "Pick apps & categories" button + summary "N apps / N categories / N web domains" + "Clear selection" button; rejection path surfaces status; null `selectionSummary` shows empty-state copy (FR-006, FR-023)
-- [ ] T028 [P] [US1] Test `test/unit/modules/screentime-lab/components/ShieldingCard.test.tsx`: both buttons disabled when `selectionSummary === null`; enabled when a selection exists; rejection path surfaces status; success path updates pill (FR-007, FR-023)
-- [ ] T029 [P] [US1] Test `test/unit/modules/screentime-lab/components/MonitoringCard.test.tsx`: renders "Start daily monitor" / "Stop monitor" + Active/Inactive pill + default schedule "09:00–21:00 daily"; rejection path surfaces status (FR-008, FR-023)
-- [ ] T030 [P] [US1] Test `test/unit/modules/screentime-lab/screen.test.tsx`: iOS screen renders `EntitlementBanner` at top when probe → false; renders the four cards in the FR-004 order (Authorization, Activity Selection, Shielding, Monitoring); when probe → true, banner is absent; mount triggers hydration dispatch sequence per `data-model.md` §4 (FR-009, FR-017)
-- [ ] T031 [P] [US1] Test `test/unit/modules/screentime-lab/manifest.test.ts`: manifest `id === 'screentime-lab'`, `platforms` includes `'ios'`, `'android'`, `'web'`, `minIOS === '16.0'`, `screen` reference resolves (FR-001)
+- [X] T025 [P] [US1] Test `test/unit/modules/screentime-lab/components/EntitlementBanner.test.tsx`: renders nothing when `entitlementsAvailable === true`; renders banner copy + link to `quickstart.md` when `false`; uses `ThemedView` / `ThemedText` and the `Spacing` scale (FR-009, FR-028)
+- [X] T026 [P] [US1] Test `test/unit/modules/screentime-lab/components/AuthorizationCard.test.tsx`: renders status pill reflecting `authStatus`; "Request Authorization" button dispatches the bridge call; on `EntitlementMissingError` rejection, status text reads "Entitlement required …"; button stays enabled (FR-005, FR-013, FR-023)
+- [X] T027 [P] [US1] Test `test/unit/modules/screentime-lab/components/ActivityPickerCard.test.tsx`: renders "Pick apps & categories" button + summary "N apps / N categories / N web domains" + "Clear selection" button; rejection path surfaces status; null `selectionSummary` shows empty-state copy (FR-006, FR-023)
+- [X] T028 [P] [US1] Test `test/unit/modules/screentime-lab/components/ShieldingCard.test.tsx`: both buttons disabled when `selectionSummary === null`; enabled when a selection exists; rejection path surfaces status; success path updates pill (FR-007, FR-023)
+- [X] T029 [P] [US1] Test `test/unit/modules/screentime-lab/components/MonitoringCard.test.tsx`: renders "Start daily monitor" / "Stop monitor" + Active/Inactive pill + default schedule "09:00–21:00 daily"; rejection path surfaces status (FR-008, FR-023)
+- [X] T030 [P] [US1] Test `test/unit/modules/screentime-lab/screen.test.tsx`: iOS screen renders `EntitlementBanner` at top when probe → false; renders the four cards in the FR-004 order (Authorization, Activity Selection, Shielding, Monitoring); when probe → true, banner is absent; mount triggers hydration dispatch sequence per `data-model.md` §4 (FR-009, FR-017)
+- [X] T031 [P] [US1] Test `test/unit/modules/screentime-lab/manifest.test.ts`: manifest `id === 'screentime-lab'`, `platforms` includes `'ios'`, `'android'`, `'web'`, `minIOS === '16.0'`, `screen` reference resolves (FR-001)
 
 ### Implementation for User Story 1
 
-- [ ] T032 [P] [US1] Implement `src/modules/screentime-lab/components/EntitlementBanner.tsx` (props: `{ visible: boolean }`; uses `ThemedView` + `ThemedText` + `Spacing`; styles via `StyleSheet.create()`) — makes T025 pass
-- [ ] T033 [P] [US1] Implement `src/modules/screentime-lab/components/AuthorizationCard.tsx` (consumes reducer state + dispatch via props or context; calls `bridge.requestAuthorization()`; on rejection, dispatches `BRIDGE_ERROR`) — makes T026 pass
-- [ ] T034 [P] [US1] Implement `src/modules/screentime-lab/components/ActivityPickerCard.tsx` (calls `bridge.pickActivity()` and dispatches `SELECTION_PICKED` / `BRIDGE_ERROR`; renders summary; "Clear selection" dispatches `SELECTION_CLEARED`) — makes T027 pass
-- [ ] T035 [P] [US1] Implement `src/modules/screentime-lab/components/ShieldingCard.tsx` (Apply / Clear buttons gated by `selectionSummary !== null`; dispatches `SHIELDING_APPLIED` / `SHIELDING_CLEARED` / `BRIDGE_ERROR`) — makes T028 pass
-- [ ] T036 [P] [US1] Implement `src/modules/screentime-lab/components/MonitoringCard.tsx` (Start passes hard-coded `{startHour:9,startMinute:0,endHour:21,endMinute:0}` to `bridge.startMonitoring`; Stop calls `bridge.stopMonitoring`) — makes T029 pass
-- [ ] T037 [US1] Implement `src/modules/screentime-lab/screen.tsx`: mounts `useReducer(reducer, initialState)`; on mount dispatches the hydration sequence from `data-model.md` §4; renders `EntitlementBanner` + the 4 cards in FR-004 order; threads state + dispatch into each card — makes T030 pass (depends on T010, T011, T032–T036)
-- [ ] T038 [US1] Implement `src/modules/screentime-lab/index.tsx`: exports a `ModuleManifest` with `id: 'screentime-lab'`, `title: 'Screen Time Lab'`, `platforms: ['ios','android','web']`, `minIOS: '16.0'`, `screen: () => import('./screen')` — makes T031 pass
+- [X] T032 [P] [US1] Implement `src/modules/screentime-lab/components/EntitlementBanner.tsx` (props: `{ visible: boolean }`; uses `ThemedView` + `ThemedText` + `Spacing`; styles via `StyleSheet.create()`) — makes T025 pass
+- [X] T033 [P] [US1] Implement `src/modules/screentime-lab/components/AuthorizationCard.tsx` (consumes reducer state + dispatch via props or context; calls `bridge.requestAuthorization()`; on rejection, dispatches `BRIDGE_ERROR`) — makes T026 pass
+- [X] T034 [P] [US1] Implement `src/modules/screentime-lab/components/ActivityPickerCard.tsx` (calls `bridge.pickActivity()` and dispatches `SELECTION_PICKED` / `BRIDGE_ERROR`; renders summary; "Clear selection" dispatches `SELECTION_CLEARED`) — makes T027 pass
+- [X] T035 [P] [US1] Implement `src/modules/screentime-lab/components/ShieldingCard.tsx` (Apply / Clear buttons gated by `selectionSummary !== null`; dispatches `SHIELDING_APPLIED` / `SHIELDING_CLEARED` / `BRIDGE_ERROR`) — makes T028 pass
+- [X] T036 [P] [US1] Implement `src/modules/screentime-lab/components/MonitoringCard.tsx` (Start passes hard-coded `{startHour:9,startMinute:0,endHour:21,endMinute:0}` to `bridge.startMonitoring`; Stop calls `bridge.stopMonitoring`) — makes T029 pass
+- [X] T037 [US1] Implement `src/modules/screentime-lab/screen.tsx`: mounts `useReducer(reducer, initialState)`; on mount dispatches the hydration sequence from `data-model.md` §4; renders `EntitlementBanner` + the 4 cards in FR-004 order; threads state + dispatch into each card — makes T030 pass (depends on T010, T011, T032–T036)
+- [X] T038 [US1] Implement `src/modules/screentime-lab/index.tsx`: exports a `ModuleManifest` with `id: 'screentime-lab'`, `title: 'Screen Time Lab'`, `platforms: ['ios','android','web']`, `minIOS: '16.0'`, `screen: () => import('./screen')` — makes T031 pass
 
 **Checkpoint**: User Story 1 is complete. The module appears in the Modules grid, the iOS unentitled path is fully exercised, every native action surfaces a typed "Entitlement required" status without crashing, and `pnpm test` is green for the entire screentime-lab tree on Windows. **This is the MVP — deploy/demo from here.**
 
@@ -125,13 +125,13 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 ### Tests for User Story 4 (write FIRST)
 
-- [ ] T039 [P] [US4] Test `test/unit/modules/screentime-lab/screen.android.test.tsx`: renders "Screen Time API is iOS-only" banner; renders the four cards with all interactive controls in their disabled state; never throws; never invokes any async bridge method (FR-010)
-- [ ] T040 [P] [US4] Test `test/unit/modules/screentime-lab/screen.web.test.tsx`: identical assertions to T039 but for the web variant (FR-010)
+- [X] T039 [P] [US4] Test `test/unit/modules/screentime-lab/screen.android.test.tsx`: renders "Screen Time API is iOS-only" banner; renders the four cards with all interactive controls in their disabled state; never throws; never invokes any async bridge method (FR-010)
+- [X] T040 [P] [US4] Test `test/unit/modules/screentime-lab/screen.web.test.tsx`: identical assertions to T039 but for the web variant (FR-010)
 
 ### Implementation for User Story 4
 
-- [ ] T041 [P] [US4] Implement `src/modules/screentime-lab/screen.android.tsx`: renders an iOS-only `EntitlementBanner` variant (or a sibling `IosOnlyBanner` reusing the same component) and the four cards in disabled mode (no bridge calls) — makes T039 pass
-- [ ] T042 [P] [US4] Implement `src/modules/screentime-lab/screen.web.tsx`: identical to T041 but for web — makes T040 pass
+- [X] T041 [P] [US4] Implement `src/modules/screentime-lab/screen.android.tsx`: renders an iOS-only `EntitlementBanner` variant (or a sibling `IosOnlyBanner` reusing the same component) and the four cards in disabled mode (no bridge calls) — makes T039 pass
+- [X] T042 [P] [US4] Implement `src/modules/screentime-lab/screen.web.tsx`: identical to T041 but for web — makes T040 pass
 
 **Checkpoint**: User Story 4 is complete. Module renders identically (educationally) on all three platforms; iOS-only behavior is explicit, never a silent failure.
 
@@ -147,11 +147,11 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 ### Implementation for User Story 2
 
-- [ ] T043 [US2] Complete Swift `native/ios/screentime/ScreenTimeManager.swift` `requestAuthorization()` body: `try await AuthorizationCenter.shared.requestAuthorization(for: .individual)`; map to `AuthorizationStatus` string; persist to App Group key `screentime.auth.status` (FR-011, data-model §4) — verifies on-device per quickstart §3a
-- [ ] T044 [US2] Complete Swift `ScreenTimeManager.swift` `getAuthorizationStatus()` body: read `AuthorizationCenter.shared.authorizationStatus`, map to string union (FR-011)
-- [ ] T045 [US2] Complete Swift `ScreenTimeManager.swift` `pickActivity()` body: present `FamilyActivityPickerView` (T015) via `UIHostingController` from the topmost view controller; on done, base64-encode the `FamilyActivitySelection` via `Codable`, persist `screentime.selection.token` + cached counts to the App Group, resolve with `SelectionSummary`; on cancel, reject with `PickerCancelled` (R-002, FR-016)
-- [ ] T046 [US2] Complete Swift `ScreenTimeManager.swift` `applyShielding(token:)` body: base64-decode `FamilyActivitySelection`, assign `store.shield.applications`, `store.shield.applicationCategories = .specific(...)`, `store.shield.webDomains` on the default `ManagedSettingsStore()`; idempotent re-apply (R-005)
-- [ ] T047 [US2] Complete Swift `ScreenTimeManager.swift` `clearShielding()` body: assign all three `store.shield.*` properties to `nil` / empty (R-005)
+- [X] T043 [US2] Complete Swift `native/ios/screentime/ScreenTimeManager.swift` `requestAuthorization()` body: `try await AuthorizationCenter.shared.requestAuthorization(for: .individual)`; map to `AuthorizationStatus` string; persist to App Group key `screentime.auth.status` (FR-011, data-model §4) — verifies on-device per quickstart §3a
+- [X] T044 [US2] Complete Swift `ScreenTimeManager.swift` `getAuthorizationStatus()` body: read `AuthorizationCenter.shared.authorizationStatus`, map to string union (FR-011)
+- [X] T045 [US2] Complete Swift `ScreenTimeManager.swift` `pickActivity()` body: present `FamilyActivityPickerView` (T015) via `UIHostingController` from the topmost view controller; on done, base64-encode the `FamilyActivitySelection` via `Codable`, persist `screentime.selection.token` + cached counts to the App Group, resolve with `SelectionSummary`; on cancel, reject with `PickerCancelled` (R-002, FR-016)
+- [X] T046 [US2] Complete Swift `ScreenTimeManager.swift` `applyShielding(token:)` body: base64-decode `FamilyActivitySelection`, assign `store.shield.applications`, `store.shield.applicationCategories = .specific(...)`, `store.shield.webDomains` on the default `ManagedSettingsStore()`; idempotent re-apply (R-005)
+- [X] T047 [US2] Complete Swift `ScreenTimeManager.swift` `clearShielding()` body: assign all three `store.shield.*` properties to `nil` / empty (R-005)
 
 **Checkpoint**: User Story 2 is complete. On an entitled device, the authorize → pick → shield → unshield loop works end-to-end and is verified via the Quickstart §3b ritual. Unentitled and non-iOS paths remain typed-rejection (no regression to US1 / US4).
 
@@ -165,11 +165,11 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 ### Implementation for User Story 3
 
-- [ ] T048 [US3] Complete Swift `ScreenTimeManager.swift` `startMonitoring(token:schedule:)` body: build `DeviceActivitySchedule` from the JS schedule (intervalStart/intervalEnd `DateComponents`), call `DeviceActivityCenter().startMonitoring(.init(rawValue: "spot.screentime.daily"), during: schedule)`; persist `screentime.monitoring.activityName` + JSON-encoded schedule to the App Group (R-003, data-model §4)
-- [ ] T049 [US3] Complete Swift `ScreenTimeManager.swift` `stopMonitoring()` body: `DeviceActivityCenter().stopMonitoring([.init(rawValue: "spot.screentime.daily")])`; clear App Group monitoring keys; no-op (no rejection) when nothing is registered
-- [ ] T050 [US3] Complete Swift `native/ios/screentime/DeviceActivityMonitorExtension.swift` `intervalDidStart` body: read selection token from App Group; `os_log("intervalDidStart for activity %{public}@", log: monitorLog, type: .info, activity.rawValue)`
-- [ ] T051 [US3] Complete Swift `DeviceActivityMonitorExtension.swift` `intervalDidEnd` body: same logging pattern with "intervalDidEnd"; release any locally-held resources
-- [ ] T052 [US3] Complete Swift `DeviceActivityMonitorExtension.swift` `eventDidReachThreshold(_:activity:)` body: log threshold event with event name + activity name (defensive — feature does not currently register thresholds, but the callback must exist per Apple API)
+- [X] T048 [US3] Complete Swift `ScreenTimeManager.swift` `startMonitoring(token:schedule:)` body: build `DeviceActivitySchedule` from the JS schedule (intervalStart/intervalEnd `DateComponents`), call `DeviceActivityCenter().startMonitoring(.init(rawValue: "spot.screentime.daily"), during: schedule)`; persist `screentime.monitoring.activityName` + JSON-encoded schedule to the App Group (R-003, data-model §4)
+- [X] T049 [US3] Complete Swift `ScreenTimeManager.swift` `stopMonitoring()` body: `DeviceActivityCenter().stopMonitoring([.init(rawValue: "spot.screentime.daily")])`; clear App Group monitoring keys; no-op (no rejection) when nothing is registered
+- [X] T050 [US3] Complete Swift `native/ios/screentime/DeviceActivityMonitorExtension.swift` `intervalDidStart` body: read selection token from App Group; `os_log("intervalDidStart for activity %{public}@", log: monitorLog, type: .info, activity.rawValue)`
+- [X] T051 [US3] Complete Swift `DeviceActivityMonitorExtension.swift` `intervalDidEnd` body: same logging pattern with "intervalDidEnd"; release any locally-held resources
+- [X] T052 [US3] Complete Swift `DeviceActivityMonitorExtension.swift` `eventDidReachThreshold(_:activity:)` body: log threshold event with event name + activity name (defensive — feature does not currently register thresholds, but the callback must exist per Apple API)
 
 **Checkpoint**: User Story 3 is complete. On an entitled device, the start → wait-for-boundary → stop loop is verified via `quickstart.md` §3c. Console.app shows the expected log lines. Unentitled / non-iOS paths remain typed-rejection.
 
@@ -179,13 +179,13 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-015-screentime
 
 **Purpose**: Quality gates and validation that span every story.
 
-- [ ] T053 Run `pnpm format` from repo root and commit any formatting changes
-- [ ] T054 Run `pnpm lint` from repo root; fix any lint errors introduced by the feature (no new disable comments)
-- [ ] T055 Run `pnpm typecheck` from repo root; resolve any TypeScript strict-mode errors (FR-028)
-- [ ] T056 Run `pnpm test` from repo root; confirm every screentime-lab test from T006–T008, T025–T031, T039–T040 is green and overall suite is green (FR-026)
-- [ ] T057 [P] Walk through `quickstart.md` §4a (run JS-pure suite) and §4b (manually exercise unentitled UI path in simulator) — record observations in commit message or PR description
-- [ ] T058 [P] Walk through `quickstart.md` §4c (cross-platform graceful degradation on Android + Web) — confirm no console exceptions
-- [ ] T059 Verify FR-029 additive-change-set constraint by running `git diff --stat main..HEAD -- src/ app.json` and confirming the only modifications to existing files are `src/modules/registry.ts` (≤ 2 lines) and `app.json` (1 plugin entry)
+- [X] T053 Run `pnpm format` from repo root and commit any formatting changes
+- [X] T054 Run `pnpm lint` from repo root; fix any lint errors introduced by the feature (no new disable comments)
+- [X] T055 Run `pnpm typecheck` from repo root; resolve any TypeScript strict-mode errors (FR-028)
+- [X] T056 Run `pnpm test` from repo root; confirm every screentime-lab test from T006–T008, T025–T031, T039–T040 is green and overall suite is green (FR-026)
+- [X] T057 [P] Walk through `quickstart.md` §4a (run JS-pure suite) and §4b (manually exercise unentitled UI path in simulator) — record observations in commit message or PR description
+- [X] T058 [P] Walk through `quickstart.md` §4c (cross-platform graceful degradation on Android + Web) — confirm no console exceptions
+- [X] T059 Verify FR-029 additive-change-set constraint by running `git diff --stat main..HEAD -- src/ app.json` and confirming the only modifications to existing files are `src/modules/registry.ts` (≤ 2 lines) and `app.json` (1 plugin entry)
 
 ---
 
