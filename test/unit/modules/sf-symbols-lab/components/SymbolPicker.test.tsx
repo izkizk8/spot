@@ -10,17 +10,14 @@ import { SymbolPicker } from '@/modules/sf-symbols-lab/components/SymbolPicker';
 import { SYMBOLS } from '@/modules/sf-symbols-lab/catalog';
 
 // Mock AnimatedSymbol since SymbolPicker renders it for each cell
-jest.mock(
-  '@/modules/sf-symbols-lab/components/AnimatedSymbol',
-  () => ({
-    AnimatedSymbol: jest.fn(({ name }) => {
-      const React = require('react');
-      return React.createElement('View', {
-        testID: `animated-symbol-${name}`,
-      });
-    }),
+jest.mock('@/modules/sf-symbols-lab/components/AnimatedSymbol', () => ({
+  AnimatedSymbol: jest.fn(({ name }) => {
+    const ReactLib = require('react');
+    return ReactLib.createElement('View', {
+      testID: `animated-symbol-${name}`,
+    });
   }),
-);
+}));
 
 describe('SymbolPicker', () => {
   it('renders all 12 symbol cells', () => {

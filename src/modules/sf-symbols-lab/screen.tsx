@@ -4,7 +4,8 @@
  * Per contracts/test-plan.md Story 3.
  */
 
-import React, { useState } from 'react';
+import * as React from 'react';
+import { useState } from 'react';
 import { Platform, ScrollView, StyleSheet, Pressable, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
@@ -19,7 +20,7 @@ import { TintPicker } from './components/TintPicker';
 import { SYMBOLS, EFFECTS, TINTS } from './catalog';
 import type { CuratedSymbol, EffectMetadata, Speed, Repeat, TintToken } from './types';
 
-export function SfSymbolsLabScreen(): JSX.Element {
+export function SfSymbolsLabScreen() {
   const theme = useTheme();
 
   // State
@@ -131,8 +132,7 @@ export function SfSymbolsLabScreen(): JSX.Element {
               style={[
                 styles.segment,
                 {
-                  backgroundColor:
-                    speed === s ? theme.backgroundSelected : theme.backgroundElement,
+                  backgroundColor: speed === s ? theme.backgroundSelected : theme.backgroundElement,
                 },
               ]}
             >
@@ -148,11 +148,13 @@ export function SfSymbolsLabScreen(): JSX.Element {
           Repeat
         </ThemedText>
         <View style={styles.segmentedControl} pointerEvents={repeatEnabled ? 'auto' : 'none'}>
-          {([
-            { value: 'once', label: 'Once' },
-            { value: 'thrice', label: '3 times' },
-            { value: 'indefinite', label: 'Indefinite' },
-          ] as const).map(({ value, label }) => (
+          {(
+            [
+              { value: 'once', label: 'Once' },
+              { value: 'thrice', label: '3 times' },
+              { value: 'indefinite', label: 'Indefinite' },
+            ] as const
+          ).map(({ value, label }) => (
             <Pressable
               key={value}
               role="button"

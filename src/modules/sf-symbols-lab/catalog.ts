@@ -4,11 +4,7 @@
  * Per data-model.md and contracts/catalog.md.
  */
 
-import type {
-  CuratedSymbol,
-  EffectMetadata,
-  TintToken,
-} from './types';
+import type { CuratedSymbol, EffectMetadata, TintToken } from './types';
 
 /**
  * The 12 curated SF Symbols (FR-005, FR-008 default = first).
@@ -90,9 +86,4 @@ export const EFFECTS: readonly EffectMetadata[] = [
  * The 4 tint swatches exposed by TintPicker (FR-022).
  * Resolved at render via useTheme() so no color literals here (FR-036).
  */
-export const TINTS: readonly TintToken[] = [
-  'text',
-  'textSecondary',
-  'tintA',
-  'tintB',
-] as const;
+export const TINTS: readonly TintToken[] = ['text', 'textSecondary', 'tintA', 'tintB'] as const;

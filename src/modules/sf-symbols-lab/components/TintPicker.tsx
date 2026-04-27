@@ -4,7 +4,7 @@
  * Per contracts/test-plan.md Story 2.
  */
 
-import React from 'react';
+import * as React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import type { TintToken } from '../types';
 import { Spacing } from '@/constants/theme';
@@ -16,11 +16,7 @@ export interface TintPickerProps {
   onSelect: (tint: TintToken) => void;
 }
 
-export function TintPicker({
-  tints,
-  selectedTint,
-  onSelect,
-}: TintPickerProps): JSX.Element {
+export function TintPicker({ tints, selectedTint, onSelect }: TintPickerProps) {
   const theme = useTheme();
 
   return (

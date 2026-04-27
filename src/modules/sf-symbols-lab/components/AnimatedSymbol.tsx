@@ -4,7 +4,8 @@
  * Per contracts/animated-symbol.md.
  */
 
-import React, { useEffect } from 'react';
+import * as React from 'react';
+import { useEffect } from 'react';
 import { Platform, StyleSheet, Text } from 'react-native';
 import Reanimated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import type { AnimatedSymbolProps } from '../types';
@@ -15,41 +16,10 @@ import { Spacing } from '@/constants/theme';
  * AnimatedSymbol - the single component in this module that imports expo-symbols.
  * Wraps SymbolView with per-effect mapping and cross-platform fallback.
  */
-export function AnimatedSymbol(props: AnimatedSymbolProps): JSX.Element {
-  const {
-    name,
-    secondaryName,
-    effect,
-    speed,
-    repeat,
-    tintColor,
-    size,
-    playToken,
-  } = props;
+export function AnimatedSymbol(props: AnimatedSymbolProps) {
+  const { name, secondaryName, effect, speed, repeat, tintColor, size, playToken } = props;
 
-  // Non-iOS fallback: plain text glyph
-  if (Platform.OS !== 'ios') {
-    return (
-      <ThemedView style={styles.fallbackContainer}>
-        <Text
-          style={[
-            styles.fallbackText,
-            { color: tintColor, fontSize: size * 0.5 },
-          ]}
-        >
-          {name}
-        </Text>
-      </ThemedView>
-    );
-  }
-
-  // iOS: Import SymbolView dynamically at render time
-  const { SymbolView } = require('expo-symbols');
-
-  // Build animationSpec based on effect and playToken
-  const animationSpec = playToken > 0 ? buildAnimationSpec(effect, speed, repeat) : undefined;
-
-  // Emulated effects: Replace, Appear, Disappear use Reanimated
+  // Hooks must be called unconditionally
   const opacity = useSharedValue(1);
 
   useEffect(() => {
@@ -77,10 +47,25 @@ export function AnimatedSymbol(props: AnimatedSymbolProps): JSX.Element {
     opacity: opacity.value,
   }));
 
+  // Non-iOS fallback: plain text glyph
+  if (Platform.OS !== 'ios') {
+    return (
+      <ThemedView style={styles.fallbackContainer}>
+        <Text style={[styles.fallbackText, { color: tintColor, fontSize: size * 0.5 }]}>
+          {name}
+        </Text>
+      </ThemedView>
+    );
+  }
+
+  // iOS: Import SymbolView dynamically at render time
+  const { SymbolView } = require('expo-symbols');
+
+  // Build animationSpec based on effect and playToken
+  const animationSpec = playToken > 0 ? buildAnimationSpec(effect, speed, repeat) : undefined;
+
   // For Replace effect, use secondaryName after crossfade
-  const displayName = effect === 'replace' && secondaryName && playToken > 0 
-    ? secondaryName 
-    : name;
+  const displayName = effect === 'replace' && secondaryName && playToken > 0 ? secondaryName : name;
 
   return (
     <Reanimated.View style={[styles.container, animatedStyle]}>

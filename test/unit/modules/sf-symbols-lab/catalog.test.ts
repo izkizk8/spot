@@ -69,27 +69,13 @@ describe('SF Symbols Lab — Catalog', () => {
     });
 
     it('bounce, pulse, scale, variable-color respond to speed', () => {
-      const respondsToSpeed = EFFECTS.filter((e) => e.respondsToSpeed).map(
-        (e) => e.id,
-      );
-      expect(respondsToSpeed.sort()).toEqual([
-        'bounce',
-        'pulse',
-        'scale',
-        'variable-color',
-      ]);
+      const respondsToSpeed = EFFECTS.filter((e) => e.respondsToSpeed).map((e) => e.id);
+      expect(respondsToSpeed.toSorted()).toEqual(['bounce', 'pulse', 'scale', 'variable-color']);
     });
 
     it('bounce, pulse, scale, variable-color respond to repeat', () => {
-      const respondsToRepeat = EFFECTS.filter(
-        (e) => e.respondsToRepeat,
-      ).map((e) => e.id);
-      expect(respondsToRepeat.sort()).toEqual([
-        'bounce',
-        'pulse',
-        'scale',
-        'variable-color',
-      ]);
+      const respondsToRepeat = EFFECTS.filter((e) => e.respondsToRepeat).map((e) => e.id);
+      expect(respondsToRepeat.toSorted()).toEqual(['bounce', 'pulse', 'scale', 'variable-color']);
     });
   });
 });

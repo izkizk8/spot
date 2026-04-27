@@ -4,7 +4,7 @@
  * Per contracts/test-plan.md Story 1.
  */
 
-import React from 'react';
+import * as React from 'react';
 import { View, Pressable, StyleSheet } from 'react-native';
 import type { EffectMetadata } from '../types';
 import { ThemedText } from '@/components/themed-text';
@@ -17,11 +17,7 @@ export interface EffectPickerProps {
   onSelect: (effect: EffectMetadata) => void;
 }
 
-export function EffectPicker({
-  effects,
-  selectedId,
-  onSelect,
-}: EffectPickerProps): JSX.Element {
+export function EffectPicker({ effects, selectedId, onSelect }: EffectPickerProps) {
   const theme = useTheme();
 
   return (
@@ -37,18 +33,13 @@ export function EffectPicker({
             style={[
               styles.segment,
               {
-                backgroundColor: isSelected
-                  ? theme.backgroundSelected
-                  : theme.backgroundElement,
+                backgroundColor: isSelected ? theme.backgroundSelected : theme.backgroundElement,
               },
             ]}
           >
             <ThemedText
               type="small"
-              style={[
-                styles.label,
-                { color: isSelected ? theme.text : theme.textSecondary },
-              ]}
+              style={[styles.label, { color: isSelected ? theme.text : theme.textSecondary }]}
             >
               {effect.displayLabel}
             </ThemedText>

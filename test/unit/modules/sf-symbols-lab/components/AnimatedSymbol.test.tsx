@@ -11,16 +11,15 @@ import { AnimatedSymbol } from '@/modules/sf-symbols-lab/components/AnimatedSymb
 
 // Mock expo-symbols
 jest.mock('expo-symbols', () => {
-  const React = require('react');
-  const SymbolView = jest.fn(
-    ({ name, tintColor, size, animationSpec }) =>
-      React.createElement('View', {
-        testID: 'symbol-view-mock',
-        'data-name': name,
-        'data-tint': String(tintColor),
-        'data-size': size,
-        'data-animation-spec': JSON.stringify(animationSpec ?? null),
-      }),
+  const ReactLib = require('react');
+  const SymbolView = jest.fn(({ name, tintColor, size, animationSpec }) =>
+    ReactLib.createElement('View', {
+      testID: 'symbol-view-mock',
+      'data-name': name,
+      'data-tint': String(tintColor),
+      'data-size': size,
+      'data-animation-spec': JSON.stringify(animationSpec ?? null),
+    }),
   );
   return { SymbolView };
 });
@@ -51,7 +50,7 @@ describe('AnimatedSymbol', () => {
 
     it('passes undefined animationSpec when playToken is 0', () => {
       render(<AnimatedSymbol {...defaultProps} playToken={0} />);
-      
+
       expect(SymbolViewMock).toHaveBeenCalled();
       const callArgs = (SymbolViewMock as jest.Mock).mock.calls[0][0];
       expect(callArgs.animationSpec).toBeUndefined();
@@ -121,13 +120,7 @@ describe('AnimatedSymbol', () => {
     });
 
     it('passes pulse animationSpec', () => {
-      render(
-        <AnimatedSymbol
-          {...defaultProps}
-          effect="pulse"
-          playToken={1}
-        />,
-      );
+      render(<AnimatedSymbol {...defaultProps} effect="pulse" playToken={1} />);
 
       expect(SymbolViewMock).toHaveBeenCalled();
       const callArgs = (SymbolViewMock as jest.Mock).mock.calls[0][0];
@@ -137,13 +130,7 @@ describe('AnimatedSymbol', () => {
     });
 
     it('passes scale animationSpec', () => {
-      render(
-        <AnimatedSymbol
-          {...defaultProps}
-          effect="scale"
-          playToken={1}
-        />,
-      );
+      render(<AnimatedSymbol {...defaultProps} effect="scale" playToken={1} />);
 
       expect(SymbolViewMock).toHaveBeenCalled();
       const callArgs = (SymbolViewMock as jest.Mock).mock.calls[0][0];
@@ -151,13 +138,7 @@ describe('AnimatedSymbol', () => {
     });
 
     it('passes variableAnimationSpec for variable-color effect', () => {
-      render(
-        <AnimatedSymbol
-          {...defaultProps}
-          effect="variable-color"
-          playToken={1}
-        />,
-      );
+      render(<AnimatedSymbol {...defaultProps} effect="variable-color" playToken={1} />);
 
       expect(SymbolViewMock).toHaveBeenCalled();
       const callArgs = (SymbolViewMock as jest.Mock).mock.calls[0][0];
@@ -185,13 +166,7 @@ describe('AnimatedSymbol', () => {
     });
 
     it('handles appear effect (emulated via wrapper)', () => {
-      render(
-        <AnimatedSymbol
-          {...defaultProps}
-          effect="appear"
-          playToken={1}
-        />,
-      );
+      render(<AnimatedSymbol {...defaultProps} effect="appear" playToken={1} />);
 
       expect(SymbolViewMock).toHaveBeenCalled();
       const callArgs = (SymbolViewMock as jest.Mock).mock.calls[0][0];
@@ -199,13 +174,7 @@ describe('AnimatedSymbol', () => {
     });
 
     it('handles disappear effect (emulated via wrapper)', () => {
-      render(
-        <AnimatedSymbol
-          {...defaultProps}
-          effect="disappear"
-          playToken={1}
-        />,
-      );
+      render(<AnimatedSymbol {...defaultProps} effect="disappear" playToken={1} />);
 
       expect(SymbolViewMock).toHaveBeenCalled();
       const callArgs = (SymbolViewMock as jest.Mock).mock.calls[0][0];
@@ -229,16 +198,12 @@ describe('AnimatedSymbol', () => {
     });
 
     it('applies tintColor to the text fallback', () => {
-      render(
-        <AnimatedSymbol {...defaultProps} tintColor="#00FF00" />,
-      );
+      render(<AnimatedSymbol {...defaultProps} tintColor="#00FF00" />);
 
       const textElement = screen.getByText('heart.fill');
       const styles = textElement.props.style;
       // Check that color is applied (may be in array or object)
-      const flatStyle = Array.isArray(styles)
-        ? Object.assign({}, ...styles)
-        : styles;
+      const flatStyle = Array.isArray(styles) ? Object.assign({}, ...styles) : styles;
       expect(flatStyle.color).toBe('#00FF00');
     });
 

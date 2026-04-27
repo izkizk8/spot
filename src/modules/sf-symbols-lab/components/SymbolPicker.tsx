@@ -4,7 +4,7 @@
  * Per contracts/test-plan.md Story 1.
  */
 
-import React from 'react';
+import * as React from 'react';
 import { ScrollView, Pressable, StyleSheet } from 'react-native';
 import type { CuratedSymbol } from '../types';
 import { AnimatedSymbol } from './AnimatedSymbol';
@@ -18,12 +18,7 @@ export interface SymbolPickerProps {
   tintColor: string;
 }
 
-export function SymbolPicker({
-  symbols,
-  selectedName,
-  onSelect,
-  tintColor,
-}: SymbolPickerProps): JSX.Element {
+export function SymbolPicker({ symbols, selectedName, onSelect, tintColor }: SymbolPickerProps) {
   const theme = useTheme();
 
   return (
@@ -43,9 +38,7 @@ export function SymbolPicker({
             style={[
               styles.cell,
               {
-                backgroundColor: isSelected
-                  ? theme.backgroundSelected
-                  : theme.backgroundElement,
+                backgroundColor: isSelected ? theme.backgroundSelected : theme.backgroundElement,
               },
             ]}
           >

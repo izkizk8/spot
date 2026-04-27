@@ -12,13 +12,7 @@ import { EFFECTS } from '@/modules/sf-symbols-lab/catalog';
 describe('EffectPicker', () => {
   it('renders all 7 effect segments with their displayLabels', () => {
     const onSelect = jest.fn();
-    render(
-      <EffectPicker
-        effects={EFFECTS}
-        selectedId="bounce"
-        onSelect={onSelect}
-      />,
-    );
+    render(<EffectPicker effects={EFFECTS} selectedId="bounce" onSelect={onSelect} />);
 
     // Check that all 7 effect labels are present
     expect(screen.getByText('Bounce')).toBeTruthy();
@@ -32,13 +26,7 @@ describe('EffectPicker', () => {
 
   it('highlights Bounce segment when selectedId is "bounce"', () => {
     const onSelect = jest.fn();
-    render(
-      <EffectPicker
-        effects={EFFECTS}
-        selectedId="bounce"
-        onSelect={onSelect}
-      />,
-    );
+    render(<EffectPicker effects={EFFECTS} selectedId="bounce" onSelect={onSelect} />);
 
     // Find all buttons (segments)
     const buttons = screen.getAllByRole('button');
@@ -47,13 +35,7 @@ describe('EffectPicker', () => {
 
   it('calls onSelect with the effect when a segment is tapped', () => {
     const onSelect = jest.fn();
-    render(
-      <EffectPicker
-        effects={EFFECTS}
-        selectedId="bounce"
-        onSelect={onSelect}
-      />,
-    );
+    render(<EffectPicker effects={EFFECTS} selectedId="bounce" onSelect={onSelect} />);
 
     // Tap the Pulse segment (index 1)
     const buttons = screen.getAllByRole('button');
@@ -65,13 +47,7 @@ describe('EffectPicker', () => {
 
   it('calls onSelect when Replace is tapped', () => {
     const onSelect = jest.fn();
-    render(
-      <EffectPicker
-        effects={EFFECTS}
-        selectedId="bounce"
-        onSelect={onSelect}
-      />,
-    );
+    render(<EffectPicker effects={EFFECTS} selectedId="bounce" onSelect={onSelect} />);
 
     // Find and tap Replace segment (index 4)
     const buttons = screen.getAllByRole('button');
@@ -85,13 +61,7 @@ describe('EffectPicker', () => {
 
   it('applies selected state to the active segment', () => {
     const onSelect = jest.fn();
-    render(
-      <EffectPicker
-        effects={EFFECTS}
-        selectedId="scale"
-        onSelect={onSelect}
-      />,
-    );
+    render(<EffectPicker effects={EFFECTS} selectedId="scale" onSelect={onSelect} />);
 
     const buttons = screen.getAllByRole('button');
     // Scale is at index 2
