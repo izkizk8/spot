@@ -4,12 +4,24 @@ import React from 'react';
 jest.mock('react-native-reanimated', () => {
   const ReactLib = require('react');
   const { View } = require('react-native');
+  class Keyframe {
+    duration() {
+      return this;
+    }
+    delay() {
+      return this;
+    }
+    withCallback() {
+      return this;
+    }
+  }
   return {
     __esModule: true,
     default: {
       View: (props: Record<string, unknown> & { children?: React.ReactNode }) =>
         ReactLib.createElement(View, props, props.children),
     },
+    Keyframe,
     useSharedValue: (v: unknown) => ({ value: v }),
     useAnimatedStyle: () => ({}),
     withTiming: (v: unknown) => v,

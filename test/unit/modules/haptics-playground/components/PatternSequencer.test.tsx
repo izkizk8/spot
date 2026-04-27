@@ -3,7 +3,7 @@ import { act, fireEvent, render } from '@testing-library/react-native';
 import React from 'react';
 
 jest.mock('@/modules/haptics-playground/haptic-driver', () => ({
-  play: jest.fn().mockResolvedValue(undefined),
+  play: jest.fn(() => Promise.resolve()),
 }));
 
 import { play } from '@/modules/haptics-playground/haptic-driver';

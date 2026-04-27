@@ -49,7 +49,7 @@ export interface PatternSequencerProps {
 
 const fireCell = (cell: Cell): void => {
   if (cell.kind === 'off') return;
-  if (cell.kind === 'selection' as never) return;
+  if (cell.kind === ('selection' as never)) return;
   if (cell.kind === 'impact') {
     void play('impact', cell.intensity as ImpactIntensity);
     return;

@@ -2,9 +2,9 @@ import { describe, expect, it, jest, beforeEach } from '@jest/globals';
 import { Platform } from 'react-native';
 
 jest.mock('expo-haptics', () => ({
-  notificationAsync: jest.fn().mockResolvedValue(undefined),
-  impactAsync: jest.fn().mockResolvedValue(undefined),
-  selectionAsync: jest.fn().mockResolvedValue(undefined),
+  notificationAsync: jest.fn(() => Promise.resolve()),
+  impactAsync: jest.fn(() => Promise.resolve()),
+  selectionAsync: jest.fn(() => Promise.resolve()),
   NotificationFeedbackType: { Success: 'Success', Warning: 'Warning', Error: 'Error' },
   ImpactFeedbackStyle: {
     Light: 'Light',
@@ -55,7 +55,9 @@ describe('haptic-driver', () => {
     });
 
     it('never throws when underlying API rejects', async () => {
-      (Haptics.impactAsync as jest.Mock).mockRejectedValueOnce(new Error('boom'));
+      (
+        Haptics.impactAsync as jest.MockedFunction<typeof Haptics.impactAsync>
+      ).mockRejectedValueOnce(new Error('boom'));
       await expect(play('impact', 'medium')).resolves.toBeUndefined();
     });
   });

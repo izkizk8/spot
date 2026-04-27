@@ -46,7 +46,9 @@ describe('PresetList', () => {
   });
 
   it('renders empty state when no presets', () => {
-    const { getByText } = render(<PresetList presets={[]} onPlay={jest.fn()} onDelete={jest.fn()} />);
+    const { getByText } = render(
+      <PresetList presets={[]} onPlay={jest.fn()} onDelete={jest.fn()} />,
+    );
     expect(getByText(/no presets/i)).toBeTruthy();
   });
 });

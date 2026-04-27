@@ -6,12 +6,24 @@ import { Platform } from 'react-native';
 jest.mock('react-native-reanimated', () => {
   const ReactLib = require('react');
   const { View } = require('react-native');
+  class Keyframe {
+    duration() {
+      return this;
+    }
+    delay() {
+      return this;
+    }
+    withCallback() {
+      return this;
+    }
+  }
   return {
     __esModule: true,
     default: {
       View: (props: Record<string, unknown> & { children?: React.ReactNode }) =>
         ReactLib.createElement(View, props, props.children),
     },
+    Keyframe,
     useSharedValue: (v: unknown) => ({ value: v }),
     useAnimatedStyle: () => ({}),
     withTiming: (v: unknown) => v,
@@ -20,16 +32,16 @@ jest.mock('react-native-reanimated', () => {
 });
 
 jest.mock('@/modules/haptics-playground/haptic-driver', () => ({
-  play: jest.fn().mockResolvedValue(undefined),
+  play: jest.fn(() => Promise.resolve()),
 }));
 
-const mockList = jest.fn();
-const mockSave = jest.fn();
-const mockDelete = jest.fn();
+const mockList = jest.fn<() => Promise<Preset[]>>();
+const mockSave = jest.fn<(p: Pattern) => Promise<Preset>>();
+const mockDelete = jest.fn<(id: string) => Promise<void>>();
 jest.mock('@/modules/haptics-playground/presets-store', () => ({
-  list: (...a: unknown[]) => mockList(...a),
-  save: (...a: unknown[]) => mockSave(...a),
-  deletePreset: (...a: unknown[]) => mockDelete(...a),
+  list: (...a: unknown[]) => mockList(...(a as [])),
+  save: (p: Pattern) => mockSave(p),
+  deletePreset: (id: string) => mockDelete(id),
 }));
 
 import { play } from '@/modules/haptics-playground/haptic-driver';
@@ -70,7 +82,8 @@ describe('HapticsPlaygroundScreen', () => {
   it('shows web banner when Platform.OS === web', async () => {
     setOS('web');
     const { findByText } = render(<HapticsPlaygroundScreen />);
-    await findByText(/Haptics not supported/i);
+    const banner = await findByText(/Haptics not supported/i);
+    expect(banner).toBeTruthy();
   });
 
   it('does not show web banner on ios', async () => {

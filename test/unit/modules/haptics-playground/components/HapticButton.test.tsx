@@ -5,12 +5,24 @@ import React from 'react';
 jest.mock('react-native-reanimated', () => {
   const ReactLib = require('react');
   const { View } = require('react-native');
+  class Keyframe {
+    duration() {
+      return this;
+    }
+    delay() {
+      return this;
+    }
+    withCallback() {
+      return this;
+    }
+  }
   return {
     __esModule: true,
     default: {
       View: (props: Record<string, unknown> & { children?: React.ReactNode }) =>
         ReactLib.createElement(View, props, props.children),
     },
+    Keyframe,
     useSharedValue: (v: unknown) => ({ value: v }),
     useAnimatedStyle: () => ({}),
     withTiming: (v: unknown) => v,
@@ -19,7 +31,7 @@ jest.mock('react-native-reanimated', () => {
 });
 
 jest.mock('@/modules/haptics-playground/haptic-driver', () => ({
-  play: jest.fn().mockResolvedValue(undefined),
+  play: jest.fn(() => Promise.resolve()),
 }));
 
 import { play } from '@/modules/haptics-playground/haptic-driver';
@@ -31,16 +43,12 @@ describe('HapticButton', () => {
   });
 
   it('renders the label', () => {
-    const { getByText } = render(
-      <HapticButton kind="impact" intensity="medium" label="Medium" />,
-    );
+    const { getByText } = render(<HapticButton kind="impact" intensity="medium" label="Medium" />);
     expect(getByText('Medium')).toBeTruthy();
   });
 
   it('calls driver.play with (kind, intensity) on press', () => {
-    const { getByText } = render(
-      <HapticButton kind="impact" intensity="medium" label="Medium" />,
-    );
+    const { getByText } = render(<HapticButton kind="impact" intensity="medium" label="Medium" />);
     fireEvent.press(getByText('Medium'));
     expect(play).toHaveBeenCalledTimes(1);
     expect(play).toHaveBeenCalledWith('impact', 'medium');

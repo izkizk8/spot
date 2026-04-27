@@ -10,13 +10,7 @@ import { PatternSequencer } from './components/PatternSequencer';
 import { PresetList } from './components/PresetList';
 import { play } from './haptic-driver';
 import { deletePreset, list, save } from './presets-store';
-import type {
-  Cell,
-  ImpactIntensity,
-  NotificationIntensity,
-  Pattern,
-  Preset,
-} from './types';
+import type { Cell, ImpactIntensity, NotificationIntensity, Pattern, Preset } from './types';
 
 const STEP_MS = 120;
 

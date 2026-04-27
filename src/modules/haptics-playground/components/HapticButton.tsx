@@ -1,11 +1,6 @@
-import React, { useCallback } from 'react';
-import { Pressable, StyleSheet } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withSequence,
-  withTiming,
-} from 'react-native-reanimated';
+import React, { useCallback, useState } from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, { Keyframe } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
@@ -19,31 +14,28 @@ export interface HapticButtonProps {
   readonly label: string;
 }
 
-export function HapticButton({ kind, intensity, label }: HapticButtonProps) {
-  const scale = useSharedValue(1);
-  const opacity = useSharedValue(1);
+const pulseKeyframe = new Keyframe({
+  0: { transform: [{ scale: 1 }], opacity: 1 },
+  50: { transform: [{ scale: 1.08 }], opacity: 0.7 },
+  100: { transform: [{ scale: 1 }], opacity: 1 },
+});
 
-  const animatedStyle = useAnimatedStyle(() => ({
-    transform: [{ scale: scale.value }],
-    opacity: opacity.value,
-  }));
+export function HapticButton({ kind, intensity, label }: HapticButtonProps) {
+  const [pulseKey, setPulseKey] = useState(0);
 
   const handlePress = useCallback(() => {
-    scale.value = withSequence(withTiming(1.08, { duration: 90 }), withTiming(1, { duration: 90 }));
-    opacity.value = withSequence(
-      withTiming(0.7, { duration: 90 }),
-      withTiming(1, { duration: 90 }),
-    );
-    // Cast accommodates the 3 overloads (kind/intensity coupling enforced at call sites).
+    setPulseKey((k) => k + 1);
     void (play as (k: HapticKind, i?: HapticIntensity) => Promise<void>)(kind, intensity);
-  }, [kind, intensity, scale, opacity]);
+  }, [kind, intensity]);
 
   return (
-    <Animated.View style={[styles.wrapper, animatedStyle]}>
-      <Pressable onPress={handlePress} style={styles.pressable} accessibilityRole="button">
-        <ThemedText type="smallBold">{label}</ThemedText>
-      </Pressable>
-    </Animated.View>
+    <View style={styles.wrapper}>
+      <Animated.View key={pulseKey} entering={pulseKeyframe.duration(180)}>
+        <Pressable onPress={handlePress} style={styles.pressable} accessibilityRole="button">
+          <ThemedText type="smallBold">{label}</ThemedText>
+        </Pressable>
+      </Animated.View>
+    </View>
   );
 }
 
