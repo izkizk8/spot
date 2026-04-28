@@ -298,9 +298,7 @@ describe('AudioSessionCard', () => {
       const onSelect = jest.fn();
       const view = renderCard({ onSelect });
       for (const cat of ALL_CATEGORIES) {
-        expect(
-          findButton(view.UNSAFE_root, new RegExp(`^Category: ${cat}$`)),
-        ).toBeTruthy();
+        expect(findButton(view.UNSAFE_root, new RegExp(`^Category: ${cat}$`))).toBeTruthy();
       }
       fireEvent.press(findButton(view.UNSAFE_root, /^Category: Record$/));
       expect(onSelect).toHaveBeenCalledWith('Record');

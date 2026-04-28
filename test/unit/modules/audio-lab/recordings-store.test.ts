@@ -22,7 +22,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 jest.mock('expo-file-system');
 jest.mock('expo-file-system/legacy', () => jest.requireMock('expo-file-system'));
 
-const fs = jest.requireMock('expo-file-system') as typeof import('../../../__mocks__/expo-file-system');
+const fs = jest.requireMock(
+  'expo-file-system',
+) as typeof import('../../../__mocks__/expo-file-system');
 
 function makeRecording(over: Partial<Recording> = {}): Recording {
   return {
@@ -179,10 +181,9 @@ describe('recordings-store', () => {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify([makeRecording()]));
       await clearRecordings();
       expect(await AsyncStorage.getItem(STORAGE_KEY)).toBeNull();
-      expect(fs.deleteAsync).toHaveBeenCalledWith(
-        fs.documentDirectory + 'recordings',
-        { idempotent: true },
-      );
+      expect(fs.deleteAsync).toHaveBeenCalledWith(fs.documentDirectory + 'recordings', {
+        idempotent: true,
+      });
     });
 
     it('on Web, only clears the AsyncStorage key (no FileSystem call)', async () => {

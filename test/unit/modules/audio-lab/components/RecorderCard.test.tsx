@@ -31,7 +31,6 @@ function flattenStyle(s: unknown): Record<string, unknown> {
 const noop = () => undefined;
 
 describe('RecorderCard', () => {
-
   it('renders Record button + elapsed 00:00:00 + waveform meter + quality selector', () => {
     const view = render(
       <RecorderCard

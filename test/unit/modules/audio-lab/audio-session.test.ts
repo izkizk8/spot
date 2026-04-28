@@ -6,10 +6,7 @@
 
 import { Platform } from 'react-native';
 
-import {
-  applyCategory,
-  mapCategoryToOptions,
-} from '@/modules/audio-lab/audio-session';
+import { applyCategory, mapCategoryToOptions } from '@/modules/audio-lab/audio-session';
 
 jest.mock('expo-audio');
 
@@ -56,9 +53,7 @@ describe('audio-session.mapCategoryToOptions — exact mapping', () => {
 
 describe('audio-session.mapCategoryToOptions — purity', () => {
   it('returns deep-equal output for the same input on repeated calls', () => {
-    expect(mapCategoryToOptions('PlayAndRecord')).toEqual(
-      mapCategoryToOptions('PlayAndRecord'),
-    );
+    expect(mapCategoryToOptions('PlayAndRecord')).toEqual(mapCategoryToOptions('PlayAndRecord'));
   });
 
   it('omits interruptionMode (undefined, not null/empty) for non-Ambient categories', () => {

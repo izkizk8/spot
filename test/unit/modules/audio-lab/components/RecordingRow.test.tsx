@@ -17,7 +17,9 @@ import RecordingRow from '@/modules/audio-lab/components/RecordingRow';
 
 jest.mock('expo-sharing');
 
-const mockSharing = jest.requireMock('expo-sharing') as typeof import('../../../../__mocks__/expo-sharing');
+const mockSharing = jest.requireMock(
+  'expo-sharing',
+) as typeof import('../../../../__mocks__/expo-sharing');
 
 function makeRecording(over: Partial<Recording> = {}): Recording {
   return {
@@ -56,9 +58,7 @@ function flattenStyle(s: unknown): Record<string, unknown> {
 }
 
 function findBadge(root: any, id: string) {
-  return root.findAll(
-    (n: any) => n.props && n.props.testID === `audio-lab-quality-${id}`,
-  )[0];
+  return root.findAll((n: any) => n.props && n.props.testID === `audio-lab-quality-${id}`)[0];
 }
 
 describe('RecordingRow', () => {
@@ -103,13 +103,23 @@ describe('RecordingRow', () => {
   it('formats sizes per bytesToHuman: 512 B and 4.2 MB', () => {
     const a = makeRecording({ id: 'a', name: 'a.m4a', sizeBytes: 512 });
     const view1 = render(
-      <RecordingRow recording={a} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+      <RecordingRow
+        recording={a}
+        onPlay={() => undefined}
+        onDelete={() => undefined}
+        onShare={() => undefined}
+      />,
     );
     expect(view1.queryByText(/512 B/)).toBeTruthy();
 
     const b = makeRecording({ id: 'b', name: 'b.m4a', sizeBytes: Math.round(4.2 * 1024 * 1024) });
     const view2 = render(
-      <RecordingRow recording={b} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+      <RecordingRow
+        recording={b}
+        onPlay={() => undefined}
+        onDelete={() => undefined}
+        onShare={() => undefined}
+      />,
     );
     expect(view2.queryByText(/4\.2 MB/)).toBeTruthy();
   });
@@ -117,7 +127,12 @@ describe('RecordingRow', () => {
   it('formats durations ≥ 1h as H:MM:SS', () => {
     const r = makeRecording({ durationMs: 3_661_000 }); // 1:01:01
     const view = render(
-      <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+      <RecordingRow
+        recording={r}
+        onPlay={() => undefined}
+        onDelete={() => undefined}
+        onShare={() => undefined}
+      />,
     );
     expect(view.queryByText(/1:01:01/)).toBeTruthy();
   });
@@ -125,7 +140,12 @@ describe('RecordingRow', () => {
   it('renders Play / Delete / Share buttons with accessibility labels', () => {
     const r = makeRecording({ name: 'thing.m4a' });
     const view = render(
-      <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+      <RecordingRow
+        recording={r}
+        onPlay={() => undefined}
+        onDelete={() => undefined}
+        onShare={() => undefined}
+      />,
     );
     expect(findButton(view.UNSAFE_root, /^Play thing\.m4a$/)).toBeDefined();
     expect(findButton(view.UNSAFE_root, /^Share thing\.m4a$/)).toBeDefined();
@@ -136,7 +156,12 @@ describe('RecordingRow', () => {
     const onPlay = jest.fn();
     const r = makeRecording({ id: 'rid', name: 'p.m4a' });
     const view = render(
-      <RecordingRow recording={r} onPlay={onPlay} onDelete={() => undefined} onShare={() => undefined} />,
+      <RecordingRow
+        recording={r}
+        onPlay={onPlay}
+        onDelete={() => undefined}
+        onShare={() => undefined}
+      />,
     );
     fireEvent.press(findButton(view.UNSAFE_root, /^Play p\.m4a$/));
     expect(onPlay).toHaveBeenCalledWith('rid');
@@ -146,7 +171,12 @@ describe('RecordingRow', () => {
     const onDelete = jest.fn();
     const r = makeRecording({ id: 'rid', name: 'd.m4a' });
     const view = render(
-      <RecordingRow recording={r} onPlay={() => undefined} onDelete={onDelete} onShare={() => undefined} />,
+      <RecordingRow
+        recording={r}
+        onPlay={() => undefined}
+        onDelete={onDelete}
+        onShare={() => undefined}
+      />,
     );
     fireEvent.press(findButton(view.UNSAFE_root, /^Delete d\.m4a$/));
     expect(alertSpy).toHaveBeenCalledTimes(1);
@@ -162,7 +192,11 @@ describe('RecordingRow', () => {
     // Tap Delete again, confirm.
     fireEvent.press(findButton(view.UNSAFE_root, /^Delete d\.m4a$/));
     const confirmArgs = alertSpy.mock.calls[1];
-    const confirmButtons = confirmArgs[2] as Array<{ text: string; style?: string; onPress?: () => void }>;
+    const confirmButtons = confirmArgs[2] as Array<{
+      text: string;
+      style?: string;
+      onPress?: () => void;
+    }>;
     const destructive = confirmButtons.find((b) => b.style === 'destructive');
     destructive?.onPress?.();
     expect(onDelete).toHaveBeenCalledWith('rid');
@@ -173,7 +207,12 @@ describe('RecordingRow', () => {
     const onShare = jest.fn();
     const r = makeRecording({ id: 'rid', name: 's.m4a', uri: 'file:///s.m4a' });
     const view = render(
-      <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={onShare} />,
+      <RecordingRow
+        recording={r}
+        onPlay={() => undefined}
+        onDelete={() => undefined}
+        onShare={onShare}
+      />,
     );
     fireEvent.press(findButton(view.UNSAFE_root, /^Share s\.m4a$/));
     expect(onShare).toHaveBeenCalledWith(r);
@@ -187,7 +226,12 @@ describe('RecordingRow', () => {
     const onShare = jest.fn();
     const r = makeRecording({ id: 'rid', name: 'f.m4a', uri: 'file:///f.m4a' });
     const view = render(
-      <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={onShare} />,
+      <RecordingRow
+        recording={r}
+        onPlay={() => undefined}
+        onDelete={() => undefined}
+        onShare={onShare}
+      />,
     );
     fireEvent.press(findButton(view.UNSAFE_root, /^Share f\.m4a$/));
     await flushMicrotasks();
@@ -203,7 +247,12 @@ describe('RecordingRow', () => {
     it.each(['Low', 'Medium', 'High'] as const)('displays the %s preset name', (q) => {
       const r = makeRecording({ id: `id-${q}`, quality: q });
       const view = render(
-        <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+        <RecordingRow
+          recording={r}
+          onPlay={() => undefined}
+          onDelete={() => undefined}
+          onShare={() => undefined}
+        />,
       );
       expect(view.queryByText(q)).toBeTruthy();
       const badge = findBadge(view.UNSAFE_root, `id-${q}`);
@@ -221,7 +270,12 @@ describe('RecordingRow', () => {
       for (const q of ['Low', 'Medium', 'High'] as const) {
         const r = makeRecording({ id: `id-${q}`, quality: q });
         const view = render(
-          <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+          <RecordingRow
+            recording={r}
+            onPlay={() => undefined}
+            onDelete={() => undefined}
+            onShare={() => undefined}
+          />,
         );
         const badge = findBadge(view.UNSAFE_root, `id-${q}`);
         colors[q] = flattenStyle(badge.props.style).backgroundColor;

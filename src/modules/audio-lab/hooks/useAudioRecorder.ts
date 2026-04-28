@@ -211,7 +211,8 @@ export function useAudioRecorder(options: UseAudioRecorderOptions = {}): UseAudi
           // Clamp into [0, 1] — some backends report dBFS in [-160, 0]; the
           // mock emits already-normalized values.
           const lvl = s.metering;
-          const clamped = lvl < 0 ? Math.max(0, Math.min(1, (lvl + 160) / 160)) : Math.max(0, Math.min(1, lvl));
+          const clamped =
+            lvl < 0 ? Math.max(0, Math.min(1, (lvl + 160) / 160)) : Math.max(0, Math.min(1, lvl));
           setMeterLevel(clamped);
         }
       });

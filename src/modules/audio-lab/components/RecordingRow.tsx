@@ -43,7 +43,6 @@ async function performShare(uri: string): Promise<void> {
   try {
     // Dynamic require so platforms without the module (or test environments
     // that don't `jest.mock('expo-sharing')`) don't fail at module-load time.
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const Sharing = require('expo-sharing') as {
       isAvailableAsync: () => Promise<boolean>;
       shareAsync: (uri: string, options?: unknown) => Promise<void>;
@@ -64,12 +63,7 @@ async function performShare(uri: string): Promise<void> {
   }
 }
 
-export default function RecordingRow({
-  recording,
-  onPlay,
-  onDelete,
-  onShare,
-}: RecordingRowProps) {
+export default function RecordingRow({ recording, onPlay, onDelete, onShare }: RecordingRowProps) {
   const { id, name, uri, durationMs, sizeBytes, quality } = recording;
   const theme = useTheme();
   const badgeBg = qualityBackground(quality, theme);
@@ -103,11 +97,7 @@ export default function RecordingRow({
   }, [onShare, recording, uri]);
 
   return (
-    <ThemedView
-      type="backgroundElement"
-      style={styles.row}
-      testID={`audio-lab-row-${id}`}
-    >
+    <ThemedView type="backgroundElement" style={styles.row} testID={`audio-lab-row-${id}`}>
       <View style={styles.text}>
         <ThemedText type="smallBold">{name}</ThemedText>
         <ThemedText type="small" themeColor="textSecondary">
@@ -115,10 +105,7 @@ export default function RecordingRow({
         </ThemedText>
       </View>
 
-      <View
-        style={[styles.badge, { backgroundColor: badgeBg }]}
-        testID={`audio-lab-quality-${id}`}
-      >
+      <View style={[styles.badge, { backgroundColor: badgeBg }]} testID={`audio-lab-quality-${id}`}>
         <ThemedText type="small" themeColor={badgeFg}>
           {quality}
         </ThemedText>
@@ -169,10 +156,7 @@ export default function RecordingRow({
  *   Medium → neutral (backgroundElement — same as row, reads as "no badge")
  *   High   → strong accent (tintA)
  */
-function qualityBackground(
-  quality: QualityName,
-  theme: ReturnType<typeof useTheme>,
-): string {
+function qualityBackground(quality: QualityName, theme: ReturnType<typeof useTheme>): string {
   switch (quality) {
     case 'High':
       return theme.tintA;

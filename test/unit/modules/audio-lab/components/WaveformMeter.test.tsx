@@ -52,8 +52,13 @@ describe('WaveformMeter', () => {
     const bars = findBars(view);
     const colors = bars
       .map((b) => {
-        const styles = Array.isArray(b.props.style) ? b.props.style.flat(Infinity) : [b.props.style];
-        return styles.filter(Boolean).map((s: any) => s.backgroundColor).filter((c: unknown) => typeof c === 'string');
+        const styles = Array.isArray(b.props.style)
+          ? b.props.style.flat(Infinity)
+          : [b.props.style];
+        return styles
+          .filter(Boolean)
+          .map((s: any) => s.backgroundColor)
+          .filter((c: unknown) => typeof c === 'string');
       })
       .flat();
     expect(colors.length).toBeGreaterThan(0);

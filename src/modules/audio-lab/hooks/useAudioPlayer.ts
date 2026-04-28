@@ -24,11 +24,7 @@
 import React from 'react';
 import { Platform } from 'react-native';
 
-import {
-  AudioFileMissing,
-  AudioPlayerLoadFailed,
-  type PlayerState,
-} from '../audio-types';
+import { AudioFileMissing, AudioPlayerLoadFailed, type PlayerState } from '../audio-types';
 
 const POSITION_POLL_MS = 250;
 
@@ -78,13 +74,11 @@ export interface UseAudioPlayer {
 }
 
 function defaultBridge(): PlayerBridge {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const ea = require('expo-audio') as PlayerBridge;
   return ea;
 }
 
 function defaultFs(): FileSystemBridge {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const fs = require('expo-file-system') as FileSystemBridge;
   return fs;
 }

@@ -46,7 +46,6 @@ export async function applyCategory(cat: AudioSessionCategory): Promise<void> {
     // We skip the call entirely so test surfaces remain clean.
     return;
   }
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   const { setAudioModeAsync } = require('expo-audio') as typeof import('expo-audio');
   await setAudioModeAsync(mapCategoryToOptions(cat));
 }

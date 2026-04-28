@@ -56,11 +56,7 @@ function Bar({ level, position, total, color, containerHeight }: BarProps) {
   return (
     <Animated.View
       testID="audio-lab-waveform-bar"
-      style={[
-        styles.bar,
-        { backgroundColor: color, opacity },
-        animatedStyle,
-      ]}
+      style={[styles.bar, { backgroundColor: color, opacity }, animatedStyle]}
     />
   );
 }
@@ -71,7 +67,9 @@ export default function WaveformMeter({
   height = DEFAULT_HEIGHT,
 }: WaveformMeterProps) {
   const theme = useTheme();
-  const [buffer, setBuffer] = React.useState<number[]>(() => Array.from({ length: history }, () => 0));
+  const [buffer, setBuffer] = React.useState<number[]>(() =>
+    Array.from({ length: history }, () => 0),
+  );
 
   // Push new level into ring buffer when prop changes; also handle history
   // resize in the same pass to avoid a cascading setState-in-effect.
@@ -82,9 +80,10 @@ export default function WaveformMeter({
     setBuffer((prev) => {
       let next = prev;
       if (next.length !== history) {
-        next = next.length > history
-          ? next.slice(-history)
-          : [...Array.from({ length: history - next.length }, () => 0), ...next];
+        next =
+          next.length > history
+            ? next.slice(-history)
+            : [...Array.from({ length: history - next.length }, () => 0), ...next];
       }
       next = next.slice(-history + 1);
       next.push(Math.max(0, Math.min(1, level)));

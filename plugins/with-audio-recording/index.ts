@@ -17,8 +17,7 @@
 import type { ConfigPlugin } from '@expo/config-plugins';
 import { withInfoPlist } from '@expo/config-plugins';
 
-const DEFAULT_MIC_USAGE =
-  'Audio Lab uses the microphone to demonstrate recording and playback.';
+const DEFAULT_MIC_USAGE = 'Audio Lab uses the microphone to demonstrate recording and playback.';
 
 const withAudioRecording: ConfigPlugin = (config) =>
   withInfoPlist(config, (cfg) => {

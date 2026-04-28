@@ -12,8 +12,6 @@
  * this with an inline `jest.mock(...)` block — that pattern is
  * unaffected by this file.
  */
-
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 const mock = require('@react-native-async-storage/async-storage/jest/async-storage-mock');
 
 module.exports = mock;

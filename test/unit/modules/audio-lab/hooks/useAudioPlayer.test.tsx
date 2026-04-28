@@ -16,17 +16,18 @@ import React from 'react';
 import { Text } from 'react-native';
 import { act, render } from '@testing-library/react-native';
 
-import {
-  AudioFileMissing,
-  AudioPlayerLoadFailed,
-} from '@/modules/audio-lab/audio-types';
+import { AudioFileMissing, AudioPlayerLoadFailed } from '@/modules/audio-lab/audio-types';
 import { useAudioPlayer } from '@/modules/audio-lab/hooks/useAudioPlayer';
 
 jest.mock('expo-audio');
 jest.mock('expo-file-system');
 
-const mockExpoAudio = jest.requireMock('expo-audio') as typeof import('../../../../__mocks__/expo-audio');
-const mockFs = jest.requireMock('expo-file-system') as typeof import('../../../../__mocks__/expo-file-system');
+const mockExpoAudio = jest.requireMock(
+  'expo-audio',
+) as typeof import('../../../../__mocks__/expo-audio');
+const mockFs = jest.requireMock(
+  'expo-file-system',
+) as typeof import('../../../../__mocks__/expo-file-system');
 
 interface ProbeRef {
   state: ReturnType<typeof useAudioPlayer>;

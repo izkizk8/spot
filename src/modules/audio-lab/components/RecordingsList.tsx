@@ -48,12 +48,7 @@ export default function RecordingsList({
       data={recordings as Recording[]}
       keyExtractor={(r) => r.id}
       renderItem={({ item }) => (
-        <RecordingRow
-          recording={item}
-          onPlay={onPlay}
-          onDelete={onDelete}
-          onShare={onShare}
-        />
+        <RecordingRow recording={item} onPlay={onPlay} onDelete={onDelete} onShare={onShare} />
       )}
       ItemSeparatorComponent={() => <View style={styles.separator} />}
       style={styles.list}

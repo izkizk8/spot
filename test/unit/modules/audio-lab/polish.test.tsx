@@ -43,9 +43,7 @@ function makeRecording(over: Partial<Recording> = {}): Recording {
 }
 
 function findAllButtons(root: any): any[] {
-  return root.findAll(
-    (n: any) => n.props && n.props.accessibilityRole === 'button',
-  );
+  return root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
 }
 
 function buttonLabels(root: any): string[] {
@@ -58,9 +56,7 @@ function buttonLabels(root: any): string[] {
 
 describe('T059 a11y audit — every interactive element has a descriptive label', () => {
   it('PermissionBanner: alert region + request button both labeled', () => {
-    const view = render(
-      <PermissionBanner status="denied" onRequestPermission={noop} />,
-    );
+    const view = render(<PermissionBanner status="denied" onRequestPermission={noop} />);
     const alert = view.UNSAFE_root.findAll(
       (n: any) => n.props && n.props.accessibilityRole === 'alert',
     )[0];
@@ -119,20 +115,14 @@ describe('T059 a11y audit — every interactive element has a descriptive label'
     // Animated wrapper produces duplicate fibers in the test renderer; accept
     // any positive count.
     expect(
-      view.UNSAFE_root.findAll(
-        (n: any) => n.props && n.props.testID === 'audio-lab-waveform-meter',
-      ).length,
+      view.UNSAFE_root.findAll((n: any) => n.props && n.props.testID === 'audio-lab-waveform-meter')
+        .length,
     ).toBeGreaterThanOrEqual(1);
   });
 
   it('RecordingsList: empty state is presentational; populated rows expose labeled actions', () => {
     const empty = render(
-      <RecordingsList
-        recordings={[]}
-        onPlay={noop}
-        onDelete={noop}
-        onShare={noop}
-      />,
+      <RecordingsList recordings={[]} onPlay={noop} onDelete={noop} onShare={noop} />,
     );
     expect(findAllButtons(empty.UNSAFE_root)).toHaveLength(0);
 
@@ -153,12 +143,7 @@ describe('T059 a11y audit — every interactive element has a descriptive label'
   it('RecordingRow: Play / Share / Delete name the recording they target', () => {
     const r = makeRecording({ name: '2026-04-28-14-37-12.m4a' });
     const view = render(
-      <RecordingRow
-        recording={r}
-        onPlay={noop}
-        onDelete={noop}
-        onShare={noop}
-      />,
+      <RecordingRow recording={r} onPlay={noop} onDelete={noop} onShare={noop} />,
     );
     const labels = buttonLabels(view.UNSAFE_root);
     expect(labels).toContain('Play 2026-04-28-14-37-12.m4a');
@@ -203,8 +188,12 @@ describe('T059 a11y audit — every interactive element has a descriptive label'
 jest.mock('expo-audio');
 jest.mock('expo-file-system');
 
-const mockExpoAudio = jest.requireMock('expo-audio') as typeof import('../../../__mocks__/expo-audio');
-const mockExpoFs = jest.requireMock('expo-file-system') as typeof import('../../../__mocks__/expo-file-system');
+const mockExpoAudio = jest.requireMock(
+  'expo-audio',
+) as typeof import('../../../__mocks__/expo-audio');
+const mockExpoFs = jest.requireMock(
+  'expo-file-system',
+) as typeof import('../../../__mocks__/expo-file-system');
 
 const mockLoadRecordings = jest.fn(async () => [] as Recording[]);
 const mockSaveRecording = jest.fn(async (r: Recording) => [r]);
@@ -365,12 +354,10 @@ describe('T064 — final verification (fake timers, 30 s metering, full lifecycl
     // robust to React/RN-internal scheduler timers (which `getTimerCount()`
     // also counts but which we don't own).
     const { renderHook } = require('@testing-library/react-native');
-    const {
-      useAudioRecorder,
-    } = require('@/modules/audio-lab/hooks/useAudioRecorder') as typeof import('@/modules/audio-lab/hooks/useAudioRecorder');
-    const {
-      useAudioPlayer,
-    } = require('@/modules/audio-lab/hooks/useAudioPlayer') as typeof import('@/modules/audio-lab/hooks/useAudioPlayer');
+    const { useAudioRecorder } =
+      require('@/modules/audio-lab/hooks/useAudioRecorder') as typeof import('@/modules/audio-lab/hooks/useAudioRecorder');
+    const { useAudioPlayer } =
+      require('@/modules/audio-lab/hooks/useAudioPlayer') as typeof import('@/modules/audio-lab/hooks/useAudioPlayer');
 
     const origSetInterval = global.setInterval;
     const origClearInterval = global.clearInterval;

@@ -17,9 +17,7 @@ function findRequestButton(root: any) {
 }
 
 function findAlert(root: any) {
-  return root.findAll(
-    (n: any) => n.props && n.props.accessibilityRole === 'alert',
-  )[0];
+  return root.findAll((n: any) => n.props && n.props.accessibilityRole === 'alert')[0];
 }
 
 describe('PermissionBanner', () => {
@@ -38,9 +36,7 @@ describe('PermissionBanner', () => {
   });
 
   it('renders the banner with the request button when status === denied', () => {
-    const view = render(
-      <PermissionBanner status="denied" onRequestPermission={() => undefined} />,
-    );
+    const view = render(<PermissionBanner status="denied" onRequestPermission={() => undefined} />);
     expect(view.toJSON()).not.toBeNull();
     expect(findAlert(view.UNSAFE_root)).toBeTruthy();
     expect(findRequestButton(view.UNSAFE_root)).toBeTruthy();
@@ -54,9 +50,7 @@ describe('PermissionBanner', () => {
   });
 
   it('the alert region carries an accessibilityLabel', () => {
-    const view = render(
-      <PermissionBanner status="denied" onRequestPermission={() => undefined} />,
-    );
+    const view = render(<PermissionBanner status="denied" onRequestPermission={() => undefined} />);
     const alert = findAlert(view.UNSAFE_root);
     expect(String(alert.props.accessibilityLabel)).toMatch(/permission/i);
   });

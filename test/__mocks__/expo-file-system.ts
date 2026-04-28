@@ -29,11 +29,9 @@ export const makeDirectoryAsync = jest.fn(
   async (_uri: string, _options?: { intermediates?: boolean }) => undefined,
 );
 
-export const deleteAsync = jest.fn(
-  async (uri: string, _options?: { idempotent?: boolean }) => {
-    fileMap.delete(uri);
-  },
-);
+export const deleteAsync = jest.fn(async (uri: string, _options?: { idempotent?: boolean }) => {
+  fileMap.delete(uri);
+});
 
 export const readDirectoryAsync = jest.fn(async (_uri: string): Promise<string[]> => []);
 

@@ -31,7 +31,6 @@ const RECORDINGS_DIRNAME = 'recordings';
  * support all the URI shapes returned by `expo-audio`'s recorder.
  */
 function fs(): typeof import('expo-file-system/legacy') {
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
   return require('expo-file-system/legacy');
 }
 

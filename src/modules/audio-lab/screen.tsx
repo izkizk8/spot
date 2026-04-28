@@ -55,12 +55,12 @@ export default function AudioLabScreen({
   const [quality, setQualityState] = React.useState<QualityName>('Medium');
   // FR-020 / US4: audio session category — Playback is the most common
   // default and matches the implicit category at module mount.
-  const [selectedCategory, setSelectedCategory] =
-    React.useState<AudioSessionCategory>('Playback');
-  const [activeCategory, setActiveCategory] =
-    React.useState<AudioSessionCategory>('Playback');
+  const [selectedCategory, setSelectedCategory] = React.useState<AudioSessionCategory>('Playback');
+  const [activeCategory, setActiveCategory] = React.useState<AudioSessionCategory>('Playback');
   const recordingsRef = React.useRef<Recording[]>([]);
-  recordingsRef.current = recordings;
+  React.useEffect(() => {
+    recordingsRef.current = recordings;
+  }, [recordings]);
   const mountedRef = React.useRef(true);
 
   React.useEffect(() => {

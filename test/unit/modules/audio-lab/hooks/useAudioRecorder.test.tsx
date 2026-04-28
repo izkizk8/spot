@@ -19,7 +19,9 @@ import { useAudioRecorder } from '@/modules/audio-lab/hooks/useAudioRecorder';
 
 jest.mock('expo-audio');
 
-const mockExpoAudio = jest.requireMock('expo-audio') as typeof import('../../../../__mocks__/expo-audio');
+const mockExpoAudio = jest.requireMock(
+  'expo-audio',
+) as typeof import('../../../../__mocks__/expo-audio');
 
 // Stub the recordings-store so the hook never touches AsyncStorage / FS.
 const savedRecordings: Recording[] = [];

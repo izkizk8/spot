@@ -11,7 +11,9 @@ import { act, render } from '@testing-library/react-native';
 
 jest.mock('expo-audio');
 
-const mockExpoAudio = jest.requireMock('expo-audio') as typeof import('../../../__mocks__/expo-audio');
+const mockExpoAudio = jest.requireMock(
+  'expo-audio',
+) as typeof import('../../../__mocks__/expo-audio');
 
 const mockLoadRecordings = jest.fn(async () => [] as unknown[]);
 jest.mock('@/modules/audio-lab/recordings-store', () => ({

@@ -47,15 +47,9 @@ function uniqueRowTestIds(root: any): string[] {
 }
 
 describe('RecordingsList', () => {
-
   it('renders the empty-state copy when recordings is empty', () => {
     const view = render(
-      <RecordingsList
-        recordings={[]}
-        onPlay={noop}
-        onDelete={noop}
-        onShare={noopShare}
-      />,
+      <RecordingsList recordings={[]} onPlay={noop} onDelete={noop} onShare={noopShare} />,
     );
     expect(view.queryByText(/No recordings yet/i)).toBeTruthy();
   });
@@ -64,12 +58,7 @@ describe('RecordingsList', () => {
     const a = makeRecording({ id: 'a', name: 'a.m4a' });
     const b = makeRecording({ id: 'b', name: 'b.m4a' });
     const view = render(
-      <RecordingsList
-        recordings={[a, b]}
-        onPlay={noop}
-        onDelete={noop}
-        onShare={noopShare}
-      />,
+      <RecordingsList recordings={[a, b]} onPlay={noop} onDelete={noop} onShare={noopShare} />,
     );
     const rowIds = uniqueRowTestIds(view.UNSAFE_root);
     expect(rowIds.toSorted()).toEqual(['audio-lab-row-a', 'audio-lab-row-b']);
@@ -83,12 +72,7 @@ describe('RecordingsList', () => {
     const onShare = jest.fn();
     const r = makeRecording({ id: 'a', name: 'a.m4a' });
     const view = render(
-      <RecordingsList
-        recordings={[r]}
-        onPlay={onPlay}
-        onDelete={onDelete}
-        onShare={onShare}
-      />,
+      <RecordingsList recordings={[r]} onPlay={onPlay} onDelete={onDelete} onShare={onShare} />,
     );
     fireEvent.press(findButton(view.UNSAFE_root, /^Play a\.m4a$/));
     expect(onPlay).toHaveBeenCalledWith('a');
@@ -118,12 +102,7 @@ describe('RecordingsList', () => {
     const a = makeRecording({ id: 'a', name: 'newest.m4a', createdAt: '2026-04-28T13:00:00.000Z' });
     const b = makeRecording({ id: 'b', name: 'older.m4a', createdAt: '2026-04-28T12:00:00.000Z' });
     const view = render(
-      <RecordingsList
-        recordings={[a, b]}
-        onPlay={noop}
-        onDelete={noop}
-        onShare={noopShare}
-      />,
+      <RecordingsList recordings={[a, b]} onPlay={noop} onDelete={noop} onShare={noopShare} />,
     );
     const rowIds = uniqueRowTestIds(view.UNSAFE_root);
     expect(rowIds).toEqual(['audio-lab-row-a', 'audio-lab-row-b']);

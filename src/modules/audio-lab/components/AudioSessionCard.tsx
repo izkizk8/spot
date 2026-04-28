@@ -25,11 +25,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-import type {
-  AudioSessionCategory,
-  PlayerState,
-  RecorderState,
-} from '../audio-types';
+import type { AudioSessionCategory, PlayerState, RecorderState } from '../audio-types';
 
 const CATEGORIES: ReadonlyArray<AudioSessionCategory> = [
   'Playback',
@@ -111,11 +107,7 @@ export default function AudioSessionCard({
   ]);
 
   return (
-    <ThemedView
-      type="backgroundElement"
-      style={styles.card}
-      testID="audio-lab-session-card"
-    >
+    <ThemedView type="backgroundElement" style={styles.card} testID="audio-lab-session-card">
       <View style={styles.header}>
         <ThemedText type="smallBold">Audio Session</ThemedText>
         <View
@@ -140,15 +132,9 @@ export default function AudioSessionCard({
               accessibilityRole="button"
               accessibilityLabel={`Category: ${cat}`}
               accessibilityState={{ selected: isSelected }}
-              style={[
-                styles.segment,
-                isSelected && { backgroundColor: theme.backgroundSelected },
-              ]}
+              style={[styles.segment, isSelected && { backgroundColor: theme.backgroundSelected }]}
             >
-              <ThemedText
-                type="small"
-                themeColor={isSelected ? 'tintA' : 'text'}
-              >
+              <ThemedText type="small" themeColor={isSelected ? 'tintA' : 'text'}>
                 {cat}
               </ThemedText>
             </Pressable>
@@ -157,11 +143,7 @@ export default function AudioSessionCard({
       </View>
 
       {isWeb ? (
-        <ThemedText
-          type="small"
-          themeColor="textSecondary"
-          testID="audio-session-web-tooltip"
-        >
+        <ThemedText type="small" themeColor="textSecondary" testID="audio-session-web-tooltip">
           Audio session control is not available on web.
         </ThemedText>
       ) : (

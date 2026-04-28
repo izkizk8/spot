@@ -56,11 +56,7 @@ export interface AudioModeOptions {
   interruptionMode?: 'mixWithOthers' | 'duckOthers';
 }
 
-export type RecorderState =
-  | 'idle'
-  | 'requesting-permission'
-  | 'recording'
-  | 'stopping';
+export type RecorderState = 'idle' | 'requesting-permission' | 'recording' | 'stopping';
 
 export type PlayerState = 'idle' | 'loading' | 'playing' | 'paused' | 'stopped';
 
