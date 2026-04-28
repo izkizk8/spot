@@ -53,6 +53,7 @@
       "./plugins/with-keychain-services",
       "./plugins/with-mapkit",
       "./plugins/with-core-location",
+      "./plugins/with-rich-notifications",
       [
         "expo-sensors",
         {
