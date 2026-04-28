@@ -16,11 +16,12 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
 
-import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
-import type { QualityName, Recording } from './audio-types';
+import type { AudioSessionCategory, QualityName, Recording } from './audio-types';
+import { applyCategory as defaultApplyCategory } from './audio-session';
+import AudioSessionCard from './components/AudioSessionCard';
 import PermissionBanner from './components/PermissionBanner';
 import RecorderCard from './components/RecorderCard';
 import RecordingsList from './components/RecordingsList';
@@ -36,11 +37,14 @@ export interface AudioLabScreenProps {
   loadRecordingsOverride?: () => Promise<Recording[]>;
   /** Test seam for the recordings store. */
   deleteRecordingOverride?: (id: string) => Promise<Recording[]>;
+  /** Test seam for `audio-session.applyCategory`. */
+  applyCategoryOverride?: (cat: AudioSessionCategory) => Promise<void>;
 }
 
 export default function AudioLabScreen({
   loadRecordingsOverride,
   deleteRecordingOverride,
+  applyCategoryOverride,
 }: AudioLabScreenProps = {}) {
   const recorder = useAudioRecorder();
   const player = useAudioPlayer();
@@ -49,6 +53,12 @@ export default function AudioLabScreen({
   // selection survives `RecorderCard` re-renders and remains the single source
   // of truth handed back into the recorder hook.
   const [quality, setQualityState] = React.useState<QualityName>('Medium');
+  // FR-020 / US4: audio session category — Playback is the most common
+  // default and matches the implicit category at module mount.
+  const [selectedCategory, setSelectedCategory] =
+    React.useState<AudioSessionCategory>('Playback');
+  const [activeCategory, setActiveCategory] =
+    React.useState<AudioSessionCategory>('Playback');
   const recordingsRef = React.useRef<Recording[]>([]);
   recordingsRef.current = recordings;
   const mountedRef = React.useRef(true);
@@ -156,6 +166,40 @@ export default function AudioLabScreen({
   // fallback). The screen-level handler is observability-only.
   const handleShare = React.useCallback((_r: Recording) => undefined, []);
 
+  const handleApplyCategory = React.useCallback(
+    async (cat: AudioSessionCategory) => {
+      const apply = applyCategoryOverride ?? defaultApplyCategory;
+      try {
+        await apply(cat);
+        if (mountedRef.current) setActiveCategory(cat);
+      } catch (err) {
+        // Per FR-020 the failure path is non-fatal: leave activeCategory
+        // unchanged so the pill reflects what's actually live on the OS.
+        console.warn('[audio-lab] applyCategory failed', err);
+      }
+    },
+    [applyCategoryOverride],
+  );
+
+  const handleStopRecorder = React.useCallback(async () => {
+    try {
+      const rec = await recorder.stop();
+      if (mountedRef.current && rec) {
+        setRecordings((prev) => [rec, ...prev]);
+      }
+    } catch (err) {
+      console.warn('[audio-lab] stop (pre-apply) failed', err);
+    }
+  }, [recorder]);
+
+  const handleStopPlayer = React.useCallback(async () => {
+    try {
+      await player.stop();
+    } catch (err) {
+      console.warn('[audio-lab] player.stop (pre-apply) failed', err);
+    }
+  }, [player]);
+
   return (
     <ThemedView style={styles.container}>
       <ScrollView contentContainerStyle={styles.content}>
@@ -181,16 +225,16 @@ export default function AudioLabScreen({
           onShare={handleShare}
         />
 
-        <ThemedView
-          type="backgroundElement"
-          style={styles.sessionCard}
-          testID="audio-lab-session-card"
-        >
-          <ThemedText type="smallBold">Audio Session</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
-            iOS audio session category controls land in US4.
-          </ThemedText>
-        </ThemedView>
+        <AudioSessionCard
+          selected={selectedCategory}
+          activeCategory={activeCategory}
+          recorderStatus={recorder.status}
+          playerStatus={player.status}
+          onSelect={setSelectedCategory}
+          onApply={handleApplyCategory}
+          onStopRecorder={handleStopRecorder}
+          onStopPlayer={handleStopPlayer}
+        />
       </ScrollView>
     </ThemedView>
   );
@@ -203,10 +247,5 @@ const styles = StyleSheet.create({
   content: {
     padding: Spacing.three,
     gap: Spacing.three,
-  },
-  sessionCard: {
-    padding: Spacing.three,
-    borderRadius: Spacing.one,
-    gap: Spacing.one,
   },
 });
