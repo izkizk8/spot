@@ -58,3 +58,16 @@ jest.mock('react-native-reanimated', () => {
 jest.mock('@react-native-async-storage/async-storage', () =>
   require('@react-native-async-storage/async-storage/jest/async-storage-mock'),
 );
+
+jest.mock('expo-image-picker', () => ({
+  launchImageLibraryAsync: jest.fn(() =>
+    Promise.resolve({
+      canceled: true,
+      assets: [],
+    }),
+  ),
+  MediaTypeOptions: { Images: 'Images' },
+  requestMediaLibraryPermissionsAsync: jest.fn(() =>
+    Promise.resolve({ status: 'granted', canAskAgain: true, granted: true, expires: 'never' }),
+  ),
+}));
