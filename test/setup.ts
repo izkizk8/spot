@@ -77,3 +77,39 @@ jest.mock('@/native/keychain', () => {
   const mock = require('@test/__mocks__/native-keychain');
   return { keychain: mock.keychain };
 });
+
+// Mock react-native-maps (feature 024)
+jest.mock('react-native-maps', () => jest.requireActual('@test/__mocks__/react-native-maps'));
+
+// Mock expo-location (feature 024)
+jest.mock('expo-location', () => jest.requireActual('@test/__mocks__/expo-location'));
+
+// Mock expo-modules-core for native bridge resolution (feature 024)
+jest.mock('expo-modules-core', () => {
+  const searchMock = jest.requireActual('@test/__mocks__/native-mapkit-search');
+  const lookAroundMock = jest.requireActual('@test/__mocks__/native-lookaround');
+  return {
+    requireOptionalNativeModule: (moduleName: string) => {
+      if (moduleName === 'SpotMapKitSearch') {
+        return searchMock.__mockRequireOptionalNativeModule(moduleName);
+      }
+      if (moduleName === 'SpotLookAround') {
+        return lookAroundMock.__mockRequireOptionalNativeModule(moduleName);
+      }
+      return null;
+    },
+  };
+});
+
+// Reset mocks before each test
+beforeEach(() => {
+  const mapsMock = jest.requireActual('@test/__mocks__/react-native-maps');
+  const locationMock = jest.requireActual('@test/__mocks__/expo-location');
+  const searchMock = jest.requireActual('@test/__mocks__/native-mapkit-search');
+  const lookAroundMock = jest.requireActual('@test/__mocks__/native-lookaround');
+
+  if (mapsMock.__resetMapsMock) mapsMock.__resetMapsMock();
+  if (locationMock.__resetLocationMock) locationMock.__resetLocationMock();
+  if (searchMock.__resetSearchMock) searchMock.__resetSearchMock();
+  if (lookAroundMock.__resetLookAroundMock) lookAroundMock.__resetLookAroundMock();
+});
