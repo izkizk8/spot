@@ -49,6 +49,7 @@
       "./plugins/with-speech-recognition",
       "./plugins/with-audio-recording",
       "./plugins/with-sign-in-with-apple",
+      "./plugins/with-local-auth",
       [
         "expo-sensors",
         {
