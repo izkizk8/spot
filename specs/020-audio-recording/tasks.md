@@ -188,13 +188,13 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-020-audio\`). 
 
 ### Tests (write FIRST)
 
-- [ ] T055 [P] Write `test/unit/modules/audio-lab/screen.android.test.tsx`: smoke-test the Android variant renders `RecorderCard`, `RecordingsList`, and the full `AudioSessionCard` (Apply button present); asserts `Platform.OS = 'android'` mock is honored; no `act()` warnings (FR-036)
-- [ ] T056 [P] Write `test/unit/modules/audio-lab/screen.web.test.tsx`: smoke-test the Web variant renders `RecorderCard`, `RecordingsList`, and a degraded `AudioSessionCard` (no Apply button — informational `<Text>` instead per FR-045); asserts `Platform.OS = 'web'` mock is honored; asserts `setAudioModeAsync` is never called from this screen (FR-045, R-007); no `act()` warnings (FR-036)
+- [x] T055 [P] Write `test/unit/modules/audio-lab/screen.android.test.tsx`: smoke-test the Android variant renders `RecorderCard`, `RecordingsList`, and the full `AudioSessionCard` (Apply button present); asserts `Platform.OS = 'android'` mock is honored; no `act()` warnings (FR-036)
+- [x] T056 [P] Write `test/unit/modules/audio-lab/screen.web.test.tsx`: smoke-test the Web variant renders `RecorderCard`, `RecordingsList`, and a degraded `AudioSessionCard` (no Apply button — informational `<Text>` instead per FR-045); asserts `Platform.OS = 'web'` mock is honored; asserts `setAudioModeAsync` is never called from this screen (FR-045, R-007); no `act()` warnings (FR-036)
 
 ### Implementation
 
-- [ ] T057 [P] Implement `src/modules/audio-lab/screen.android.tsx`: same composition as `screen.tsx` (the platform behavior diff lives in the hooks/store/session modules, which are already platform-aware). Makes T055 pass (FR-036, FR-046)
-- [ ] T058 [P] Implement `src/modules/audio-lab/screen.web.tsx`: same composition as `screen.tsx` but does not render the Apply button on `AudioSessionCard` (the component already handles this via `Platform.OS === 'web'`); the rest of the screen is unchanged so a Web user can still record (via `MediaRecorder`), play back, delete, share-fallback, and pick a quality. Makes T056 pass (FR-036, FR-045, FR-046, R-005)
+- [x] T057 [P] Implement `src/modules/audio-lab/screen.android.tsx`: same composition as `screen.tsx` (the platform behavior diff lives in the hooks/store/session modules, which are already platform-aware). Makes T055 pass (FR-036, FR-046)
+- [x] T058 [P] Implement `src/modules/audio-lab/screen.web.tsx`: same composition as `screen.tsx` but does not render the Apply button on `AudioSessionCard` (the component already handles this via `Platform.OS === 'web'`); the rest of the screen is unchanged so a Web user can still record (via `MediaRecorder`), play back, delete, share-fallback, and pick a quality. Makes T056 pass (FR-036, FR-045, FR-046, R-005)
 
 **Checkpoint**: All three platforms ship a fully functional screen. Web record/play/delete/share-fallback verified. Android record/play/delete/share/audio-session verified. `pnpm check` green.
 
