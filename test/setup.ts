@@ -84,6 +84,9 @@ jest.mock('react-native-maps', () => jest.requireActual('@test/__mocks__/react-n
 // Mock expo-location (feature 024)
 jest.mock('expo-location', () => jest.requireActual('@test/__mocks__/expo-location'));
 
+// Mock expo-task-manager (feature 025)
+jest.mock('expo-task-manager', () => jest.requireActual('@test/__mocks__/expo-task-manager'));
+
 // Mock the MapKit native bridges directly (feature 024).
 // Mocking expo-modules-core globally breaks `requireNativeModule` for other
 // consumers (expo-clipboard etc.) because jest-expo's preset doesn't kick in
@@ -127,9 +130,11 @@ beforeEach(() => {
   const locationMock = jest.requireActual('@test/__mocks__/expo-location');
   const searchMock = jest.requireActual('@test/__mocks__/native-mapkit-search');
   const lookAroundMock = jest.requireActual('@test/__mocks__/native-lookaround');
+  const taskManagerMock = jest.requireActual('@test/__mocks__/expo-task-manager');
 
   if (mapsMock.__resetMapsMock) mapsMock.__resetMapsMock();
   if (locationMock.__resetLocationMock) locationMock.__resetLocationMock();
   if (searchMock.__resetSearchMock) searchMock.__resetSearchMock();
   if (lookAroundMock.__resetLookAroundMock) lookAroundMock.__resetLookAroundMock();
+  if (taskManagerMock.__resetTaskManagerMock) taskManagerMock.__resetTaskManagerMock();
 });
