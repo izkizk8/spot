@@ -197,6 +197,11 @@ class LazyBridge implements KeychainBridge {
     return this.resolvedBridge;
   }
 
+  // Test helper to reset cached bridge
+  resetBridgeForTest() {
+    this.resolvedBridge = undefined;
+  }
+
   async addItem(input: AddItemInput): Promise<KeychainResult> {
     return this.getBridge().addItem(input);
   }
@@ -226,18 +231,11 @@ class LazyBridge implements KeychainBridge {
   }): Promise<KeychainResult<{ bytes: number }>> {
     return this.getBridge().tryAccessGroupProbe(args);
   }
-
-  // Test helper to reset cached bridge
-  resetBridge() {
-    this.resolvedBridge = undefined;
-  }
 }
 
 const lazyBridge = new LazyBridge();
 
 export const keychain = lazyBridge;
 
-// Export reset function for tests
-export function __resetBridge() {
-  lazyBridge.resetBridge();
-}
+// Export for tests only - allows resetting bridge cache between test scenarios
+export const __resetBridgeForTest = () => lazyBridge.resetBridgeForTest();
