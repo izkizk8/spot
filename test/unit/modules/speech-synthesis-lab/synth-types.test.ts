@@ -58,7 +58,11 @@ describe('synth-types', () => {
 
   describe.each([
     ['SpeechSynthesisNotSupported', SpeechSynthesisNotSupported, 'NotSupported' as const],
-    ['SpeechSynthesisPauseUnsupported', SpeechSynthesisPauseUnsupported, 'PauseUnsupported' as const],
+    [
+      'SpeechSynthesisPauseUnsupported',
+      SpeechSynthesisPauseUnsupported,
+      'PauseUnsupported' as const,
+    ],
     ['SpeechSynthesisInterrupted', SpeechSynthesisInterrupted, 'Interrupted' as const],
   ] as const)('%s', (className, Ctor, expectedKind) => {
     it('is instanceof Error and SpeechSynthesisError', () => {

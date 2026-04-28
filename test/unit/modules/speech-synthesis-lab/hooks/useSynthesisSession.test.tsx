@@ -77,10 +77,27 @@ interface ProbeRef {
   state: ReturnType<typeof useSynthesisSession>;
 }
 
-function Probe({ bridge, refOut }: { bridge: SpeechSynthesisBridge; refOut: ProbeRef }) {
+function Probe({
+  bridge,
+  onState,
+}: {
+  bridge: SpeechSynthesisBridge;
+  onState: (s: ReturnType<typeof useSynthesisSession>) => void;
+}) {
   const state = useSynthesisSession({ bridgeOverride: bridge });
-  refOut.state = state;
+  onState(state);
   return <Text>{`S=${state.status}`}</Text>;
+}
+
+function makeRef(): ProbeRef {
+  const ref = { state: undefined as unknown as ProbeRef['state'] };
+  return ref;
+}
+
+function captureProbe(ref: ProbeRef) {
+  return (s: ProbeRef['state']) => {
+    Object.defineProperty(ref, 'state', { value: s, writable: true, configurable: true });
+  };
 }
 
 async function flush() {
@@ -94,8 +111,8 @@ async function flush() {
 describe('useSynthesisSession', () => {
   it('on mount, calls availableVoices once and exposes voices', async () => {
     const { bridge } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     expect(bridge.availableVoices).toHaveBeenCalledTimes(1);
     expect(ref.state.voices.length).toBe(1);
@@ -103,16 +120,16 @@ describe('useSynthesisSession', () => {
 
   it('on mount, probes pause support — sets pauseSupported=false when PauseUnsupported', async () => {
     const { bridge } = createMockBridge({ pauseSupported: false });
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     expect(ref.state.pauseSupported).toBe(false);
   });
 
   it('speak() subscribes; didStart flips status to speaking', async () => {
     const { bridge, emit } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     await act(async () => {
       await ref.state.speak({ text: 'hi', rate: 0.5, pitch: 1, volume: 0.7 });
@@ -126,8 +143,8 @@ describe('useSynthesisSession', () => {
 
   it('didPause / didContinue / didCancel transitions', async () => {
     const { bridge, emit } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     await act(async () => {
       await ref.state.speak({ text: 'hi', rate: 0.5, pitch: 1, volume: 0.7 });
@@ -150,8 +167,8 @@ describe('useSynthesisSession', () => {
 
   it('didFinish resets to idle and clears currentWordRange', async () => {
     const { bridge, emit } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     await act(async () => {
       await ref.state.speak({ text: 'hello world', rate: 0.5, pitch: 1, volume: 0.7 });
@@ -170,8 +187,8 @@ describe('useSynthesisSession', () => {
 
   it('selectVoice persists across speak cycles and is injected into bridge.speak', async () => {
     const { bridge, emit } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     act(() => ref.state.selectVoice('v1'));
     await act(async () => {
@@ -188,8 +205,8 @@ describe('useSynthesisSession', () => {
 
   it('unmount during active session calls bridge.stop and unsubscribes; no warnings', async () => {
     const { bridge, emit, activeCount } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    const view = render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    const view = render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     await act(async () => {
       await ref.state.speak({ text: 'hi', rate: 0.5, pitch: 1, volume: 0.7 });
@@ -210,8 +227,8 @@ describe('useSynthesisSession', () => {
 
   it('willSpeakWord updates currentWordRange', async () => {
     const { bridge, emit } = createMockBridge();
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     await act(async () => {
       await ref.state.speak({ text: 'hello', rate: 0.5, pitch: 1, volume: 0.7 });
@@ -224,8 +241,8 @@ describe('useSynthesisSession', () => {
   it('requestPersonalVoice calls bridge and updates personalVoiceStatus', async () => {
     const { bridge } = createMockBridge();
     (bridge.requestPersonalVoiceAuthorization as jest.Mock).mockResolvedValue('authorized');
-    const ref: ProbeRef = { state: undefined as any };
-    render(<Probe bridge={bridge} refOut={ref} />);
+    const ref = makeRef();
+    render(<Probe bridge={bridge} onState={captureProbe(ref)} />);
     await flush();
     await act(async () => {
       await ref.state.requestPersonalVoice();

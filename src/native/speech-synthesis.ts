@@ -21,7 +21,11 @@ import type {
   Voice,
   VoiceQuality,
 } from './speech-synthesis.types';
-import { NOOP_BRIDGE, NOOP_SUBSCRIPTION, SpeechSynthesisNotSupported } from './speech-synthesis.types';
+import {
+  NOOP_BRIDGE,
+  NOOP_SUBSCRIPTION,
+  SpeechSynthesisNotSupported,
+} from './speech-synthesis.types';
 
 interface NativeVoice {
   id: string;

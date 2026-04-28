@@ -32,9 +32,7 @@ import type {
   Voice,
   VoiceQuality,
 } from './speech-synthesis.types';
-import {
-  SpeechSynthesisPauseUnsupported,
-} from './speech-synthesis.types';
+import { SpeechSynthesisPauseUnsupported } from './speech-synthesis.types';
 
 type Listener = (payload: unknown) => void;
 

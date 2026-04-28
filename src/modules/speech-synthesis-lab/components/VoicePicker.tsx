@@ -9,7 +9,7 @@
  */
 
 import React from 'react';
-import { Pressable, SectionList, StyleSheet, View } from 'react-native';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -56,15 +56,15 @@ function buildSections(
   const languageSections: Section[] = [...grouped.entries()]
     .map(([title, list]) => ({
       title,
-      data: [...list].sort((a, b) => a.name.localeCompare(b.name)),
+      data: list.toSorted((a, b) => a.name.localeCompare(b.name)),
     }))
-    .sort((a, b) => a.title.localeCompare(b.title));
+    .toSorted((a, b) => a.title.localeCompare(b.title));
 
   if (personalVoices.length > 0 && personalVoiceStatus === 'authorized') {
     return [
       {
         title: 'Personal Voice',
-        data: [...personalVoices].sort((a, b) => a.name.localeCompare(b.name)),
+        data: personalVoices.toSorted((a, b) => a.name.localeCompare(b.name)),
       },
       ...languageSections,
     ];
@@ -103,41 +103,42 @@ export default function VoicePicker({
 
   return (
     <ThemedView type="background" style={styles.container} accessibilityLabel="Voice picker">
-      <SectionList
-        sections={sections}
-        keyExtractor={(item) => item.id}
-        scrollEnabled={false}
-        renderSectionHeader={({ section }) => (
-          <View style={[styles.sectionHeader, { backgroundColor: theme.backgroundElement }]}>
-            <ThemedText type="smallBold" themeColor="textSecondary">
-              {section.title}
-            </ThemedText>
+      <ScrollView style={styles.list} nestedScrollEnabled>
+        {sections.map((section) => (
+          <View key={section.title}>
+            <View style={[styles.sectionHeader, { backgroundColor: theme.backgroundElement }]}>
+              <ThemedText type="smallBold" themeColor="textSecondary">
+                {section.title}
+              </ThemedText>
+            </View>
+            {section.data.map((item) => {
+              const isSelected = item.id === selectedVoiceId;
+              return (
+                <Pressable
+                  key={item.id}
+                  onPress={() => onSelectVoice(item.id)}
+                  accessibilityRole="button"
+                  accessibilityLabel={`Select voice ${item.name} (${item.language})`}
+                  accessibilityState={{ selected: isSelected }}
+                  style={[styles.row, isSelected && { backgroundColor: theme.backgroundSelected }]}
+                >
+                  <ThemedText type="default" style={styles.voiceName}>
+                    {isSelected ? '✓ ' : '  '}
+                    {item.name}
+                  </ThemedText>
+                  <ThemedText
+                    type="small"
+                    themeColor={QUALITY_THEME[item.quality]}
+                    style={styles.badge}
+                  >
+                    {item.quality}
+                  </ThemedText>
+                </Pressable>
+              );
+            })}
           </View>
-        )}
-        renderItem={({ item }) => {
-          const isSelected = item.id === selectedVoiceId;
-          return (
-            <Pressable
-              onPress={() => onSelectVoice(item.id)}
-              accessibilityRole="button"
-              accessibilityLabel={`Select voice ${item.name} (${item.language})`}
-              accessibilityState={{ selected: isSelected }}
-              style={[
-                styles.row,
-                isSelected && { backgroundColor: theme.backgroundSelected },
-              ]}
-            >
-              <ThemedText type="default" style={styles.voiceName}>
-                {isSelected ? '✓ ' : '  '}
-                {item.name}
-              </ThemedText>
-              <ThemedText type="small" themeColor={QUALITY_THEME[item.quality]} style={styles.badge}>
-                {item.quality}
-              </ThemedText>
-            </Pressable>
-          );
-        }}
-      />
+        ))}
+      </ScrollView>
     </ThemedView>
   );
 }
@@ -146,6 +147,9 @@ const styles = StyleSheet.create({
   container: {
     maxHeight: 320,
     borderRadius: Spacing.one,
+  },
+  list: {
+    flexGrow: 0,
   },
   sectionHeader: {
     paddingHorizontal: Spacing.three,

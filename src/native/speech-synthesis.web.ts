@@ -36,14 +36,8 @@ interface WebUtterance {
   rate: number;
   pitch: number;
   volume: number;
-  onstart: ((ev: unknown) => void) | null;
-  onend: ((ev: unknown) => void) | null;
-  onpause: ((ev: unknown) => void) | null;
-  onresume: ((ev: unknown) => void) | null;
-  onerror: ((ev: unknown) => void) | null;
-  onboundary:
-    | ((ev: { charIndex: number; charLength?: number; name?: string }) => void)
-    | null;
+  text?: string;
+  addEventListener?(name: string, handler: (ev: any) => void): void;
 }
 
 interface WebSynth {
@@ -56,7 +50,6 @@ interface WebSynth {
   cancel(): void;
   getVoices(): WebVoice[];
   addEventListener?(name: 'voiceschanged', cb: () => void): void;
-  onvoiceschanged?: (() => void) | null;
 }
 
 interface WebUtteranceCtor {
@@ -120,11 +113,7 @@ const initialSynth = getSynth();
 if (initialSynth) {
   refreshVoicesCache();
   try {
-    if (typeof initialSynth.addEventListener === 'function') {
-      initialSynth.addEventListener('voiceschanged', refreshVoicesCache);
-    } else {
-      initialSynth.onvoiceschanged = refreshVoicesCache;
-    }
+    initialSynth.addEventListener?.('voiceschanged', refreshVoicesCache);
   } catch {
     // ignore — feature-detect already passed but listener wiring failed
   }
@@ -150,18 +139,19 @@ function buildPresent(synth: WebSynth, UtteranceCtor: WebUtteranceCtor): SpeechS
       utt.rate = mapRateForWeb(args.rate);
       utt.pitch = mapPitchForWeb(args.pitch);
       utt.volume = mapVolumeForWeb(args.volume);
-      utt.onstart = () => events.emit('didStart', {});
-      utt.onend = () => events.emit('didFinish', {});
-      utt.onpause = () => events.emit('didPause', {});
-      utt.onresume = () => events.emit('didContinue', {});
-      utt.onerror = () => events.emit('didCancel', {});
-      utt.onboundary = (ev) => {
+      const add = utt.addEventListener?.bind(utt);
+      add?.('start', () => events.emit('didStart', {}));
+      add?.('end', () => events.emit('didFinish', {}));
+      add?.('pause', () => events.emit('didPause', {}));
+      add?.('resume', () => events.emit('didContinue', {}));
+      add?.('error', () => events.emit('didCancel', {}));
+      add?.('boundary', (ev: { charIndex: number; charLength?: number; name?: string }) => {
         if (ev.name && ev.name !== 'word') return;
         events.emit('willSpeakWord', {
           range: { location: ev.charIndex, length: ev.charLength ?? 1 },
           fullText: args.text,
         });
-      };
+      });
       synth.speak(utt);
     },
     async pause(): Promise<void> {

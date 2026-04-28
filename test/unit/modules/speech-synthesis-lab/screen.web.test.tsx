@@ -17,7 +17,13 @@ jest.mock('@/native/speech-synthesis', () => {
   const bridge = {
     availableVoices: jest.fn(() =>
       Promise.resolve([
-        { id: 'w1', name: 'WebAlex', language: 'en-US', quality: 'Default', isPersonalVoice: false },
+        {
+          id: 'w1',
+          name: 'WebAlex',
+          language: 'en-US',
+          quality: 'Default',
+          isPersonalVoice: false,
+        },
       ]),
     ),
     speak: jest.fn(() => Promise.resolve()),
@@ -61,9 +67,7 @@ function findByLabel(root: any, regex: RegExp) {
 }
 
 function findInput(root: any) {
-  return root.findAll(
-    (n: any) => n.props && n.props.accessibilityLabel === 'Text to speak',
-  )[0];
+  return root.findAll((n: any) => n.props && n.props.accessibilityLabel === 'Text to speak')[0];
 }
 
 beforeEach(() => {

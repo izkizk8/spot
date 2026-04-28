@@ -15,7 +15,8 @@ import SpeechSynthesisLabScreen from './screen';
 const manifest: ModuleManifest = {
   id: 'speech-synthesis-lab',
   title: 'Speech Synthesis',
-  description: 'AVSpeechSynthesizer wrapper with voices, rate/pitch/volume controls, and word-boundary highlighting.',
+  description:
+    'AVSpeechSynthesizer wrapper with voices, rate/pitch/volume controls, and word-boundary highlighting.',
   icon: { ios: 'speaker.wave.2', fallback: '🔊' },
   platforms: ['ios', 'android', 'web'],
   minIOS: '7.0',

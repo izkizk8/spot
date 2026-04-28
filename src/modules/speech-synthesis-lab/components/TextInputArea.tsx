@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, Text, TextInput, View } from 'react-native';
 import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { Spacing } from '@/constants/theme';
@@ -46,7 +46,10 @@ export default function TextInputArea({
   }));
 
   const highlighted = hasRange
-    ? value.substring(currentWordRange!.location, currentWordRange!.location + currentWordRange!.length)
+    ? value.substring(
+        currentWordRange!.location,
+        currentWordRange!.location + currentWordRange!.length,
+      )
     : '';
 
   return (
@@ -60,7 +63,11 @@ export default function TextInputArea({
         accessibilityLabel={accessibilityLabel}
         style={[
           styles.input,
-          { color: theme.text, backgroundColor: theme.backgroundElement, borderColor: theme.backgroundSelected },
+          {
+            color: theme.text,
+            backgroundColor: theme.backgroundElement,
+            borderColor: theme.backgroundSelected,
+          },
         ]}
         placeholderTextColor={theme.textSecondary}
         placeholder="Type something to speak..."
@@ -68,18 +75,12 @@ export default function TextInputArea({
       {hasRange ? (
         <Animated.View
           pointerEvents="none"
-          style={[
-            styles.overlay,
-            { backgroundColor: theme.backgroundSelected },
-            animatedStyle,
-          ]}
+          style={[styles.overlay, { backgroundColor: theme.backgroundSelected }, animatedStyle]}
           accessibilityElementsHidden
           // testID kept terse so screen-reader users get the underlying TextInput
           testID="text-input-highlight-overlay"
         >
-          <Animated.Text style={[styles.overlayText, { color: theme.text }]}>
-            {highlighted}
-          </Animated.Text>
+          <Text style={[styles.overlayText, { color: theme.text }]}>{highlighted}</Text>
         </Animated.View>
       ) : null}
     </View>

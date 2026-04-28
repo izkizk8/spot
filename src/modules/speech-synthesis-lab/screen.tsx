@@ -23,11 +23,7 @@ import VoicePicker from './components/VoicePicker';
 import VolumeControl from './components/VolumeControl';
 import { useSynthesisSession } from './hooks/useSynthesisSession';
 import { SAMPLE_PRESETS } from './sample-texts';
-import {
-  pitchPresetToValue,
-  ratePresetToValue,
-  volumePresetToValue,
-} from './synth-mapping';
+import { pitchPresetToValue, ratePresetToValue, volumePresetToValue } from './synth-mapping';
 import type { PitchPreset, RatePreset, VolumePreset } from './synth-types';
 
 function isIOS17Plus(): boolean {

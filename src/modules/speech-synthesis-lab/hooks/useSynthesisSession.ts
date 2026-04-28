@@ -69,9 +69,10 @@ export function useSynthesisSession(
   const bridge = options.bridgeOverride ?? defaultBridge;
 
   const [status, setStatus] = React.useState<TransportState>('idle');
-  const [currentWordRange, setCurrentWordRange] = React.useState<
-    { location: number; length: number } | null
-  >(null);
+  const [currentWordRange, setCurrentWordRange] = React.useState<{
+    location: number;
+    length: number;
+  } | null>(null);
   const [voices, setVoices] = React.useState<Voice[]>([]);
   const [selectedVoiceId, setSelectedVoiceId] = React.useState<string | undefined>(undefined);
   const [personalVoiceStatus, setPersonalVoiceStatus] =

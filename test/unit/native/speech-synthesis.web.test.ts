@@ -9,15 +9,9 @@ interface FakeUtterance {
   rate: number;
   pitch: number;
   volume: number;
-  onstart: ((ev: unknown) => void) | null;
-  onend: ((ev: unknown) => void) | null;
-  onpause: ((ev: unknown) => void) | null;
-  onresume: ((ev: unknown) => void) | null;
-  onerror: ((ev: unknown) => void) | null;
-  onboundary:
-    | ((ev: { charIndex: number; charLength?: number; name?: string }) => void)
-    | null;
   text: string;
+  _handlers: Record<string, (ev: any) => void>;
+  addEventListener: (name: string, handler: (ev: any) => void) => void;
 }
 
 function setupGlobals(present: boolean): {
@@ -52,9 +46,7 @@ function setupGlobals(present: boolean): {
     pause: jest.fn(),
     resume: jest.fn(),
     cancel: jest.fn(),
-    getVoices: jest.fn(() => [
-      { voiceURI: 'web-1', name: 'Web Voice', lang: 'en-US' },
-    ]),
+    getVoices: jest.fn(() => [{ voiceURI: 'web-1', name: 'Web Voice', lang: 'en-US' }]),
     addEventListener: jest.fn(),
   };
   const lastUtterance: { ref: FakeUtterance | null } = { ref: null };
@@ -65,12 +57,10 @@ function setupGlobals(present: boolean): {
     this.rate = 1;
     this.pitch = 1;
     this.volume = 1;
-    this.onstart = null;
-    this.onend = null;
-    this.onpause = null;
-    this.onresume = null;
-    this.onerror = null;
-    this.onboundary = null;
+    this._handlers = {};
+    this.addEventListener = (name: string, handler: (ev: any) => void) => {
+      this._handlers[name] = handler;
+    };
     lastUtterance.ref = this;
   }
 
@@ -141,12 +131,12 @@ describe('speech-synthesis bridge (Web)', () => {
 
       await bridge.speak({ text: 'hi', rate: 0.5, pitch: 1.0, volume: 0.7 });
       const utt = lastUtterance.ref!;
-      utt.onstart?.({});
-      utt.onboundary?.({ charIndex: 0, charLength: 2, name: 'word' });
-      utt.onpause?.({});
-      utt.onresume?.({});
-      utt.onend?.({});
-      utt.onerror?.({});
+      utt._handlers.start?.({});
+      utt._handlers.boundary?.({ charIndex: 0, charLength: 2, name: 'word' });
+      utt._handlers.pause?.({});
+      utt._handlers.resume?.({});
+      utt._handlers.end?.({});
+      utt._handlers.error?.({});
       expect(seen).toEqual(['start', 'word', 'pause', 'cont', 'finish', 'cancel']);
     });
 

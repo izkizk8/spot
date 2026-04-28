@@ -5,8 +5,6 @@
 import React from 'react';
 import { act, fireEvent, render } from '@testing-library/react-native';
 
-import { SpeechSynthesisPauseUnsupported } from '@/native/speech-synthesis.types';
-
 interface Listener {
   event: string;
   fn: (p: any) => void;
@@ -16,6 +14,7 @@ interface Listener {
 const _listeners: Listener[] = [];
 
 jest.mock('@/native/speech-synthesis', () => {
+  const types = require('@/native/speech-synthesis.types');
   const bridge = {
     availableVoices: jest.fn(() =>
       Promise.resolve([
@@ -23,8 +22,8 @@ jest.mock('@/native/speech-synthesis', () => {
       ]),
     ),
     speak: jest.fn(() => Promise.resolve()),
-    pause: jest.fn(() => Promise.reject(new SpeechSynthesisPauseUnsupported())),
-    continue: jest.fn(() => Promise.reject(new SpeechSynthesisPauseUnsupported())),
+    pause: jest.fn(() => Promise.reject(new types.SpeechSynthesisPauseUnsupported())),
+    continue: jest.fn(() => Promise.reject(new types.SpeechSynthesisPauseUnsupported())),
     stop: jest.fn(() => Promise.resolve()),
     isSpeaking: jest.fn(() => false),
     requestPersonalVoiceAuthorization: jest.fn(() => Promise.resolve('unsupported')),
@@ -42,8 +41,6 @@ jest.mock('@/native/speech-synthesis', () => {
 
 import bridgeModule from '@/native/speech-synthesis';
 import AndroidScreen from '@/modules/speech-synthesis-lab/screen.android';
-
-const { SpeechSynthesisPauseUnsupported: _ } = require('@/native/speech-synthesis.types');
 
 const mockBridge = bridgeModule as unknown as {
   speak: jest.Mock;
@@ -68,9 +65,7 @@ function findByLabel(root: any, regex: RegExp) {
 }
 
 function findInput(root: any) {
-  return root.findAll(
-    (n: any) => n.props && n.props.accessibilityLabel === 'Text to speak',
-  )[0];
+  return root.findAll((n: any) => n.props && n.props.accessibilityLabel === 'Text to speak')[0];
 }
 
 beforeEach(() => {
@@ -93,7 +88,9 @@ describe('SpeechSynthesisLab Android screen', () => {
     const view = render(<AndroidScreen />);
     await flush();
     expect(findByLabel(view.UNSAFE_root, /^Pause$/).props.accessibilityState.disabled).toBe(true);
-    expect(findByLabel(view.UNSAFE_root, /^Continue$/).props.accessibilityState.disabled).toBe(true);
+    expect(findByLabel(view.UNSAFE_root, /^Continue$/).props.accessibilityState.disabled).toBe(
+      true,
+    );
   });
 
   it('Speak forwards to bridge.speak', async () => {

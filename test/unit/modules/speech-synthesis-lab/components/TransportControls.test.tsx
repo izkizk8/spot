@@ -10,9 +10,7 @@ import TransportControls from '@/modules/speech-synthesis-lab/components/Transpo
 function findButtonByLabel(root: any, label: string) {
   return root.findAll(
     (n: any) =>
-      n.props &&
-      n.props.accessibilityRole === 'button' &&
-      n.props.accessibilityLabel === label,
+      n.props && n.props.accessibilityRole === 'button' && n.props.accessibilityLabel === label,
   )[0];
 }
 

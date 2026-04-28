@@ -78,7 +78,9 @@ describe('speech-synthesis bridge (Android)', () => {
     });
 
     const events: Array<{ name: string; payload: unknown }> = [];
-    const sub = bridge.events.addListener('didStart', () => events.push({ name: 'didStart', payload: {} }));
+    const sub = bridge.events.addListener('didStart', () =>
+      events.push({ name: 'didStart', payload: {} }),
+    );
     bridge.events.addListener('willSpeakWord', (p) =>
       events.push({ name: 'willSpeakWord', payload: p }),
     );

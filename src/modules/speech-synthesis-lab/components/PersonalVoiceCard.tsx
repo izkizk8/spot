@@ -26,10 +26,7 @@ const STATUS_LABEL: Record<PersonalVoiceAuthorizationStatus, string> = {
   unsupported: 'unsupported',
 };
 
-const STATUS_TONE: Record<
-  PersonalVoiceAuthorizationStatus,
-  'tintA' | 'tintB' | 'textSecondary'
-> = {
+const STATUS_TONE: Record<PersonalVoiceAuthorizationStatus, 'tintA' | 'tintB' | 'textSecondary'> = {
   notDetermined: 'textSecondary',
   authorized: 'tintA',
   denied: 'tintB',

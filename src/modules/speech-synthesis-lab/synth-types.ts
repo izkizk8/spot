@@ -45,11 +45,7 @@ export type RatePreset = 'Slow' | 'Normal' | 'Fast';
 export type PitchPreset = 'Low' | 'Normal' | 'High';
 export type VolumePreset = 'Low' | 'Normal' | 'High';
 
-export type SynthesisErrorKind =
-  | 'NotSupported'
-  | 'PauseUnsupported'
-  | 'Interrupted'
-  | 'Unknown';
+export type SynthesisErrorKind = 'NotSupported' | 'PauseUnsupported' | 'Interrupted' | 'Unknown';
 
 export type SynthEventName =
   | 'didStart'
