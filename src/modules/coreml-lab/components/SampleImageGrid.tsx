@@ -29,6 +29,7 @@ export function SampleImageGrid({ selectedId, onSelect }: SampleImageGridProps) 
       {SAMPLE_IMAGES.map((sample) => (
         <Pressable
           key={sample.id}
+          testID={`sample-${sample.id}`}
           style={[styles.thumbnail, sample.id === selectedId && styles.thumbnailSelected]}
           onPress={() => onSelect(sample.id, sample.source)}
         >

@@ -28,16 +28,16 @@ const withCoreML: ConfigPlugin = (config) => {
       const modelPath = path.join(projectRoot, 'native/ios/coreml/models/MobileNetV2.mlmodel');
 
       if (!fs.existsSync(modelPath)) {
-        throw new Error(
-          `[with-coreml] ERROR: model file not found at ${modelPath}\n\n` +
-            `Download MobileNetV2.mlmodel from Apple's developer model gallery:\n` +
-            `  https://developer.apple.com/machine-learning/models/\n\n` +
-            `Place it at: native/ios/coreml/models/MobileNetV2.mlmodel\n\n` +
-            `See specs/016-coreml-playground/quickstart.md for detailed instructions.`,
+        console.warn(
+          `[with-coreml] WARNING: model file not found at ${modelPath}\n` +
+            `  Download MobileNetV2.mlmodel from https://developer.apple.com/machine-learning/models/\n` +
+            `  Place it at: native/ios/coreml/models/MobileNetV2.mlmodel\n` +
+            `  Build will proceed; the JS side will surface a "model not loaded" error at runtime.\n` +
+            `  See specs/016-coreml-playground/quickstart.md for details.`,
         );
+      } else {
+        console.log('[with-coreml] Verified MobileNetV2.mlmodel at native/ios/coreml/models/');
       }
-
-      console.log('[with-coreml] Verified MobileNetV2.mlmodel at native/ios/coreml/models/');
 
       // The .mlmodel will be picked up by autolinking via the podspec.
       // No manual Xcode project modification needed — expo-modules-core
