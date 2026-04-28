@@ -16,7 +16,7 @@ const SIGNIFICANT_CHANGES_TASK_NAME = 'spot.core-location-lab.significant-change
 
 // Define the task handler for significant location changes
 if (!TaskManager.isTaskDefined?.(SIGNIFICANT_CHANGES_TASK_NAME)) {
-  TaskManager.defineTask(SIGNIFICANT_CHANGES_TASK_NAME, ({ data, error }) => {
+  TaskManager.defineTask(SIGNIFICANT_CHANGES_TASK_NAME, async ({ data: _data, error }) => {
     if (error) {
       console.warn('[SignificantChanges] Task error:', error);
       return;
@@ -27,7 +27,7 @@ if (!TaskManager.isTaskDefined?.(SIGNIFICANT_CHANGES_TASK_NAME)) {
 
 export function SignificantChangesCard(): React.JSX.Element {
   const [subscribed, setSubscribed] = useState(false);
-  const [events, setEvents] = useState<SignificantChangeEvent[]>([]);
+  const [events, _setEvents] = useState<SignificantChangeEvent[]>([]);
   const [error, setError] = useState<string | null>(null);
   const mountedRef = useRef(true);
 

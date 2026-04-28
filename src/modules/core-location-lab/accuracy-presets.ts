@@ -13,9 +13,9 @@ export interface AccuracyPreset {
 }
 
 export const ACCURACY_PRESETS: readonly AccuracyPreset[] = [
-  { label: 'Best', value: Location.LocationAccuracy.Best },
+  { label: 'Best', value: Location.LocationAccuracy.Highest },
   { label: 'Best for navigation', value: Location.LocationAccuracy.BestForNavigation },
-  { label: 'Hundred meters', value: Location.LocationAccuracy.Hundred },
+  { label: 'Hundred meters', value: Location.LocationAccuracy.Balanced },
   { label: 'Kilometer', value: Location.LocationAccuracy.Lowest },
 ] as const;
 

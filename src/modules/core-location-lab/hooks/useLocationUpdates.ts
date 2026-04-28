@@ -7,11 +7,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import * as Location from 'expo-location';
 
-import {
-  ACCURACY_PRESETS,
-  DEFAULT_ACCURACY_PRESET,
-  type AccuracyPreset,
-} from '../accuracy-presets';
+import { DEFAULT_ACCURACY_PRESET, type AccuracyPreset } from '../accuracy-presets';
 import { DEFAULT_DISTANCE_FILTER, type DistanceFilter } from '../distance-filters';
 import type { LocationSample } from '../types';
 
@@ -48,14 +44,17 @@ export function useLocationUpdates(): UseLocationUpdates {
   const accuracyRef = useRef(accuracy);
   const distanceFilterRef = useRef(distanceFilter);
 
-  // Keep refs in sync
-  accuracyRef.current = accuracy;
-  distanceFilterRef.current = distanceFilter;
+  // Keep refs in sync (in effect, not during render)
+  useEffect(() => {
+    accuracyRef.current = accuracy;
+  }, [accuracy]);
 
-  // Compute samples per minute from window
-  const samplesPerMinute = samplesWindow.filter(
-    (s) => Date.now() - s.timestamp.getTime() <= WINDOW_MS,
-  ).length;
+  useEffect(() => {
+    distanceFilterRef.current = distanceFilter;
+  }, [distanceFilter]);
+
+  // Samples per minute is just the length of the window (samples added within last 60s are trimmed in callback)
+  const samplesPerMinute = samplesWindow.length;
 
   const startSubscription = useCallback(async () => {
     try {

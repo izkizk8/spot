@@ -37,17 +37,18 @@ export enum PermissionStatus {
 }
 
 // Feature 025: Location accuracy enum
-export enum LocationAccuracy {
-  Lowest = 1,
-  Low = 2,
-  Balanced = 3,
-  High = 4,
-  Highest = 5,
-  BestForNavigation = 6,
-  Best = 6,
-  Hundred = 3,
-  Kilometer = 1,
-}
+// Values intentionally match expo-location's LocationAccuracy enum which has aliases
+export const LocationAccuracy = {
+  Lowest: 1,
+  Low: 2,
+  Balanced: 3,
+  High: 4,
+  Highest: 5,
+  BestForNavigation: 6,
+  Best: 6,
+  Hundred: 3,
+  Kilometer: 1,
+} as const;
 
 // Feature 025: Geofencing event types
 export enum GeofencingEventType {

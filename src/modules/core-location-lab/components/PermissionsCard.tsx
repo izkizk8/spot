@@ -4,8 +4,9 @@
  * Displays current location authorization status with Request button
  * and Open Settings link.
  */
-import React from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { Linking, Pressable, StyleSheet } from 'react-native';
+import * as Location from 'expo-location';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -14,8 +15,10 @@ import { Spacing } from '@/constants/theme';
 export type PermissionStatus = 'undetermined' | 'granted' | 'denied' | 'restricted';
 
 export interface PermissionsCardProps {
-  status: PermissionStatus;
-  onRequest: () => void;
+  /** Optional override for status (useful for testing) */
+  status?: PermissionStatus;
+  /** Optional override for onRequest (useful for testing) */
+  onRequest?: () => void;
 }
 
 const statusLabels: Record<PermissionStatus, string> = {
@@ -32,7 +35,42 @@ const statusColors: Record<PermissionStatus, string> = {
   restricted: '#FF9500',
 };
 
-export function PermissionsCard({ status, onRequest }: PermissionsCardProps) {
+function mapLocationStatus(status: Location.PermissionStatus | null): PermissionStatus {
+  if (!status) return 'undetermined';
+  switch (status) {
+    case Location.PermissionStatus.GRANTED:
+      return 'granted';
+    case Location.PermissionStatus.DENIED:
+      return 'denied';
+    default:
+      return 'undetermined';
+  }
+}
+
+export function PermissionsCard({
+  status: statusProp,
+  onRequest: onRequestProp,
+}: PermissionsCardProps) {
+  const [internalStatus, setInternalStatus] = useState<PermissionStatus>('undetermined');
+
+  useEffect(() => {
+    if (statusProp !== undefined) return; // Skip if using prop override
+
+    void Location.getForegroundPermissionsAsync().then((result) => {
+      setInternalStatus(mapLocationStatus(result.status));
+    });
+  }, [statusProp]);
+
+  const handleRequest = useCallback(async () => {
+    if (onRequestProp) {
+      onRequestProp();
+      return;
+    }
+    const result = await Location.requestForegroundPermissionsAsync();
+    setInternalStatus(mapLocationStatus(result.status));
+  }, [onRequestProp]);
+
+  const status = statusProp ?? internalStatus;
   const isDenied = status === 'denied';
 
   const handleOpenSettings = () => {
@@ -54,7 +92,7 @@ export function PermissionsCard({ status, onRequest }: PermissionsCardProps) {
 
       <ThemedView style={styles.actions}>
         <Pressable
-          onPress={isDenied ? undefined : onRequest}
+          onPress={isDenied ? undefined : handleRequest}
           style={[styles.button, isDenied && styles.buttonDisabled]}
           disabled={isDenied}
         >

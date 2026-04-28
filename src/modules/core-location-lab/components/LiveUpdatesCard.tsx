@@ -10,8 +10,8 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
-import { ACCURACY_PRESETS, type AccuracyPreset } from '../accuracy-presets';
-import { DISTANCE_FILTERS, type DistanceFilter } from '../distance-filters';
+import { ACCURACY_PRESETS } from '../accuracy-presets';
+import { DISTANCE_FILTERS } from '../distance-filters';
 import { useLocationUpdates } from '../hooks/useLocationUpdates';
 
 import { LocationReadout } from './LocationReadout';

@@ -34,6 +34,7 @@ describe('HeadingCard', () => {
         magHeading: 45,
         trueHeading: 43,
         accuracy: 2,
+        timestamp: new Date(),
       },
       samplesPerMinute: 10,
       error: null,
@@ -47,7 +48,8 @@ describe('HeadingCard', () => {
     const needle = screen.getByTestId('compass-needle');
     expect(needle).toBeTruthy();
     // The compass needle receives the magHeading value
-    expect(screen.getByText('45')).toBeTruthy();
+    // Text is split across elements, use regex to match partial
+    expect(screen.getByText(/45/)).toBeTruthy();
   });
 
   it('shows calibration banner when isCalibrated is false', () => {
@@ -59,6 +61,7 @@ describe('HeadingCard', () => {
         magHeading: 90,
         trueHeading: 88,
         accuracy: 0,
+        timestamp: new Date(),
       },
       samplesPerMinute: 5,
       error: null,
@@ -80,6 +83,7 @@ describe('HeadingCard', () => {
         magHeading: 180,
         trueHeading: 178,
         accuracy: 2,
+        timestamp: new Date(),
       },
       samplesPerMinute: 10,
       error: null,
@@ -132,6 +136,7 @@ describe('HeadingCard', () => {
         magHeading: 270,
         trueHeading: 268,
         accuracy: 3,
+        timestamp: new Date(),
       },
       samplesPerMinute: 12,
       error: null,

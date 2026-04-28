@@ -11,7 +11,7 @@ import { CompassNeedle } from '@/modules/sensors-playground/components/CompassNe
 import { useHeading } from '../hooks/useHeading';
 
 export function HeadingCard(): React.JSX.Element {
-  const { running, latest, error, isCalibrated, start, stop } = useHeading();
+  const { running: _running, latest, error, isCalibrated, start, stop } = useHeading();
 
   // Auto-start heading subscription
   useEffect(() => {
@@ -48,7 +48,10 @@ export function HeadingCard(): React.JSX.Element {
       )}
 
       <View style={styles.compassContainer}>
-        <CompassNeedle heading={heading} />
+        <CompassNeedle
+          x={Math.sin((heading * Math.PI) / 180)}
+          y={Math.cos((heading * Math.PI) / 180)}
+        />
       </View>
 
       <View style={styles.readingContainer}>

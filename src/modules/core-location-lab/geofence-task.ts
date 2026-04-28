@@ -11,15 +11,10 @@ import { appendGeofenceEvent } from './event-store';
 
 export const GEOFENCE_TASK_NAME = 'spot.core-location-lab.geofence';
 
-interface GeofenceTaskBody {
-  data: {
-    eventType: Location.GeofencingEventType;
-    region: Location.LocationRegion;
-  } | null;
-  error: { code?: string; message: string } | null;
-}
-
-TaskManager.defineTask(GEOFENCE_TASK_NAME, ({ data, error }: GeofenceTaskBody) => {
+TaskManager.defineTask<{
+  eventType: Location.GeofencingEventType;
+  region: Location.LocationRegion;
+} | null>(GEOFENCE_TASK_NAME, async ({ data, error }) => {
   // Short-circuit on error
   if (error) {
     console.warn('[geofence-task] Error:', error.message);
@@ -34,7 +29,7 @@ TaskManager.defineTask(GEOFENCE_TASK_NAME, ({ data, error }: GeofenceTaskBody) =
   const type = eventType === Location.GeofencingEventType.Enter ? 'enter' : 'exit';
 
   appendGeofenceEvent({
-    regionId: region.identifier,
+    regionId: region.identifier ?? 'unknown',
     type,
     timestamp: new Date(),
   });

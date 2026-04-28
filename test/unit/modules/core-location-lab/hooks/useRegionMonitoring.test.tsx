@@ -71,7 +71,6 @@ describe('useRegionMonitoring', () => {
       });
 
       const regionId = result.current.regions[0].id;
-      const callCount = (Location.startGeofencingAsync as jest.Mock).mock.calls.length;
 
       await act(async () => {
         await result.current.removeRegion(regionId);
@@ -120,16 +119,21 @@ describe('useRegionMonitoring', () => {
         });
       });
 
+      // Verify it was added
+      expect(result.current.regions.length).toBe(1);
+
       unmount();
 
       // Should not throw when events come in after unmount
-      act(() => {
-        appendGeofenceEvent({
-          regionId: result.current.regions[0]?.id ?? 'test',
-          type: 'enter',
-          timestamp: new Date(),
+      expect(() => {
+        act(() => {
+          appendGeofenceEvent({
+            regionId: result.current.regions[0]?.id ?? 'test',
+            type: 'enter',
+            timestamp: new Date(),
+          });
         });
-      });
+      }).not.toThrow();
     });
   });
 

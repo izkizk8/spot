@@ -56,8 +56,11 @@ export function useRegionMonitoring(): UseRegionMonitoring {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const regionsRef = useRef<MonitoredRegion[]>([]);
 
-  // Keep ref in sync
-  regionsRef.current = regions;
+  // Keep ref in sync (in effect, not during render)
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  useEffect(() => {
+    regionsRef.current = regions;
+  }, [regions]);
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const syncGeofencing = useCallback(async (newRegions: MonitoredRegion[]) => {
@@ -142,7 +145,7 @@ export function useRegionMonitoring(): UseRegionMonitoring {
       if (!mountedRef.current) return;
 
       // Update events list
-      setEvents([...storeEvents].reverse()); // newest first
+      setEvents([...storeEvents].toReversed()); // newest first
 
       // Update region states based on latest events
       setRegions((currentRegions) => {
@@ -150,7 +153,7 @@ export function useRegionMonitoring(): UseRegionMonitoring {
           // Find the most recent event for this region
           const latestEvent = storeEvents
             .filter((e) => e.regionId === region.id)
-            .sort((a, b) => b.timestamp.getTime() - a.timestamp.getTime())[0];
+            .toSorted((a, b) => b.timestamp.getTime() - a.timestamp.getTime())[0];
 
           if (!latestEvent) return region;
 
