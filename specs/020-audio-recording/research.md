@@ -10,7 +10,9 @@ This document records the autonomous resolution of every NEEDS-CLARIFICATION-equ
 
 **Question**: Does `expo-audio` (the modern Expo audio package) on Expo SDK 55 expose everything this module needs (recorder + player + 100 ms metering + `setAudioModeAsync` for AVAudioSession category management) on iOS, Android, and Web in a single dependency?
 
-**Decision**: **Yes.** `expo-audio` is the chosen single dependency for record / play / meter / session management on all three platforms (D-01 / spec). Install via `npx expo install expo-audio` (not raw `pnpm add`) so Expo's per-SDK compatibility matrix pins the version known to work with Expo SDK 55 / React Native 0.83 / React 19.2. Document the resolved semver in this file after install during the implement phase.
+**Decision**: **Yes.** `expo-audio` is the chosen single dependency for record / play / meter / session management on all three platforms (D-01 / spec). Install via `npx expo install expo-audio` (not raw `pnpm add`) so Expo's per-SDK compatibility matrix pins the version known to work with Expo SDK 55 / React Native 0.83 / React 19.2.
+
+**Resolved version (T002 / Phase 1)**: `expo-audio@~55.0.14` recorded in `package.json` after `npx expo install expo-audio`. Confirmed compatible with Expo SDK 55 / React Native 0.83 / React 19.2 (T063, Phase 8).
 
 **Rationale**:
 
@@ -35,6 +37,8 @@ This document records the autonomous resolution of every NEEDS-CLARIFICATION-equ
 **Question**: Is `expo-sharing` already a project dependency? If not, should it be added? What does the Share action do when `expo-sharing` is unavailable?
 
 **Decision**: Check `package.json` during implement phase. If `expo-sharing` is **absent**, install it via `npx expo install expo-sharing`. The Share action calls `Sharing.isAvailableAsync()` at runtime; if it resolves `true`, call `Sharing.shareAsync(uri)`. If it resolves `false` (or the module import fails — wrapped in try/catch via dynamic import), fall back to a `Linking`-based action that copies the file URI to the clipboard (via `expo-clipboard` if available, else `Linking.openURL(uri)`). The fallback **never throws** (FR-014 / D-06).
+
+**Resolved version (T003 / Phase 1)**: `expo-sharing@~55.0.18` recorded in `package.json` after `npx expo install expo-sharing` (T063, Phase 8).
 
 **Rationale**:
 
