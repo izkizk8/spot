@@ -8,44 +8,50 @@ import type { VisionBridge } from '@/native/vision-detector.types';
 import { VisionAnalysisFailed } from '@/native/vision-detector.types';
 
 describe('useFrameAnalyzer', () => {
+  let mockCameraRef: any;
+  let mockBridge: VisionBridge;
+
   beforeEach(() => {
     jest.useFakeTimers();
+    jest.clearAllMocks();
+
+    // Fresh mock camera ref for each test
+    mockCameraRef = {
+      current: {
+        takePictureAsync: jest.fn(() =>
+          Promise.resolve({
+            base64: 'mock-base64-data',
+            uri: 'file:///mock.jpg',
+            width: 1920,
+            height: 1080,
+          }),
+        ),
+      },
+    };
+
+    // Fresh mock bridge for each test
+    mockBridge = {
+      isAvailable: jest.fn(() => true),
+      analyze: jest.fn(() =>
+        Promise.resolve({
+          observations: [
+            {
+              kind: 'face',
+              boundingBox: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 },
+            },
+          ],
+          analysisMs: 50,
+          imageWidth: 1920,
+          imageHeight: 1080,
+        }),
+      ),
+    };
   });
 
   afterEach(() => {
     jest.runOnlyPendingTimers();
     jest.useRealTimers();
   });
-
-  const mockCameraRef = {
-    current: {
-      takePictureAsync: jest.fn(() =>
-        Promise.resolve({
-          base64: 'mock-base64-data',
-          uri: 'file:///mock.jpg',
-          width: 1920,
-          height: 1080,
-        }),
-      ),
-    } as any,
-  };
-
-  const mockBridge: VisionBridge = {
-    isAvailable: jest.fn(() => true),
-    analyze: jest.fn(() =>
-      Promise.resolve({
-        observations: [
-          {
-            kind: 'face',
-            boundingBox: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 },
-          },
-        ],
-        analysisMs: 50,
-        imageWidth: 1920,
-        imageHeight: 1080,
-      }),
-    ),
-  };
 
   it('triggers takePictureAsync within intervalMs when mode is faces', async () => {
     const { unmount } = renderHook(() =>
