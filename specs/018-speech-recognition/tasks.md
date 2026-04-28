@@ -230,11 +230,11 @@ Paths are relative to the repository root (`C:\Users\izkizk8\spot-018-speech-rec
 
 **Purpose**: Quality gates and validation that span every story.
 
-- [ ] T064 Run `pnpm format` from repo root and commit any formatting changes (FR-034)
-- [ ] T065 Run `pnpm lint` from repo root; fix any lint errors introduced by the feature (no new `eslint-disable` comments) (FR-032, FR-034)
-- [ ] T066 Run `pnpm typecheck` from repo root; resolve any TypeScript strict-mode errors (FR-032, FR-034)
-- [ ] T067 Run `pnpm test` from repo root; confirm every speech-recognition-lab test from T008–T014, T030–T034, T043–T044, T048–T049, T053–T054, T057–T060 is green and the overall suite is green (FR-031, FR-032, SC-002)
-- [ ] T068 Run `pnpm check` from repo root (the project's standard quality gate composing format / lint / typecheck / test) and verify a single green run end-to-end (FR-032, FR-033, SC-002) — **final gate**
+- [x] T064 Run `pnpm format` from repo root and commit any formatting changes (FR-034)
+- [x] T065 Run `pnpm lint` from repo root; fix any lint errors introduced by the feature (no new `eslint-disable` comments) (FR-032, FR-034)
+- [x] T066 Run `pnpm typecheck` from repo root; resolve any TypeScript strict-mode errors (FR-032, FR-034)
+- [x] T067 Run `pnpm test` from repo root; confirm every speech-recognition-lab test from T008–T014, T030–T034, T043–T044, T048–T049, T053–T054, T057–T060 is green and the overall suite is green (FR-031, FR-032, SC-002)
+- [x] T068 Run `pnpm check` from repo root (the project's standard quality gate composing format / lint / typecheck / test) and verify a single green run end-to-end (FR-032, FR-033, SC-002) — **final gate**
 - [ ] T069 [P] Walk through `quickstart.md` JS-pure verification on Windows — record pass observations in commit message or PR description (SC-002)
 - [ ] T070 [P] Walk through `quickstart.md` iOS prebuild on macOS / EAS Build — verify `Info.plist` contains both `NSSpeechRecognitionUsageDescription` and `NSMicrophoneUsageDescription` after first prebuild and a second prebuild produces no diff (idempotency, SC-008); verify 007 / 014 / 015 / 016 / 017 plugin outputs are unaffected, in particular the 017 `NSCameraUsageDescription` value is preserved untouched (SC-009)
 - [ ] T071 [P] Walk through `quickstart.md` iOS device run: full Server flow within 5s of speech (SC-001, SC-004), On-device branch when supported, Locale switch to `ja-JP`, Auth denied path, **Copy** + **Clear** action row, mic-pulse animation + reduced-motion short-circuit (NFR-001, NFR-005, FR-006)

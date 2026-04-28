@@ -29,9 +29,8 @@ export default function LocalePicker({
 }: LocalePickerProps) {
   // Always render the top-6 list. When `availableLocales` is provided,
   // chips not in that list render disabled (US3 / FR-008).
-  const filterSet = availableLocales && availableLocales.length > 0
-    ? new Set(availableLocales)
-    : null;
+  const filterSet =
+    availableLocales && availableLocales.length > 0 ? new Set(availableLocales) : null;
 
   return (
     <ThemedView type="background" style={styles.container} accessibilityLabel="Locale picker">
@@ -60,10 +59,7 @@ export default function LocalePicker({
                 chipDisabled && styles.chipDisabled,
               ]}
             >
-              <ThemedText
-                type="small"
-                themeColor={isSelected ? 'tintA' : 'text'}
-              >
+              <ThemedText type="small" themeColor={isSelected ? 'tintA' : 'text'}>
                 {loc}
               </ThemedText>
             </Pressable>

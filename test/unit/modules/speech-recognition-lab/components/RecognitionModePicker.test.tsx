@@ -14,9 +14,7 @@ import { fireEvent, render } from '@testing-library/react-native';
 import RecognitionModePicker from '@/modules/speech-recognition-lab/components/RecognitionModePicker';
 
 function findSegment(root: any, label: string) {
-  const buttons = root.findAll(
-    (n: any) => n.props && n.props.accessibilityRole === 'button',
-  );
+  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
   for (const b of buttons) {
     const al = String(b.props.accessibilityLabel ?? '');
     if (al.toLowerCase().includes(label.toLowerCase())) return b;
@@ -27,11 +25,7 @@ function findSegment(root: any, label: string) {
 describe('RecognitionModePicker (US2)', () => {
   it('renders both Server and On-device segments', () => {
     const view = render(
-      <RecognitionModePicker
-        mode="server"
-        onDeviceAvailable={true}
-        onModeChange={jest.fn()}
-      />,
+      <RecognitionModePicker mode="server" onDeviceAvailable={true} onModeChange={jest.fn()} />,
     );
     expect(findSegment(view.UNSAFE_root, 'Server')).toBeTruthy();
     expect(findSegment(view.UNSAFE_root, 'On-device')).toBeTruthy();
@@ -39,11 +33,7 @@ describe('RecognitionModePicker (US2)', () => {
 
   it('reflects the `mode` prop in selected accessibility state', () => {
     const view = render(
-      <RecognitionModePicker
-        mode="on-device"
-        onDeviceAvailable={true}
-        onModeChange={jest.fn()}
-      />,
+      <RecognitionModePicker mode="on-device" onDeviceAvailable={true} onModeChange={jest.fn()} />,
     );
     const onDevice = findSegment(view.UNSAFE_root, 'On-device');
     expect(onDevice.props.accessibilityState).toMatchObject({ selected: true });
@@ -54,11 +44,7 @@ describe('RecognitionModePicker (US2)', () => {
   it('tapping a segment invokes onModeChange exactly once', () => {
     const onModeChange = jest.fn();
     const view = render(
-      <RecognitionModePicker
-        mode="server"
-        onDeviceAvailable={true}
-        onModeChange={onModeChange}
-      />,
+      <RecognitionModePicker mode="server" onDeviceAvailable={true} onModeChange={onModeChange} />,
     );
     const onDevice = findSegment(view.UNSAFE_root, 'On-device');
     fireEvent.press(onDevice);
@@ -69,11 +55,7 @@ describe('RecognitionModePicker (US2)', () => {
   describe('On-device disabled when !onDeviceAvailable', () => {
     it('renders On-device segment with accessibilityState.disabled=true', () => {
       const view = render(
-        <RecognitionModePicker
-          mode="server"
-          onDeviceAvailable={false}
-          onModeChange={jest.fn()}
-        />,
+        <RecognitionModePicker mode="server" onDeviceAvailable={false} onModeChange={jest.fn()} />,
       );
       const onDevice = findSegment(view.UNSAFE_root, 'On-device');
       expect(onDevice.props.accessibilityState).toMatchObject({ disabled: true });
@@ -81,19 +63,13 @@ describe('RecognitionModePicker (US2)', () => {
 
     it('uses the documented accessibilityLabel for the disabled On-device segment', () => {
       const view = render(
-        <RecognitionModePicker
-          mode="server"
-          onDeviceAvailable={false}
-          onModeChange={jest.fn()}
-        />,
+        <RecognitionModePicker mode="server" onDeviceAvailable={false} onModeChange={jest.fn()} />,
       );
       const buttons = view.UNSAFE_root.findAll(
         (n: any) => n.props && n.props.accessibilityRole === 'button',
       );
       const labels = buttons.map((b: any) => String(b.props.accessibilityLabel ?? ''));
-      const found = labels.some((l: string) =>
-        /on-device recognition not available/i.test(l),
-      );
+      const found = labels.some((l: string) => /on-device recognition not available/i.test(l));
       expect(found).toBe(true);
     });
 
@@ -128,11 +104,7 @@ describe('RecognitionModePicker (US2)', () => {
 
   it('On-device segment is enabled when onDeviceAvailable=true', () => {
     const view = render(
-      <RecognitionModePicker
-        mode="server"
-        onDeviceAvailable={true}
-        onModeChange={jest.fn()}
-      />,
+      <RecognitionModePicker mode="server" onDeviceAvailable={true} onModeChange={jest.fn()} />,
     );
     const onDevice = findSegment(view.UNSAFE_root, 'On-device');
     expect(onDevice.props.accessibilityState?.disabled).toBeFalsy();

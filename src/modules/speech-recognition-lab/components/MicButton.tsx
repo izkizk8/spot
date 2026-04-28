@@ -9,11 +9,7 @@
 
 import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
-import Animated, {
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
@@ -64,11 +60,7 @@ export default function MicButton({ listening, disabled = false, onPress }: MicB
           animatedStyle,
         ]}
       >
-        <ThemedText
-          type="title"
-          themeColor={listening ? 'background' : 'text'}
-          style={styles.icon}
-        >
+        <ThemedText type="title" themeColor={listening ? 'background' : 'text'} style={styles.icon}>
           {listening ? '■' : '●'}
         </ThemedText>
       </Animated.View>

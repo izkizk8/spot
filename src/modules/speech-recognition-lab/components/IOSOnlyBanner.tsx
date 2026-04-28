@@ -16,8 +16,8 @@ export default function IOSOnlyBanner() {
   return (
     <ThemedView style={styles.container} type="backgroundElement" accessibilityRole="alert">
       <ThemedText type="small" themeColor="textSecondary" style={styles.text}>
-        ⚠️ Speech Recognition is iOS-only on this build — open this module on an iOS 10+
-        device to see live transcription.
+        ⚠️ Speech Recognition is iOS-only on this build — open this module on an iOS 10+ device to
+        see live transcription.
       </ThemedText>
     </ThemedView>
   );

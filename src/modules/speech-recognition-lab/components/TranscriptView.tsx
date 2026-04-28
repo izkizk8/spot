@@ -37,10 +37,7 @@ function renderWords(words: WordToken[] | undefined, color: string) {
   return (
     <>
       {words.map((w, i) => (
-        <Text
-          key={`${w.word}-${i}`}
-          style={{ color, opacity: wordOpacity(w) }}
-        >
+        <Text key={`${w.word}-${i}`} style={{ color, opacity: wordOpacity(w) }}>
           {(i > 0 ? ' ' : '') + w.word}
         </Text>
       ))}
@@ -83,7 +80,7 @@ export default function TranscriptView({
         ) : (
           <Text style={{ color: theme.text }}>{final}</Text>
         )}
-        {final && partial ? <Text style={{ color: theme.text }}>{' '}</Text> : null}
+        {final && partial ? <Text style={{ color: theme.text }}> </Text> : null}
         {effectivePartialWords && effectivePartialWords.length > 0 ? (
           renderWords(effectivePartialWords, theme.textSecondary)
         ) : (

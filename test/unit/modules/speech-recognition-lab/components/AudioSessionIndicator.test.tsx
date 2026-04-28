@@ -29,39 +29,37 @@ describe('AudioSessionIndicator', () => {
   describe('active vs inactive states', () => {
     it('renders distinct accessible state when active=true', () => {
       const { UNSAFE_root } = render(<AudioSessionIndicator active={true} />);
-      const labelled = UNSAFE_root.findAll(
-        (n: any) => Boolean(n.props && typeof n.props.accessibilityLabel === 'string'),
+      const labelled = UNSAFE_root.findAll((n: any) =>
+        Boolean(n.props && typeof n.props.accessibilityLabel === 'string'),
       );
       expect(labelled.length).toBeGreaterThan(0);
       // Active label should mention "active" or "listening".
-      const labels = labelled
-        .map((n: any) => String(n.props.accessibilityLabel))
-        .join(' | ');
+      const labels = labelled.map((n: any) => String(n.props.accessibilityLabel)).join(' | ');
       expect(labels).toMatch(/active|listening|recording/i);
     });
 
     it('renders distinct accessible state when active=false', () => {
       const { UNSAFE_root } = render(<AudioSessionIndicator active={false} />);
-      const labelled = UNSAFE_root.findAll(
-        (n: any) => Boolean(n.props && typeof n.props.accessibilityLabel === 'string'),
+      const labelled = UNSAFE_root.findAll((n: any) =>
+        Boolean(n.props && typeof n.props.accessibilityLabel === 'string'),
       );
       expect(labelled.length).toBeGreaterThan(0);
-      const labels = labelled
-        .map((n: any) => String(n.props.accessibilityLabel))
-        .join(' | ');
+      const labels = labelled.map((n: any) => String(n.props.accessibilityLabel)).join(' | ');
       expect(labels).toMatch(/inactive|idle|stopped/i);
     });
 
     it('accessible label changes synchronously when the active prop flips', () => {
       const { rerender, UNSAFE_root } = render(<AudioSessionIndicator active={false} />);
-      const inactiveLabels = UNSAFE_root
-        .findAll((n: any) => Boolean(n.props && typeof n.props.accessibilityLabel === 'string'))
+      const inactiveLabels = UNSAFE_root.findAll((n: any) =>
+        Boolean(n.props && typeof n.props.accessibilityLabel === 'string'),
+      )
         .map((n: any) => String(n.props.accessibilityLabel))
         .join(' | ');
 
       rerender(<AudioSessionIndicator active={true} />);
-      const activeLabels = UNSAFE_root
-        .findAll((n: any) => Boolean(n.props && typeof n.props.accessibilityLabel === 'string'))
+      const activeLabels = UNSAFE_root.findAll((n: any) =>
+        Boolean(n.props && typeof n.props.accessibilityLabel === 'string'),
+      )
         .map((n: any) => String(n.props.accessibilityLabel))
         .join(' | ');
 
@@ -101,8 +99,8 @@ describe('AudioSessionIndicator', () => {
 
   it('exposes screen-reader visibility (no accessibilityElementsHidden=true on root)', () => {
     const { UNSAFE_root } = render(<AudioSessionIndicator active={true} />);
-    const hidden = UNSAFE_root.findAll(
-      (n: any) => Boolean(n.props && n.props.accessibilityElementsHidden === true),
+    const hidden = UNSAFE_root.findAll((n: any) =>
+      Boolean(n.props && n.props.accessibilityElementsHidden === true),
     );
     // Indicator should be readable; we accept zero hidden roots.
     expect(hidden.length).toBe(0);

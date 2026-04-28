@@ -13,9 +13,7 @@
  */
 
 const androidBridge = require('@/native/speech-recognition.android').default;
-const {
-  SpeechRecognitionNotSupported,
-} = require('@/native/speech-recognition.types');
+const { SpeechRecognitionNotSupported } = require('@/native/speech-recognition.types');
 
 describe('speech-recognition bridge (Android stub)', () => {
   it('isAvailable() returns false', () => {
@@ -45,9 +43,9 @@ describe('speech-recognition bridge (Android stub)', () => {
   });
 
   it('start() rejects with SpeechRecognitionNotSupported', async () => {
-    await expect(
-      androidBridge.start({ locale: 'en-US', onDevice: false }),
-    ).rejects.toBeInstanceOf(SpeechRecognitionNotSupported);
+    await expect(androidBridge.start({ locale: 'en-US', onDevice: false })).rejects.toBeInstanceOf(
+      SpeechRecognitionNotSupported,
+    );
   });
 
   it('stop() rejects with SpeechRecognitionNotSupported', async () => {

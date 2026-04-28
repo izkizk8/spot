@@ -21,9 +21,5 @@ function detectWebkit(): boolean {
 export default function SpeechRecognitionLabWebScreen() {
   // Evaluate at render time so tests can toggle the global between renders.
   const hasWebkit = detectWebkit();
-  return hasWebkit ? (
-    <SpeechRecognitionLabScreen />
-  ) : (
-    <OfflineSpeechRecognitionLabScreen />
-  );
+  return hasWebkit ? <SpeechRecognitionLabScreen /> : <OfflineSpeechRecognitionLabScreen />;
 }

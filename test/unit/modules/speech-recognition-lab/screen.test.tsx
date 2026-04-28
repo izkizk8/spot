@@ -30,10 +30,16 @@ jest.mock('@/native/speech-recognition', () => {
       addListener: jest.fn((event: any, fn: any) => {
         const entry: Listener = { event, fn, removed: false };
         _listeners.push(entry);
-        return { remove: jest.fn(() => { entry.removed = true; }) };
+        return {
+          remove: jest.fn(() => {
+            entry.removed = true;
+          }),
+        };
       }),
       removeAllListeners: jest.fn(() =>
-        _listeners.forEach((e) => { e.removed = true; }),
+        _listeners.forEach((e) => {
+          e.removed = true;
+        }),
       ),
     },
     __listeners: _listeners,
@@ -63,9 +69,7 @@ function emit(event: 'partial' | 'final' | 'error', payload: any) {
 }
 
 function findButtonByLabel(root: any, regex: RegExp) {
-  const buttons = root.findAll(
-    (n: any) => n.props && n.props.accessibilityRole === 'button',
-  );
+  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
   for (const b of buttons) {
     if (regex.test(String(b.props.accessibilityLabel ?? ''))) return b;
   }
@@ -105,7 +109,10 @@ describe('SpeechRecognitionLab screen (US1, iOS)', () => {
   it('tapping MicButton calls bridge.start with current locale + onDevice=false', async () => {
     const view = render(<SpeechRecognitionScreen />);
     await flushAsync();
-    const micBtn = findButtonByLabel(view.UNSAFE_root, /microphone|start microphone|stop microphone/i);
+    const micBtn = findButtonByLabel(
+      view.UNSAFE_root,
+      /microphone|start microphone|stop microphone/i,
+    );
     expect(micBtn).toBeTruthy();
     await act(async () => {
       fireEvent.press(micBtn);
@@ -238,7 +245,9 @@ describe('SpeechRecognitionLab screen (US2)', () => {
       (n: any) => n.props && n.props.accessibilityRole === 'button',
     );
     const onDevice = buttons.find((b: any) =>
-      String(b.props.accessibilityLabel ?? '').toLowerCase().includes('on-device'),
+      String(b.props.accessibilityLabel ?? '')
+        .toLowerCase()
+        .includes('on-device'),
     );
     expect(onDevice).toBeTruthy();
     expect(onDevice.props.accessibilityState?.disabled).toBeFalsy();
@@ -251,7 +260,9 @@ describe('SpeechRecognitionLab screen (US2)', () => {
       (n: any) => n.props && n.props.accessibilityRole === 'button',
     );
     const onDevice = buttons.find((b: any) =>
-      String(b.props.accessibilityLabel ?? '').toLowerCase().includes('on-device'),
+      String(b.props.accessibilityLabel ?? '')
+        .toLowerCase()
+        .includes('on-device'),
     );
     await act(async () => {
       fireEvent.press(onDevice);
@@ -278,7 +289,9 @@ describe('SpeechRecognitionLab screen (US2)', () => {
       (n: any) => n.props && n.props.accessibilityRole === 'button',
     );
     const onDeviceSeg = buttons.find((b: any) =>
-      String(b.props.accessibilityLabel ?? '').toLowerCase().includes('on-device'),
+      String(b.props.accessibilityLabel ?? '')
+        .toLowerCase()
+        .includes('on-device'),
     );
     await act(async () => {
       fireEvent.press(onDeviceSeg);
@@ -313,17 +326,16 @@ describe('SpeechRecognitionLab screen (US3)', () => {
       'de-DE',
     ]);
   });
+});
 
-  function findChip(root: any, locale: string) {
-    const buttons = root.findAll(
-      (n: any) => n.props && n.props.accessibilityRole === 'button',
-    );
-    return buttons.find((b: any) =>
-      String(b.props.accessibilityLabel ?? '').includes(locale),
-    );
-  }
+// Helper function hoisted to outer scope per eslint-plugin-unicorn
+function findChip(root: any, locale: string) {
+  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
+  return buttons.find((b: any) => String(b.props.accessibilityLabel ?? '').includes(locale));
+}
 
-  it('changing locale while idle commits and the next start uses the new locale', async () => {
+describe('User Story 3 — Locale switching', () => {
+  it('changing locale while idle commits the selection and next start uses it', async () => {
     const view = render(<SpeechRecognitionScreen />);
     await flushAsync();
     const ja = findChip(view.UNSAFE_root, 'ja-JP');
@@ -335,7 +347,7 @@ describe('SpeechRecognitionLab screen (US3)', () => {
       fireEvent.press(micBtn);
     });
     expect(mockBridge.start).toHaveBeenCalledTimes(1);
-    expect(mockBridge.start.mock.calls[0][0]).toMatchObject({ locale: 'ja-JP' });
+    expect(mockBridge.start.mock.calls[0]?.[0]).toMatchObject({ locale: 'ja-JP' });
   });
 
   it('changing locale while listening calls bridge.stop then bridge.start with new locale', async () => {
@@ -354,7 +366,7 @@ describe('SpeechRecognitionLab screen (US3)', () => {
     await flushAsync();
     expect(mockBridge.stop).toHaveBeenCalled();
     expect(mockBridge.start).toHaveBeenCalledTimes(2);
-    expect(mockBridge.start.mock.calls[1][0]).toMatchObject({ locale: 'ja-JP' });
+    expect(mockBridge.start.mock.calls[1]?.[0]).toMatchObject({ locale: 'ja-JP' });
   });
 });
 
@@ -405,7 +417,10 @@ describe('SpeechRecognitionLab screen (US4 — auth)', () => {
     mockBridge.requestAuthorization.mockResolvedValueOnce('authorized' as any);
     const view = render(<SpeechRecognitionScreen />);
     await flushAsync();
-    const requestBtn = findButtonByLabel(view.UNSAFE_root, /request speech recognition permission/i);
+    const requestBtn = findButtonByLabel(
+      view.UNSAFE_root,
+      /request speech recognition permission/i,
+    );
     expect(requestBtn).toBeTruthy();
     await act(async () => {
       fireEvent.press(requestBtn);

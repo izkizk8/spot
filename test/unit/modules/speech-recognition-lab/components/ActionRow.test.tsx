@@ -16,9 +16,7 @@ import { act, fireEvent, render, screen } from '@testing-library/react-native';
 import ActionRow from '@/modules/speech-recognition-lab/components/ActionRow';
 
 function findButtonByLabel(root: any, regex: RegExp): any | null {
-  const buttons = root.findAll(
-    (n: any) => n.props && n.props.accessibilityRole === 'button',
-  );
+  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
   for (const b of buttons) {
     const label = String(b.props.accessibilityLabel ?? '');
     if (regex.test(label)) return b;
@@ -41,9 +39,7 @@ describe('ActionRow', () => {
   });
 
   it('renders both Clear and Copy buttons', () => {
-    render(
-      <ActionRow canCopy={true} onClear={jest.fn()} onCopy={jest.fn()} />,
-    );
+    render(<ActionRow canCopy={true} onClear={jest.fn()} onCopy={jest.fn()} />);
     expect(screen.queryByText(/clear/i)).toBeTruthy();
     expect(screen.queryByText(/copy/i)).toBeTruthy();
   });

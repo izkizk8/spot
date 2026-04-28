@@ -5,11 +5,7 @@
  * The bridge in `src/native/speech-recognition.types.ts` re-exports from here.
  */
 
-export type AuthStatus =
-  | 'notDetermined'
-  | 'denied'
-  | 'restricted'
-  | 'authorized';
+export type AuthStatus = 'notDetermined' | 'denied' | 'restricted' | 'authorized';
 
 export type RecognitionMode = 'server' | 'on-device';
 

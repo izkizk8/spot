@@ -15,9 +15,7 @@ import IOSOnlyBanner from '@/modules/speech-recognition-lab/components/IOSOnlyBa
 describe('speech-recognition-lab IOSOnlyBanner', () => {
   it('renders the banner copy', () => {
     render(<IOSOnlyBanner />);
-    expect(
-      screen.getByText(/Speech Recognition is iOS-only on this build/i),
-    ).toBeTruthy();
+    expect(screen.getByText(/Speech Recognition is iOS-only on this build/i)).toBeTruthy();
   });
 
   it('sets accessibilityRole="alert" for screen-reader announcement', () => {
@@ -28,17 +26,13 @@ describe('speech-recognition-lab IOSOnlyBanner', () => {
 
   it('uses ThemedView as container', () => {
     const { UNSAFE_root } = render(<IOSOnlyBanner />);
-    const themedView = UNSAFE_root.findAllByType(
-      require('@/components/themed-view').ThemedView,
-    );
+    const themedView = UNSAFE_root.findAllByType(require('@/components/themed-view').ThemedView);
     expect(themedView.length).toBeGreaterThan(0);
   });
 
   it('uses ThemedText for the message', () => {
     const { UNSAFE_root } = render(<IOSOnlyBanner />);
-    const themedText = UNSAFE_root.findAllByType(
-      require('@/components/themed-text').ThemedText,
-    );
+    const themedText = UNSAFE_root.findAllByType(require('@/components/themed-text').ThemedText);
     expect(themedText.length).toBeGreaterThan(0);
   });
 
@@ -53,9 +47,7 @@ describe('speech-recognition-lab IOSOnlyBanner', () => {
     // style entry (padding / margin / gap), which only the Spacing scale would
     // populate.
     const { UNSAFE_root } = render(<IOSOnlyBanner />);
-    const themedView = UNSAFE_root.findAllByType(
-      require('@/components/themed-view').ThemedView,
-    )[0];
+    const themedView = UNSAFE_root.findAllByType(require('@/components/themed-view').ThemedView)[0];
     expect(themedView).toBeTruthy();
     const style = themedView.props.style;
     expect(style).toBeTruthy();

@@ -22,10 +22,7 @@ import MicButton from '@/modules/speech-recognition-lab/components/MicButton';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 
 function findPressables(root: any) {
-  return root.findAll(
-    (n: any) =>
-      Boolean(n.props && n.props.accessibilityRole === 'button'),
-  );
+  return root.findAll((n: any) => Boolean(n.props && n.props.accessibilityRole === 'button'));
 }
 
 describe('MicButton', () => {
@@ -35,15 +32,11 @@ describe('MicButton', () => {
   });
 
   it('renders without crashing in idle state', () => {
-    expect(() =>
-      render(<MicButton listening={false} onPress={jest.fn()} />),
-    ).not.toThrow();
+    expect(() => render(<MicButton listening={false} onPress={jest.fn()} />)).not.toThrow();
   });
 
   it('renders without crashing in listening state', () => {
-    expect(() =>
-      render(<MicButton listening={true} onPress={jest.fn()} />),
-    ).not.toThrow();
+    expect(() => render(<MicButton listening={true} onPress={jest.fn()} />)).not.toThrow();
   });
 
   it('produces a different rendered tree for idle vs listening', () => {
@@ -59,16 +52,12 @@ describe('MicButton', () => {
 
   it('does not crash when reduced-motion is true while listening (static indicator)', () => {
     (useReducedMotion as jest.Mock).mockReturnValue(true);
-    expect(() =>
-      render(<MicButton listening={true} onPress={jest.fn()} />),
-    ).not.toThrow();
+    expect(() => render(<MicButton listening={true} onPress={jest.fn()} />)).not.toThrow();
   });
 
   it('invokes onPress exactly once on tap', () => {
     const onPress = jest.fn();
-    const { UNSAFE_root } = render(
-      <MicButton listening={false} onPress={onPress} />,
-    );
+    const { UNSAFE_root } = render(<MicButton listening={false} onPress={onPress} />);
     const buttons = findPressables(UNSAFE_root);
     expect(buttons.length).toBeGreaterThan(0);
     fireEvent.press(buttons[0]);
@@ -77,9 +66,7 @@ describe('MicButton', () => {
 
   it('is inert when disabled — tap does not fire onPress', () => {
     const onPress = jest.fn();
-    const { UNSAFE_root } = render(
-      <MicButton listening={false} disabled onPress={onPress} />,
-    );
+    const { UNSAFE_root } = render(<MicButton listening={false} disabled onPress={onPress} />);
     const buttons = findPressables(UNSAFE_root);
     expect(buttons.length).toBeGreaterThan(0);
     fireEvent.press(buttons[0]);
@@ -87,9 +74,7 @@ describe('MicButton', () => {
   });
 
   it('exposes accessibilityRole="button"', () => {
-    const { UNSAFE_root } = render(
-      <MicButton listening={false} onPress={jest.fn()} />,
-    );
+    const { UNSAFE_root } = render(<MicButton listening={false} onPress={jest.fn()} />);
     expect(findPressables(UNSAFE_root).length).toBeGreaterThan(0);
   });
 
@@ -105,18 +90,14 @@ describe('MicButton', () => {
   });
 
   it('accessibilityState.selected reflects listening=false correctly', () => {
-    const { UNSAFE_root } = render(
-      <MicButton listening={false} onPress={jest.fn()} />,
-    );
+    const { UNSAFE_root } = render(<MicButton listening={false} onPress={jest.fn()} />);
     const buttons = findPressables(UNSAFE_root);
     const state = buttons[0].props.accessibilityState;
     expect(state.selected).toBe(false);
   });
 
   it('accessibilityState.disabled reflects disabled=true correctly', () => {
-    const { UNSAFE_root } = render(
-      <MicButton listening={false} disabled onPress={jest.fn()} />,
-    );
+    const { UNSAFE_root } = render(<MicButton listening={false} disabled onPress={jest.fn()} />);
     const buttons = findPressables(UNSAFE_root);
     const state = buttons[0].props.accessibilityState;
     expect(state.disabled).toBe(true);

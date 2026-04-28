@@ -65,7 +65,9 @@ export default function ActionRow({ canCopy, onClear, onCopy }: ActionRowProps) 
         accessibilityLabel="Clear transcript"
         style={styles.button}
       >
-        <ThemedText type="smallBold" themeColor="tintA">Clear</ThemedText>
+        <ThemedText type="smallBold" themeColor="tintA">
+          Clear
+        </ThemedText>
       </Pressable>
 
       <Pressable
@@ -76,10 +78,7 @@ export default function ActionRow({ canCopy, onClear, onCopy }: ActionRowProps) 
         accessibilityState={{ disabled: !canCopy }}
         style={[styles.button, !canCopy && styles.buttonDisabled]}
       >
-        <ThemedText
-          type="smallBold"
-          themeColor={canCopy ? 'tintA' : 'textSecondary'}
-        >
+        <ThemedText type="smallBold" themeColor={canCopy ? 'tintA' : 'textSecondary'}>
           Copy
         </ThemedText>
       </Pressable>

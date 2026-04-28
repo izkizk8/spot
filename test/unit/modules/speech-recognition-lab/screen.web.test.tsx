@@ -39,7 +39,11 @@ jest.mock('@/native/speech-recognition', () => {
       addListener: jest.fn((event: any, fn: any) => {
         const entry: Listener = { event, fn, removed: false };
         _listeners.push(entry);
-        return { remove: jest.fn(() => { entry.removed = true; }) };
+        return {
+          remove: jest.fn(() => {
+            entry.removed = true;
+          }),
+        };
       }),
       removeAllListeners: jest.fn(),
     },
@@ -70,12 +74,8 @@ async function flushAsync() {
 }
 
 function findButton(root: any, regex: RegExp) {
-  const buttons = root.findAll(
-    (n: any) => n.props && n.props.accessibilityRole === 'button',
-  );
-  return (
-    buttons.find((b: any) => regex.test(String(b.props.accessibilityLabel ?? ''))) ?? null
-  );
+  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
+  return buttons.find((b: any) => regex.test(String(b.props.accessibilityLabel ?? ''))) ?? null;
 }
 
 describe('SpeechRecognitionLab screen (Web — webkitSpeechRecognition present)', () => {

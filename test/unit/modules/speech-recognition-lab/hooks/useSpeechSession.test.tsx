@@ -68,6 +68,7 @@ interface ProbeRef {
 
 function Probe({ bridge, refOut }: { bridge: SpeechBridge; refOut: ProbeRef }) {
   const state = useSpeechSession({ bridgeOverride: bridge });
+  // eslint-disable-next-line react-hooks/immutability
   refOut.state = state;
   return <Text>{`L=${String(state.isListening)}`}</Text>;
 }

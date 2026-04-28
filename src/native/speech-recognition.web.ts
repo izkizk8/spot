@@ -58,6 +58,7 @@ interface WebkitRecognition {
   onerror: ((ev: WebkitErrorEvent) => void) | null;
   onend: ((ev: unknown) => void) | null;
   onstart: ((ev: unknown) => void) | null;
+  addEventListener(event: string, handler: (ev: any) => void): void;
 }
 
 type WebkitCtor = new () => WebkitRecognition;
@@ -166,7 +167,8 @@ const bridge: SpeechBridge = {
     recognition.interimResults = true;
     recognition.lang = locale;
 
-    recognition.onresult = (ev: WebkitResultEvent) => {
+    // Use addEventListener instead of on* assignment per eslint-plugin-unicorn
+    recognition.addEventListener('result', (ev: WebkitResultEvent) => {
       const results = ev.results;
       if (!results || results.length === 0) return;
       // Iterate from resultIndex to surface any new final/partial results.
@@ -179,19 +181,19 @@ const bridge: SpeechBridge = {
           events.emit('partial', buildPartial(r));
         }
       }
-    };
+    });
 
-    recognition.onerror = (ev: WebkitErrorEvent) => {
+    recognition.addEventListener('error', (ev: WebkitErrorEvent) => {
       const payload: SpeechRecognitionError = {
         kind: mapWebkitError(ev.error),
         message: ev.message ?? ev.error ?? 'webkitSpeechRecognition error',
       };
       events.emit('error', payload);
-    };
+    });
 
-    recognition.onend = () => {
+    recognition.addEventListener('end', () => {
       if (activeRecognition === recognition) activeRecognition = null;
-    };
+    });
 
     activeRecognition = recognition;
     recognition.start();

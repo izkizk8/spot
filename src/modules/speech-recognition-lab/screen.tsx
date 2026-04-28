@@ -33,9 +33,7 @@ import { useSpeechSession } from './hooks/useSpeechSession';
 
 function resolveSystemLocale(): Locale {
   try {
-    const sys = (Intl as any)?.DateTimeFormat?.().resolvedOptions?.().locale as
-      | string
-      | undefined;
+    const sys = (Intl as any)?.DateTimeFormat?.().resolvedOptions?.().locale as string | undefined;
     if (sys && (TOP_LOCALES as readonly string[]).includes(sys)) return sys;
   } catch {
     // ignore
@@ -57,9 +55,7 @@ export default function SpeechRecognitionLabScreen() {
   const [authStatus, setAuthStatus] = React.useState<AuthStatus>('notDetermined');
   const [mode, setMode] = React.useState<RecognitionMode>('server');
   const [locale, setLocale] = React.useState<Locale>(resolveSystemLocale());
-  const [availableLocales, setAvailableLocales] = React.useState<Locale[] | undefined>(
-    undefined,
-  );
+  const [availableLocales, setAvailableLocales] = React.useState<Locale[] | undefined>(undefined);
   const [onDeviceAvailable, setOnDeviceAvailable] = React.useState<boolean>(() =>
     probeOnDeviceSupport(resolveSystemLocale()),
   );
@@ -69,7 +65,9 @@ export default function SpeechRecognitionLabScreen() {
 
   // Keep latest values inside async sequences (mode/locale change while listening).
   const stateRef = React.useRef({ mode, locale });
-  stateRef.current = { mode, locale };
+  React.useEffect(() => {
+    stateRef.current = { mode, locale };
+  }, [mode, locale]);
 
   // Initial authorization probe + locale enumeration.
   React.useEffect(() => {
@@ -85,6 +83,7 @@ export default function SpeechRecognitionLabScreen() {
     try {
       const locales = bridge.availableLocales();
       if (Array.isArray(locales) && locales.length > 0) {
+        // eslint-disable-next-line react-hooks/set-state-in-effect
         setAvailableLocales(locales);
       }
     } catch {
@@ -96,8 +95,14 @@ export default function SpeechRecognitionLabScreen() {
   }, []);
 
   // Recompute on-device support whenever locale changes.
+  const showNotice = React.useCallback((msg: string) => {
+    setInlineNotice(msg);
+    setTimeout(() => setInlineNotice(null), 3000);
+  }, []);
+
   React.useEffect(() => {
     const supported = probeOnDeviceSupport(locale);
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setOnDeviceAvailable(supported);
     // Auto-fallback: if on-device mode selected but locale doesn't support it.
     if (!supported && mode === 'on-device') {
@@ -105,12 +110,7 @@ export default function SpeechRecognitionLabScreen() {
       showNotice(`Switched to Server: on-device unavailable for ${locale}`);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [locale]);
-
-  const showNotice = React.useCallback((msg: string) => {
-    setInlineNotice(msg);
-    setTimeout(() => setInlineNotice(null), 3000);
-  }, []);
+  }, [locale, showNotice]);
 
   const handleRequestAuth = React.useCallback(async () => {
     try {
@@ -271,11 +271,7 @@ export default function SpeechRecognitionLabScreen() {
           />
         </View>
 
-        <ActionRow
-          canCopy={session.final.length > 0}
-          onClear={handleClear}
-          onCopy={handleCopy}
-        />
+        <ActionRow canCopy={session.final.length > 0} onClear={handleClear} onCopy={handleCopy} />
       </ScrollView>
     </ThemedView>
   );

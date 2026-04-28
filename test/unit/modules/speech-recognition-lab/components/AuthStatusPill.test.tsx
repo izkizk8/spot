@@ -23,7 +23,8 @@ describe('AuthStatusPill', () => {
       const pillNodes = UNSAFE_root.findAllByProps({ accessibilityRole: 'text' });
       // At least the pill or some text container should be present.
       // Fall back to scanning all rendered text content.
-      const allText = JSON.stringify(UNSAFE_root.props) + JSON.stringify(pillNodes.map((n: any) => n.props));
+      const allText =
+        JSON.stringify(UNSAFE_root.props) + JSON.stringify(pillNodes.map((n: any) => n.props));
       // Sanity: per status we expect a recognizable label substring somewhere.
       const expectedFragments: Record<AuthStatus, RegExp> = {
         notDetermined: /not\s*determined|undetermined/i,

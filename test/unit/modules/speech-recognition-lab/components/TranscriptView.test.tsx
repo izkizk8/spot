@@ -54,11 +54,7 @@ describe('TranscriptView', () => {
   describe('Per-word opacity formula clamp(0.4 + 0.6 * confidence, 0.4, 1)', () => {
     it('opacity = 1.0 when confidence is undefined (default)', () => {
       const { UNSAFE_root } = render(
-        <TranscriptView
-          final=""
-          partial="hello"
-          words={[{ word: 'hello' }]}
-        />,
+        <TranscriptView final="" partial="hello" words={[{ word: 'hello' }]} />,
       );
       const nodes = UNSAFE_root.findAll(
         (n: any) => n.props && n.props.children === 'hello' && n.props.style,
@@ -70,11 +66,7 @@ describe('TranscriptView', () => {
 
     it('opacity = 1.0 when confidence = 1.0', () => {
       const { UNSAFE_root } = render(
-        <TranscriptView
-          final=""
-          partial="hi"
-          words={[{ word: 'hi', confidence: 1.0 }]}
-        />,
+        <TranscriptView final="" partial="hi" words={[{ word: 'hi', confidence: 1.0 }]} />,
       );
       const nodes = UNSAFE_root.findAll(
         (n: any) => n.props && n.props.children === 'hi' && n.props.style,
@@ -85,11 +77,7 @@ describe('TranscriptView', () => {
 
     it('opacity = 0.4 when confidence = 0', () => {
       const { UNSAFE_root } = render(
-        <TranscriptView
-          final=""
-          partial="lo"
-          words={[{ word: 'lo', confidence: 0 }]}
-        />,
+        <TranscriptView final="" partial="lo" words={[{ word: 'lo', confidence: 0 }]} />,
       );
       const nodes = UNSAFE_root.findAll(
         (n: any) => n.props && n.props.children === 'lo' && n.props.style,
@@ -100,11 +88,7 @@ describe('TranscriptView', () => {
 
     it('opacity = 0.7 when confidence = 0.5', () => {
       const { UNSAFE_root } = render(
-        <TranscriptView
-          final=""
-          partial="mid"
-          words={[{ word: 'mid', confidence: 0.5 }]}
-        />,
+        <TranscriptView final="" partial="mid" words={[{ word: 'mid', confidence: 0.5 }]} />,
       );
       const nodes = UNSAFE_root.findAll(
         (n: any) => n.props && n.props.children === 'mid' && n.props.style,

@@ -43,11 +43,13 @@ export interface Subscription {
 
 export type SpeechBridgeEventName = 'partial' | 'final' | 'error';
 
-export type SpeechBridgeEventListener<E extends SpeechBridgeEventName> =
-  E extends 'partial' ? (event: PartialEvent) => void :
-  E extends 'final'   ? (event: FinalEvent) => void :
-  E extends 'error'   ? (event: SpeechRecognitionError) => void :
-  never;
+export type SpeechBridgeEventListener<E extends SpeechBridgeEventName> = E extends 'partial'
+  ? (event: PartialEvent) => void
+  : E extends 'final'
+    ? (event: FinalEvent) => void
+    : E extends 'error'
+      ? (event: SpeechRecognitionError) => void
+      : never;
 
 export interface SpeechBridgeEventEmitter {
   addListener<E extends SpeechBridgeEventName>(

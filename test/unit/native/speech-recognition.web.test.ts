@@ -44,10 +44,7 @@ function createWebkitInstance(): WebkitInstanceMock {
   };
 }
 
-function loadWebBridge(opts: {
-  webkitPresent: boolean;
-  instances?: WebkitInstanceMock[];
-}): {
+function loadWebBridge(opts: { webkitPresent: boolean; instances?: WebkitInstanceMock[] }): {
   bridge: any;
   SpeechRecognitionNotSupported: new (msg?: string) => Error;
   webkitCtor: jest.Mock | null;
@@ -126,9 +123,9 @@ describe('speech-recognition bridge (Web — webkitSpeechRecognition absent)', (
 
   it('start() rejects with SpeechRecognitionNotSupported', async () => {
     const { bridge, SpeechRecognitionNotSupported } = loadWebBridge({ webkitPresent: false });
-    await expect(
-      bridge.start({ locale: 'en-US', onDevice: false }),
-    ).rejects.toBeInstanceOf(SpeechRecognitionNotSupported);
+    await expect(bridge.start({ locale: 'en-US', onDevice: false })).rejects.toBeInstanceOf(
+      SpeechRecognitionNotSupported,
+    );
   });
 
   it('stop() rejects with SpeechRecognitionNotSupported', async () => {

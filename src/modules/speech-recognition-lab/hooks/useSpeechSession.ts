@@ -100,9 +100,7 @@ export function useSpeechSession(options: UseSpeechSessionOptions = {}): UseSpee
       });
       const finalSub = bridge.events.addListener('final', (event: FinalEvent) => {
         if (!mountedRef.current) return;
-        setFinal((prev) =>
-          prev ? `${prev} ${event.transcript}` : event.transcript,
-        );
+        setFinal((prev) => (prev ? `${prev} ${event.transcript}` : event.transcript));
         setFinalWords((prev) => (event.words ? [...prev, ...event.words] : prev));
         setPartial('');
         setPartialWords([]);

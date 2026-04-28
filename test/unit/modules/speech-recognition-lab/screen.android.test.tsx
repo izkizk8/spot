@@ -96,4 +96,3 @@ describe('SpeechRecognitionLab screen (Android — US5)', () => {
     errSpy.mockRestore();
   });
 });
-

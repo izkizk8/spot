@@ -42,7 +42,10 @@ export default function AuthStatusPill({
         style={styles.pill}
         accessibilityRole="header"
         accessibilityLabel={`Authorization status: ${label}`}
-        accessibilityState={{ selected: status === 'authorized', disabled: status === 'restricted' }}
+        accessibilityState={{
+          selected: status === 'authorized',
+          disabled: status === 'restricted',
+        }}
       >
         <ThemedText type="smallBold">{label}</ThemedText>
       </ThemedView>

@@ -57,10 +57,7 @@ export default function RecognitionModePicker({
               segmentDisabled && styles.segmentDisabled,
             ]}
           >
-            <ThemedText
-              type="smallBold"
-              themeColor={isSelected ? 'tintA' : 'text'}
-            >
+            <ThemedText type="smallBold" themeColor={isSelected ? 'tintA' : 'text'}>
               {s.label}
             </ThemedText>
           </Pressable>
