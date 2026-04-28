@@ -18,7 +18,10 @@ import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import * as bridge from '@/native/widget-center';
 import { ConfigPanel } from '@/modules/lock-widgets-lab/components/ConfigPanel';
-import { ReloadEventLog, type ReloadEvent } from '@/modules/lock-widgets-lab/components/ReloadEventLog';
+import {
+  ReloadEventLog,
+  type ReloadEvent,
+} from '@/modules/lock-widgets-lab/components/ReloadEventLog';
 import { SetupInstructions } from '@/modules/lock-widgets-lab/components/SetupInstructions';
 import { StatusPanel } from '@/modules/lock-widgets-lab/components/StatusPanel';
 import { AccessoryPreview } from '@/modules/lock-widgets-lab/components/AccessoryPreview';

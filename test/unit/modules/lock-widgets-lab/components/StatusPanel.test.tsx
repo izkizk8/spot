@@ -41,7 +41,9 @@ describe('StatusPanel (lock-widgets-lab)', () => {
       new WidgetCenterBridgeError('Test bridge error'),
     );
 
-    const { findByText, queryByText } = render(<StatusPanel version={1} lastPushedAt={Date.now()} />);
+    const { findByText, queryByText } = render(
+      <StatusPanel version={1} lastPushedAt={Date.now()} />,
+    );
 
     // Should fall back to DEFAULT_LOCK_CONFIG.showcaseValue and render without crashing
     expect(await findByText(new RegExp(DEFAULT_LOCK_CONFIG.showcaseValue))).toBeTruthy();

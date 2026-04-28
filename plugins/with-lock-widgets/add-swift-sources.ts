@@ -44,7 +44,7 @@ export const withLockWidgetsSwiftSources: ConfigPlugin = (config) => {
     if (!widgetTarget) {
       throw new Error(
         `with-lock-widgets: Widget extension target '${WIDGET_TARGET_NAME}' not found. ` +
-        `Ensure with-home-widgets plugin runs before with-lock-widgets.`,
+          `Ensure with-home-widgets plugin runs before with-lock-widgets.`,
       );
     }
 

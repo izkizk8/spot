@@ -97,16 +97,21 @@ describe('lock-config module', () => {
   });
 
   it('loadShadowLockConfig() returns DEFAULT_LOCK_CONFIG when key is missing', async () => {
-    const { loadShadowLockConfig, DEFAULT_LOCK_CONFIG } =
-      require('@/modules/lock-widgets-lab/lock-config');
+    const {
+      loadShadowLockConfig,
+      DEFAULT_LOCK_CONFIG,
+    } = require('@/modules/lock-widgets-lab/lock-config');
     await AsyncStorage.clear();
     const loaded = await loadShadowLockConfig();
     expect(loaded).toEqual(DEFAULT_LOCK_CONFIG);
   });
 
   it('loadShadowLockConfig() returns DEFAULT_LOCK_CONFIG when stored value is malformed JSON', async () => {
-    const { loadShadowLockConfig, DEFAULT_LOCK_CONFIG, SHADOW_STORE_KEY } =
-      require('@/modules/lock-widgets-lab/lock-config');
+    const {
+      loadShadowLockConfig,
+      DEFAULT_LOCK_CONFIG,
+      SHADOW_STORE_KEY,
+    } = require('@/modules/lock-widgets-lab/lock-config');
     (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('not-json{');
     const loaded = await loadShadowLockConfig();
     expect(loaded).toEqual(DEFAULT_LOCK_CONFIG);
@@ -120,8 +125,10 @@ describe('lock-config module', () => {
   });
 
   it('loadShadowLockConfig() swallows AsyncStorage errors silently', async () => {
-    const { loadShadowLockConfig, DEFAULT_LOCK_CONFIG } =
-      require('@/modules/lock-widgets-lab/lock-config');
+    const {
+      loadShadowLockConfig,
+      DEFAULT_LOCK_CONFIG,
+    } = require('@/modules/lock-widgets-lab/lock-config');
     (AsyncStorage.getItem as jest.Mock).mockRejectedValueOnce(new Error('read fail'));
     const loaded = await loadShadowLockConfig();
     expect(loaded).toEqual(DEFAULT_LOCK_CONFIG);

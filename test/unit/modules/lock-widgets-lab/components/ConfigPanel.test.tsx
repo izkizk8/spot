@@ -1,7 +1,9 @@
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
 
-import ConfigPanel, { ConfigPanel as ConfigPanelNamed } from '@/modules/lock-widgets-lab/components/ConfigPanel';
+import ConfigPanel, {
+  ConfigPanel as ConfigPanelNamed,
+} from '@/modules/lock-widgets-lab/components/ConfigPanel';
 import { ConfigPanel as ConfigPanel014 } from '@/modules/widgets-lab/components/ConfigPanel';
 import { DEFAULT_LOCK_CONFIG, type LockConfig } from '@/modules/lock-widgets-lab/lock-config';
 
@@ -31,7 +33,9 @@ describe('ConfigPanel (lock-widgets-lab re-export)', () => {
       tint: 'green',
     };
 
-    const { getByLabelText } = render(<ConfigPanel value={testConfig} onPush={mockOnPush} pushEnabled={true} />);
+    const { getByLabelText } = render(
+      <ConfigPanel value={testConfig} onPush={mockOnPush} pushEnabled={true} />,
+    );
 
     const pushButton = getByLabelText(/push.*widget/i);
     fireEvent.press(pushButton);
@@ -46,7 +50,9 @@ describe('ConfigPanel (lock-widgets-lab re-export)', () => {
       showcaseValue: '   ',
     };
 
-    const { getByLabelText } = render(<ConfigPanel value={emptyConfig} onPush={mockOnPush} pushEnabled={true} />);
+    const { getByLabelText } = render(
+      <ConfigPanel value={emptyConfig} onPush={mockOnPush} pushEnabled={true} />,
+    );
 
     const pushButton = getByLabelText(/push.*widget/i);
     // Should be disabled because showcase value is empty after trimming
@@ -61,7 +67,9 @@ describe('ConfigPanel (lock-widgets-lab re-export)', () => {
       tint: 'pink',
     };
 
-    const { getByDisplayValue } = render(<ConfigPanel value={lockConfig} onPush={mockOnPush} pushEnabled={true} />);
+    const { getByDisplayValue } = render(
+      <ConfigPanel value={lockConfig} onPush={mockOnPush} pushEnabled={true} />,
+    );
 
     // Check the inputs have the expected values
     expect(getByDisplayValue(/Hello, Lock!/i)).toBeTruthy();

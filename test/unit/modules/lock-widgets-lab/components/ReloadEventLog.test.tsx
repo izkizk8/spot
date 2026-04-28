@@ -1,7 +1,10 @@
 import React from 'react';
 import { render } from '@testing-library/react-native';
 
-import { ReloadEventLog, type ReloadEvent } from '@/modules/lock-widgets-lab/components/ReloadEventLog';
+import {
+  ReloadEventLog,
+  type ReloadEvent,
+} from '@/modules/lock-widgets-lab/components/ReloadEventLog';
 
 describe('ReloadEventLog (lock-widgets-lab)', () => {
   it('renders empty-state when given entries: []', () => {
@@ -93,12 +96,14 @@ describe('ReloadEventLog (lock-widgets-lab)', () => {
     const { getAllByLabelText } = render(<ReloadEventLog entries={entries} />);
 
     const rows = getAllByLabelText(/SpotLockScreenWidget/i);
-    
+
     // Check that entries are rendered (most recent first is the expected order from props)
     expect(rows.length).toBe(3);
-    
+
     // The first row should have the most recent timestamp in its label
-    expect(rows[0].props.accessibilityLabel).toMatch(new RegExp(new Date(now).toLocaleTimeString()));
+    expect(rows[0].props.accessibilityLabel).toMatch(
+      new RegExp(new Date(now).toLocaleTimeString()),
+    );
   });
 
   it('does NOT enforce 10-cap itself (renders whatever it receives)', () => {

@@ -39,7 +39,8 @@ function formatTime(d: Date): string {
 
 function isIOS16Plus(): boolean {
   if (Platform.OS !== 'ios') return false;
-  const version = typeof Platform.Version === 'string' ? parseFloat(Platform.Version) : Platform.Version;
+  const version =
+    typeof Platform.Version === 'string' ? parseFloat(Platform.Version) : Platform.Version;
   return version >= 16;
 }
 

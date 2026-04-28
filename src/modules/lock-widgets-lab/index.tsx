@@ -17,8 +17,7 @@ import LockWidgetsLabScreen from './screen';
 const manifest: ModuleManifest = {
   id: 'lock-widgets-lab',
   title: 'Lock Screen Widgets',
-  description:
-    'Ship Lock Screen accessory widgets on iOS 16+; interactive preview on Android/Web.',
+  description: 'Ship Lock Screen accessory widgets on iOS 16+; interactive preview on Android/Web.',
   icon: { ios: 'lock.rectangle', fallback: '🔒' },
   platforms: ['ios', 'android', 'web'],
   minIOS: '16.0',

@@ -22,14 +22,14 @@ export function insertBundleEntry(source: string): string {
   if (startIdx === -1) {
     throw new Error(
       `with-lock-widgets: Missing '${START_MARKER}' in SpotWidgetBundle.swift. ` +
-      `See specs/027-lock-screen-widgets/research.md §3`,
+        `See specs/027-lock-screen-widgets/research.md §3`,
     );
   }
 
   if (endIdx === -1) {
     throw new Error(
       `with-lock-widgets: Missing '${END_MARKER}' in SpotWidgetBundle.swift. ` +
-      `See specs/027-lock-screen-widgets/research.md §3`,
+        `See specs/027-lock-screen-widgets/research.md §3`,
     );
   }
 
