@@ -77,6 +77,3 @@ jest.mock('@/native/keychain', () => {
   const mock = require('@test/__mocks__/native-keychain');
   return { keychain: mock.keychain };
 });
-
-// Mock expo-secure-store (feature 023)
-jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));

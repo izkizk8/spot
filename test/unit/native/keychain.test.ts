@@ -4,6 +4,9 @@
 
 import { Platform } from 'react-native';
 
+// Mock expo-secure-store before importing keychain
+jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+
 // Mock expo-modules-core before importing keychain
 jest.mock('expo-modules-core', () => {
   const actualCore = jest.requireActual('expo-modules-core');

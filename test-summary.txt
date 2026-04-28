@@ -1,0 +1,1858 @@
+
+> spot@1.0.0 test C:\Users\izkizk8\spot-023-keychain
+> jest --runInBand
+
+PASS test/unit/modules/speech-recognition-lab/components/AuthStatusPill.test.tsx
+FAIL test/unit/native/keychain.test.ts
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ delegates basic CRUD to expo-secure-store
+
+    RangeError: Maximum call stack size exceeded
+
+       6 |
+       7 | // Mock expo-secure-store before importing keychain
+    >  8 | jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+         |                                      ^
+       9 |
+      10 | // Mock expo-modules-core before importing keychain
+      11 | jest.mock('expo-modules-core', () => {
+
+      at Runtime.requireModuleOrMock (node_modules/jest-runtime/build/index.js:1052:32)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ maps biometryRequired to requireAuthentication
+
+    RangeError: Maximum call stack size exceeded
+
+       6 |
+       7 | // Mock expo-secure-store before importing keychain
+    >  8 | jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+         |                                      ^
+       9 |
+      10 | // Mock expo-modules-core before importing keychain
+      11 | jest.mock('expo-modules-core', () => {
+
+      at Resolver.getModuleID (node_modules/jest-resolve/build/resolver.js:522:14)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ maps accessibilityClass to keychainAccessible (clamped to WHEN_UNLOCKED and AFTER_FIRST_UNLOCK)
+
+    RangeError: Maximum call stack size exceeded
+
+       6 |
+       7 | // Mock expo-secure-store before importing keychain
+    >  8 | jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+         |                                      ^
+       9 |
+      10 | // Mock expo-modules-core before importing keychain
+      11 | jest.mock('expo-modules-core', () => {
+
+      at Resolver.getModuleID (node_modules/jest-resolve/build/resolver.js:522:14)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ returns unsupported for accessGroup usage
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      260 |       });
+      261 |
+    > 262 |       expect(result.kind).toBe('unsupported');
+          |                           ^
+      263 |     });
+      264 |
+      265 |     it('returns unsupported for ACL classes outside the two-class clamp', async () => {
+
+      at Object.toBe (test/unit/native/keychain.test.ts:262:27)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ returns unsupported for ACL classes outside the two-class clamp
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      270 |         biometryRequired: false,
+      271 |       });
+    > 272 |       expect(result1.kind).toBe('unsupported');
+          |                            ^
+      273 |
+      274 |       const result2 = await keychain.addItem({
+      275 |         label: 'k',
+
+      at Object.toBe (test/unit/native/keychain.test.ts:272:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ returns unsupported for tryAccessGroupProbe
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      283 |     it('returns unsupported for tryAccessGroupProbe', async () => {
+      284 |       const result = await keychain.tryAccessGroupProbe({ accessGroup: 'group.test' });
+    > 285 |       expect(result.kind).toBe('unsupported');
+          |                           ^
+      286 |     });
+      287 |   });
+      288 |
+
+      at Object.toBe (test/unit/native/keychain.test.ts:285:27)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ native/keychain ΓÇ║ on Web ΓÇ║ returns unsupported for every method
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      302 |         biometryRequired: false,
+      303 |       });
+    > 304 |       expect(addResult.kind).toBe('unsupported');
+          |                              ^
+      305 |
+      306 |       const getResult = await keychain.getItem({ label: 'k' });
+      307 |       expect(getResult.kind).toBe('unsupported');
+
+      at Object.toBe (test/unit/native/keychain.test.ts:304:30)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      73 |       const updatedItems = await keychainStore.list();
+      74 |       if (mountedRef.current && updatedItems) {
+    > 75 |         setItems(updatedItems);
+         |         ^
+      76 |         setError(null);
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:75:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      74 |       if (mountedRef.current && updatedItems) {
+      75 |         setItems(updatedItems);
+    > 76 |         setError(null);
+         |         ^
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+      79 |       // Don't set error state for cancellation
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:76:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      73 |       const updatedItems = await keychainStore.list();
+      74 |       if (mountedRef.current && updatedItems) {
+    > 75 |         setItems(updatedItems);
+         |         ^
+      76 |         setError(null);
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:75:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      74 |       if (mountedRef.current && updatedItems) {
+      75 |         setItems(updatedItems);
+    > 76 |         setError(null);
+         |         ^
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+      79 |       // Don't set error state for cancellation
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:76:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      73 |       const updatedItems = await keychainStore.list();
+      74 |       if (mountedRef.current && updatedItems) {
+    > 75 |         setItems(updatedItems);
+         |         ^
+      76 |         setError(null);
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:75:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      74 |       if (mountedRef.current && updatedItems) {
+      75 |         setItems(updatedItems);
+    > 76 |         setError(null);
+         |         ^
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+      79 |       // Don't set error state for cancellation
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:76:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      73 |       const updatedItems = await keychainStore.list();
+      74 |       if (mountedRef.current && updatedItems) {
+    > 75 |         setItems(updatedItems);
+         |         ^
+      76 |         setError(null);
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:75:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      74 |       if (mountedRef.current && updatedItems) {
+      75 |         setItems(updatedItems);
+    > 76 |         setError(null);
+         |         ^
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+      79 |       // Don't set error state for cancellation
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:76:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      73 |       const updatedItems = await keychainStore.list();
+      74 |       if (mountedRef.current && updatedItems) {
+    > 75 |         setItems(updatedItems);
+         |         ^
+      76 |         setError(null);
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:75:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      74 |       if (mountedRef.current && updatedItems) {
+      75 |         setItems(updatedItems);
+    > 76 |         setError(null);
+         |         ^
+      77 |       }
+      78 |     } else if (result.kind !== 'cancelled') {
+      79 |       // Don't set error state for cancellation
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:76:9)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      102 |     const updatedItems = await keychainStore.list();
+      103 |     if (mountedRef.current && updatedItems) {
+    > 104 |       setItems(updatedItems);
+          |       ^
+      105 |       setError(null);
+      106 |     }
+      107 |
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:104:7)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      103 |     if (mountedRef.current && updatedItems) {
+      104 |       setItems(updatedItems);
+    > 105 |       setError(null);
+          |       ^
+      106 |     }
+      107 |
+      108 |     // Check if item was actually deleted
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:105:7)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      102 |     const updatedItems = await keychainStore.list();
+      103 |     if (mountedRef.current && updatedItems) {
+    > 104 |       setItems(updatedItems);
+          |       ^
+      105 |       setError(null);
+      106 |     }
+      107 |
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:104:7)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      103 |     if (mountedRef.current && updatedItems) {
+      104 |       setItems(updatedItems);
+    > 105 |       setError(null);
+          |       ^
+      106 |     }
+      107 |
+      108 |     // Check if item was actually deleted
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Object.setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:105:7)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      31 |     if (!mountedRef.current) return;
+      32 |
+    > 33 |     setLoading(true);
+         |     ^
+      34 |     setError(null);
+      35 |
+      36 |     const result = await keychainStore.list();
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setLoading (src/modules/keychain-lab/hooks/useKeychainItems.ts:33:5)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at Object.loadItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:63:11)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+      at Object.apply (src/modules/keychain-lab/hooks/useKeychainItems.ts:64:4)
+      at Object.apply [as refresh] (src/modules/keychain-lab/hooks/useKeychainItems.ts:62:25)
+      at Object.refresh (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:241:26)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      32 |
+      33 |     setLoading(true);
+    > 34 |     setError(null);
+         |     ^
+      35 |
+      36 |     const result = await keychainStore.list();
+      37 |
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setError (src/modules/keychain-lab/hooks/useKeychainItems.ts:34:5)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12
+      at Object.loadItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:63:11)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+      at node_modules/@babel/runtime/helpers/asyncToGenerator.js:22:7
+      at Object.<anonymous> (node_modules/@babel/runtime/helpers/asyncToGenerator.js:14:12)
+      at Object.apply (src/modules/keychain-lab/hooks/useKeychainItems.ts:64:4)
+      at Object.apply [as refresh] (src/modules/keychain-lab/hooks/useKeychainItems.ts:62:25)
+      at Object.refresh (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:241:26)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      42 |       setItems([]);
+      43 |     } else {
+    > 44 |       setItems(result);
+         |       ^
+      45 |     }
+      46 |
+      47 |     setLoading(false);
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setItems (src/modules/keychain-lab/hooks/useKeychainItems.ts:44:7)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to HookContainer inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      45 |     }
+      46 |
+    > 47 |     setLoading(false);
+         |     ^
+      48 |   }, []);
+      49 |
+      50 |   useEffect(() => {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setLoading (src/modules/keychain-lab/hooks/useKeychainItems.ts:47:5)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ useKeychainItems ΓÇ║ loads items from the store on initial mount
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      46 |     });
+      47 |
+    > 48 |     expect(result.current.items).toHaveLength(1);
+         |                                  ^
+      49 |     expect(result.current.items[0].label).toBe('key1');
+      50 |     expect(result.current.error).toBeNull();
+      51 |   });
+
+      at Object.toHaveLength (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:48:34)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ useKeychainItems ΓÇ║ revealItem returns null on auth-failed without warning
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "Failed to get item from keychain:", {"kind": "auth-failed"}
+
+      168 |     const revealed = await result.current.revealItem('fail-key');
+      169 |     expect(revealed).toBeNull();
+    > 170 |     expect(consoleWarnSpy).not.toHaveBeenCalled();
+          |                                ^
+      171 |   });
+      172 |
+      173 |   it('never holds cleartext in hook state', async () => {
+
+      at Object.toHaveBeenCalled (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:170:32)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ useKeychainItems ΓÇ║ deleteItem removes the row and tolerates not-found
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "not-found"
+    Received: "ok"
+
+      219 |     // Delete again ΓÇö should tolerate not-found without error state
+      220 |     const deleteResult2 = await result.current.deleteItem('delete-me');
+    > 221 |     expect(deleteResult2.kind).toBe('not-found');
+          |                                ^
+      222 |     expect(result.current.error).toBeNull();
+      223 |   });
+      224 |
+
+      at Object.toBe (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:221:32)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL test/unit/modules/keychain-lab/keychain-store.test.ts
+  ΓùÅ keychain-store ΓÇ║ list ΓÇ║ never includes the value field in the index
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ok"
+    Received: "not-found"
+
+      100 |       });
+      101 |
+    > 102 |       expect(getResult.kind).toBe('ok');
+          |                              ^
+      103 |       if (getResult.kind === 'ok') {
+      104 |         const index = JSON.parse(getResult.value!);
+      105 |         expect(index.items.every((item: any) => !('value' in item))).toBe(true);
+
+      at Object.toBe (test/unit/modules/keychain-lab/keychain-store.test.ts:102:30)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+PASS test/unit/modules/sensors-playground/components/PermissionNotice.test.tsx
+PASS test/unit/modules/sensors-playground/cards/GyroscopeCard.test.tsx
+PASS test/unit/modules/camera-vision/manifest.test.ts
+PASS test/unit/modules/swift-charts-lab/components/DataControls.test.tsx
+PASS test/unit/modules/swift-charts-lab/manifest.test.ts (5.489 s)
+PASS test/unit/modules/local-auth-lab/components/CapabilitiesCard.test.tsx
+PASS test/unit/examples/alias-and-mocks.test.tsx
+PASS test/unit/shell/tab-parity.test.ts
+PASS test/unit/modules/speech-synthesis-lab/components/VolumeControl.test.tsx
+PASS test/unit/modules/sign-in-with-apple/manifest.test.ts
+PASS test/unit/modules/speech-recognition-lab/components/LocalePicker.test.tsx
+PASS test/unit/modules/live-activity-demo/manifest.test.ts
+PASS test/unit/modules/audio-lab/hooks/useAudioPlayer.test.tsx
+PASS test/unit/modules/keychain-lab/manifest.test.ts
+PASS test/unit/modules/app-intents-lab/manifest.test.ts
+PASS test/unit/app/index.test.tsx
+PASS test/unit/modules/sensors-playground/manifest.test.ts
+PASS test/unit/modules/local-auth-lab/manifest.test.ts
+PASS test/unit/modules/app-intents-lab/components/MoodHistory.test.tsx
+PASS test/unit/modules/widgets-lab/components/StatusPanel.test.tsx
+PASS test/unit/modules/audio-lab/manifest.test.ts
+PASS test/unit/modules/manifest.test.ts
+PASS test/unit/modules/screentime-lab/screentime-state.test.ts
+PASS test/unit/modules/screentime-lab/components/ShieldingCard.test.tsx
+PASS test/unit/modules/swift-charts-lab/components/ChartView.test.tsx
+PASS test/unit/modules/screentime-lab/components/EntitlementBanner.test.tsx
+PASS test/unit/modules/keychain-lab/components/IOSOnlyBanner.test.tsx
+PASS test/unit/modules/swiftui-interop/manifest.test.ts
+PASS test/unit/modules/sensors-playground/components/SampleRatePicker.test.tsx
+PASS test/unit/modules/screentime-lab/screen.android.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/ColorPickerDemo.android.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/StepperToggleDemo.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to StepperToggleDemo inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      31 |             max={10}
+      32 |             step={1}
+    > 33 |             onValueChange={(value: number) => setCount(value)}
+         |                                               ^
+      34 |             label="Count"
+      35 |           />
+      36 |         </Host>
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setCount (src/modules/swiftui-interop/demos/StepperToggleDemo.tsx:33:47)
+      at Object.capturedStepperOnChange (test/unit/modules/swiftui-interop/demos/StepperToggleDemo.test.tsx:47:7)
+
+    console.error
+      An update to StepperToggleDemo inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      39 |           <Toggle
+      40 |             isOn={enabled}
+    > 41 |             onIsOnChange={(value: boolean) => setEnabled(value)}
+         |                                               ^
+      42 |             label="Enabled"
+      43 |           />
+      44 |         </Host>
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setEnabled (src/modules/swiftui-interop/demos/StepperToggleDemo.tsx:41:47)
+      at Object.capturedToggleOnChange (test/unit/modules/swiftui-interop/demos/StepperToggleDemo.test.tsx:61:7)
+
+PASS test/unit/modules/sf-symbols-lab/screen.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/components/PersonalVoiceCard.test.tsx
+PASS test/unit/modules/speech-recognition-lab/screen.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/components/TransportControls.test.tsx
+PASS test/unit/modules/camera-vision/screen.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to CameraVisionScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      130 |         // Update state atomically
+      131 |         if (!unmountedRef.current) {
+    > 132 |           setState({
+          |           ^
+      133 |             observations: result.observations,
+      134 |             detected: result.observations.length,
+      135 |             lastAnalysisMs: result.analysisMs,
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Timeout.setState (src/modules/camera-vision/hooks/useFrameAnalyzer.ts:132:11)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+    console.error
+      An update to CameraVisionScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      141 |         // Populate error, leave observations untouched
+      142 |         if (!unmountedRef.current) {
+    > 143 |           setState((prev) => ({
+          |           ^
+      144 |             ...prev,
+      145 |             error: err instanceof Error ? err : new Error(String(err)),
+      146 |           }));
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at Timeout.setState (src/modules/camera-vision/hooks/useFrameAnalyzer.ts:143:11)
+          at Generator.throw (<anonymous>)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _throw (node_modules/@babel/runtime/helpers/asyncToGenerator.js:20:9)
+
+PASS test/unit/modules/camera-vision/components/StatsBar.test.tsx
+PASS test/unit/theme/preference.test.tsx
+  ΓùÅ Console
+
+    console.warn
+      [theme] failed to persist preference to AsyncStorage Error: disk full
+          at Object.<anonymous> (C:\Users\izkizk8\spot-023-keychain\test\unit\theme\preference.test.tsx:88:63)
+          at Generator.next (<anonymous>)
+          at asyncGeneratorStep (C:\Users\izkizk8\spot-023-keychain\node_modules\@babel\runtime\helpers\asyncToGenerator.js:3:17)
+          at _next (C:\Users\izkizk8\spot-023-keychain\node_modules\@babel\runtime\helpers\asyncToGenerator.js:17:9)
+          at C:\Users\izkizk8\spot-023-keychain\node_modules\@babel\runtime\helpers\asyncToGenerator.js:22:7
+          at new Promise (<anonymous>)
+          at Object.<anonymous> (C:\Users\izkizk8\spot-023-keychain\node_modules\@babel\runtime\helpers\asyncToGenerator.js:14:12)
+          at Promise.then.completed (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\utils.js:298:28)
+          at new Promise (<anonymous>)
+          at callAsyncCircusFn (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\utils.js:231:10)
+          at _callCircusTest (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\run.js:316:40)
+          at _runTest (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\run.js:252:3)
+          at _runTestsForDescribeBlock (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\run.js:126:9)
+          at _runTestsForDescribeBlock (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\run.js:121:9)
+          at run (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\run.js:71:3)
+          at runAndTransformResultsToJestFormat (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapterInit.js:122:21)
+          at jestAdapter (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-circus\build\legacy-code-todo-rewrite\jestAdapter.js:79:19)
+          at runTestInternal (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-runner\build\runTest.js:367:16)
+          at runTest (C:\Users\izkizk8\spot-023-keychain\node_modules\jest-runner\build\runTest.js:444:34)
+
+      60 |     AsyncStorage.setItem(THEME_PREFERENCE_STORAGE_KEY, next).catch((err: unknown) => {
+      61 |       if (__DEV__) {
+    > 62 |         console.warn('[theme] failed to persist preference to AsyncStorage', err);
+         |                 ^
+      63 |       }
+      64 |     });
+      65 |   }, []);
+
+      at warn (src/theme/preference-provider.tsx:62:17)
+
+PASS test/unit/modules/audio-lab/polish.test.tsx
+PASS test/unit/modules/speech-recognition-lab/speech-types.test.ts
+PASS test/unit/modules/sign-in-with-apple/screen.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/components/TextInputArea.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/screen.test.tsx
+PASS test/unit/modules/live-activity-demo/screen.test.tsx
+PASS test/unit/plugins/with-speech-recognition/index.test.ts
+PASS test/unit/modules/speech-synthesis-lab/screen.web.test.tsx
+PASS test/unit/modules/audio-lab/format-utils.test.ts
+PASS test/unit/modules/coreml-lab/screen.web.test.tsx
+PASS test/unit/modules/widgets-lab/screen.android.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to WidgetsLabScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      35 |     loadShadowConfig().then((c) => {
+      36 |       if (mounted) {
+    > 37 |         setConfig(c);
+         |         ^
+      38 |         setConfigEpoch((n) => n + 1);
+      39 |       }
+      40 |     });
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setConfig (src/modules/widgets-lab/screen.android.tsx:37:9)
+
+    console.error
+      An update to WidgetsLabScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      36 |       if (mounted) {
+      37 |         setConfig(c);
+    > 38 |         setConfigEpoch((n) => n + 1);
+         |         ^
+      39 |       }
+      40 |     });
+      41 |     return () => {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setConfigEpoch (src/modules/widgets-lab/screen.android.tsx:38:9)
+
+PASS test/unit/native/speech-recognition.android.test.ts
+PASS test/unit/modules/swiftui-interop/demos/SliderDemo.android.test.tsx
+PASS test/unit/modules/coreml-lab/screen.test.tsx
+PASS test/unit/modules/keychain-lab/components/AccessibilityPicker.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/components/VoicePicker.test.tsx
+PASS test/unit/modules/keychain-lab/screen.test.tsx
+PASS test/unit/modules/app-intents-lab/components/ShortcutsGuideCard.test.tsx
+PASS test/unit/modules/widgets-lab/components/ConfigPanel.test.tsx
+PASS test/unit/modules/keychain-lab/components/ItemRow.test.tsx
+PASS test/unit/modules/app-intents-lab/screen.test.tsx
+PASS test/unit/modules/keychain-lab/components/AccessGroupCard.test.tsx
+PASS test/unit/modules/swiftui-interop/screen.web.test.tsx
+PASS test/unit/modules/local-auth-lab/components/SecureNoteCard.test.tsx
+PASS test/unit/modules/swift-charts-lab/screen.test.tsx
+PASS test/unit/modules/sensors-playground/cards/AccelerometerCard.test.tsx
+PASS test/unit/modules/sensors-playground/screen.test.tsx
+PASS test/unit/modules/app-intents-lab/screen.web.test.tsx
+PASS test/unit/modules/keychain-lab/screen.web.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/screen.android.test.tsx
+PASS test/unit/modules/keychain-lab/components/AddItemForm.test.tsx
+PASS test/unit/native/widget-center.test.ts
+PASS test/unit/plugins/with-live-activity/index.test.ts
+PASS test/unit/modules/audio-lab/screen.web.test.tsx
+PASS test/unit/modules/screentime-lab/screen.test.tsx
+PASS test/unit/modules/audio-lab/components/RecordingsList.test.tsx
+PASS test/unit/modules/audio-lab/screen.test.tsx
+PASS test/unit/modules/keychain-lab/screen.android.test.tsx
+PASS test/unit/modules/screentime-lab/screen.web.test.tsx
+PASS test/unit/modules/sf-symbols-lab/components/SymbolPicker.test.tsx
+PASS test/unit/modules/haptics-playground/screen.test.tsx
+PASS test/unit/modules/coreml-lab/screen.android.test.tsx
+PASS test/unit/plugins/with-sign-in-with-apple/index.test.ts
+PASS test/unit/modules/app-intents-lab/screen.android.test.tsx
+PASS test/unit/modules/speech-recognition-lab/components/IOSOnlyBanner.test.tsx
+PASS test/unit/modules/local-auth-lab/screen.test.tsx
+PASS test/unit/modules/widgets-lab/screen.web.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to WidgetsLabScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      32 |     loadShadowConfig().then((c) => {
+      33 |       if (mounted) {
+    > 34 |         setConfig(c);
+         |         ^
+      35 |         setConfigEpoch((n) => n + 1);
+      36 |       }
+      37 |     });
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setConfig (src/modules/widgets-lab/screen.web.tsx:34:9)
+
+    console.error
+      An update to WidgetsLabScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      33 |       if (mounted) {
+      34 |         setConfig(c);
+    > 35 |         setConfigEpoch((n) => n + 1);
+         |         ^
+      36 |       }
+      37 |     });
+      38 |     return () => {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setConfigEpoch (src/modules/widgets-lab/screen.web.tsx:35:9)
+
+    console.error
+      An update to WidgetsLabScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      32 |     loadShadowConfig().then((c) => {
+      33 |       if (mounted) {
+    > 34 |         setConfig(c);
+         |         ^
+      35 |         setConfigEpoch((n) => n + 1);
+      36 |       }
+      37 |     });
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setConfig (src/modules/widgets-lab/screen.web.tsx:34:9)
+
+    console.error
+      An update to WidgetsLabScreen inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      33 |       if (mounted) {
+      34 |         setConfig(c);
+    > 35 |         setConfigEpoch((n) => n + 1);
+         |         ^
+      36 |       }
+      37 |     });
+      38 |     return () => {
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setConfigEpoch (src/modules/widgets-lab/screen.web.tsx:35:9)
+
+PASS test/unit/modules/haptics-playground/components/PatternSequencer.test.tsx
+PASS test/unit/app/settings.test.tsx
+PASS test/unit/modules/coreml-lab/components/ImageSourcePicker.test.tsx
+PASS test/unit/modules/sign-in-with-apple/hooks/useSiwaSession.test.tsx
+PASS test/unit/modules/swiftui-interop/screen.android.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/ColorPickerDemo.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to ColorPickerDemo inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      40 |           <ColorPicker
+      41 |             selection={color}
+    > 42 |             onSelectionChange={(value: string) => setColor(toRNColor(value))}
+         |                                                   ^
+      43 |             label="Pick a color"
+      44 |           />
+      45 |         </Host>
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setColor (src/modules/swiftui-interop/demos/ColorPickerDemo.tsx:42:51)
+      at Object.capturedOnChange (test/unit/modules/swiftui-interop/demos/ColorPickerDemo.test.tsx:41:7)
+
+PASS test/unit/modules/sensors-playground/hooks/useSensorStream.test.tsx
+PASS test/unit/modules/speech-recognition-lab/components/AudioSessionIndicator.test.tsx
+PASS test/unit/modules/audio-lab/components/RecordingRow.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/components/RateControl.test.tsx
+PASS test/unit/modules/audio-lab/screen.android.test.tsx
+PASS test/unit/modules/sign-in-with-apple/screen.android.test.tsx
+PASS test/unit/modules/speech-recognition-lab/screen.web.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/StepperToggleDemo.android.test.tsx
+PASS test/unit/modules/audio-lab/components/RecorderCard.test.tsx
+PASS test/unit/modules/sign-in-with-apple/screen.web.test.tsx
+PASS test/unit/modules/speech-recognition-lab/screen.android.test.tsx
+PASS test/unit/modules/swift-charts-lab/components/ChartView.web.test.tsx
+PASS test/unit/modules/speech-recognition-lab/hooks/useSpeechSession.test.tsx
+PASS test/unit/modules/liquid-glass-playground/screen.test.tsx
+PASS test/unit/modules/swiftui-interop/screen.test.tsx
+PASS test/unit/modules/swift-charts-lab/components/ChartTypePicker.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/PickerDemo.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to PickerDemo inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      36 |           <Picker
+      37 |             selection={selected}
+    > 38 |             onSelectionChange={(value: string) => setSelected(value)}
+         |                                                   ^
+      39 |             label="Choose fruit"
+      40 |           >
+      41 |             {OPTIONS.map((opt) => (
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setSelected (src/modules/swiftui-interop/demos/PickerDemo.tsx:38:51)
+      at Object.capturedOnChange (test/unit/modules/swiftui-interop/demos/PickerDemo.test.tsx:42:7)
+
+PASS test/unit/modules/speech-recognition-lab/components/TranscriptView.test.tsx
+PASS test/unit/plugins/with-home-widgets/index.test.ts
+PASS test/unit/modules/screentime-lab/components/AuthorizationCard.test.tsx
+PASS test/unit/modules/coreml-lab/components/SampleImageGrid.test.tsx
+PASS test/unit/native/speech-synthesis.android.test.ts
+PASS test/unit/modules/swiftui-interop/demos/DatePickerDemo.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to DatePickerDemo inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      39 |           <DatePicker
+      40 |             selection={date}
+    > 41 |             onDateChange={(value: Date) => setDate(value)}
+         |                                            ^
+      42 |             title="Pick date"
+      43 |             displayedComponents={['date']}
+      44 |           />
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setDate (src/modules/swiftui-interop/demos/DatePickerDemo.tsx:41:44)
+      at Object.capturedOnChange (test/unit/modules/swiftui-interop/demos/DatePickerDemo.test.tsx:42:7)
+
+PASS test/unit/modules/audio-lab/components/AudioSessionCard.test.tsx
+PASS test/unit/modules/local-auth-lab/screen.android.test.tsx
+PASS test/unit/modules/swift-charts-lab/components/TintPicker.test.tsx
+PASS test/unit/modules/widgets-lab/screen.test.tsx
+PASS test/unit/modules/sf-symbols-lab/components/EffectPicker.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/StepperToggleDemo.web.test.tsx
+PASS test/unit/modules/app-intents-lab/components/IntentEventLog.test.tsx
+PASS test/unit/native/speech-synthesis.test.ts
+PASS test/unit/modules/sensors-playground/components/BarChart.test.tsx
+PASS test/unit/modules/keychain-lab/components/ItemsList.test.tsx
+PASS test/unit/app/modules/index.test.tsx
+PASS test/unit/modules/speech-recognition-lab/components/ActionRow.test.tsx
+PASS test/unit/modules/sf-symbols-lab/components/TintPicker.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/hooks/useSynthesisSession.test.tsx
+PASS test/unit/modules/local-auth-lab/screen.web.test.tsx
+PASS test/unit/modules/haptics-playground/components/HapticButton.test.tsx
+PASS test/unit/modules/app-intents-lab/components/MoodLogger.test.tsx
+PASS test/unit/modules/app-intents-lab/components/GreetForm.test.tsx
+PASS test/unit/modules/speech-synthesis-lab/components/PitchControl.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/DatePickerDemo.web.test.tsx
+PASS test/unit/modules/coreml-lab/components/ModelPicker.test.tsx
+PASS test/unit/modules/sf-symbols-lab/components/AnimatedSymbol.test.tsx
+PASS test/unit/modules/haptics-playground/manifest.test.ts
+PASS test/unit/modules/screentime-lab/components/ActivityPickerCard.test.tsx
+PASS test/unit/modules/haptics-playground/components/PresetList.test.tsx
+PASS test/unit/modules/local-auth-lab/components/AuthOptionsPanel.test.tsx
+PASS test/unit/examples/react-native-component.test.tsx
+PASS test/unit/modules/coreml-lab/components/PredictionsChart.test.tsx
+PASS test/unit/components/glass/index.web.test.tsx
+PASS test/unit/modules/speech-recognition-lab/components/RecognitionModePicker.test.tsx
+PASS test/unit/modules/widgets-lab/components/ReloadEventLog.test.tsx
+PASS test/unit/modules/screentime-lab/components/MonitoringCard.test.tsx
+PASS test/unit/modules/sensors-playground/cards/MagnetometerCard.test.tsx
+PASS test/unit/modules/swift-charts-lab/components/ChartView.android.test.tsx
+PASS test/unit/modules/sign-in-with-apple/components/IOSOnlyBanner.test.tsx
+PASS test/unit/modules/sign-in-with-apple/components/SiwaButton.test.tsx
+PASS test/unit/modules/sensors-playground/components/CompassNeedle.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/PickerDemo.web.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/DatePickerDemo.android.test.tsx
+PASS test/unit/native/app-intents.test.ts
+PASS test/unit/modules/audio-lab/components/PermissionBanner.test.tsx
+PASS test/unit/modules/sensors-playground/components/SpiritLevel.test.tsx
+PASS test/unit/modules/camera-vision/components/ModePicker.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/SliderDemo.web.test.tsx
+PASS test/unit/components/glass/index.android.test.tsx
+PASS test/unit/modules/screentime-lab/manifest.test.ts
+PASS test/unit/modules/camera-vision/hooks/useFrameAnalyzer.test.tsx
+PASS test/unit/modules/local-auth-lab/components/HistoryLog.test.tsx
+PASS test/unit/modules/sign-in-with-apple/components/ScopesPicker.test.tsx
+PASS test/unit/modules/widgets-lab/manifest.test.ts
+PASS test/unit/modules/local-auth-lab/components/IOSOnlyBanner.test.tsx
+PASS test/unit/modules/sign-in-with-apple/components/CredentialStateCard.test.tsx
+PASS test/unit/modules/speech-recognition-lab/manifest.test.ts
+PASS test/unit/modules/widgets-lab/components/WidgetPreview.test.tsx
+PASS test/unit/modules/swiftui-interop/demos/PickerDemo.android.test.tsx
+PASS test/unit/native/live-activity.test.ts
+PASS test/unit/modules/sensors-playground/cards/DeviceMotionCard.test.tsx
+PASS test/unit/modules/app-intents-lab/event-log.test.ts
+PASS test/unit/modules/swiftui-interop/demos/SliderDemo.test.tsx
+  ΓùÅ Console
+
+    console.error
+      An update to SliderDemo inside a test was not wrapped in act(...).
+      
+      When testing, code that causes React state updates should be wrapped into act(...):
+      
+      act(() => {
+        /* fire events that update state */
+      });
+      /* assert on the output */
+      
+      This ensures that you're testing the behavior the user would see in the browser. Learn more at https://react.dev/link/wrap-tests-with-act
+
+      31 |             min={0}
+      32 |             max={100}
+    > 33 |             onValueChange={(newValue: number) => setValue(Math.round(newValue))}
+         |                                                  ^
+      34 |             label="Adjust slider"
+      35 |           />
+      36 |         </Host>
+
+      at node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14402:19
+      at runWithFiberInDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:2315:13)
+      at warnIfUpdatesNotWrappedWithActDEV (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:14401:9)
+      at scheduleUpdateOnFiber (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:12086:9)
+      at dispatchSetStateInternal (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6208:13)
+      at dispatchSetState (node_modules/react-test-renderer/cjs/react-test-renderer.development.js:6165:7)
+      at setValue (src/modules/swiftui-interop/demos/SliderDemo.tsx:33:50)
+      at Object.capturedOnChange (test/unit/modules/swiftui-interop/demos/SliderDemo.test.tsx:41:7)
+
+PASS test/unit/modules/swiftui-interop/demos/ColorPickerDemo.web.test.tsx
+PASS test/unit/modules/camera-vision/components/OverlayCanvas.test.tsx
+PASS test/unit/modules/audio-lab/components/WaveformMeter.test.tsx
+PASS test/unit/modules/widgets-lab/components/SetupInstructions.test.tsx
+PASS test/unit/modules/swift-charts-lab/data.test.ts
+PASS test/unit/components/glass/index.test.tsx
+PASS test/unit/modules/audio-lab/quality-presets.test.ts
+PASS test/unit/modules/speech-recognition-lab/components/MicButton.test.tsx (6.274 s)
+PASS test/unit/plugins/with-coreml/index.test.ts
+PASS test/unit/modules/coreml-lab/manifest.test.ts
+PASS test/unit/plugins/with-screentime/index.test.ts
+PASS test/unit/modules/coreml-lab/components/PerformanceMetrics.test.tsx
+PASS test/unit/app/modules/[id].test.tsx
+PASS test/unit/plugins/with-audio-recording/index.test.ts
+PASS test/unit/native/screentime.test.ts
+PASS test/unit/modules/local-auth-lab/hooks/useBiometricAuth.test.tsx
+PASS test/unit/plugins/with-local-auth/index.test.ts
+PASS test/unit/plugins/with-keychain-services/index.test.ts
+PASS test/unit/modules/audio-lab/hooks/useAudioRecorder.test.tsx
+PASS test/unit/modules/audio-lab/recordings-store.test.ts
+PASS test/unit/modules/local-auth-lab/components/ResultCard.test.tsx
+PASS test/unit/modules/sign-in-with-apple/components/UserCard.test.tsx (5.865 s)
+PASS test/unit/modules/audio-lab/audio-types.test.ts
+PASS test/unit/modules/camera-vision/components/IOSOnlyBanner.test.tsx
+PASS test/unit/native/speech-recognition.web.test.ts
+PASS test/unit/modules/sensors-playground/ring-buffer.test.ts
+PASS test/unit/plugins/with-vision/index.test.ts
+PASS test/unit/modules/camera-vision/vision-types.test.ts
+PASS test/unit/modules/speech-synthesis-lab/manifest.test.ts
+PASS test/unit/modules/camera-vision/components/CameraPreview.test.tsx
+PASS test/unit/native/speech-recognition.test.ts
+PASS test/unit/modules/coreml-lab/coreml-state.test.ts
+PASS test/unit/modules/widgets-lab/widget-config.test.ts
+PASS test/unit/native/speech-synthesis.web.test.ts
+PASS test/unit/modules/sign-in-with-apple/siwa-store.test.ts
+PASS test/unit/modules/haptics-playground/presets-store.test.ts
+PASS test/unit/modules/registry.test.ts
+PASS test/unit/modules/haptics-playground/haptic-driver.test.ts
+PASS test/unit/modules/app-intents-lab/mood-store.test.ts
+PASS test/unit/modules/sf-symbols-lab/catalog.test.ts
+PASS test/unit/modules/audio-lab/audio-session.test.ts
+PASS test/unit/modules/speech-synthesis-lab/synth-mapping.test.ts
+PASS test/unit/modules/sf-symbols-lab/manifest.test.ts
+PASS test/unit/modules/liquid-glass-playground/tints.test.ts
+PASS test/unit/modules/speech-synthesis-lab/sample-texts.test.ts
+PASS test/unit/plugins/with-app-intents/index.test.ts
+PASS test/unit/modules/keychain-lab/accessibility-classes.test.ts
+PASS test/unit/modules/platform-filtering.test.tsx
+PASS test/unit/native/coreml.test.ts
+PASS test/unit/examples/typescript-logic.test.ts
+PASS test/unit/modules/speech-synthesis-lab/synth-types.test.ts
+PASS test/unit/modules/coreml-lab/model-registry.test.ts
+PASS test/unit/modules/local-auth-lab/secure-note-store.test.ts
+
+Summary of all failing tests
+FAIL test/unit/native/keychain.test.ts
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ delegates basic CRUD to expo-secure-store
+
+    RangeError: Maximum call stack size exceeded
+
+       6 |
+       7 | // Mock expo-secure-store before importing keychain
+    >  8 | jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+         |                                      ^
+       9 |
+      10 | // Mock expo-modules-core before importing keychain
+      11 | jest.mock('expo-modules-core', () => {
+
+      at Runtime.requireModuleOrMock (node_modules/jest-runtime/build/index.js:1052:32)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ maps biometryRequired to requireAuthentication
+
+    RangeError: Maximum call stack size exceeded
+
+       6 |
+       7 | // Mock expo-secure-store before importing keychain
+    >  8 | jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+         |                                      ^
+       9 |
+      10 | // Mock expo-modules-core before importing keychain
+      11 | jest.mock('expo-modules-core', () => {
+
+      at Resolver.getModuleID (node_modules/jest-resolve/build/resolver.js:522:14)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ maps accessibilityClass to keychainAccessible (clamped to WHEN_UNLOCKED and AFTER_FIRST_UNLOCK)
+
+    RangeError: Maximum call stack size exceeded
+
+       6 |
+       7 | // Mock expo-secure-store before importing keychain
+    >  8 | jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
+         |                                      ^
+       9 |
+      10 | // Mock expo-modules-core before importing keychain
+      11 | jest.mock('expo-modules-core', () => {
+
+      at Resolver.getModuleID (node_modules/jest-resolve/build/resolver.js:522:14)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+      at require (test/unit/native/keychain.test.ts:8:38)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ returns unsupported for accessGroup usage
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      260 |       });
+      261 |
+    > 262 |       expect(result.kind).toBe('unsupported');
+          |                           ^
+      263 |     });
+      264 |
+      265 |     it('returns unsupported for ACL classes outside the two-class clamp', async () => {
+
+      at Object.toBe (test/unit/native/keychain.test.ts:262:27)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ returns unsupported for ACL classes outside the two-class clamp
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      270 |         biometryRequired: false,
+      271 |       });
+    > 272 |       expect(result1.kind).toBe('unsupported');
+          |                            ^
+      273 |
+      274 |       const result2 = await keychain.addItem({
+      275 |         label: 'k',
+
+      at Object.toBe (test/unit/native/keychain.test.ts:272:28)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ native/keychain ΓÇ║ when native module is absent on iOS/Android (fallback to expo-secure-store) ΓÇ║ returns unsupported for tryAccessGroupProbe
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      283 |     it('returns unsupported for tryAccessGroupProbe', async () => {
+      284 |       const result = await keychain.tryAccessGroupProbe({ accessGroup: 'group.test' });
+    > 285 |       expect(result.kind).toBe('unsupported');
+          |                           ^
+      286 |     });
+      287 |   });
+      288 |
+
+      at Object.toBe (test/unit/native/keychain.test.ts:285:27)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ native/keychain ΓÇ║ on Web ΓÇ║ returns unsupported for every method
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "unsupported"
+    Received: "ok"
+
+      302 |         biometryRequired: false,
+      303 |       });
+    > 304 |       expect(addResult.kind).toBe('unsupported');
+          |                              ^
+      305 |
+      306 |       const getResult = await keychain.getItem({ label: 'k' });
+      307 |       expect(getResult.kind).toBe('unsupported');
+
+      at Object.toBe (test/unit/native/keychain.test.ts:304:30)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx
+  ΓùÅ useKeychainItems ΓÇ║ loads items from the store on initial mount
+
+    expect(received).toHaveLength(expected)
+
+    Expected length: 1
+    Received length: 0
+    Received array:  []
+
+      46 |     });
+      47 |
+    > 48 |     expect(result.current.items).toHaveLength(1);
+         |                                  ^
+      49 |     expect(result.current.items[0].label).toBe('key1');
+      50 |     expect(result.current.error).toBeNull();
+      51 |   });
+
+      at Object.toHaveLength (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:48:34)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ useKeychainItems ΓÇ║ revealItem returns null on auth-failed without warning
+
+    expect(jest.fn()).not.toHaveBeenCalled()
+
+    Expected number of calls: 0
+    Received number of calls: 1
+
+    1: "Failed to get item from keychain:", {"kind": "auth-failed"}
+
+      168 |     const revealed = await result.current.revealItem('fail-key');
+      169 |     expect(revealed).toBeNull();
+    > 170 |     expect(consoleWarnSpy).not.toHaveBeenCalled();
+          |                                ^
+      171 |   });
+      172 |
+      173 |   it('never holds cleartext in hook state', async () => {
+
+      at Object.toHaveBeenCalled (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:170:32)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+  ΓùÅ useKeychainItems ΓÇ║ deleteItem removes the row and tolerates not-found
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "not-found"
+    Received: "ok"
+
+      219 |     // Delete again ΓÇö should tolerate not-found without error state
+      220 |     const deleteResult2 = await result.current.deleteItem('delete-me');
+    > 221 |     expect(deleteResult2.kind).toBe('not-found');
+          |                                ^
+      222 |     expect(result.current.error).toBeNull();
+      223 |   });
+      224 |
+
+      at Object.toBe (test/unit/modules/keychain-lab/hooks/useKeychainItems.test.tsx:221:32)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+FAIL test/unit/modules/keychain-lab/keychain-store.test.ts
+  ΓùÅ keychain-store ΓÇ║ list ΓÇ║ never includes the value field in the index
+
+    expect(received).toBe(expected) // Object.is equality
+
+    Expected: "ok"
+    Received: "not-found"
+
+      100 |       });
+      101 |
+    > 102 |       expect(getResult.kind).toBe('ok');
+          |                              ^
+      103 |       if (getResult.kind === 'ok') {
+      104 |         const index = JSON.parse(getResult.value!);
+      105 |         expect(index.items.every((item: any) => !('value' in item))).toBe(true);
+
+      at Object.toBe (test/unit/modules/keychain-lab/keychain-store.test.ts:102:30)
+      at asyncGeneratorStep (node_modules/@babel/runtime/helpers/asyncToGenerator.js:3:17)
+      at _next (node_modules/@babel/runtime/helpers/asyncToGenerator.js:17:9)
+
+
+Test Suites: 3 failed, 228 passed, 231 total
+Tests:       11 failed, 1617 passed, 1628 total
+Snapshots:   0 total
+Time:        255.044 s, estimated 345 s
+Ran all test suites.
+ΓÇëELIFECYCLEΓÇë Test failed. See above for more details.
