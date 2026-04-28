@@ -5,10 +5,21 @@ let mockThrowOnGet = false;
 
 // Feature 025: Mock state for watch functions
 type PositionCallback = (location: {
-  coords: { latitude: number; longitude: number; altitude: number; accuracy: number; speed: number; heading: number };
+  coords: {
+    latitude: number;
+    longitude: number;
+    altitude: number;
+    accuracy: number;
+    speed: number;
+    heading: number;
+  };
   timestamp: number;
 }) => void;
-type HeadingCallback = (heading: { magHeading: number; trueHeading: number; accuracy: number }) => void;
+type HeadingCallback = (heading: {
+  magHeading: number;
+  trueHeading: number;
+  accuracy: number;
+}) => void;
 
 let mockWatchPositionCallback: PositionCallback | null = null;
 let mockWatchHeadingCallback: HeadingCallback | null = null;
@@ -204,7 +215,11 @@ export function __emitPosition(location: {
   }
 }
 
-export function __emitHeading(heading: { magHeading: number; trueHeading?: number; accuracy?: number }) {
+export function __emitHeading(heading: {
+  magHeading: number;
+  trueHeading?: number;
+  accuracy?: number;
+}) {
   if (mockWatchHeadingCallback) {
     mockWatchHeadingCallback({
       magHeading: heading.magHeading,

@@ -91,9 +91,9 @@ export function SignificantChangesCard(): React.JSX.Element {
 
       <View style={styles.explanationContainer}>
         <Text style={styles.explanationText}>
-          Significant location changes use coarse location monitoring to receive
-          updates when the device moves a significant distance. This is
-          battery-efficient but only provides major location updates.
+          Significant location changes use coarse location monitoring to receive updates when the
+          device moves a significant distance. This is battery-efficient but only provides major
+          location updates.
         </Text>
       </View>
 
@@ -101,11 +101,7 @@ export function SignificantChangesCard(): React.JSX.Element {
         <Text style={styles.toggleLabel}>
           {subscribed ? 'Subscribed — Monitoring active' : 'Subscribe to changes'}
         </Text>
-        <Switch
-          value={subscribed}
-          onValueChange={handleToggle}
-          accessibilityRole="switch"
-        />
+        <Switch value={subscribed} onValueChange={handleToggle} accessibilityRole="switch" />
       </View>
 
       {error && (
@@ -128,8 +124,7 @@ export function SignificantChangesCard(): React.JSX.Element {
       {Platform.OS !== 'ios' && (
         <View style={styles.warningContainer}>
           <Text style={styles.warningText}>
-            ⚠️ Significant location changes work best on iOS. Android support
-            may vary.
+            ⚠️ Significant location changes work best on iOS. Android support may vary.
           </Text>
         </View>
       )}

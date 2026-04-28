@@ -47,9 +47,7 @@ export function PermissionsCard({ status, onRequest }: PermissionsCardProps) {
 
       <ThemedView style={styles.row}>
         <ThemedText>Status</ThemedText>
-        <ThemedView
-          style={[styles.pill, { backgroundColor: statusColors[status] }]}
-        >
+        <ThemedView style={[styles.pill, { backgroundColor: statusColors[status] }]}>
           <ThemedText style={styles.pillText}>{statusLabels[status]}</ThemedText>
         </ThemedView>
       </ThemedView>

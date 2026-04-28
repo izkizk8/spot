@@ -52,6 +52,7 @@
       "./plugins/with-local-auth",
       "./plugins/with-keychain-services",
       "./plugins/with-mapkit",
+      "./plugins/with-core-location",
       [
         "expo-sensors",
         {

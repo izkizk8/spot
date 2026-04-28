@@ -50,9 +50,7 @@ export function LiveUpdatesCard() {
           onPress={handleToggle}
           style={[styles.toggleButton, isRunning && styles.toggleButtonActive]}
         >
-          <ThemedText style={styles.toggleButtonText}>
-            {isRunning ? 'Stop' : 'Start'}
-          </ThemedText>
+          <ThemedText style={styles.toggleButtonText}>{isRunning ? 'Stop' : 'Start'}</ThemedText>
         </Pressable>
       </ThemedView>
 
@@ -66,10 +64,7 @@ export function LiveUpdatesCard() {
             <Pressable
               key={preset.label}
               onPress={() => setAccuracy(preset)}
-              style={[
-                styles.segment,
-                accuracy.label === preset.label && styles.segmentActive,
-              ]}
+              style={[styles.segment, accuracy.label === preset.label && styles.segmentActive]}
             >
               <ThemedText
                 style={[

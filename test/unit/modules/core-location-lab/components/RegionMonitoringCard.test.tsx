@@ -4,7 +4,11 @@
 import { fireEvent, render, screen } from '@testing-library/react-native';
 
 import { RegionMonitoringCard } from '@/modules/core-location-lab/components/RegionMonitoringCard';
-import type { MonitoredRegion, RegionEvent, RegionRadiusMeters } from '@/modules/core-location-lab/types';
+import type {
+  MonitoredRegion,
+  RegionEvent,
+  RegionRadiusMeters,
+} from '@/modules/core-location-lab/types';
 
 // Mock the hook
 const mockAddRegion = jest.fn();

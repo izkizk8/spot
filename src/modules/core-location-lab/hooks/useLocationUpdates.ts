@@ -12,10 +12,7 @@ import {
   DEFAULT_ACCURACY_PRESET,
   type AccuracyPreset,
 } from '../accuracy-presets';
-import {
-  DEFAULT_DISTANCE_FILTER,
-  type DistanceFilter,
-} from '../distance-filters';
+import { DEFAULT_DISTANCE_FILTER, type DistanceFilter } from '../distance-filters';
 import type { LocationSample } from '../types';
 
 const WINDOW_MS = 60_000; // 60 seconds
@@ -42,7 +39,8 @@ export function useLocationUpdates(): UseLocationUpdates {
   const [latest, setLatest] = useState<LocationSample | null>(null);
   const [samplesWindow, setSamplesWindow] = useState<LocationSample[]>([]);
   const [accuracy, setAccuracyState] = useState<AccuracyPreset>(DEFAULT_ACCURACY_PRESET);
-  const [distanceFilter, setDistanceFilterState] = useState<DistanceFilter>(DEFAULT_DISTANCE_FILTER);
+  const [distanceFilter, setDistanceFilterState] =
+    useState<DistanceFilter>(DEFAULT_DISTANCE_FILTER);
   const [error, setError] = useState<Error | null>(null);
 
   const subscriptionRef = useRef<Subscription | null>(null);
@@ -56,7 +54,7 @@ export function useLocationUpdates(): UseLocationUpdates {
 
   // Compute samples per minute from window
   const samplesPerMinute = samplesWindow.filter(
-    (s) => Date.now() - s.timestamp.getTime() <= WINDOW_MS
+    (s) => Date.now() - s.timestamp.getTime() <= WINDOW_MS,
   ).length;
 
   const startSubscription = useCallback(async () => {
@@ -92,7 +90,7 @@ export function useLocationUpdates(): UseLocationUpdates {
             const filtered = prev.filter((s) => now - s.timestamp.getTime() <= WINDOW_MS);
             return [...filtered, sample];
           });
-        }
+        },
       );
 
       if (!mountedRef.current) {
@@ -124,23 +122,29 @@ export function useLocationUpdates(): UseLocationUpdates {
     }
   }, []);
 
-  const setAccuracy = useCallback((preset: AccuracyPreset) => {
-    setAccuracyState(preset);
-    accuracyRef.current = preset;
-    // Restart if running (FR-007)
-    if (subscriptionRef.current) {
-      void startSubscription();
-    }
-  }, [startSubscription]);
+  const setAccuracy = useCallback(
+    (preset: AccuracyPreset) => {
+      setAccuracyState(preset);
+      accuracyRef.current = preset;
+      // Restart if running (FR-007)
+      if (subscriptionRef.current) {
+        void startSubscription();
+      }
+    },
+    [startSubscription],
+  );
 
-  const setDistanceFilterCb = useCallback((filter: DistanceFilter) => {
-    setDistanceFilterState(filter);
-    distanceFilterRef.current = filter;
-    // Restart if running (FR-007)
-    if (subscriptionRef.current) {
-      void startSubscription();
-    }
-  }, [startSubscription]);
+  const setDistanceFilterCb = useCallback(
+    (filter: DistanceFilter) => {
+      setDistanceFilterState(filter);
+      distanceFilterRef.current = filter;
+      // Restart if running (FR-007)
+      if (subscriptionRef.current) {
+        void startSubscription();
+      }
+    },
+    [startSubscription],
+  );
 
   // Cleanup on unmount
   useEffect(() => {

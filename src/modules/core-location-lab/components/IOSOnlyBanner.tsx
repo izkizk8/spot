@@ -16,7 +16,7 @@ export interface IOSOnlyBannerProps {
 
 const reasonCopy: Record<string, string> = {
   'region-monitoring':
-    'Region monitoring (geofencing) is only available on iOS. This feature uses Apple\'s Core Location framework for precise boundary detection.',
+    "Region monitoring (geofencing) is only available on iOS. This feature uses Apple's Core Location framework for precise boundary detection.",
 };
 
 export function IOSOnlyBanner({ reason }: IOSOnlyBannerProps) {

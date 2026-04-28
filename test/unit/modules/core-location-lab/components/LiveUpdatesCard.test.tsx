@@ -64,7 +64,7 @@ describe('LiveUpdatesCard', () => {
     fireEvent.press(bestForNavButton);
 
     expect(mockSetAccuracy).toHaveBeenCalledWith(
-      expect.objectContaining({ label: 'Best for navigation' })
+      expect.objectContaining({ label: 'Best for navigation' }),
     );
   });
 
@@ -83,9 +83,7 @@ describe('LiveUpdatesCard', () => {
     const distance500Button = screen.getByText('500 m');
     fireEvent.press(distance500Button);
 
-    expect(mockSetDistanceFilter).toHaveBeenCalledWith(
-      expect.objectContaining({ meters: 500 })
-    );
+    expect(mockSetDistanceFilter).toHaveBeenCalledWith(expect.objectContaining({ meters: 500 }));
   });
 
   it('renders LocationReadout component', () => {

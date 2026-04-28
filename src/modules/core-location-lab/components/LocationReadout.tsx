@@ -28,7 +28,10 @@ export function LocationReadout({ sample, samplesPerMinute }: LocationReadoutPro
   return (
     <ThemedView style={styles.container}>
       <ReadoutRow label="Latitude" value={sample ? formatValue(sample.latitude, 5) : PLACEHOLDER} />
-      <ReadoutRow label="Longitude" value={sample ? formatValue(sample.longitude, 5) : PLACEHOLDER} />
+      <ReadoutRow
+        label="Longitude"
+        value={sample ? formatValue(sample.longitude, 5) : PLACEHOLDER}
+      />
       <ReadoutRow label="Altitude" value={sample ? formatValue(sample.altitude, 1) : PLACEHOLDER} />
       <ReadoutRow label="Accuracy" value={sample ? formatValue(sample.accuracy, 1) : PLACEHOLDER} />
       <ReadoutRow label="Speed" value={sample ? formatValue(sample.speed, 1) : PLACEHOLDER} />

@@ -17,10 +17,7 @@ const mockTaskManager = TaskManager as typeof TaskManager & {
     taskName: string,
     body: { eventType: number; region: { identifier: string } },
   ) => void;
-  __triggerGeofenceError: (
-    taskName: string,
-    error: { code?: string; message: string },
-  ) => void;
+  __triggerGeofenceError: (taskName: string, error: { code?: string; message: string }) => void;
 };
 
 describe('geofence-task', () => {

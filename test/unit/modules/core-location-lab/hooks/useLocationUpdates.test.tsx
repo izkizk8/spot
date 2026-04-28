@@ -4,13 +4,26 @@
 import { act, renderHook, waitFor } from '@testing-library/react-native';
 import * as Location from 'expo-location';
 
-import { DEFAULT_ACCURACY_PRESET, ACCURACY_PRESETS } from '@/modules/core-location-lab/accuracy-presets';
-import { DEFAULT_DISTANCE_FILTER, DISTANCE_FILTERS } from '@/modules/core-location-lab/distance-filters';
+import {
+  DEFAULT_ACCURACY_PRESET,
+  ACCURACY_PRESETS,
+} from '@/modules/core-location-lab/accuracy-presets';
+import {
+  DEFAULT_DISTANCE_FILTER,
+  DISTANCE_FILTERS,
+} from '@/modules/core-location-lab/distance-filters';
 import { useLocationUpdates } from '@/modules/core-location-lab/hooks/useLocationUpdates';
 
 // Access mock helpers
 const mockLocation = Location as typeof Location & {
-  __emitPosition: (loc: { latitude: number; longitude: number; altitude?: number; accuracy?: number; speed?: number; heading?: number }) => void;
+  __emitPosition: (loc: {
+    latitude: number;
+    longitude: number;
+    altitude?: number;
+    accuracy?: number;
+    speed?: number;
+    heading?: number;
+  }) => void;
   __setWatchPositionMock: (opts: { throwOnWatch?: boolean }) => void;
 };
 
@@ -129,7 +142,9 @@ describe('useLocationUpdates', () => {
     });
 
     // Should have called watchPositionAsync again
-    expect((Location.watchPositionAsync as jest.Mock).mock.calls.length).toBeGreaterThan(initialCalls);
+    expect((Location.watchPositionAsync as jest.Mock).mock.calls.length).toBeGreaterThan(
+      initialCalls,
+    );
 
     // Last call should have new accuracy
     const lastCall = (Location.watchPositionAsync as jest.Mock).mock.calls.at(-1);
@@ -150,7 +165,9 @@ describe('useLocationUpdates', () => {
     });
 
     // Should have called watchPositionAsync again
-    expect((Location.watchPositionAsync as jest.Mock).mock.calls.length).toBeGreaterThan(initialCalls);
+    expect((Location.watchPositionAsync as jest.Mock).mock.calls.length).toBeGreaterThan(
+      initialCalls,
+    );
 
     // Last call should have new distance interval
     const lastCall = (Location.watchPositionAsync as jest.Mock).mock.calls.at(-1);

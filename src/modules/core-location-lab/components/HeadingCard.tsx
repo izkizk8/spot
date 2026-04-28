@@ -58,9 +58,7 @@ export function HeadingCard(): React.JSX.Element {
 
       {latest && (
         <View style={styles.detailsContainer}>
-          <Text style={styles.detailText}>
-            True Heading: {Math.round(latest.trueHeading)}°
-          </Text>
+          <Text style={styles.detailText}>True Heading: {Math.round(latest.trueHeading)}°</Text>
           <Text style={styles.detailText}>
             Accuracy: {['Uncalibrated', 'Low', 'Medium', 'High'][latest.accuracy] ?? 'Unknown'}
           </Text>

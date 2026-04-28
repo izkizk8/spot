@@ -54,7 +54,12 @@ describe('EventLog', () => {
 
   it('renders significant change events', () => {
     const significantEvents: SignificantChangeEvent[] = [
-      { id: '1', latitude: 37.78825, longitude: -122.4324, timestamp: new Date('2026-04-29T10:00:00') },
+      {
+        id: '1',
+        latitude: 37.78825,
+        longitude: -122.4324,
+        timestamp: new Date('2026-04-29T10:00:00'),
+      },
     ];
 
     render(<EventLog entries={significantEvents} type="significant" />);

@@ -18,9 +18,7 @@ describe('SignificantChangesCard', () => {
     render(<SignificantChangesCard />);
 
     // Should have explanatory text about significant location changes - use getAllByText
-    expect(
-      screen.getAllByText(/significant/i).length,
-    ).toBeGreaterThanOrEqual(1);
+    expect(screen.getAllByText(/significant/i).length).toBeGreaterThanOrEqual(1);
   });
 
   it('toggle subscribes to significant location changes when enabled', async () => {
@@ -74,7 +72,7 @@ describe('SignificantChangesCard', () => {
     render(<SignificantChangesCard />);
 
     const toggle = screen.getByRole('switch');
-    
+
     await waitFor(async () => {
       fireEvent(toggle, 'valueChange', true);
     });

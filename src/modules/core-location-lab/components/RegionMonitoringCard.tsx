@@ -55,16 +55,10 @@ export function RegionMonitoringCard({ currentLocation }: RegionMonitoringCardPr
             <Pressable
               key={radius}
               onPress={() => setSelectedRadius(radius)}
-              style={[
-                styles.segment,
-                selectedRadius === radius && styles.segmentActive,
-              ]}
+              style={[styles.segment, selectedRadius === radius && styles.segmentActive]}
             >
               <ThemedText
-                style={[
-                  styles.segmentText,
-                  selectedRadius === radius && styles.segmentTextActive,
-                ]}
+                style={[styles.segmentText, selectedRadius === radius && styles.segmentTextActive]}
               >
                 {radius} m
               </ThemedText>

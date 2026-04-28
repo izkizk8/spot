@@ -6,10 +6,7 @@ import { Platform } from 'react-native';
 import * as Location from 'expo-location';
 
 import { useRegionMonitoring } from '@/modules/core-location-lab/hooks/useRegionMonitoring';
-import {
-  appendGeofenceEvent,
-  __resetGeofenceStore,
-} from '@/modules/core-location-lab/event-store';
+import { appendGeofenceEvent, __resetGeofenceStore } from '@/modules/core-location-lab/event-store';
 
 // Access mock helper
 const mockLocation = Location as typeof Location & {
