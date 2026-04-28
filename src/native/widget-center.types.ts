@@ -1,8 +1,9 @@
 // src/native/widget-center.types.ts
 import type { WidgetConfig, Tint } from '@/modules/widgets-lab/widget-config';
 import type { LockConfig } from '@/modules/lock-widgets-lab/lock-config';
+import type { StandByConfig } from '@/modules/standby-lab/standby-config';
 
-export type { WidgetConfig, Tint, LockConfig };
+export type { WidgetConfig, Tint, LockConfig, StandByConfig };
 
 export class WidgetCenterNotSupportedError extends Error {
   constructor(message = 'WidgetCenter is only available on iOS 14+') {
@@ -33,4 +34,8 @@ export interface WidgetCenterBridge {
   getLockConfig(): Promise<LockConfig>;
   /** Writes lock-config to App Group (027 addition). iOS 16+ only. */
   setLockConfig(config: LockConfig): Promise<void>;
+  /** Reads standby-config from App Group (028 addition). iOS 17+ only. */
+  getStandByConfig(): Promise<StandByConfig>;
+  /** Writes standby-config to App Group (028 addition). iOS 17+ only. */
+  setStandByConfig(config: StandByConfig): Promise<void>;
 }
