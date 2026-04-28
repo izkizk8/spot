@@ -186,9 +186,16 @@ describe('native/keychain', () => {
 
   describe('when native module is absent on iOS/Android (fallback to expo-secure-store)', () => {
     beforeEach(() => {
-      Platform.OS = 'ios';
+      // Mock Platform.OS before resetting modules
+      jest.doMock('react-native/Libraries/Utilities/Platform', () => ({
+        OS: 'ios',
+        select: jest.fn((obj) => obj.ios || obj.default),
+      }));
+      
       requireOptionalNativeModule.mockReturnValue(null);
       jest.resetModules();
+      
+      // Re-require after reset
       keychain = require('@/native/keychain').keychain;
     });
 
@@ -288,7 +295,12 @@ describe('native/keychain', () => {
 
   describe('on Web', () => {
     beforeEach(() => {
-      Platform.OS = 'web';
+      // Mock Platform.OS for web
+      jest.doMock('react-native/Libraries/Utilities/Platform', () => ({
+        OS: 'web',
+        select: jest.fn((obj) => obj.web || obj.default),
+      }));
+      
       requireOptionalNativeModule.mockReturnValue(null);
       jest.resetModules();
       keychain = require('@/native/keychain').keychain;
