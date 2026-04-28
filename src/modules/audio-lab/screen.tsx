@@ -24,17 +24,29 @@ import type { Recording } from './audio-types';
 import PermissionBanner from './components/PermissionBanner';
 import RecorderCard from './components/RecorderCard';
 import RecordingsList from './components/RecordingsList';
+import { useAudioPlayer } from './hooks/useAudioPlayer';
 import { useAudioRecorder } from './hooks/useAudioRecorder';
-import { loadRecordings as defaultLoadRecordings } from './recordings-store';
+import {
+  deleteRecording as defaultDeleteRecording,
+  loadRecordings as defaultLoadRecordings,
+} from './recordings-store';
 
 export interface AudioLabScreenProps {
   /** Test seam for the recordings store. */
   loadRecordingsOverride?: () => Promise<Recording[]>;
+  /** Test seam for the recordings store. */
+  deleteRecordingOverride?: (id: string) => Promise<Recording[]>;
 }
 
-export default function AudioLabScreen({ loadRecordingsOverride }: AudioLabScreenProps = {}) {
+export default function AudioLabScreen({
+  loadRecordingsOverride,
+  deleteRecordingOverride,
+}: AudioLabScreenProps = {}) {
   const recorder = useAudioRecorder();
+  const player = useAudioPlayer();
   const [recordings, setRecordings] = React.useState<Recording[]>([]);
+  const recordingsRef = React.useRef<Recording[]>([]);
+  recordingsRef.current = recordings;
   const mountedRef = React.useRef(true);
 
   React.useEffect(() => {
@@ -83,9 +95,50 @@ export default function AudioLabScreen({ loadRecordingsOverride }: AudioLabScree
     recorder.requestPermission().catch(() => undefined);
   }, [recorder]);
 
-  // Player / share / delete are wired in US2.
-  const noopId = React.useCallback((_id: string) => undefined, []);
-  const noopShare = React.useCallback((_r: Recording) => undefined, []);
+  const handlePlay = React.useCallback(
+    (id: string) => {
+      const target = recordingsRef.current.find((r) => r.id === id);
+      if (!target) return;
+      player.play(target.uri).catch((err) => {
+        // File-missing / load-failed errors are surfaced via player.status;
+        // log so dev builds see why playback didn't start.
+        console.warn('[audio-lab] play failed', err);
+      });
+    },
+    [player],
+  );
+
+  const handleDelete = React.useCallback(
+    (id: string) => {
+      // If the deleted row is currently playing, stop the player first so we
+      // don't leave a dangling handle pointed at a deleted file.
+      if (player.currentUri) {
+        const target = recordingsRef.current.find((r) => r.id === id);
+        if (target && target.uri === player.currentUri) {
+          player.stop().catch(() => undefined);
+        }
+      }
+      const del = deleteRecordingOverride ?? defaultDeleteRecording;
+      del(id).then(
+        (next) => {
+          if (mountedRef.current) {
+            const sorted = [...next].toSorted((a, b) =>
+              a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0,
+            );
+            setRecordings(sorted);
+          }
+        },
+        (err) => {
+          console.warn('[audio-lab] deleteRecording failed', err);
+        },
+      );
+    },
+    [deleteRecordingOverride, player],
+  );
+
+  // RecordingRow owns the actual share path (expo-sharing → Linking
+  // fallback). The screen-level handler is observability-only.
+  const handleShare = React.useCallback((_r: Recording) => undefined, []);
 
   return (
     <ThemedView style={styles.container}>
@@ -107,9 +160,9 @@ export default function AudioLabScreen({ loadRecordingsOverride }: AudioLabScree
 
         <RecordingsList
           recordings={recordings}
-          onPlay={noopId}
-          onDelete={noopId}
-          onShare={noopShare}
+          onPlay={handlePlay}
+          onDelete={handleDelete}
+          onShare={handleShare}
         />
 
         <ThemedView

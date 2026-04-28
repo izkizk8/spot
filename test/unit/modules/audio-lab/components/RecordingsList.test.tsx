@@ -3,10 +3,13 @@
  */
 
 import React from 'react';
+import { Alert } from 'react-native';
 import { fireEvent, render } from '@testing-library/react-native';
 
 import type { Recording } from '@/modules/audio-lab/audio-types';
 import RecordingsList from '@/modules/audio-lab/components/RecordingsList';
+
+jest.mock('expo-sharing');
 
 function makeRecording(over: Partial<Recording> = {}): Recording {
   return {
@@ -91,8 +94,24 @@ describe('RecordingsList', () => {
     expect(onPlay).toHaveBeenCalledWith('a');
     fireEvent.press(findButton(view.UNSAFE_root, /^Share a\.m4a$/));
     expect(onShare).toHaveBeenCalledWith(r);
-    fireEvent.press(findButton(view.UNSAFE_root, /^Delete a\.m4a$/));
-    expect(onDelete).toHaveBeenCalledWith('a');
+
+    // US2 (T043): Delete now goes through an Alert.alert confirm — capture
+    // the destructive button and invoke its onPress to simulate confirmation.
+    const alertSpy = jest.spyOn(Alert, 'alert').mockImplementation(() => undefined);
+    try {
+      fireEvent.press(findButton(view.UNSAFE_root, /^Delete a\.m4a$/));
+      expect(alertSpy).toHaveBeenCalledTimes(1);
+      const buttons = alertSpy.mock.calls[0][2] as Array<{
+        text: string;
+        style?: string;
+        onPress?: () => void;
+      }>;
+      const destructive = buttons.find((b) => b.style === 'destructive');
+      destructive?.onPress?.();
+      expect(onDelete).toHaveBeenCalledWith('a');
+    } finally {
+      alertSpy.mockRestore();
+    }
   });
 
   it('FlatList ordering matches the input array order', () => {
