@@ -37,8 +37,12 @@ describe('speech-recognition-lab manifest', () => {
     expect(el).toBeTruthy();
   });
 
-  it('screen reference resolves via dynamic import', async () => {
-    // The screen module must be importable without error (FR-001/FR-003).
-    await expect(import('@/modules/speech-recognition-lab/screen')).resolves.toBeTruthy();
+  it('screen module resolves via require (FR-001/FR-003)', () => {
+    // Use require() instead of dynamic import() because Jest's CommonJS
+    // VM doesn't support dynamic import without --experimental-vm-modules.
+
+    const screenModule = require('@/modules/speech-recognition-lab/screen');
+    expect(screenModule).toBeTruthy();
+    expect(screenModule.default ?? screenModule.SpeechRecognitionScreen).toBeTruthy();
   });
 });

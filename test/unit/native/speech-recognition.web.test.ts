@@ -20,6 +20,8 @@ interface WebkitInstanceMock {
   start: jest.Mock;
   stop: jest.Mock;
   abort: jest.Mock;
+  addEventListener: jest.Mock;
+  removeEventListener: jest.Mock;
   continuous: boolean;
   interimResults: boolean;
   lang: string;
@@ -30,10 +32,17 @@ interface WebkitInstanceMock {
 }
 
 function createWebkitInstance(): WebkitInstanceMock {
-  return {
+  // The implementation wires events with `addEventListener` (per
+  // eslint-plugin-unicorn). The mock routes those listener registrations
+  // back onto the legacy `on{type}` fields so tests can synthesize events
+  // by calling `inst.onresult?.(fakeEvent)` regardless of how the bridge
+  // subscribes.
+  const inst: WebkitInstanceMock = {
     start: jest.fn(),
     stop: jest.fn(),
     abort: jest.fn(),
+    addEventListener: jest.fn(),
+    removeEventListener: jest.fn(),
     continuous: false,
     interimResults: false,
     lang: '',
@@ -42,6 +51,15 @@ function createWebkitInstance(): WebkitInstanceMock {
     onend: null,
     onstart: null,
   };
+  inst.addEventListener.mockImplementation((type: string, listener: (ev: any) => void) => {
+    const key = `on${type}` as 'onresult' | 'onerror' | 'onend' | 'onstart';
+    inst[key] = listener;
+  });
+  inst.removeEventListener.mockImplementation((type: string) => {
+    const key = `on${type}` as 'onresult' | 'onerror' | 'onend' | 'onstart';
+    inst[key] = null;
+  });
+  return inst;
 }
 
 function loadWebBridge(opts: { webkitPresent: boolean; instances?: WebkitInstanceMock[] }): {

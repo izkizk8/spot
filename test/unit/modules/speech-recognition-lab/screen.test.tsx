@@ -79,6 +79,11 @@ function findButtonByLabel(root: any, regex: RegExp) {
   return null;
 }
 
+function findChip(root: any, locale: string) {
+  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
+  return buttons.find((b: any) => String(b.props.accessibilityLabel ?? '').includes(locale));
+}
+
 async function flushAsync() {
   await act(async () => {
     await Promise.resolve();
@@ -307,7 +312,7 @@ describe('SpeechRecognitionLab screen (US2)', () => {
 // US3 (T049) — Locale switching
 // ---------------------------------------------------------------------------
 
-describe('SpeechRecognitionLab screen (US3)', () => {
+describe('User Story 3 — Locale switching', () => {
   beforeEach(() => {
     listeners.length = 0;
     mockBridge.start.mockClear();
@@ -326,15 +331,6 @@ describe('SpeechRecognitionLab screen (US3)', () => {
       'de-DE',
     ]);
   });
-});
-
-// Helper function hoisted to outer scope per eslint-plugin-unicorn
-function findChip(root: any, locale: string) {
-  const buttons = root.findAll((n: any) => n.props && n.props.accessibilityRole === 'button');
-  return buttons.find((b: any) => String(b.props.accessibilityLabel ?? '').includes(locale));
-}
-
-describe('User Story 3 — Locale switching', () => {
   it('changing locale while idle commits the selection and next start uses it', async () => {
     const view = render(<SpeechRecognitionScreen />);
     await flushAsync();
