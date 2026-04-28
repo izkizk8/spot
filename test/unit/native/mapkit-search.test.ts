@@ -1,6 +1,5 @@
 import bridge from '@/native/mapkit-search';
 import type { SearchRegion } from '@/native/mapkit-search.types';
-import { MapKitNotSupportedError } from '@/native/mapkit-search.types';
 import {
   __setSearchModule,
   __setSearchResult,
@@ -39,21 +38,5 @@ describe('mapkit-search.ios', () => {
     });
 
     expect(results).toEqual([]);
-  });
-
-  it.skip('throws MapKitNotSupportedError when native module is null (requires module re-import)', async () => {
-    // This test cannot work with the current mock architecture because
-    // the bridge caches the native module at import time.
-    // In practice, the native module is either present (custom dev client)
-    // or absent (Expo Go), and doesn't change at runtime.
-    __setSearchModule(null);
-
-    await expect(
-      bridge.searchLocations('test', { lat: 0, lng: 0, latDelta: 0.1, lngDelta: 0.1 }),
-    ).rejects.toThrow(MapKitNotSupportedError);
-
-    await expect(
-      bridge.searchLocations('test', { lat: 0, lng: 0, latDelta: 0.1, lngDelta: 0.1 }),
-    ).rejects.toThrow('searchLocations is not supported on this platform');
   });
 });

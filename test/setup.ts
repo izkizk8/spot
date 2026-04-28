@@ -84,19 +84,39 @@ jest.mock('react-native-maps', () => jest.requireActual('@test/__mocks__/react-n
 // Mock expo-location (feature 024)
 jest.mock('expo-location', () => jest.requireActual('@test/__mocks__/expo-location'));
 
-// Mock expo-modules-core for native bridge resolution (feature 024)
-jest.mock('expo-modules-core', () => {
-  const searchMock = jest.requireActual('@test/__mocks__/native-mapkit-search');
-  const lookAroundMock = jest.requireActual('@test/__mocks__/native-lookaround');
+// Mock the MapKit native bridges directly (feature 024).
+// Mocking expo-modules-core globally breaks `requireNativeModule` for other
+// consumers (expo-clipboard etc.) because jest-expo's preset doesn't kick in
+// once we replace the module. Mock the bridges at the import boundary instead.
+jest.mock('@/native/mapkit-search', () => {
+  const mock = require('@test/__mocks__/native-mapkit-search');
   return {
-    requireOptionalNativeModule: (moduleName: string) => {
-      if (moduleName === 'SpotMapKitSearch') {
-        return searchMock.__mockRequireOptionalNativeModule(moduleName);
-      }
-      if (moduleName === 'SpotLookAround') {
-        return lookAroundMock.__mockRequireOptionalNativeModule(moduleName);
-      }
-      return null;
+    __esModule: true,
+    default: {
+      async searchLocations(query: string, region: unknown) {
+        const native = mock.__mockRequireOptionalNativeModule('SpotMapKitSearch');
+        if (!native) {
+          const types = require('@/native/mapkit-search.types');
+          throw new types.MapKitNotSupportedError('searchLocations');
+        }
+        return native.search(query, region);
+      },
+    },
+  };
+});
+jest.mock('@/native/lookaround', () => {
+  const mock = require('@test/__mocks__/native-lookaround');
+  return {
+    __esModule: true,
+    default: {
+      async presentLookAround(lat: number, lng: number) {
+        const native = mock.__mockRequireOptionalNativeModule('SpotLookAround');
+        if (!native) {
+          const types = require('@/native/mapkit-search.types');
+          throw new types.MapKitNotSupportedError('presentLookAround');
+        }
+        return native.presentLookAround(lat, lng);
+      },
     },
   };
 });
