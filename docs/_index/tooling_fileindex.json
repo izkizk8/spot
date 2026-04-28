@@ -1,0 +1,385 @@
+{
+  "moduleName": "tooling",
+  "modulePath": "root tooling configuration + test/unit + docs/_decisions/0002-toolchain.md",
+  "analyzedAt": "2026-04-28",
+  "fileCount": 19,
+  "sourceOfTruth": [
+    "package.json",
+    "pnpm-workspace.yaml",
+    ".gitattributes",
+    ".editorconfig",
+    "tsconfig.json",
+    "app.json",
+    "oxlint.json",
+    ".oxfmtrc.json",
+    "eslint.config.js",
+    "jest.config.js",
+    "scripts/check-docs.ps1",
+    "test/setup.ts",
+    "test/unit/README.md",
+    "test/unit/examples/typescript-logic.test.ts",
+    "test/unit/examples/react-native-component.test.tsx",
+    "test/unit/examples/alias-and-mocks.test.tsx",
+    "docs/_decisions/0002-toolchain.md"
+  ],
+  "counts": {
+    "sourceFiles": 17,
+    "generatedOutputs": 2,
+    "packageScripts": 17,
+    "runtimeDependencies": 22,
+    "devDependencies": 11,
+    "testExamples": 3,
+    "pathAliases": 2,
+    "sharedJestMocks": 4,
+    "qualityGateStages": 5
+  },
+  "components": {
+    "entryPoints": [
+      {
+        "path": "package.json",
+        "purpose": "Root package manifest and tooling command surface",
+        "responsibilities": [
+          "Declare the Expo Router entry point as expo-router/entry",
+          "Define development scripts for Expo start, iOS, Android, and web",
+          "Define EAS delegation scripts for sideload IPA and simulator builds",
+          "Define format, lint, docs:check, typecheck, test, and aggregate check scripts",
+          "Declare runtime and development dependency versions"
+        ],
+        "dependencies": [
+          "expo",
+          "expo-router",
+          "oxfmt",
+          "oxlint",
+          "eslint",
+          "eslint-plugin-react-hooks",
+          "typescript",
+          "jest",
+          "jest-expo",
+          "@testing-library/react-native"
+        ]
+      }
+    ],
+    "packageManagement": [
+      {
+        "path": "pnpm-workspace.yaml",
+        "purpose": "pnpm workspace install configuration",
+        "responsibilities": [
+          "Set nodeLinker to hoisted for Expo and React Native compatibility"
+        ],
+        "dependencies": [
+          "pnpm"
+        ]
+      }
+    ],
+    "appConfiguration": [
+      {
+        "path": "app.json",
+        "purpose": "Expo app configuration with tooling-relevant runtime flags",
+        "responsibilities": [
+          "Enable expo-router plugin",
+          "Enable typed routes",
+          "Enable React Compiler",
+          "Configure static web output",
+          "Declare app identity, icons, splash configuration, and EAS project id"
+        ],
+        "dependencies": [
+          "expo-router",
+          "expo-splash-screen",
+          "expo-image"
+        ]
+      }
+    ],
+    "typeSystem": [
+      {
+        "path": "tsconfig.json",
+        "purpose": "TypeScript compiler configuration",
+        "responsibilities": [
+          "Extend expo/tsconfig.base",
+          "Enable strict TypeScript",
+          "Map @/* to ./src/*",
+          "Map @/assets/* to ./assets/*",
+          "Include TS, TSX, Expo generated types, and expo-env.d.ts"
+        ],
+        "dependencies": [
+          "typescript",
+          "expo/tsconfig.base"
+        ]
+      }
+    ],
+    "formatting": [
+      {
+        "path": ".gitattributes",
+        "purpose": "Git line-ending normalization policy",
+        "responsibilities": [
+          "Normalize text files to CRLF in the working tree",
+          "Preserve binary assets from line-ending conversion"
+        ],
+        "dependencies": [
+          "git"
+        ]
+      },
+      {
+        "path": ".editorconfig",
+        "purpose": "Editor line-ending and whitespace policy",
+        "responsibilities": [
+          "Set end_of_line to CRLF",
+          "Set UTF-8 charset, final newline insertion, and two-space indentation",
+          "Disable trailing whitespace trimming for Markdown files"
+        ],
+        "dependencies": [
+          "editorconfig-compatible editors"
+        ]
+      },
+      {
+        "path": ".oxfmtrc.json",
+        "purpose": "OXC formatter configuration",
+        "responsibilities": [
+          "Set formatting conventions for supported source files",
+          "Configure CRLF endings, final newline insertion, semicolons, single quotes, trailing commas, and 2-space indentation",
+          "Ignore generated, external, asset, docs, specs, lockfile, and heavy output paths"
+        ],
+        "dependencies": [
+          "oxfmt"
+        ]
+      }
+    ],
+    "linting": [
+      {
+        "path": "oxlint.json",
+        "purpose": "OXC lint configuration",
+        "responsibilities": [
+          "Enable TypeScript, Unicorn, OXC, React, Jest, and import plugins",
+          "Treat correctness and suspicious categories as errors",
+          "Configure browser, Node, Jest, builtin, and ES2024 environments",
+          "Define project rules for unused variables, React hooks, and Jest expectations",
+          "Ignore generated and build output paths"
+        ],
+        "dependencies": [
+          "oxlint"
+        ]
+      },
+      {
+        "path": "eslint.config.js",
+        "purpose": "Focused ESLint flat config for official React Hooks checks",
+        "responsibilities": [
+          "Load eslint-plugin-react-hooks flat recommended configuration",
+          "Use typescript-eslint parser for source and test files",
+          "Scope checks to src/**/* and test/**/* JS/TS files",
+          "Promote react-hooks/exhaustive-deps to error",
+          "Ignore generated dependency and test result folders"
+        ],
+        "dependencies": [
+          "eslint",
+          "eslint-plugin-react-hooks",
+          "typescript-eslint"
+        ]
+      }
+    ],
+    "testing": [
+      {
+        "path": "jest.config.js",
+        "purpose": "Jest Expo unit test configuration",
+        "responsibilities": [
+          "Use the jest-expo preset",
+          "Load test/setup.ts after the test environment is installed",
+          "Match test/unit/**/*.test.ts and test/unit/**/*.test.tsx",
+          "Mirror TypeScript aliases for Jest",
+          "Map CSS-like imports to test/style-mock.js",
+          "Transform React Native, Expo, React Navigation, Reanimated, and Worklets dependencies"
+        ],
+        "dependencies": [
+          "jest",
+          "jest-expo",
+          "test/setup.ts",
+          "test/style-mock.js"
+        ]
+      },
+      {
+        "path": "test/setup.ts",
+        "purpose": "Shared Jest setup and native/Expo mock layer",
+        "responsibilities": [
+          "Install react-native-gesture-handler Jest setup",
+          "Mock @/global.css as a virtual module",
+          "Mock expo-font loaded and async font APIs",
+          "Mock expo-image through React Native Image",
+          "Mock react-native-reanimated with its package mock"
+        ],
+        "dependencies": [
+          "react-native-gesture-handler/jestSetup",
+          "expo-font",
+          "expo-image",
+          "react-native-reanimated/mock"
+        ]
+      },
+      {
+        "path": "test/unit/README.md",
+        "purpose": "Unit test example guide",
+        "responsibilities": [
+          "Document the executable examples under test/unit/examples",
+          "Describe how to add new unit tests",
+          "Explain alias, RNTL, and shared mock expectations"
+        ],
+        "dependencies": [
+          "test/unit/examples/typescript-logic.test.ts",
+          "test/unit/examples/react-native-component.test.tsx",
+          "test/unit/examples/alias-and-mocks.test.tsx",
+          "test/setup.ts"
+        ]
+      },
+      {
+        "path": "test/unit/examples/typescript-logic.test.ts",
+        "purpose": "Executable example for pure TypeScript logic tests",
+        "responsibilities": [
+          "Import project constants through @/* alias",
+          "Assert deterministic spacing and max-width token behavior"
+        ],
+        "dependencies": [
+          "@jest/globals",
+          "src/constants/theme.ts"
+        ]
+      },
+      {
+        "path": "test/unit/examples/react-native-component.test.tsx",
+        "purpose": "Executable example for React Native component rendering",
+        "responsibilities": [
+          "Render a project component with React Native Testing Library",
+          "Assert visible text output through screen queries"
+        ],
+        "dependencies": [
+          "@jest/globals",
+          "@testing-library/react-native",
+          "src/components/hint-row.tsx"
+        ]
+      },
+      {
+        "path": "test/unit/examples/alias-and-mocks.test.tsx",
+        "purpose": "Executable example for alias resolution and shared mocks",
+        "responsibilities": [
+          "Mock the project color-scheme hook for deterministic dark theme behavior",
+          "Use the expo-font shared setup mock",
+          "Render ThemedText and assert dark theme color application"
+        ],
+        "dependencies": [
+          "@jest/globals",
+          "@testing-library/react-native",
+          "expo-font",
+          "src/components/themed-text.tsx",
+          "src/constants/theme.ts",
+          "test/setup.ts"
+        ]
+      }
+    ],
+    "qualityGate": [
+      {
+        "path": "scripts/check-docs.ps1",
+        "purpose": "Documentation and CRLF quality gate",
+        "responsibilities": [
+          "Verify tracked and newly added text files use CRLF line endings",
+          "Verify generated profile files listed in docs/README.md exist and include generated footers",
+          "Verify registry-derived references match local source data",
+          "Verify docs root markdown is limited to the curated index plus explicit generated profiles and registry-derived references",
+          "Parse docs/_index/*.json",
+          "Check local Markdown links",
+          "Scan for known stale documentation references"
+        ],
+        "dependencies": [
+          "git",
+          "docs/README.md",
+          "docs/_index/*.json"
+        ]
+      },
+      {
+        "path": "package.json",
+        "purpose": "Aggregate local verification command",
+        "responsibilities": [
+          "Run pnpm format:check",
+          "Run pnpm lint, which includes OXC lint and official Hooks lint",
+          "Run pnpm docs:check",
+          "Run pnpm typecheck",
+          "Run pnpm test"
+        ],
+        "dependencies": [
+          ".oxfmtrc.json",
+          "oxlint.json",
+          "eslint.config.js",
+          "scripts/check-docs.ps1",
+          "tsconfig.json",
+          "jest.config.js"
+        ]
+      }
+    ],
+    "decisions": [
+      {
+        "path": "docs/_decisions/0002-toolchain.md",
+        "purpose": "Accepted ADR for current toolchain choices",
+        "responsibilities": [
+          "Record pnpm hoisted package management decision",
+          "Record OXC format and lint decisions",
+          "Record official React Hooks ESLint layer decision",
+          "Record strict TypeScript and Jest Expo plus RNTL decisions",
+          "Document alternatives and revisit conditions"
+        ],
+        "dependencies": [
+          "package.json",
+          "oxlint.json",
+          ".oxfmtrc.json",
+          "eslint.config.js",
+          "jest.config.js"
+        ]
+      },
+      {
+        "path": "docs/_decisions/0005-crlf-and-doc-automation.md",
+        "purpose": "Accepted ADR for CRLF policy and documentation automation",
+        "responsibilities": [
+          "Record CRLF as the Windows-first line-ending policy",
+          "Record docs:check as the automated documentation gate",
+          "Document alternatives and revisit conditions"
+        ],
+        "dependencies": [
+          ".gitattributes",
+          ".editorconfig",
+          ".oxfmtrc.json",
+          "scripts/check-docs.ps1",
+          "package.json"
+        ]
+      }
+    ],
+    "generatedDocs": [
+      {
+        "path": "docs/tooling_profile.md",
+        "purpose": "Generated human-readable tooling module profile",
+        "responsibilities": [
+          "Document business context, components, workflows, command API, data model, dependencies, file organization, observations, testing, and performance considerations"
+        ],
+        "dependencies": [
+          "package.json",
+          "pnpm-workspace.yaml",
+          ".gitattributes",
+          ".editorconfig",
+          "tsconfig.json",
+          "app.json",
+          "oxlint.json",
+          ".oxfmtrc.json",
+          "eslint.config.js",
+          "jest.config.js",
+          "scripts/check-docs.ps1",
+          "test/setup.ts",
+          "test/unit/README.md",
+          "test/unit/examples/*",
+          "docs/_decisions/0002-toolchain.md"
+        ]
+      },
+      {
+        "path": "docs/_index/tooling_fileindex.json",
+        "purpose": "Generated machine-readable tooling module file index",
+        "responsibilities": [
+          "Classify tooling files by component role",
+          "Record file purposes, responsibilities, and dependencies"
+        ],
+        "dependencies": [
+          "docs/tooling_profile.md"
+        ]
+      }
+    ]
+  }
+}

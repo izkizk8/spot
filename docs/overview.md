@@ -2,275 +2,269 @@
 
 ## Introduction
 
-**spot** is a cross-platform mobile and web application built with **Expo SDK 55** and **React Native 0.83**. It targets iOS, Android, and the web from a single TypeScript codebase using file-based routing via `expo-router`. The project is in its early starter-app phase and ships two screens — a **Home** landing page with an animated Expo logo and getting-started hints, and an **Explore** page with collapsible documentation links.
+spot is a universal Expo application targeting iOS, Android, and web from one React Native codebase. The current app is still close to the Expo starter surface, but the repository has a mature agent-first development layer around Spec Kit, generated documentation, automated documentation checks, strict TypeScript, React Compiler, and a local quality gate.
 
-The repository follows an **agent-first development workflow** with a four-plugin AI stack:
-
-| Plugin | Role |
-|--------|------|
-| **Spec Kit** 0.8.1 (`.specify/`) | SDD lifecycle engine — 22 commands, 6 extensions, constitution v1.0.1 |
-| **Superpowers** 5.0.7 (`obra/superpowers`) | 14 engineering skills (TDD, debugging, brainstorming, code review, etc.) |
-| **Context Engineering** (`@awesome-copilot`) | `@context-architect` agent for multi-file change planning |
-| **RUG Agentic Workflow** (`@awesome-copilot`) | `@rug` orchestrator → `@SWE` + `@QA` subagents |
+The application entry point is `expo-router/entry`. Routes live under `src/app/`, shared UI lives under `src/components/`, design tokens live in `src/constants/theme.ts`, and tests live under `test/unit/`.
 
 ## Project Architecture
 
 ### Technology Stack
 
-| Layer | Technology |
-|-------|-----------|
-| **Language** | TypeScript 5.9 (strict mode) |
-| **UI Framework** | React 19.2 / React Native 0.83 |
-| **App Framework** | Expo SDK 55 (`expo-router` with typed routes) |
-| **Animations** | `react-native-reanimated` 4.2 + `react-native-worklets` 0.7 |
-| **Navigation** | `@react-navigation/native` 7 / `@react-navigation/bottom-tabs` 7 |
-| **Images** | `expo-image` |
-| **Package Manager** | pnpm (nodeLinker: hoisted) |
-| **Compiler** | React Compiler enabled (`experiments.reactCompiler: true`) |
-| **Build Tool** | Expo CLI / Metro bundler |
-| **AI Workflow** | Spec Kit 0.8.1 + Superpowers + Context Engineering + RUG |
+| Area | Current choice |
+|------|----------------|
+| Runtime | Expo SDK 55 (`expo@~55.0.17`) |
+| React stack | React 19.2.0, React Native 0.83.6, React DOM 19.2.0, React Native Web 0.21 |
+| Routing | `expo-router@~55.0.13` with typed routes enabled in `app.json` |
+| Compiler | React Compiler enabled with `experiments.reactCompiler: true` |
+| Language | TypeScript 5.9 in strict mode |
+| Package manager | pnpm with `nodeLinker: hoisted` |
+| Styling | React Native `StyleSheet.create()`, centralized tokens in `src/constants/theme.ts`, `ThemedText`, `ThemedView`, and `useTheme()` |
+| Platform split | `.web.tsx` / `.web.ts` suffixes for non-trivial web differences |
+| Animation | `react-native-reanimated` and `react-native-worklets` |
+| Images and symbols | `expo-image` and `expo-symbols` |
+| Formatting | OXC formatter (`oxfmt@0.46.0`) |
+| Linting | OXC lint (`oxlint@1.61.0`) plus official `eslint-plugin-react-hooks@7.1.1` through ESLint 10 |
+| Type checks | `tsc --noEmit` |
+| Unit tests | Jest 29, `jest-expo@55.0.16`, and React Native Testing Library |
+| Builds | EAS CLI >= 15, with development, sideload, and production profiles in `eas.json` |
 
-### Source Layout
+### Module Structure
 
-```
+```text
 src/
-├── app/                  # Route screens (file-based routing)
-│   ├── _layout.tsx       # Root layout — ThemeProvider + tab navigator
-│   ├── index.tsx         # Home screen
-│   └── explore.tsx       # Explore screen
-├── components/           # Shared UI components
-│   ├── animated-icon.tsx / .web.tsx   # Animated Expo logo (platform-split)
-│   ├── app-tabs.tsx      / .web.tsx   # Tab navigation (platform-split)
-│   ├── external-link.tsx              # In-app browser link wrapper
-│   ├── hint-row.tsx                   # Key-value hint row
-│   ├── themed-text.tsx                # Theme-aware Text wrapper
-│   ├── themed-view.tsx                # Theme-aware View wrapper
-│   ├── web-badge.tsx                  # Expo version badge (web only)
-│   └── ui/
-│       └── collapsible.tsx            # Animated collapsible section
-├── constants/
-│   └── theme.ts          # Design tokens: Colors, Fonts, Spacing, layout constants
-├── hooks/
-│   ├── use-color-scheme.ts / .web.ts  # Color scheme hook (platform-split)
-│   └── use-theme.ts                   # Returns active light/dark color set
-├── types/                # Shared TypeScript types (empty)
-└── global.css            # Web font-face declarations
-```
+  app/
+    _layout.tsx       Root layout, React Navigation theme provider, splash overlay, tab shell
+    index.tsx         Home route
+    explore.tsx       Explore route with collapsible Expo starter content
+  components/
+    app-tabs.tsx      Native tab implementation using expo-router unstable NativeTabs
+    app-tabs.web.tsx  Web tab implementation using expo-router/ui
+    themed-text.tsx   Theme-aware text primitive
+    themed-view.tsx   Theme-aware view primitive
+    animated-icon.*   Native/web animated splash and icon variants
+    ui/               Shared UI primitives such as Collapsible
+  constants/
+    theme.ts          Colors, fonts, spacing scale, max width, tab inset constants
+  hooks/
+    use-theme.ts      Active color palette helper
+    use-color-scheme.* Native/web color scheme hooks
 
-### Project Governance & Memory
-
-```
-.specify/memory/
-└── constitution.md       # v1.0.1 — 5 principles + governance rules
+test/
+  setup.ts            Shared Jest Expo mocks
+  unit/examples/      Copyable examples for TS logic, RN rendering, aliases, and mocks
 
 specs/
-└── 001-fix-speckit-concerns/   # First completed feature (28/28 tasks, 100% adherence)
-    ├── spec.md, plan.md, tasks.md, research.md, data-model.md
-    ├── quickstart.md, retrospective.md
-    └── checklists/requirements.md
+  NNN-feature/        Spec Kit feature specs, plans, tasks, quickstarts, and checklists
+
+docs/
+  README.md           Curated documentation index and doc-system rules
+  overview.md         This generated repository overview
+  architecture.md     Generated architecture profile
+  *_profile.md        Explicit generated module profiles listed in docs/README.md
+  sdd-extensions.md   Registry-derived Spec Kit extension catalog reference
+  _index/*.json       Generated machine-readable file indexes
+  _decisions/         ADRs for human judgement and tradeoffs
+  _howto/             External-tool walkthroughs and manual procedures
+
+.specify/
+  extensions/         Enabled Spec Kit extensions
+  memory/             Project governance files loaded by memory-loader
+  templates/          Spec Kit templates
+
+.eas/build/
+  unsigned-ios.yml    Custom unsigned iOS IPA build pipeline
 ```
 
 ### Architecture Diagram
 
 ```mermaid
-flowchart TB
-    subgraph Entry["Entry Point"]
-        ExpoRouter["expo-router/entry<br/>(package.json main)"]
-    end
+flowchart TD
+    Config[app.json and package.json] --> Expo[Expo SDK 55 runtime]
+    Expo --> Router[expo-router typed routes]
+    Router --> Layout[src/app/_layout.tsx]
+    Layout --> ThemeProvider[React Navigation ThemeProvider]
+    Layout --> Splash[AnimatedSplashOverlay]
+    Layout --> Tabs[AppTabs]
 
-    subgraph Layout["Root Layout (_layout.tsx)"]
-        ThemeProvider["ThemeProvider<br/>(light / dark)"]
-        SplashOverlay["AnimatedSplashOverlay"]
-        AppTabs["AppTabs"]
-    end
+    Tabs --> NativeTabs[src/components/app-tabs.tsx]
+    Tabs --> WebTabs[src/components/app-tabs.web.tsx]
+    NativeTabs --> Home[src/app/index.tsx]
+    NativeTabs --> Explore[src/app/explore.tsx]
+    WebTabs --> Home
+    WebTabs --> Explore
 
-    subgraph Screens["Route Screens"]
-        Home["index.tsx<br/>Home Screen"]
-        Explore["explore.tsx<br/>Explore Screen"]
-    end
+    Home --> UI[Shared themed components]
+    Explore --> UI
+    UI --> Tokens[src/constants/theme.ts]
+    UI --> Hooks[src/hooks/use-theme.ts and use-color-scheme.*]
 
-    subgraph SharedComponents["Shared Components"]
-        ThemedText["ThemedText"]
-        ThemedView["ThemedView"]
-        HintRow["HintRow"]
-        ExternalLink["ExternalLink"]
-        Collapsible["Collapsible"]
-        WebBadge["WebBadge"]
-    end
+    Tests[Jest Expo + RNTL] --> UI
+    Tests --> Tokens
 
-    subgraph DesignSystem["Design System"]
-        ThemeTokens["theme.ts<br/>Colors · Fonts · Spacing"]
-        UseTheme["useTheme()"]
-        UseColorScheme["useColorScheme()"]
-    end
-
-    ExpoRouter --> ThemeProvider
-    ThemeProvider --> SplashOverlay
-    ThemeProvider --> AppTabs
-    AppTabs --> Home
-    AppTabs --> Explore
-
-    Home --> ThemedText & ThemedView & HintRow & WebBadge
-    Explore --> ThemedText & ThemedView & Collapsible & ExternalLink & WebBadge
-
-    ThemedText --> UseTheme
-    ThemedView --> UseTheme
-    UseTheme --> UseColorScheme
-    UseTheme --> ThemeTokens
+    SpecKit[Spec Kit extensions] --> Memory[.specify/memory/*.md]
+    SpecKit --> Docs[docs generated profiles, indexes, ADRs, how-tos]
 ```
 
 ### Key Components
 
-| Component | Purpose |
-|-----------|---------|
-| **`_layout.tsx`** | Root layout wrapping the app in `ThemeProvider` and rendering `AnimatedSplashOverlay` + `AppTabs`. |
-| **`AppTabs`** | Platform-split tab navigator. Native uses `NativeTabs` from `expo-router/unstable-native-tabs`; web uses a custom tab bar from `expo-router/ui`. |
-| **`AnimatedSplashOverlay`** | Full-screen splash that scales down and fades out via `react-native-reanimated` Keyframe animations. |
-| **`ThemedText` / `ThemedView`** | Theme-aware wrappers that apply colors from the `Colors` token set via `useTheme()`. |
-| **`useTheme()`** | Hook returning the active `Colors.light` or `Colors.dark` object. |
-| **`Collapsible`** | Animated expand/collapse section using `FadeIn` from reanimated. |
+- `src/app/_layout.tsx` mounts the navigation theme, animated splash overlay, and tab navigator.
+- `src/components/app-tabs.tsx` is the native tab shell. It uses `expo-router/unstable-native-tabs` and image assets under `assets/images/tabIcons/`.
+- `src/components/app-tabs.web.tsx` is the web tab shell. It uses `expo-router/ui` primitives and adds a compact web navigation bar.
+- `src/components/themed-text.tsx` and `src/components/themed-view.tsx` are the default primitives for text and surfaces.
+- `src/constants/theme.ts` owns light/dark colors, font choices, the `Spacing` scale, `BottomTabInset`, and `MaxContentWidth`.
+- `test/setup.ts` centralizes shared Jest mocks for global CSS, Expo font loading, Expo image, and Reanimated.
 
-### Platform-Specific Strategy
+## Tooling And Quality Gates
 
-The project uses the **`.web.tsx` / `.web.ts` suffix convention** — Metro/webpack automatically resolve the web variant:
+Detailed tooling documentation lives in [docs/tooling_profile.md](tooling_profile.md), with its generated file index at [docs/_index/tooling_fileindex.json](_index/tooling_fileindex.json).
 
-| File Pair | Native | Web |
-|-----------|--------|-----|
-| `animated-icon` | Reanimated Keyframe + expo-image | CSS module animation |
-| `app-tabs` | `NativeTabs` (expo-router) | Custom `Tabs`/`TabList` (expo-router/ui) |
-| `use-color-scheme` | RN `useColorScheme` re-export | Hydration-safe wrapper |
+### Package Scripts
 
-### Theming & Design Tokens
+| Task | Command |
+|------|---------|
+| Install dependencies | `pnpm install` |
+| Metro dev server | `pnpm start` |
+| Android target | `pnpm android` |
+| iOS target | `pnpm ios` |
+| Web target | `pnpm web` |
+| Unsigned iOS IPA | `pnpm ios:ipa` |
+| iOS simulator EAS build | `pnpm ios:simulator` |
+| Format | `pnpm format` |
+| Check formatting | `pnpm format:check` |
+| OXC lint | `pnpm lint:ox` |
+| Official React Hooks lint | `pnpm lint:hooks` |
+| Full lint | `pnpm lint` |
+| Documentation gate | `pnpm docs:check` |
+| Type check | `pnpm typecheck` |
+| Unit tests | `pnpm test` |
+| Watch tests | `pnpm test:watch` |
+| Local quality gate | `pnpm check` |
 
-Defined in `src/constants/theme.ts`:
+`pnpm check` runs formatting check, OXC lint, official React Hooks lint, documentation checks, strict TypeScript, and Jest unit tests. Remote EAS builds are intentionally separate because they consume cloud build resources.
 
-- **Colors**: Light/dark palettes with `text`, `background`, `backgroundElement`, `backgroundSelected`, `textSecondary`
-- **Fonts**: Per-platform font families (`sans`, `serif`, `rounded`, `mono`)
-- **Spacing scale**: `half` (2) → `one` (4) → `two` (8) → `three` (16) → `four` (24) → `five` (32) → `six` (64)
-- **Layout constants**: `MaxContentWidth` (800px), `BottomTabInset` (iOS: 50, Android: 80)
+### Lint, Format, Typecheck, Test
 
-## AI Development Workflow
+- `oxfmt` is configured by `.oxfmtrc.json` and ignores generated or external areas such as `.specify/`, `.github/`, `docs/`, `specs/`, assets, lockfiles, and build outputs.
+- `oxlint` is configured by `oxlint.json` with TypeScript, Unicorn, OXC, React, Jest, and import plugins. Correctness and suspicious categories are errors.
+- `eslint.config.js` keeps the official `eslint-plugin-react-hooks` flat recommended config and raises `react-hooks/exhaustive-deps` to error. This is the source-of-truth Hooks check for React Compiler-era rules.
+- `tsconfig.json` extends `expo/tsconfig.base`, enables `strict: true`, and maps `@/*` to `./src/*` plus `@/assets/*` to `./assets/*`.
+- `jest.config.js` uses the `jest-expo` preset, maps the same aliases, includes CSS style mocks, and targets `test/unit/**/*.test.ts(x)`.
 
-This project uses a **four-plugin AI stack** for agent-first development:
+## Spec Kit And Agent Workflow
 
-### Plugin Stack
+This repository uses Spec Kit as the structured development lifecycle: specify -> clarify -> plan -> tasks -> analyze -> implement -> verify. The workspace currently has 22 enabled Spec Kit extension registrations in `.specify/extensions/.registry`, including `git`, `memory-loader`, `repoindex`, `archive`, `retrospective`, `status`, `doctor`, `superb`, `status-report`, `spec-validate`, `agent-assign`, `bugfix`, `catalog-ci`, `cleanup`, `fix-findings`, `fleet`, `learn`, `plan-review-gate`, `retro`, `review`, `orchestrator`, and `checkpoint`.
 
-| Plugin | Version | What It Provides |
-|--------|---------|------------------|
-| **Spec Kit** | 0.8.1 | SDD lifecycle: 22 commands, 6 extensions (git, memory-loader, repoindex, archive, retrospective, status) |
-| **Superpowers** | 5.0.7 | 14 auto-invoked skills: TDD, systematic-debugging, brainstorming, writing-plans, executing-plans, code-review, verification, parallel-agents, subagent-dev, git-worktrees, skill-writing |
-| **Context Engineering** | 1.0.0 | `@context-architect` — analyzes file dependencies and ripple effects before multi-file changes |
-| **RUG Agentic Workflow** | 1.0.0 | `@rug` orchestrator → `@SWE` (implementation) + `@QA` (verification) subagents |
+`memory-loader` is enabled before the lifecycle commands and loads these governance files:
 
-### SDD Lifecycle
+- `.specify/memory/constitution.md`
+- `.specify/memory/doc-system.md`
+- `.specify/memory/spec.md`
+- `.specify/memory/plan.md`
+- `.specify/memory/changelog.md`
 
-```
-/speckit.specify → /speckit.clarify → /speckit.plan → /speckit.tasks → /speckit.analyze → /speckit.implement → /speckit.retrospective.analyze
-```
+The current constitution is version 1.1.0. It requires cross-platform parity, token-based theming, platform file splitting, `StyleSheet.create()` discipline, test-first behavior for new app features, and validate-before-spec proof for build or infrastructure work.
 
-### When to Use Which Agent
+## Documentation System
 
-| Scenario | Agent/Command |
-|----------|---------------|
-| New feature (full lifecycle) | `/speckit.specify` → SDD workflow |
-| Complex multi-file change | `@context-architect` first, then implement |
-| Large task decomposition | `@rug` to orchestrate `@SWE` + `@QA` |
-| Bug investigation | Superpowers: systematic-debugging (auto) |
-| Writing tests first | Superpowers: TDD (auto) |
-| Code review | Superpowers: requesting-code-review (auto) |
-| Quick fix (single file) | Direct edit — no ceremony |
+The documentation system is intentionally classed by source of truth:
 
-**Constitution v1.0.1** enforces: Cross-Platform Parity, Token-Based Theming, Platform File Splitting, StyleSheet Discipline, Test-First for New Features (with docs-only exemption).
+| Class | Path | Source of truth | Update rule |
+|-------|------|-----------------|-------------|
+| Curated docs index | `docs/README.md` | Documentation system policy | Hand-edit when the doc map or rules change |
+| Generated profiles | Explicit root files listed in `docs/README.md` | Code and configuration scan | Re-run the matching `/speckit.repoindex.*` command; machine-written |
+| Registry-derived references | Explicit root files listed in `docs/README.md` | Local registry and manifests | Refresh from source data and verify with `pnpm docs:check` |
+| File indexes | `docs/_index/*.json` | Code scan | Generated alongside repoindex module passes |
+| Decisions | `docs/_decisions/NNNN-*.md` | Human judgement and tradeoffs | Add or update ADRs with the decision template |
+| How-tos | `docs/_howto/*.md` | External tools and manual procedures | Add or update walkthroughs with the how-to template |
 
-See [speckit_profile.md](speckit_profile.md) for complete command reference, workflow diagrams, and hook configuration.
+Practical rule: if the information is derivable from code, regenerate the relevant profile. If it is a decision, put it in an ADR. If it is an external-tool walkthrough, put it in a how-to. Generic notes do not belong in `docs/`.
+
+Current generated profiles are the explicit files named in the Generated Profiles table of `docs/README.md`: this overview, `architecture.md`, `speckit_profile.md`, `eas-sideload_profile.md`, and `tooling_profile.md`.
+
+`sdd-extensions.md` is a registry-derived reference checked against `.specify/extensions/.registry` and extension manifests. `docs/README.md` is the curated documentation index, not a generated profile. Companion JSON indexes live under `docs/_index/`, including `tooling_fileindex.json` for the tooling profile.
+
+## Configuration Reference
+
+| File | Purpose |
+|------|---------|
+| `package.json` | Expo entry point, package scripts, runtime dependencies, dev dependencies |
+| `app.json` | Expo app metadata, typed routes, React Compiler, plugins, bundle ID, EAS project ID |
+| `tsconfig.json` | Strict TypeScript and path aliases |
+| `pnpm-workspace.yaml` | Hoisted pnpm linker required by the Expo workspace setup |
+| `.oxfmtrc.json` | OXC formatter behavior and ignore list |
+| `oxlint.json` | OXC lint plugins, categories, environments, and rules |
+| `eslint.config.js` | Official React Hooks ESLint config |
+| `jest.config.js` | Jest Expo preset, setup file, test globs, alias mapping, transform exceptions |
+| `eas.json` | EAS CLI version and build profiles |
+| `.eas/build/unsigned-ios.yml` | Custom unsigned iOS IPA build steps |
+| `.specify/extensions.yml` | Lifecycle hook wiring |
+| `.specify/extensions/.registry` | Enabled extension registry and command registration metadata |
 
 ## Getting Started
 
 ### Prerequisites
 
-| Tool | Version |
-|------|---------|
-| **Node.js** | 18+ (LTS recommended) |
-| **pnpm** | 8+ |
-| **Expo CLI** | Bundled via `npx expo` |
-| **iOS Simulator** | Xcode 15+ (macOS only) |
-| **Android Emulator** | Android Studio / SDK 34+ |
-
-### Configuration
-
-- **`app.json`** — Expo configuration: app name, slug, icons, splash screen, plugins, experiments
-- **`tsconfig.json`** — TypeScript strict mode, path aliases (`@/*` → `./src/*`, `@/assets/*` → `./assets/*`)
-- **`pnpm-workspace.yaml`** — `nodeLinker: hoisted` for Expo/RN compatibility
-- **`.specify/memory/constitution.md`** — Project principles (v1.0.1)
-
-No `.env` files or secrets are required for local development.
+- Node.js and pnpm available locally.
+- Expo-compatible native toolchain for iOS or Android simulator work.
+- EAS CLI >= 15 for cloud build commands such as `pnpm ios:ipa`.
 
 ### Local Development Setup
 
 ```bash
-# 1. Clone the repository
-git clone <repo-url> spot && cd spot
-
-# 2. Install dependencies
 pnpm install
-
-# 3. Start the development server
-npx expo start
+pnpm start
 ```
 
-### Running the Application
-
-| Command | Description |
-|---------|-------------|
-| `pnpm start` / `npx expo start` | Start Expo dev server (all platforms) |
-| `npx expo start --ios` | Launch on iOS Simulator |
-| `npx expo start --android` | Launch on Android Emulator |
-| `npx expo start --web` | Launch in browser |
-| `npx expo lint` | Run linter |
-| `npm run reset-project` | Move starter code to `app-example/` and create blank `app/` |
-
-### AI Workflow Quick Start
+After Metro starts, launch a platform target:
 
 ```bash
-# Start a new feature
-/speckit.specify "add user authentication"
-
-# Refine the spec
-/speckit.clarify
-
-# Generate implementation plan
-/speckit.plan
-
-# Generate task list
-/speckit.tasks
-
-# Check consistency
-/speckit.analyze
-
-# Execute implementation
-/speckit.implement
-
-# Post-implementation review
-/speckit.retrospective.analyze
-
-# Check project status anytime
-/speckit.status
+pnpm ios
+pnpm android
+pnpm web
 ```
 
-### Deployment
+### Local Verification
 
-No deployment pipeline is configured yet. The app supports:
-- **Web**: Static output (`web.output: "static"` in app.json)
-- **iOS/Android**: Via Expo EAS Build (not yet configured)
+```bash
+pnpm check
+```
+
+For focused runs:
+
+```bash
+pnpm format:check
+pnpm lint
+pnpm docs:check
+pnpm typecheck
+pnpm test
+```
+
+### EAS Builds
+
+`eas.json` defines three profiles:
+
+| Profile | Purpose |
+|---------|---------|
+| `development` | iOS simulator build with no device credentials |
+| `sideload` | Unsigned iOS device IPA using `.eas/build/unsigned-ios.yml` |
+| `production` | Placeholder for future signed production builds |
+
+The `sideload` profile uses `withoutCredentials: true` and the custom YAML pipeline to skip Apple credential preparation, build with code signing disabled, package `Payload/*.app`, and upload `unsigned.ipa` as the artifact.
 
 ## Additional Resources
 
-- [Expo Documentation](https://docs.expo.dev/)
-- [Expo Router — File-Based Routing](https://docs.expo.dev/router/introduction/)
-- [React Native Reanimated](https://docs.swmansion.com/react-native-reanimated/)
-- [Spec Kit Workflow Reference](speckit_profile.md)
-- [Architecture Deep Dive](architecture.md)
+- [README.md](../README.md)
+- [docs/README.md](README.md)
+- [docs/architecture.md](architecture.md)
+- [docs/speckit_profile.md](speckit_profile.md)
+- [docs/sdd-extensions.md](sdd-extensions.md)
+- [docs/eas-sideload_profile.md](eas-sideload_profile.md)
+- [docs/tooling_profile.md](tooling_profile.md)
+- [docs/_index/tooling_fileindex.json](_index/tooling_fileindex.json)
+- [docs/_decisions/README.md](_decisions/README.md)
+- [docs/_howto/README.md](_howto/README.md)
+- [docs/_howto/sideload-iphone.md](_howto/sideload-iphone.md)
 
 ---
 
-**Generated**: April 25, 2026 (refreshed) | **Spec Kit Extension**: repoindex v1.0.0
+**Generated**: 2026-04-28 by repoindex v1.0.0

@@ -10,7 +10,7 @@ Step-by-step procedures that involve **information from outside this repo** (ext
 
 ## When NOT
 
-- "How to run lint" → that's just `pnpm lint`, lives in (future generated) `tooling_profile.md`
+- "How to run lint" → that's just `pnpm lint`, lives in [tooling_profile.md](../tooling_profile.md)
 - Architecture explanation → `architecture.md` (generated)
 - Why we chose X → `_decisions/`
 

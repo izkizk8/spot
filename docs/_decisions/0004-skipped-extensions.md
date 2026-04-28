@@ -27,7 +27,7 @@ For `speckit-utils` we explicitly **kept `doctor`** because the standalone `doct
 
 ## Consequences
 
-- ✅ Clean install: 18/19 extensions registered without conflicts
+- ✅ Clean installed catalog; the current source of truth is [sdd-extensions.md](../sdd-extensions.md)
 - ⚠️ No CI guard for spec drift / spec-existence checks until upstream fix or a different extension fills the gap
 - ⚠️ No `speckit-utils` resume / traceability commands; if needed, remove `doctor` first
 - 🔁 Revisit `ci-guard` when upstream fixes [the namespace validation issue](https://github.com/Quratulain-bilal/spec-kit-ci-guard); revisit `speckit-utils` if its capabilities become essential

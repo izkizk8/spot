@@ -1,405 +1,600 @@
 {
-  "moduleName": "speckit",
-  "modulePath": ".specify/ + .github/agents/ + .github/prompts/",
-  "analyzedAt": "2026-04-25T00:00:00Z",
-  "fileCount": 200,
-  "components": {
-    "entryPoints": [
-      {
-        "path": ".specify/init-options.json",
-        "purpose": "Project initialization configuration — AI integration, branch numbering, Spec Kit version",
-        "responsibilities": ["Store initialization parameters", "Define branch numbering strategy (sequential)"],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/integration.json",
-        "purpose": "Active integration identifier and version",
-        "responsibilities": ["Declare active AI integration (copilot)", "Track Spec Kit version"],
-        "dependencies": []
-      }
-    ],
-    "configurations": [
-      {
-        "path": ".specify/extensions.yml",
-        "purpose": "Central hook registry — all before_*/after_* lifecycle hooks from all extensions",
-        "responsibilities": [
-          "Define hook execution order for all commands",
-          "Map hooks to extension commands",
-          "Control optional vs mandatory hooks"
-        ],
-        "dependencies": ["git extension", "memory-loader extension", "retrospective extension"]
-      },
-      {
-        "path": ".specify/extensions/.registry",
-        "purpose": "Extension integrity database with versions, hashes, and registration metadata",
-        "responsibilities": [
-          "Track installed extension versions",
-          "Store SHA-256 manifest hashes",
-          "Record registered commands per extension",
-          "Track installation timestamps"
-        ],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/integrations/copilot.manifest.json",
-        "purpose": "File integrity manifest for all Copilot agent and prompt files",
-        "responsibilities": ["Map agent/prompt files to SHA-256 hashes", "Enable tamper detection"],
-        "dependencies": [".github/agents/*.agent.md", ".github/prompts/*.prompt.md"]
-      },
-      {
-        "path": ".specify/integrations/speckit.manifest.json",
-        "purpose": "File integrity manifest for core scripts and templates",
-        "responsibilities": ["Map script/template files to SHA-256 hashes"],
-        "dependencies": [".specify/scripts/", ".specify/templates/"]
-      },
-      {
-        "path": ".specify/extensions/git/git-config.yml",
-        "purpose": "Git extension configuration — branch numbering and auto-commit settings",
-        "responsibilities": [
-          "Configure branch numbering (sequential/timestamp)",
-          "Toggle auto-commit per lifecycle event",
-          "Define commit message templates"
-        ],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/workflows/workflow-registry.json",
-        "purpose": "Registry of installed workflows",
-        "responsibilities": ["Track workflow name, version, source, install/update times"],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/workflows/speckit/workflow.yml",
-        "purpose": "Full SDD cycle workflow definition: specify → plan → tasks → implement with gates",
-        "responsibilities": [
-          "Define workflow steps and order",
-          "Define review gates (approve/reject/abort)",
-          "Accept inputs (spec description, integration, scope)"
-        ],
-        "dependencies": ["speckit.specify", "speckit.plan", "speckit.tasks", "speckit.implement"]
-      }
-    ],
-    "templates": [
-      {
-        "path": ".specify/templates/spec-template.md",
-        "purpose": "Feature specification template — user stories, acceptance scenarios, requirements",
-        "responsibilities": ["Define spec structure with prioritized user stories", "Include edge case placeholders"],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/templates/plan-template.md",
-        "purpose": "Implementation plan template — technical context, project structure, constitution check",
-        "responsibilities": ["Define plan phases (research, design, quickstart)", "Include multi-project layout options"],
-        "dependencies": ["spec-template.md"]
-      },
-      {
-        "path": ".specify/templates/tasks-template.md",
-        "purpose": "Task list template — phased, dependency-ordered tasks organized by user story",
-        "responsibilities": ["Define task format with parallel markers", "Define phase structure (setup, foundation, per-story)"],
-        "dependencies": ["plan-template.md", "spec-template.md"]
-      },
-      {
-        "path": ".specify/templates/checklist-template.md",
-        "purpose": "Custom checklist template — numbered, categorized check items",
-        "responsibilities": ["Define checklist structure with categories"],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/templates/constitution-template.md",
-        "purpose": "Project constitution template — core principles and governance rules",
-        "responsibilities": ["Define principle structure", "Include governance section"],
-        "dependencies": []
-      }
-    ],
-    "services": [
-      {
-        "path": ".specify/extensions/git/extension.yml",
-        "purpose": "Git Branching Workflow extension manifest",
-        "responsibilities": ["Register 5 git commands", "Define hooks for branch creation and auto-commit"],
-        "dependencies": ["git CLI"]
-      },
-      {
-        "path": ".specify/extensions/memory-loader/extension.yml",
-        "purpose": "Memory Loader extension manifest",
-        "responsibilities": ["Register memory-loader.load command", "Define mandatory before_* hooks on all commands"],
-        "dependencies": [".specify/memory/"]
-      },
-      {
-        "path": ".specify/extensions/memory-md/extension.yml",
-        "purpose": "Memory MD extension manifest — durable markdown memory system",
-        "responsibilities": ["Register 6 memory management commands", "Define layered memory architecture"],
-        "dependencies": ["docs/memory/"]
-      },
-      {
-        "path": ".specify/extensions/repoindex/extension.yml",
-        "purpose": "Repository Index extension manifest",
-        "responsibilities": ["Register 3 indexing commands (overview, architecture, module)"],
-        "dependencies": []
-      },
-      {
-        "path": ".specify/extensions/archive/extension.yml",
-        "purpose": "Archive extension manifest — post-merge feature archival",
-        "responsibilities": ["Register archive.run command"],
-        "dependencies": ["specs/ directory", ".specify/memory/"]
-      },
-      {
-        "path": ".specify/extensions/retrospective/extension.yml",
-        "purpose": "Retrospective extension manifest — post-implementation spec drift analysis",
-        "responsibilities": ["Register retrospective.analyze command", "Define after_implement hook"],
-        "dependencies": ["speckit.tasks", "speckit.implement", "speckit.specify"]
-      },
-      {
-        "path": ".specify/extensions/status/extension.yml",
-        "purpose": "Status extension manifest — SDD workflow progress dashboard",
-        "responsibilities": ["Register status.show command with status alias"],
-        "dependencies": []
-      }
-    ],
-    "controllers": [
-      {
-        "path": ".github/agents/speckit.specify.agent.md",
-        "purpose": "Copilot agent: generate feature specification from description",
-        "responsibilities": ["Parse user feature description", "Generate spec.md from template"],
-        "dependencies": ["spec-template.md", "memory-loader"]
-      },
-      {
-        "path": ".github/agents/speckit.plan.agent.md",
-        "purpose": "Copilot agent: generate implementation plan",
-        "responsibilities": ["Read spec.md", "Generate plan.md, research.md, data-model.md, contracts/"],
-        "dependencies": ["plan-template.md", "spec.md"]
-      },
-      {
-        "path": ".github/agents/speckit.tasks.agent.md",
-        "purpose": "Copilot agent: generate dependency-ordered task list",
-        "responsibilities": ["Read plan + spec", "Generate tasks.md organized by user story"],
-        "dependencies": ["tasks-template.md", "plan.md", "spec.md"]
-      },
-      {
-        "path": ".github/agents/speckit.implement.agent.md",
-        "purpose": "Copilot agent: execute implementation tasks sequentially",
-        "responsibilities": ["Process tasks from tasks.md", "Mark completed tasks with [x]"],
-        "dependencies": ["tasks.md"]
-      },
-      {
-        "path": ".github/agents/speckit.analyze.agent.md",
-        "purpose": "Copilot agent: cross-artifact consistency analysis",
-        "responsibilities": ["Check spec ↔ plan ↔ tasks consistency"],
-        "dependencies": ["spec.md", "plan.md", "tasks.md"]
-      },
-      {
-        "path": ".github/agents/speckit.clarify.agent.md",
-        "purpose": "Copilot agent: ask clarification questions for underspecified areas",
-        "responsibilities": ["Identify spec gaps", "Ask up to 5 questions", "Encode answers into spec"],
-        "dependencies": ["spec.md"]
-      },
-      {
-        "path": ".github/agents/speckit.checklist.agent.md",
-        "purpose": "Copilot agent: generate custom checklist",
-        "responsibilities": ["Generate feature checklist from requirements"],
-        "dependencies": ["checklist-template.md"]
-      },
-      {
-        "path": ".github/agents/speckit.constitution.agent.md",
-        "purpose": "Copilot agent: create or update project constitution",
-        "responsibilities": ["Interactive principle input", "Update constitution.md"],
-        "dependencies": ["constitution-template.md"]
-      },
-      {
-        "path": ".github/agents/speckit.taskstoissues.agent.md",
-        "purpose": "Copilot agent: convert tasks to GitHub Issues",
-        "responsibilities": ["Parse tasks.md", "Create GitHub Issues"],
-        "dependencies": ["tasks.md", "GitHub API"]
-      },
-      {
-        "path": ".github/agents/speckit.git.feature.agent.md",
-        "purpose": "Copilot agent: create feature branch",
-        "responsibilities": ["Create numbered branch from description"],
-        "dependencies": ["create-new-feature.ps1", "git-config.yml"]
-      },
-      {
-        "path": ".github/agents/speckit.git.commit.agent.md",
-        "purpose": "Copilot agent: auto-commit changes",
-        "responsibilities": ["Stage and commit after lifecycle events"],
-        "dependencies": ["git-config.yml"]
-      },
-      {
-        "path": ".github/agents/speckit.git.initialize.agent.md",
-        "purpose": "Copilot agent: initialize Git repository",
-        "responsibilities": ["git init + initial commit"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.git.validate.agent.md",
-        "purpose": "Copilot agent: validate branch naming conventions",
-        "responsibilities": ["Check branch name follows feature pattern"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.git.remote.agent.md",
-        "purpose": "Copilot agent: detect Git remote URL",
-        "responsibilities": ["Parse git remote for GitHub integration"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.memory-loader.load.agent.md",
-        "purpose": "Copilot agent: load project memory files",
-        "responsibilities": ["Read .specify/memory/*.md", "Output contents for context"],
-        "dependencies": [".specify/memory/"]
-      },
-      {
-        "path": ".github/agents/speckit.memory-md.bootstrap.agent.md",
-        "purpose": "Copilot agent: bootstrap layered memory structure",
-        "responsibilities": ["Create docs/memory/ files", "Create spec starter files"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.memory-md.capture.agent.md",
-        "purpose": "Copilot agent: capture durable lessons from completed work",
-        "responsibilities": ["Evaluate lessons against evidence criteria", "Update DECISIONS/BUGS/WORKLOG"],
-        "dependencies": ["docs/memory/"]
-      },
-      {
-        "path": ".github/agents/speckit.memory-md.capture-from-diff.agent.md",
-        "purpose": "Copilot agent: capture lessons from code diffs",
-        "responsibilities": ["Review diffs", "Persist only durable evidenced lessons"],
-        "dependencies": ["docs/memory/"]
-      },
-      {
-        "path": ".github/agents/speckit.memory-md.audit.agent.md",
-        "purpose": "Copilot agent: audit memory quality",
-        "responsibilities": ["Check for stale/duplicate/trivial entries", "Suggest removals/merges/rewrites"],
-        "dependencies": ["docs/memory/"]
-      },
-      {
-        "path": ".github/agents/speckit.memory-md.plan-with-memory.agent.md",
-        "purpose": "Copilot agent: memory-aware planning",
-        "responsibilities": ["Read layered memory", "Synthesize constraints", "Gate on conflicts"],
-        "dependencies": ["docs/memory/"]
-      },
-      {
-        "path": ".github/agents/speckit.memory-md.log-finding.agent.md",
-        "purpose": "Copilot agent: convert audit finding to tracker issue",
-        "responsibilities": ["Format finding for GitHub/GitLab/Jira"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.repoindex-overview.agent.md",
-        "purpose": "Copilot agent: generate repository overview document",
-        "responsibilities": ["Analyze tech stack, architecture, getting started"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.repoindex-architecture.agent.md",
-        "purpose": "Copilot agent: generate deep architecture analysis",
-        "responsibilities": ["Analyze components, dependencies, performance"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.repoindex-module.agent.md",
-        "purpose": "Copilot agent: generate module-level analysis",
-        "responsibilities": ["Analyze module business context, APIs, data models"],
-        "dependencies": []
-      },
-      {
-        "path": ".github/agents/speckit.archive.run.agent.md",
-        "purpose": "Copilot agent: archive feature spec into project memory",
-        "responsibilities": ["Read feature artifacts", "Merge into .specify/memory/"],
-        "dependencies": ["specs/ directory", ".specify/memory/"]
-      },
-      {
-        "path": ".github/agents/speckit.retrospective.analyze.agent.md",
-        "purpose": "Copilot agent: post-implementation retrospective",
-        "responsibilities": ["Measure spec adherence", "Generate retrospective.md"],
-        "dependencies": ["spec.md", "plan.md", "tasks.md"]
-      },
-      {
-        "path": ".github/agents/speckit.status.show.agent.md",
-        "purpose": "Copilot agent: show SDD workflow progress dashboard",
-        "responsibilities": ["Detect phase", "Count tasks", "List extensions"],
-        "dependencies": ["check-prerequisites.ps1"]
-      }
-    ],
-    "utilities": [
-      {
-        "path": ".specify/scripts/powershell/common.ps1",
-        "purpose": "Shared PowerShell functions for all scripts",
-        "responsibilities": [
-          "Find-SpecifyRoot — locate .specify directory",
-          "Get-RepoRoot — resolve repository root",
-          "Get-CurrentBranch — detect current git branch or SPECIFY_FEATURE env var"
-        ],
-        "dependencies": ["git CLI"]
-      },
-      {
-        "path": ".specify/scripts/powershell/check-prerequisites.ps1",
-        "purpose": "Unified prerequisite validation for SDD workflow commands",
-        "responsibilities": [
-          "Validate spec.md/plan.md/tasks.md existence",
-          "Output JSON with feature paths and available docs",
-          "Support -RequireTasks, -IncludeTasks, -PathsOnly modes"
-        ],
-        "dependencies": ["common.ps1"]
-      },
-      {
-        "path": ".specify/scripts/powershell/create-new-feature.ps1",
-        "purpose": "Create feature branch with numbering",
-        "responsibilities": [
-          "Generate sequential/timestamp branch number",
-          "Create and checkout new git branch",
-          "Output JSON with branch info"
-        ],
-        "dependencies": ["common.ps1", "git CLI"]
-      },
-      {
-        "path": ".specify/scripts/powershell/setup-plan.ps1",
-        "purpose": "Set up plan directory structure for a feature",
-        "responsibilities": ["Create specs/NNN-feature/ directory", "Copy plan template"],
-        "dependencies": ["common.ps1"]
-      }
-    ],
-    "models": [
-      {
-        "path": ".specify/memory/constitution.md",
-        "purpose": "Project constitution — non-negotiable principles and governance rules",
-        "responsibilities": ["Define project principles", "Gate plan and implementation decisions"],
-        "dependencies": []
-      },
-      {
-        "path": "docs/memory/PROJECT_CONTEXT.md",
-        "purpose": "Durable memory — stable product/domain context",
-        "responsibilities": ["Store product constraints", "Store domain language and priorities"],
-        "dependencies": []
-      },
-      {
-        "path": "docs/memory/ARCHITECTURE.md",
-        "purpose": "Durable memory — system shape and boundaries",
-        "responsibilities": ["Store system overview", "Store module boundaries and integrations"],
-        "dependencies": []
-      },
-      {
-        "path": "docs/memory/DECISIONS.md",
-        "purpose": "Durable memory — explicit tradeoffs and chosen direction",
-        "responsibilities": ["Store cross-feature decisions", "Record tradeoffs and evidence"],
-        "dependencies": []
-      },
-      {
-        "path": "docs/memory/BUGS.md",
-        "purpose": "Durable memory — recurring failure modes and prevention",
-        "responsibilities": ["Store bug patterns", "Record prevention guidance"],
-        "dependencies": []
-      },
-      {
-        "path": "docs/memory/WORKLOG.md",
-        "purpose": "Durable memory — concise high-value milestone notes",
-        "responsibilities": ["Store durable lessons from milestones"],
-        "dependencies": []
-      },
-      {
-        "path": "specs/README.md",
-        "purpose": "Feature spec folder conventions and memory usage guide",
-        "responsibilities": ["Document spec folder structure", "Explain feature-level memory conventions"],
-        "dependencies": []
-      }
-    ]
-  }
+	"moduleName": "speckit",
+	"modulePath": ".specify/ + .github/agents/ + .github/prompts/ + .agents/skills/speckit*/ + docs/",
+	"analyzedAt": "2026-04-28T00:00:00Z",
+	"fileCount": 319,
+	"sourceOfTruth": [
+		".specify/extensions/.registry",
+		".specify/extensions.yml",
+		".specify/memory/constitution.md",
+		".specify/memory/doc-system.md",
+		".specify/memory/spec.md",
+		".specify/memory/plan.md",
+		".specify/memory/changelog.md",
+		".github/agents/*.agent.md",
+		".github/prompts/*.prompt.md",
+		".agents/skills/*/SKILL.md",
+		"docs/README.md",
+		"docs/_decisions/",
+		"docs/_howto/"
+	],
+	"counts": {
+		"enabledExtensions": 22,
+		"bundledCoreExtensions": 6,
+		"communityExtensions": 16,
+		"extensionManifests": 22,
+		"canonicalExtensionCommands": 58,
+		"registeredCopilotCommandEntries": 65,
+		"extensionCommandMarkdownFiles": 59,
+		"extensionScripts": 26,
+		"copilotAgents": 71,
+		"copilotPrompts": 71,
+		"speckitSkills": 49,
+		"durableMemoryFiles": 5,
+		"coreTemplates": 5,
+		"workflowFiles": 2,
+		"integrationManifests": 2,
+		"explicitGeneratedRootDocuments": 5,
+		"registryDerivedReferences": 1,
+		"curatedDocsIndexes": 1,
+		"generatedOutputs": 3
+	},
+	"generatedRootDocuments": [
+		"docs/overview.md",
+		"docs/architecture.md",
+		"docs/speckit_profile.md",
+		"docs/eas-sideload_profile.md",
+		"docs/tooling_profile.md"
+	],
+	"registryDerivedReferences": [
+		"docs/sdd-extensions.md"
+	],
+	"curatedDocumentation": [
+		"docs/README.md"
+	],
+	"components": {
+		"entryPoints": [
+			{
+				"path": ".github/prompts/speckit.specify.prompt.md",
+				"purpose": "Primary prompt wrapper for starting a new feature specification",
+				"responsibilities": [
+					"Accept slash-command arguments",
+					"Inspect before_specify hooks",
+					"Delegate execution to speckit.specify agent"
+				],
+				"dependencies": [
+					".specify/extensions.yml",
+					".github/agents/speckit.specify.agent.md"
+				]
+			},
+			{
+				"path": ".github/agents/speckit.specify.agent.md",
+				"purpose": "Copilot agent instructions for generating feature specifications",
+				"responsibilities": [
+					"Create numbered feature directories",
+					"Generate spec.md from the spec template",
+					"Coordinate branch metadata from hooks"
+				],
+				"dependencies": [
+					".specify/templates/spec-template.md",
+					".specify/scripts/powershell/create-new-feature.ps1"
+				]
+			},
+			{
+				"path": ".specify/workflows/speckit/workflow.yml",
+				"purpose": "Bundled workflow definition for the full SDD cycle",
+				"responsibilities": [
+					"Define specify -> plan -> tasks -> implement sequence",
+					"Define review gates between specification and planning",
+					"Bind workflow steps to integration-specific commands"
+				],
+				"dependencies": [
+					"speckit.specify",
+					"speckit.plan",
+					"speckit.tasks",
+					"speckit.implement"
+				]
+			}
+		],
+		"configurations": [
+			{
+				"path": ".specify/extensions/.registry",
+				"purpose": "Installed extension registry",
+				"responsibilities": [
+					"Record enabled extension ids, versions, sources, priorities, and manifest hashes",
+					"Record registered command entries per integration",
+					"Record extension installation timestamps"
+				],
+				"dependencies": [
+					".specify/extensions/*/extension.yml"
+				]
+			},
+			{
+				"path": ".specify/extensions.yml",
+				"purpose": "Runtime extension hook configuration",
+				"responsibilities": [
+					"Configure before_* and after_* hook bindings",
+					"Track optional versus required hook execution",
+					"Enable automatic hook execution"
+				],
+				"dependencies": [
+					".specify/extensions/.registry"
+				]
+			},
+			{
+				"path": ".specify/init-options.json",
+				"purpose": "Spec Kit initialization metadata",
+				"responsibilities": [
+					"Record Copilot integration selection",
+					"Record sequential branch numbering",
+					"Record PowerShell script flavor and Spec Kit version"
+				],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/integration.json",
+				"purpose": "Active integration declaration",
+				"responsibilities": [
+					"Declare Copilot as the active integration",
+					"Record integration version"
+				],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/integrations/copilot.manifest.json",
+				"purpose": "Copilot integration file manifest",
+				"responsibilities": [
+					"Track hashes for generated Copilot agents and prompts"
+				],
+				"dependencies": [
+					".github/agents/*.agent.md",
+					".github/prompts/*.prompt.md"
+				]
+			},
+			{
+				"path": ".specify/integrations/speckit.manifest.json",
+				"purpose": "Core Spec Kit file manifest",
+				"responsibilities": [
+					"Track hashes for core scripts and templates"
+				],
+				"dependencies": [
+					".specify/scripts/",
+					".specify/templates/"
+				]
+			}
+		],
+		"workflows": [
+			{
+				"path": ".specify/workflows/workflow-registry.json",
+				"purpose": "Installed workflow registry",
+				"responsibilities": [
+					"Track bundled speckit workflow name, version, source, and install timestamps"
+				],
+				"dependencies": [
+					".specify/workflows/speckit/workflow.yml"
+				]
+			},
+			{
+				"path": ".specify/workflows/speckit/workflow.yml",
+				"purpose": "Full SDD cycle workflow definition",
+				"responsibilities": [
+					"Declare workflow inputs",
+					"Run specify, plan, tasks, and implement steps",
+					"Place review gates before planning and task generation"
+				],
+				"dependencies": [
+					".github/prompts/speckit.specify.prompt.md",
+					".github/prompts/speckit.plan.prompt.md",
+					".github/prompts/speckit.tasks.prompt.md",
+					".github/prompts/speckit.implement.prompt.md"
+				]
+			}
+		],
+		"memory": [
+			{
+				"path": ".specify/memory/constitution.md",
+				"purpose": "Project constitution and governance source",
+				"responsibilities": [
+					"Define cross-platform, theming, platform-split, StyleSheet, and test-first principles",
+					"Gate planning through constitution checks",
+					"Track constitution version 1.1.0"
+				],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/memory/doc-system.md",
+				"purpose": "Documentation system rules loaded by memory-loader",
+				"responsibilities": [
+					"Define generated profile, file index, ADR, and how-to document classes",
+					"Remind agents when to regenerate repoindex outputs",
+					"Require speckit module refresh after extension changes"
+				],
+				"dependencies": [
+					"docs/README.md"
+				]
+			},
+			{
+				"path": ".specify/memory/spec.md",
+				"purpose": "Durable project specification memory",
+				"responsibilities": [
+					"Consolidate archived feature requirements",
+					"Record project-wide functional requirements and key entities"
+				],
+				"dependencies": [
+					"specs/"
+				]
+			},
+			{
+				"path": ".specify/memory/plan.md",
+				"purpose": "Durable project technical plan memory",
+				"responsibilities": [
+					"Record locked-in stack and structure decisions",
+					"Record quality gate and build profile context"
+				],
+				"dependencies": [
+					"package.json",
+					"app.json",
+					"eas.json"
+				]
+			},
+			{
+				"path": ".specify/memory/changelog.md",
+				"purpose": "Append-only archive changelog",
+				"responsibilities": [
+					"Record archived feature batches",
+					"Record concurrent Spec Kit extension and documentation system changes"
+				],
+				"dependencies": [
+					"specs/"
+				]
+			}
+		],
+		"templates": [
+			{
+				"path": ".specify/templates/spec-template.md",
+				"purpose": "Feature specification template",
+				"responsibilities": [
+					"Structure user stories, acceptance scenarios, requirements, and edge cases"
+				],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/templates/plan-template.md",
+				"purpose": "Implementation plan template",
+				"responsibilities": [
+					"Structure technical context, constitution check, research, design, and task preparation"
+				],
+				"dependencies": [
+					".specify/memory/constitution.md"
+				]
+			},
+			{
+				"path": ".specify/templates/tasks-template.md",
+				"purpose": "Task list template",
+				"responsibilities": [
+					"Structure phases, dependencies, story slices, and parallel task markers"
+				],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/templates/checklist-template.md",
+				"purpose": "Checklist template",
+				"responsibilities": [
+					"Structure generated verification checklists"
+				],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/templates/constitution-template.md",
+				"purpose": "Constitution template",
+				"responsibilities": [
+					"Structure governance principles and amendment metadata"
+				],
+				"dependencies": []
+			}
+		],
+		"extensionManifests": [
+			{
+				"path": ".specify/extensions/git/extension.yml",
+				"purpose": "Git Branching Workflow manifest",
+				"responsibilities": ["Register git feature, validate, remote, initialize, and commit commands"],
+				"dependencies": ["git CLI"]
+			},
+			{
+				"path": ".specify/extensions/memory-loader/extension.yml",
+				"purpose": "Memory Loader manifest",
+				"responsibilities": ["Register memory-loader.load and before_* memory hooks"],
+				"dependencies": [".specify/memory/"]
+			},
+			{
+				"path": ".specify/extensions/repoindex/extension.yml",
+				"purpose": "Repository Index manifest",
+				"responsibilities": ["Register overview, architecture, and module documentation commands"],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/extensions/archive/extension.yml",
+				"purpose": "Archive manifest",
+				"responsibilities": ["Register archive.run command"],
+				"dependencies": ["specs/", ".specify/memory/"]
+			},
+			{
+				"path": ".specify/extensions/retrospective/extension.yml",
+				"purpose": "Retrospective Extension manifest",
+				"responsibilities": ["Register retrospective.analyze and after_implement offer"],
+				"dependencies": ["speckit.tasks", "speckit.implement"]
+			},
+			{
+				"path": ".specify/extensions/status/extension.yml",
+				"purpose": "Project Status manifest",
+				"responsibilities": ["Register status.show and status alias"],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/extensions/doctor/extension.yml",
+				"purpose": "Project Health Check manifest",
+				"responsibilities": ["Register doctor.check and doctor alias"],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/extensions/superb/extension.yml",
+				"purpose": "Superpowers Bridge manifest",
+				"responsibilities": ["Register TDD, review, verify, critique, debug, finish, respond, and check commands"],
+				"dependencies": ["superpowers optional tool"]
+			},
+			{
+				"path": ".specify/extensions/status-report/extension.yml",
+				"purpose": "Status Report manifest",
+				"responsibilities": ["Register status-report.show command"],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/extensions/spec-validate/extension.yml",
+				"purpose": "Spec Validate manifest",
+				"responsibilities": ["Register validation, review, gate, status, and analytics commands"],
+				"dependencies": ["speckit artifacts"]
+			},
+			{
+				"path": ".specify/extensions/agent-assign/extension.yml",
+				"purpose": "Agent Assign manifest",
+				"responsibilities": ["Register assign, validate, and execute commands"],
+				"dependencies": ["speckit.tasks", "speckit.implement"]
+			},
+			{
+				"path": ".specify/extensions/bugfix/extension.yml",
+				"purpose": "Bugfix Workflow manifest",
+				"responsibilities": ["Register report, patch, and verify commands"],
+				"dependencies": ["spec.md", "plan.md", "tasks.md"]
+			},
+			{
+				"path": ".specify/extensions/catalog-ci/extension.yml",
+				"purpose": "Catalog CI manifest",
+				"responsibilities": ["Register catalog validation, URL check, diff, and lint commands"],
+				"dependencies": ["catalog entries"]
+			},
+			{
+				"path": ".specify/extensions/cleanup/extension.yml",
+				"purpose": "Cleanup Extension manifest",
+				"responsibilities": ["Register cleanup.run and cleanup alias"],
+				"dependencies": ["speckit.implement", "speckit.tasks"]
+			},
+			{
+				"path": ".specify/extensions/fix-findings/extension.yml",
+				"purpose": "Fix Findings manifest",
+				"responsibilities": ["Register fix-findings.run and fix-findings alias"],
+				"dependencies": ["speckit.analyze", "speckit.implement", "speckit.tasks"]
+			},
+			{
+				"path": ".specify/extensions/fleet/extension.yml",
+				"purpose": "Fleet Orchestrator manifest",
+				"responsibilities": ["Register fleet.run and fleet.review commands"],
+				"dependencies": ["full Spec Kit lifecycle commands"]
+			},
+			{
+				"path": ".specify/extensions/learn/extension.yml",
+				"purpose": "Learning Extension manifest",
+				"responsibilities": ["Register learn.review and learn.clarify commands"],
+				"dependencies": ["speckit.specify", "speckit.implement"]
+			},
+			{
+				"path": ".specify/extensions/plan-review-gate/extension.yml",
+				"purpose": "Plan Review Gate manifest",
+				"responsibilities": ["Register required before_tasks plan review gate"],
+				"dependencies": ["spec.md", "plan.md"]
+			},
+			{
+				"path": ".specify/extensions/retro/extension.yml",
+				"purpose": "Retrospective manifest",
+				"responsibilities": ["Register retro.run command"],
+				"dependencies": []
+			},
+			{
+				"path": ".specify/extensions/review/extension.yml",
+				"purpose": "Review Extension manifest",
+				"responsibilities": ["Register comprehensive and specialized review commands"],
+				"dependencies": ["speckit.implement"]
+			},
+			{
+				"path": ".specify/extensions/orchestrator/extension.yml",
+				"purpose": "Spec Orchestrator manifest",
+				"responsibilities": ["Register status, next, conflicts, and sync commands"],
+				"dependencies": ["specs/"]
+			},
+			{
+				"path": ".specify/extensions/checkpoint/extension.yml",
+				"purpose": "Spec Checkpoint manifest",
+				"responsibilities": ["Register checkpoint.commit command"],
+				"dependencies": ["git CLI"]
+			}
+		],
+		"commandFiles": [
+			{
+				"component": "extension command markdown",
+				"glob": ".specify/extensions/*/commands/*.md",
+				"fileCount": 59,
+				"purpose": "Instruction bodies for extension commands",
+				"responsibilities": [
+					"Define command-specific workflow steps",
+					"Back the registered commands declared by extension manifests"
+				],
+				"dependencies": [
+					".specify/extensions/*/extension.yml",
+					".github/agents/*.agent.md",
+					".github/prompts/*.prompt.md"
+				]
+			}
+		],
+		"scripts": [
+			{
+				"component": "core powershell scripts",
+				"glob": ".specify/scripts/powershell/*.ps1",
+				"fileCount": 4,
+				"purpose": "Core Spec Kit local automation",
+				"responsibilities": [
+					"Check prerequisites",
+					"Create new feature artifacts",
+					"Share common helper logic",
+					"Set up plans"
+				],
+				"dependencies": [
+					".specify/templates/"
+				]
+			},
+			{
+				"component": "extension scripts",
+				"glob": ".specify/extensions/*/scripts/**/*",
+				"fileCount": 26,
+				"purpose": "Extension-provided PowerShell and Bash helpers",
+				"responsibilities": [
+					"Support git, status, doctor, validation, superb status sync, and review changed-file commands"
+				],
+				"dependencies": [
+					".specify/extensions/*/extension.yml"
+				]
+			}
+		],
+		"agents": [
+			{
+				"component": "copilot agents",
+				"glob": ".github/agents/*.agent.md",
+				"fileCount": 71,
+				"purpose": "Agent-mode command implementations for core lifecycle and extension commands",
+				"responsibilities": [
+					"Define command behavior and tool expectations",
+					"Expose core lifecycle commands",
+					"Expose installed extension commands and selected aliases"
+				],
+				"dependencies": [
+					".github/prompts/*.prompt.md",
+					".specify/extensions.yml",
+					".specify/extensions/.registry"
+				]
+			}
+		],
+		"prompts": [
+			{
+				"component": "copilot prompts",
+				"glob": ".github/prompts/*.prompt.md",
+				"fileCount": 71,
+				"purpose": "Slash-command prompt wrappers that route to Copilot agents",
+				"responsibilities": [
+					"Bind slash commands to matching agent files",
+					"Provide pre-execution hook checks where command prompts include them"
+				],
+				"dependencies": [
+					".github/agents/*.agent.md"
+				]
+			}
+		],
+		"skills": [
+			{
+				"component": "speckit skills",
+				"glob": ".agents/skills/speckit*/SKILL.md",
+				"fileCount": 49,
+				"purpose": "Command-specific skill instructions for installed Speckit extension workflows",
+				"responsibilities": [
+					"Provide specialized execution protocols for review, validation, cleanup, bugfix, fleet, superb, and related commands"
+				],
+				"dependencies": [
+					".github/agents/*.agent.md",
+					".specify/extensions/*/extension.yml"
+				]
+			}
+		],
+		"generatedDocs": [
+			{
+				"path": "docs/speckit_profile.md",
+				"purpose": "Generated human-readable Speckit module profile",
+				"responsibilities": [
+					"Document business context, components, workflow, command API, data model, dependencies, and quality observations",
+					"Reference generated docs through the explicit file list curated in docs/README.md"
+				],
+				"dependencies": [
+					".specify/extensions/.registry",
+					".specify/extensions.yml",
+					".specify/memory/*.md",
+					".github/agents/*.agent.md",
+					".github/prompts/*.prompt.md"
+				]
+			},
+			{
+				"path": "docs/_index/speckit_fileindex.json",
+				"purpose": "Generated machine-readable Speckit module file index",
+				"responsibilities": [
+					"Classify Speckit files by component role",
+					"Record counts, purposes, responsibilities, and dependencies"
+				],
+				"dependencies": [
+					"docs/speckit_profile.md",
+					"docs/sdd-extensions.md"
+				]
+			}
+		],
+		"registryDerivedReferences": [
+			{
+				"path": "docs/sdd-extensions.md",
+				"purpose": "Registry-derived extension reference",
+				"responsibilities": [
+					"List installed extensions, commands, aliases, and hook bindings from registry and manifests",
+					"Distinguish the 6 bundled core extensions from the 16 community extensions",
+					"Stay verifiable by scripts/check-docs.ps1 against .specify/extensions/.registry and extension manifests"
+				],
+				"dependencies": [
+					".specify/extensions/.registry",
+					".specify/extensions.yml",
+					".specify/extensions/*/extension.yml"
+				]
+			}
+		],
+		"curatedReferences": [
+			{
+				"path": "docs/README.md",
+				"purpose": "Curated documentation system index",
+				"responsibilities": [
+					"Define generated profiles, file indexes, ADRs, and how-tos as separate document classes",
+					"List generated root documents explicitly instead of using a broad generated-doc glob",
+					"Remain manually curated rather than generated by repoindex"
+				],
+				"dependencies": [
+					".specify/memory/doc-system.md"
+				]
+			},
+			{
+				"path": "docs/_decisions/0001-agent-first-stack.md",
+				"purpose": "Curated ADR for agent-first stack decision",
+				"responsibilities": [
+					"Record human judgement about Spec Kit, Superpowers, Context Engineering, and orchestration layers"
+				],
+				"dependencies": []
+			},
+			{
+				"path": "docs/_decisions/0004-skipped-extensions.md",
+				"purpose": "Curated ADR for skipped extension decisions",
+				"responsibilities": [
+					"Record skipped-extension rationale outside generated registry reference data"
+				],
+				"dependencies": []
+			}
+		]
+	}
 }

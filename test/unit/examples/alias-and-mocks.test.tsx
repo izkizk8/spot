@@ -13,7 +13,7 @@ describe('aliases and shared test setup', () => {
   it('resolves project aliases and uses shared Expo mocks', () => {
     expect(Font.isLoaded('Inter')).toBe(true);
 
-    render(<ThemedText themeColor="text">Alias import works</ThemedText>);
+    render(<ThemedText themeColor='text'>Alias import works</ThemedText>);
 
     expect(screen.getByText('Alias import works').props.style).toEqual(
       expect.arrayContaining([expect.objectContaining({ color: Colors.dark.text })]),

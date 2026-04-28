@@ -28,3 +28,4 @@ Open a new ADR whenever the PR involves:
 | [0002](0002-toolchain.md) | Toolchain: pnpm hoisted + OXC + ESLint Hooks + Jest Expo | accepted |
 | [0003](0003-unsigned-ipa-custom-build.md) | Use a custom EAS build YAML for unsigned iOS IPA (free sideload) | accepted |
 | [0004](0004-skipped-extensions.md) | Skipped Spec Kit extensions: ci-guard, speckit-utils | accepted |
+| [0005](0005-crlf-and-doc-automation.md) | CRLF line endings and automated documentation gate | accepted |

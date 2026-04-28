@@ -4,7 +4,7 @@ date: 2026-04-26
 deciders: project owner
 ---
 
-# 0001. Agent-first stack: Spec Kit + Superpowers + Context Engineering + RUG
+# 0001. Agent-first stack: Spec Kit core + extensions + plugin accelerators
 
 ## Context
 
@@ -12,16 +12,17 @@ We need an AI-assisted development workflow that's structured (not vibe-coding),
 
 ## Decision
 
-Adopt a four-layer agent stack:
+Adopt a layered agent stack with Spec Kit as the traceability core:
 
 | Layer | Tool | Role |
 |-------|------|------|
-| SDD lifecycle | **GitHub Spec Kit** | Specify → plan → tasks → implement, with constitution gate and lifecycle hooks |
-| Engineering skills | **obra/superpowers** | 14 auto-invoked skills (TDD, debugging, code review, brainstorming) |
+| Lifecycle core | **GitHub Spec Kit** | Specify -> clarify -> plan -> tasks -> analyze -> implement -> verify/archive |
+| Capability layer | **Spec Kit extensions** | Repo indexing, validation, review, cleanup, bugfix, orchestration, checkpointing, status |
+| Engineering discipline | **obra/superpowers** | 14 auto-invoked skills (TDD, debugging, code review, brainstorming, verification) |
 | Multi-file planning | **`@context-architect`** (awesome-copilot) | Maps file impact + dependency graph before edits |
 | Multi-agent orchestration | **`@rug` → `@SWE` + `@QA`** (awesome-copilot) | Decompose, delegate, validate |
 
-Spec Kit owns *what* to build (artifacts). Superpowers enforces *how* to build (discipline). Context-architect prepares the surface area. RUG orchestrates large work.
+Spec Kit owns the durable artifact spine: specs, plans, tasks, memory, generated docs, and lifecycle phase order. Spec Kit extensions add capabilities around that spine. Superpowers enforces engineering discipline inside a phase. Context-architect prepares the surface area for multi-file changes. RUG orchestrates large work through implementation and QA agents.
 
 ## Alternatives Considered
 
@@ -33,6 +34,7 @@ Spec Kit owns *what* to build (artifacts). Superpowers enforces *how* to build (
 ## Consequences
 
 - ✅ Each lifecycle phase has a dedicated command + auto-fired hooks (git, memory, TDD gate, verify gate)
+- ✅ Extensions can be added/removed without redefining the lifecycle core
 - ✅ Skills are community-maintained — we benefit from upstream improvements
 - ✅ Multi-feature parallel work is supported (orchestrator extension)
 - ⚠️ Onboarding cost: contributors must learn `/speckit.*` commands and the SDD philosophy

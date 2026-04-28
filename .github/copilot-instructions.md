@@ -12,9 +12,10 @@
 | Format / Lint / Typecheck | `pnpm format` / `pnpm lint` / `pnpm typecheck` |
 | Unit tests | `pnpm test` (Jest Expo + RNTL, configured under `test/unit/`) |
 | Local quality gate | `pnpm check` |
+| Documentation gate | `pnpm docs:check` |
 | iOS unsigned IPA (sideload) | `pnpm ios:ipa` — see [docs/_howto/sideload-iphone.md](../docs/_howto/sideload-iphone.md) |
 
-Toolchain detail: `package.json` scripts + ADR [0002](../docs/_decisions/0002-toolchain.md) (a generated `tooling_profile.md` is pending). `e2e/` exists but has no runner.
+Toolchain detail: [docs/tooling_profile.md](../docs/tooling_profile.md) + ADR [0002](../docs/_decisions/0002-toolchain.md). `e2e/` is not configured.
 
 ## Stack at a Glance
 
@@ -31,16 +32,18 @@ Architecture deep-dive: [docs/architecture.md](../docs/architecture.md). Project
 - Use `ThemedText` / `ThemedView` instead of raw `Text` / `View`. Use `useTheme()` for direct color access.
 - Use `Spacing` scale from `src/constants/theme.ts` instead of raw pixel values.
 - Styles via `StyleSheet.create()` only. No CSS-in-JS, no utility-class framework (except `src/global.css` for web fonts).
-- Constitution (`.specify/memory/constitution.md` v1.0.1) gates every plan. Consult before architectural decisions.
+- Prefer single quotes in JS/TS/TSX code, including JSX attributes; JSON and other syntaxes with required double quotes keep their native quoting.
+- Constitution (`.specify/memory/constitution.md` v1.1.0) gates every plan. Consult before architectural decisions.
 
 ## Agent-First Workflow
 
-Three layers stacked on Spec Kit's SDD lifecycle:
+Spec Kit is the traceability core. Extensions and plugins strengthen phases, but the durable record remains spec/plan/tasks/memory/docs.
 
 | Layer | What | When |
 |-------|------|------|
-| **Spec Kit** (`.specify/`) | 22 core commands + 17 community extensions driving `specify → plan → tasks → implement` | Every non-trivial change |
-| **Superpowers** (`obra/superpowers`) | 14 auto-invoked skills (TDD, debugging, code review, brainstorming...) | Triggered by task match |
+| **Spec Kit core** (`.specify/`) | SDD lifecycle: `specify -> clarify -> plan -> tasks -> analyze -> implement -> verify/archive` | Every non-trivial change |
+| **Spec Kit extensions** | 22 enabled extensions with 58 canonical extension commands | Validation, indexing, review, cleanup, orchestration, status |
+| **Superpowers** (`obra/superpowers`) | 14 auto-invoked skills (TDD, debugging, code review, brainstorming...) | Engineering discipline inside a lifecycle phase |
 | **`@context-architect`** | Multi-file change planning before edits | Complex multi-file work |
 | **`@rug` → `@SWE` + `@QA`** | Decompose → delegate → validate orchestration | Large implementations |
 
@@ -72,8 +75,9 @@ Full extension catalog + decision matrix + hook map: [docs/sdd-extensions.md](..
 | **README** | `README.md` | New humans | Orient + run |
 
 Rules:
-- Generated docs (repoindex output, etc.) live in `docs/`.
-- Hand-written guides live directly under `docs/`.
+- Generated docs (repoindex output, etc.) live flat in `docs/`; file indexes live in `docs/_index/`.
+- Decisions live in `docs/_decisions/`; external-tool walkthroughs live in `docs/_howto/`.
+- `pnpm docs:check` verifies local doc links, generated-doc boundaries, JSON indexes, stale references, and CRLF line endings.
 - Keep this file slim. New detail goes into `docs/` with a link added here.
 
 <!-- SPECKIT START -->

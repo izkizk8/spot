@@ -13,8 +13,9 @@
 - **Platforms**: iOS, Android, web — must remain compatible with all three
 - **Toolchain**: pnpm hoisted, OXC format/lint, ESLint Hooks, Jest Expo (see ADR [`0002`](../../docs/_decisions/0002-toolchain.md))
 - **Agent stack**: Spec Kit + Superpowers + Context Engineering + RUG (see ADR [`0001`](../../docs/_decisions/0001-agent-first-stack.md))
-- **Doc system**: Three-class structure enforced by `doc-system.md` + PR template
-- **Constitution**: 5 principles in `constitution.md` (v1.0.1) — gates every plan
+- **Doc system**: Classed documentation structure enforced by `doc-system.md` + PR template
+- **Line endings**: CRLF working-tree policy enforced by `.gitattributes`, `.editorconfig`, `oxfmt`, and `pnpm docs:check`
+- **Constitution**: 5 principles in `constitution.md` (v1.1.0) — gates every plan
 
 ---
 
@@ -48,19 +49,20 @@
 *(from 005-infra-tooling-upgrade)*
 
 - **FR-013**: `package.json` MUST expose scripts for: `start | android | ios | web | ios:ipa | ios:simulator | format | format:check | lint | lint:ox | lint:hooks | typecheck | test | test:watch | check`.
-- **FR-014**: `pnpm check` aggregates `format:check + lint + typecheck + test`. It is the local quality gate before commit. Remote EAS scripts are excluded (cost/quota).
+- **FR-014**: `pnpm check` aggregates `format:check + lint + docs:check + typecheck + test`. It is the local quality gate before commit. Remote EAS scripts are excluded (cost/quota).
 - **FR-015**: OXC (`oxfmt`, `oxlint`) is the primary formatter + general linter. Configured via `.oxfmtrc.json` and `oxlint.json`.
 - **FR-016**: Official **`eslint-plugin-react-hooks`** MUST be retained as the source-of-truth React Hooks check (covers React Compiler-era rules OXC doesn't yet have: `set-state-in-effect`, `static-components`, `immutability`, `refs`, `purity`, `use-memo`).
 - **FR-017**: TypeScript stays strict. `tsc --noEmit` is part of the gate.
 - **FR-018**: Jest 29 + `jest-expo` preset + `@testing-library/react-native`. Jest 30 blocked by `jest-expo` peer range.
 - **FR-019**: Test framework MUST include copyable examples for: TypeScript logic, RN component rendering, alias imports, mocks/setup. Examples live under `test/unit/examples/`.
 - **FR-020**: Path aliases `@/*` → `./src/*` and `@/assets/*` → `./assets/*` MUST resolve in both `tsconfig.json` and `jest.config.js`.
+- **FR-021**: `pnpm docs:check` MUST verify CRLF line endings, generated profile boundaries, registry-derived references, `docs/_index/*.json`, local Markdown links, and stale documentation references.
 
 ### Agent Workflow
 *(from 003-integrate-plugins, transitively)*
 
-- **FR-021**: Each Spec Kit extension command MUST have a corresponding agent file (`.github/agents/`) and prompt file (`.github/prompts/`). No orphan aliases — alias entries live in `extension.yml` only.
-- **FR-022**: Agent files MUST be canonical (`speckit.{module}.{command}.agent.md`); hyphenated alias variants MUST NOT exist as separate files.
+- **FR-022**: Each Spec Kit extension command MUST have a corresponding agent file (`.github/agents/`) and prompt file (`.github/prompts/`). No orphan aliases — alias entries live in `extension.yml` only.
+- **FR-023**: Agent files MUST be canonical (`speckit.{module}.{command}.agent.md`); hyphenated alias variants MUST NOT exist as separate files.
 
 ---
 
@@ -71,7 +73,7 @@
 | **Constitution** | `.specify/memory/constitution.md` | 5 non-negotiable principles; gates `/speckit.plan` |
 | **Feature spec** | `specs/NNN-feature-name/spec.md` | What & why for one feature |
 | **Plan / tasks** | `specs/NNN-feature-name/{plan,tasks}.md` | How (tech choices, dependency-ordered work) |
-| **Generated profile** | `docs/*.md` (flat) | Codebase-derived module reference; written by `/speckit.repoindex.*` |
+| **Generated profile** | Explicit files listed in `docs/README.md` | Codebase-derived module reference; written by `/speckit.repoindex.*` |
 | **ADR** | `docs/_decisions/NNNN-*.md` | Human judgement / tradeoff record |
 | **How-to** | `docs/_howto/*.md` | External-tool walkthroughs |
 

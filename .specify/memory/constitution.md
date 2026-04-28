@@ -98,13 +98,14 @@ include manual verification steps (e.g., grep checks,
 file counts) documented in quickstart.md or as
 verification tasks in tasks.md.
 
-**Rationale**: The project currently has no test
-framework configured. This principle ensures that as
-testing infrastructure is set up, all new work follows
-test-first discipline from day one rather than
-accumulating untested features. The exemption for
-non-code features avoids blocking documentation and
-config work on a test framework that doesn't exist yet.
+**Rationale**: The project has Jest Expo and React
+Native Testing Library configured. This principle keeps
+new application behavior tied to acceptance-scenario
+coverage instead of accumulating untested features. The
+exemption for non-code features avoids forcing runtime
+tests onto documentation, configuration, and workflow
+changes where command-based verification is the better
+fit.
 
 ## Technology Constraints
 
@@ -142,8 +143,8 @@ config work on a test framework that doesn't exist yet.
   the feature is considered complete. Back-patched
   specs MUST include a Note or Clarification entry
   documenting what changed and why.
-- Durable lessons are captured in `docs/memory/` only
-  when evidenced, reusable, and non-obvious
+- Durable lessons are archived into `.specify/memory/`
+  only when evidenced, reusable, and non-obvious
 - Feature memory (`specs/<feature>/memory.md` +
   `memory-synthesis.md`) MUST be maintained during
   active feature work and archived or discarded after

@@ -1,37 +1,49 @@
 {
   "moduleName": "eas-sideload",
-  "modulePath": ".eas/build/ + eas.json + docs/eas-build-guide.md",
-  "analyzedAt": "2026-04-25T03:00:00Z",
+  "modulePath": "eas.json + .eas/build/unsigned-ios.yml + package.json scripts + app.json + docs/_decisions/0003-unsigned-ipa-custom-build.md + docs/_howto/sideload-iphone.md",
+  "analyzedAt": "2026-04-28T00:00:00Z",
   "fileCount": 8,
   "components": {
     "entryPoints": [
       {
-        "path": "eas.json",
-        "purpose": "EAS Build configuration with sideload profile pointing to custom YAML",
+        "path": "package.json",
+        "purpose": "Developer command entry point for EAS sideload and simulator builds",
         "responsibilities": [
-          "Define 'development' profile (simulator: true)",
-          "Define 'sideload' profile (withoutCredentials + config: unsigned-ios.yml)",
-          "Define 'production' profile (empty, for future App Store)"
+          "Expose ios:ipa as eas build --platform ios --profile sideload --non-interactive",
+          "Expose ios:simulator as eas build --platform ios --profile development --non-interactive",
+          "Keep remote EAS builds separate from the local check quality gate"
         ],
-        "dependencies": [".eas/build/unsigned-ios.yml"]
+        "dependencies": ["eas.json"]
+      },
+      {
+        "path": "eas.json",
+        "purpose": "EAS Build profile configuration for simulator, sideload, and production builds",
+        "responsibilities": [
+          "Require EAS CLI >= 15.0.0 and remote app version source",
+          "Define development iOS simulator build profile",
+          "Define sideload iOS device build profile with withoutCredentials: true, simulator: false, and config: unsigned-ios.yml",
+          "Keep production profile empty for future signed distribution configuration"
+        ],
+        "dependencies": [".eas/build/unsigned-ios.yml", "package.json"]
       }
     ],
     "controllers": [],
     "services": [
       {
         "path": ".eas/build/unsigned-ios.yml",
-        "purpose": "Custom EAS Build workflow that produces unsigned IPA without Apple credentials",
+        "purpose": "Custom EAS Build workflow that produces unsigned iOS device IPA artifacts without Apple credential restore",
         "responsibilities": [
-          "eas/checkout — check out source",
-          "eas/install_node_modules — pnpm install",
-          "eas/resolve_build_config — resolve EAS config",
-          "eas/prebuild — generate native ios/ directory",
-          "pod install — install CocoaPods",
-          "xcodebuild with CODE_SIGNING_REQUIRED=NO -sdk iphoneos — build arm64 device binary",
-          "Package .app into Payload/ and zip as unsigned.ipa",
-          "eas/upload_artifact — upload IPA to EAS dashboard"
+          "Check out source with eas/checkout",
+          "Install JavaScript dependencies with eas/install_node_modules",
+          "Resolve EAS build configuration with eas/resolve_build_config",
+          "Generate the native iOS project with eas/prebuild",
+          "Install CocoaPods dependencies in ./ios",
+          "Detect the Xcode scheme from xcodebuild -list -json",
+          "Run xcodebuild against spot.xcworkspace for iphoneos Release with code signing disabled",
+          "Package the built .app into Payload/ and zip unsigned.ipa",
+          "Upload unsigned.ipa with eas/upload_artifact"
         ],
-        "dependencies": ["eas.json", "app.json"]
+        "dependencies": ["eas.json", "app.json", "package.json"]
       }
     ],
     "repositories": [],
@@ -39,85 +51,85 @@
     "configurations": [
       {
         "path": "app.json",
-        "purpose": "Expo app configuration with iOS bundle identifier",
+        "purpose": "Expo app manifest consumed by EAS prebuild and the native iOS project generation",
         "responsibilities": [
-          "ios.bundleIdentifier: com.izkizk8.spot",
-          "ios.infoPlist.ITSAppUsesNonExemptEncryption: false"
+          "Declare expo.name and expo.slug as spot",
+          "Declare ios.bundleIdentifier as com.izkizk8.spot",
+          "Declare ios.infoPlist.ITSAppUsesNonExemptEncryption as false",
+          "Declare expo.extra.eas.projectId for the linked EAS project"
         ],
         "dependencies": []
-      },
-      {
-        "path": ".github/copilot-instructions.md",
-        "purpose": "AI-readable project reference with build commands",
-        "responsibilities": [
-          "Documents 'npx eas build --profile sideload' command",
-          "Links to docs/eas-build-guide.md"
-        ],
-        "dependencies": ["docs/eas-build-guide.md"]
       }
     ],
     "utilities": [],
     "tests": [],
     "documentation": [
       {
-        "path": "docs/eas-build-guide.md",
-        "purpose": "Complete Windows → iOS sideloading guide",
+        "path": "docs/_decisions/0003-unsigned-ipa-custom-build.md",
+        "purpose": "Accepted ADR for the unsigned IPA custom EAS build decision",
         "responsibilities": [
-          "TL;DR method comparison table",
-          "Step-by-step unsigned IPA build workflow",
-          "Sideloadly re-sign and install instructions",
-          "AltStore alternative",
-          "Free Apple ID limitations (7-day cert, 3 app limit)",
-          "Troubleshooting table",
-          "Quick reference commands"
+          "Record that withoutCredentials: true only suppresses the local prompt and does not skip remote credential restore",
+          "Record the decision to use .eas/build/unsigned-ios.yml for the sideload profile",
+          "Document rejected alternatives including standard pipeline plus withoutCredentials, paid Apple Developer Program, simulator-only builds, and Expo Go-only testing",
+          "Summarize consequences including free Apple ID limits and EAS revalidation needs",
+          "Link to docs/_howto/sideload-iphone.md as the operator walkthrough"
         ],
-        "dependencies": ["eas.json", ".eas/build/unsigned-ios.yml"]
+        "dependencies": ["eas.json", ".eas/build/unsigned-ios.yml", "docs/_howto/sideload-iphone.md"]
       },
       {
-        "path": "specs/004-eas-build-ipa/research.md",
-        "purpose": "Research findings from 7 build attempts with root cause analysis",
+        "path": "docs/_howto/sideload-iphone.md",
+        "purpose": "Curated operator walkthrough for building, downloading, re-signing, installing, trusting, and re-signing an unsigned IPA",
         "responsibilities": [
-          "Finding 1: withoutCredentials alone fails — custom YAML required",
-          "Finding 2: Custom builds work on free EAS plan",
-          "Finding 3: Working custom build YAML steps",
-          "Finding 4: Sideloading workflow diagram",
-          "Finding 5: EAS pricing — free plan sufficient"
+          "Document prerequisites for Windows, iPhone, Sideloadly, iTunes, and EAS login",
+          "Document pnpm ios:ipa as the unsigned IPA build command",
+          "Document download steps from expo.dev",
+          "Document Sideloadly re-sign and USB install flow",
+          "Document trust and recurring re-sign steps for free Apple ID installs",
+          "Document troubleshooting and free Apple ID limitations"
         ],
-        "dependencies": []
+        "dependencies": ["docs/_decisions/0003-unsigned-ipa-custom-build.md", "eas.json", ".eas/build/unsigned-ios.yml"]
       },
       {
-        "path": "specs/004-eas-build-ipa/spec.md",
-        "purpose": "Feature specification with 3 user stories and 7 requirements",
+        "path": "docs/eas-sideload_profile.md",
+        "purpose": "Generated module profile for the EAS sideload configuration and workflow",
         "responsibilities": [
-          "US1: Configure EAS Build basics",
-          "US2: Build unsigned IPA via custom workflow",
-          "US3: Document sideloading workflow",
-          "FR-001 through FR-007",
-          "SC-001 through SC-004"
+          "Summarize business context and current decision",
+          "Inventory scripts, EAS profiles, app configuration, workflow, dependencies, and risks",
+          "Link to docs/_howto/sideload-iphone.md and ADR 0003 instead of duplicating curated operational detail"
         ],
-        "dependencies": []
+        "dependencies": ["eas.json", ".eas/build/unsigned-ios.yml", "package.json", "app.json", "docs/_decisions/0003-unsigned-ipa-custom-build.md", "docs/_howto/sideload-iphone.md"]
       },
       {
-        "path": "specs/004-eas-build-ipa/plan.md",
-        "purpose": "Implementation plan with custom build workflow approach",
+        "path": "docs/_index/eas-sideload_fileindex.json",
+        "purpose": "Generated structured file index for the EAS sideload module",
         "responsibilities": [
-          "Technical context and constraints",
-          "Constitution check",
-          "Custom build YAML approach description"
+          "Classify module source-of-truth and generated documentation files by component role",
+          "Record file responsibilities and dependencies",
+          "Provide machine-readable module context for future repo indexing"
         ],
-        "dependencies": ["specs/004-eas-build-ipa/spec.md"]
+        "dependencies": ["eas.json", ".eas/build/unsigned-ios.yml", "package.json", "app.json", "docs/_decisions/0003-unsigned-ipa-custom-build.md", "docs/_howto/sideload-iphone.md"]
+      }
+    ],
+    "generatedOutputs": [
+      {
+        "path": "docs/eas-sideload_profile.md",
+        "purpose": "Markdown module profile regenerated on 2026-04-28",
+        "responsibilities": [
+          "Document the current custom unsigned IPA build workflow",
+          "Document only current ADR and how-to links",
+          "Point operational readers to docs/_howto/sideload-iphone.md"
+        ],
+        "dependencies": ["docs/_index/eas-sideload_fileindex.json"]
       },
       {
-        "path": "specs/004-eas-build-ipa/tasks.md",
-        "purpose": "17 implementation tasks, all complete",
+        "path": "docs/_index/eas-sideload_fileindex.json",
+        "purpose": "JSON module file index regenerated on 2026-04-28",
         "responsibilities": [
-          "Phase 1: Setup (T001-T003)",
-          "Phase 2: US1 EAS basics (T004-T006)",
-          "Phase 3: US2 unsigned IPA (T007-T010)",
-          "Phase 4: US3 documentation (T011-T013)",
-          "Phase 5: Verification (T014-T017)"
+          "Remain valid JSON",
+          "Represent current source-of-truth files",
+          "Represent current source-of-truth files without legacy guide references"
         ],
-        "dependencies": ["specs/004-eas-build-ipa/plan.md"]
+        "dependencies": ["docs/eas-sideload_profile.md"]
       }
     ]
   }

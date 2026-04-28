@@ -43,8 +43,8 @@ All four feature specs were merged into `.specify/memory/{spec,plan}.md` and the
 
 These weren't separate SDD features but landed in the same window and matter for memory:
 
-- **Installed 17 community Spec Kit extensions** (superb, status-report, spec-validate, agent-assign, bugfix, catalog-ci, checkpoint, cleanup, fix-findings, fleet, learn, plan-review-gate, doctor, retro, review, orchestrator) plus `Specify CLI 0.8.1`. Skipped `ci-guard` (upstream namespace bug) and `speckit-utils` (command conflict with `doctor`). See ADR [`0004`](../../docs/_decisions/0004-skipped-extensions.md).
-- **Restructured docs into 3-class system**: generated profiles (`docs/*.md`) + file indexes (`docs/_index/*.json`) + ADRs (`docs/_decisions/`) + how-tos (`docs/_howto/`). Enforced by PR template + `.specify/memory/doc-system.md` (auto-loaded by `memory-loader`).
+- **Installed 16 community Spec Kit extensions** (superb, status-report, spec-validate, agent-assign, bugfix, catalog-ci, checkpoint, cleanup, fix-findings, fleet, learn, plan-review-gate, doctor, retro, review, orchestrator) plus `Specify CLI 0.8.1`. Skipped `ci-guard` (upstream namespace bug) and `speckit-utils` (command conflict with `doctor`). See ADR [`0004`](../../docs/_decisions/0004-skipped-extensions.md).
+- **Restructured docs into classed system**: explicit generated profiles listed in `docs/README.md` + file indexes (`docs/_index/*.json`) + ADRs (`docs/_decisions/`) + how-tos (`docs/_howto/`). Enforced by PR template + `.specify/memory/doc-system.md` (auto-loaded by `memory-loader`).
 - **Captured as ADR**: [`0001-agent-first-stack`](../../docs/_decisions/0001-agent-first-stack.md)
 
 ---

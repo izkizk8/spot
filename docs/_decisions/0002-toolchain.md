@@ -21,7 +21,9 @@ Need a fast, modern toolchain for an Expo SDK 55 / RN 0.83 / React 19 / TypeScri
 | Typecheck | `tsc --noEmit` strict |
 | Test runner | **Jest 29.7.0** + `jest-expo@55.0.16` + `@testing-library/react-native` |
 
-Aggregated via `pnpm check` = format:check + lint + typecheck + test.
+Aggregated via `pnpm check` = format:check + lint + docs:check + typecheck + test.
+
+Documentation automation and CRLF policy are covered by ADR [0005](0005-crlf-and-doc-automation.md).
 
 ## Alternatives Considered
 
@@ -44,4 +46,4 @@ Aggregated via `pnpm check` = format:check + lint + typecheck + test.
 ## References
 
 - `package.json` scripts + `oxlint.json`, `.oxfmtrc.json`, `eslint.config.js`, `jest.config.js` — current configuration source of truth
-- A generated `docs/tooling_profile.md` is pending (`/speckit.repoindex.module "tooling"`)
+- [tooling_profile.md](../tooling_profile.md) — generated reference; refresh with `/speckit.repoindex.module "tooling"`

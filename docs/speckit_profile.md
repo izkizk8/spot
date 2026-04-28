@@ -1,361 +1,455 @@
-# Module: Spec Kit — AI Development Workflow & Commands
+# Module: speckit
 
 ## Business Context
 
 ### Module Purpose
 
-Spec Kit is the **Specification-Driven Development (SDD) workflow engine** for this project. It works alongside three companion plugins to provide a complete AI development stack:
+The `speckit` module is the Specification-Driven Development operating layer for this workspace. It turns feature work into a governed lifecycle: specify, clarify, plan, tasks, analyze, implement, verify, and archive. It exposes that lifecycle through GitHub Copilot agents, prompts, local Spec Kit configuration, installed extensions, durable memory, and generated documentation.
 
-| Plugin | Role | Commands/Skills |
-|--------|------|----------------|
-| **Spec Kit** (`.specify/`) | SDD lifecycle engine | 22 core commands + 17 community extensions — see [sdd-extensions.md](sdd-extensions.md) for the full catalog |
-| **Superpowers** (`obra/superpowers`) | Engineering methodology skills | 14 skills (TDD, debugging, brainstorming, code review, etc.) |
-| **Context Engineering** (`@awesome-copilot`) | Multi-file change planning | `@context-architect` agent |
-| **RUG Agentic Workflow** (`@awesome-copilot`) | Multi-agent orchestration | `@rug` → `@SWE` + `@QA` subagents |
+The module is not application runtime code. It is the agent-facing workflow system that keeps feature artifacts, project memory, quality gates, and documentation aligned for the Expo app.
 
-### How AI Development Works in This Project
+### AI-First Operating Model
 
-1. **You describe what you want to build** in natural language
-2. **Choose the right agent** based on task complexity (see decision matrix below)
-3. **Spec Kit commands drive the SDD lifecycle** — each phase has a dedicated command
-4. **Superpowers skills auto-activate** when the task matches (TDD, debugging, code review)
-5. **`@context-architect`** plans multi-file changes before edits begin
-6. **`@rug`** orchestrates complex work by delegating to `@SWE` and `@QA` subagents
-7. **Lifecycle hooks auto-fire** — constitution is loaded before every command, artifacts are auto-committed after
-8. **The constitution gates every plan** — 5 non-negotiable principles are checked
+Spec Kit is the core lifecycle and traceability spine. Spec Kit extensions are the capability layer around that spine: repo indexing, validation, review, cleanup, orchestration, checkpoints, status, and bugfix workflows. Superpowers, Context Engineering, and RUG are plugin accelerators that improve how individual phases are planned, executed, and verified without replacing Spec Kit artifacts.
 
-### When to Use Which Agent
+| Layer | Role | Durable record |
+|-------|------|----------------|
+| Spec Kit core | Owns phase order and feature artifacts | `specs/`, `.specify/memory/`, generated docs |
+| Spec Kit extensions | Add lifecycle capabilities and checks | `.specify/extensions/`, `.specify/extensions.yml`, [sdd-extensions.md](sdd-extensions.md) |
+| Superpowers | Adds engineering discipline | Skill invocation evidence, tests, verification output |
+| Context Engineering | Maps multi-file impact before edits | Plans/specs and touched-file rationale |
+| RUG / SWE / QA | Delegates and validates large work | Tasks, implementation diffs, QA findings |
 
-| Scenario | Agent/Command | Why |
-|----------|--------------|-----|
-| New feature (full lifecycle) | `/speckit.specify` → SDD workflow | Structured spec → plan → tasks → implement with review gates |
-| Complex multi-file change | `@context-architect` first, then implement | Identifies all affected files, dependency graphs, ripple effects before edits |
-| Large task decomposition | `@rug` to orchestrate `@SWE` + `@QA` | Decomposes work, delegates to subagents with fresh context windows, validates outcomes |
-| Bug investigation | Superpowers: systematic-debugging | Auto-invoked — structured hypothesis → test → narrow → fix cycle |
-| Writing tests first | Superpowers: test-driven-development | Auto-invoked — red → green → refactor cycle |
-| Code review | Superpowers: requesting-code-review | Auto-invoked — structured review with actionable feedback |
-| Brainstorming solutions | Superpowers: brainstorming | Auto-invoked — divergent → convergent thinking |
-| Quick fix (single file) | Direct edit — no ceremony needed | Skip SDD overhead for trivial changes |
-| Repo understanding | `/speckit.repoindex.overview` or `.module` | Generate structured docs from codebase analysis |
-| Project status | `/speckit.status` | Show current phase, artifacts, task progress |
+### Business Scenarios
 
----
+- Start a new feature from a natural-language request and create the matching `specs/NNN-feature-name/` artifacts.
+- Preserve project governance by loading `.specify/memory/*.md` before lifecycle commands.
+- Gate plans and implementations with the constitution, validation extensions, TDD/review bridges, and post-implementation verification.
+- Regenerate code-derived documentation after the Spec Kit or documentation surface changes.
+- Archive completed feature knowledge into durable project memory after merge.
+- Coordinate larger development flows through orchestration, assignment, review, cleanup, and retrospective extensions.
 
-## Quick Reference: All 22 Commands
+### Domain Concepts
 
-### Core SDD Lifecycle (9 commands)
+| Concept | Source | Purpose |
+|---------|--------|---------|
+| Constitution | `.specify/memory/constitution.md` | Project governance. Current source version is `1.1.0`. |
+| Durable memory | `.specify/memory/{constitution,doc-system,spec,plan,changelog}.md` | Project facts loaded before lifecycle commands. |
+| Lifecycle command | `.github/agents/*.agent.md` and `.github/prompts/*.prompt.md` | Copilot-facing command wrappers for Spec Kit phases and extensions. |
+| Extension manifest | `.specify/extensions/*/extension.yml` | Declares extension metadata, commands, aliases, hooks, config, tags, and required tools. |
+| Extension registry | `.specify/extensions/.registry` | Installed extension database with versions, enabled state, hashes, registered commands, and install timestamps. |
+| Hook configuration | `.specify/extensions.yml` | Runtime hook map for `before_*` and `after_*` lifecycle events. |
+| Generated root document set | Explicit files listed in `docs/README.md` | Code-derived documentation maintained by repoindex commands; `docs/README.md` is curated and is not itself generated. |
+| File index | `docs/_index/*.json` | Machine-readable companion index for generated module profiles. |
+| Plugin accelerator | Superpowers, Context Engineering, and RUG/SWE/QA | Discipline, planning, and delegation layers that support the Spec Kit lifecycle. |
 
-These are the primary commands that drive feature development:
+### Use Cases
 
-| # | Command | What It Does | Input | Output |
-|---|---------|-------------|-------|--------|
-| 1 | `/speckit.constitution` | Create/update project principles | Interactive Q&A or directives | `.specify/memory/constitution.md` |
-| 2 | `/speckit.specify "description"` | Generate feature specification | Natural-language feature description | `specs/NNN-name/spec.md` |
-| 3 | `/speckit.clarify` | Ask ≤5 clarification questions | Auto-scans spec for ambiguities | Updates `spec.md` with Clarifications section |
-| 4 | `/speckit.plan` | Generate implementation plan | Reads spec.md + constitution | `plan.md`, `research.md`, `data-model.md`, `quickstart.md` |
-| 5 | `/speckit.tasks` | Generate dependency-ordered task list | Reads plan.md + spec.md | `tasks.md` with phases and `[P]` parallel markers |
-| 6 | `/speckit.implement` | Execute all tasks sequentially | Reads tasks.md | Marks `[x]` as completed, edits source files |
-| 7 | `/speckit.analyze` | Cross-artifact consistency check | Reads spec + plan + tasks | Analysis report with coverage matrix |
-| 8 | `/speckit.checklist` | Generate custom verification checklist | User-specified checklist type | `checklists/<name>.md` |
-| 9 | `/speckit.taskstoissues` | Convert tasks to GitHub Issues | Reads tasks.md | GitHub Issues (external) |
+1. **Feature lifecycle execution**: Use `/speckit.specify`, `/speckit.plan`, `/speckit.tasks`, and `/speckit.implement` to move from request to code with review gates.
+2. **Project context loading**: Run lifecycle commands with memory-loader hooks so constitution, documentation rules, durable requirements, plans, and changelog context are present.
+3. **Extension-backed governance**: Use registered extensions for git workflow, validation, review, cleanup, bugfix traceability, retrospectives, and orchestration.
+4. **Documentation regeneration**: Run `/speckit.repoindex.module "speckit"` after extension installs/removals, hook changes, constitution changes, or agent-stack policy changes to refresh this profile, [sdd-extensions.md](sdd-extensions.md), and [_index/speckit_fileindex.json](_index/speckit_fileindex.json).
+5. **Post-merge knowledge capture**: Archive completed feature artifacts into durable memory through the archive extension.
 
-### Git Workflow (5 commands)
+## Technical Overview
 
-| Command | What It Does | When It Runs |
-|---------|-------------|--------------|
-| `/speckit.git.initialize` | `git init` + initial commit | Auto: before `/speckit.constitution` |
-| `/speckit.git.feature` | Create branch `NNN-feature-name` | Auto: before `/speckit.specify` |
-| `/speckit.git.validate` | Check branch naming convention | On demand |
-| `/speckit.git.remote` | Detect Git remote URL | On demand |
-| `/speckit.git.commit` | Auto-commit with descriptive message | Auto: after every lifecycle command (8 events enabled) |
+### Module Type
 
-### Memory Management (1 command)
+Agent workflow and documentation subsystem. It is made of Markdown prompts/agents, YAML manifests, JSON registries, PowerShell/Bash scripts, Spec Kit templates, durable memory files, and generated documentation.
 
-| Command | What It Does | When It Runs |
-|---------|-------------|--------------|
-| `/speckit.memory-loader.load` | Read `.specify/memory/` files into context | Auto: before every lifecycle command (mandatory) |
+### Key Technologies
 
-### Repository Indexing (3 commands)
+| Technology | Version / source | Role |
+|------------|------------------|------|
+| Spec Kit / Specify CLI | `0.8.1.dev0` in `.specify/init-options.json` and `.specify/integration.json` | SDD lifecycle engine |
+| GitHub Copilot integration | `.github/agents/`, `.github/prompts/` | Agent and prompt wrappers for commands |
+| YAML | `.specify/extensions.yml`, `.specify/extensions/*/extension.yml` | Extension manifests and hook configuration |
+| JSON | `.specify/extensions/.registry`, integration manifests, file indexes | Registry and machine-readable metadata |
+| PowerShell / Bash | `.specify/scripts/`, extension script folders | Local automation for prerequisites, feature creation, git, status, validation, and review helpers |
+| Markdown | specs, memory, prompts, docs | Human-readable workflow artifacts |
 
-| Command | What It Does | Output |
-|---------|-------------|--------|
-| `/speckit.repoindex.overview` | Generate project overview (tech, architecture, getting started) | `docs/overview.md` |
-| `/speckit.repoindex.architecture` | Deep architecture analysis (components, deps, performance) | `docs/architecture.md` |
-| `/speckit.repoindex.module "topic"` | Module-level analysis (business scenarios, APIs, data) | `docs/<module>_profile.md` + `docs/_index/<module>_fileindex.json` |
+### Module Structure
 
-### Post-Implementation (2 commands)
+```text
+.specify/
+  extensions.yml                  Hook configuration
+  extensions/.registry            Installed extension registry
+  extensions/*/extension.yml       Extension manifests
+  extensions/*/commands/*.md       Extension command bodies
+  memory/*.md                      Durable project memory loaded by memory-loader
+  scripts/powershell/*.ps1         Core Spec Kit helper scripts
+  templates/*.md                   Constitution/spec/plan/tasks/checklist templates
+  workflows/                       Full SDD workflow definition
+.github/
+  agents/*.agent.md                Copilot agent wrappers
+  prompts/*.prompt.md              Copilot prompt wrappers
+.agents/skills/
+  speckit*/SKILL.md                Command-specific skills for installed extensions
+docs/
+  README.md                         Curated docs index and explicit generated-output list
+  speckit_profile.md               This generated module profile
+  sdd-extensions.md                Registry-derived extension reference
+  _index/speckit_fileindex.json    Machine-readable module file index
+```
 
-| Command | What It Does | When It Runs |
-|---------|-------------|--------------|
-| `/speckit.retrospective.analyze` | Measure spec adherence vs actual implementation | Auto-offered: after `/speckit.implement` |
-| `/speckit.archive.run specs/NNN-name` | Archive feature spec into project memory | After merge to main |
+## Components
 
-### Status (2 commands)
+### Entry Points
 
-| Command | What It Does |
-|---------|-------------|
-| `/speckit.status` | Show current phase, artifacts, task progress, extensions |
-| `/speckit.status.show` | Same as above (alias) |
+| Entry point | Responsibility |
+|-------------|----------------|
+| `.github/prompts/speckit.*.prompt.md` | User-invoked slash command prompt wrappers. |
+| `.github/agents/speckit.*.agent.md` | Copilot agent definitions bound to command behavior. |
+| `.specify/workflows/speckit/workflow.yml` | Bundled full SDD workflow: specify -> plan -> tasks -> implement with review gates. |
+| `.specify/scripts/powershell/create-new-feature.ps1` | Core feature directory and branch helper used by lifecycle commands. |
 
----
+### Command Handlers
 
-## Complete Feature Development Workflow
+The module exposes command handlers as Markdown instruction files rather than HTTP controllers. There are 71 Copilot agent wrappers and 71 prompt wrappers in the workspace. They cover 9 core SDD lifecycle commands plus installed extension commands and selected aliases.
 
-### Step-by-Step: From Idea to Merged Code
+Core command families:
+
+| Family | Commands |
+|--------|----------|
+| Lifecycle | `speckit.constitution`, `speckit.specify`, `speckit.clarify`, `speckit.plan`, `speckit.tasks`, `speckit.implement` |
+| Validation and analysis | `speckit.checklist`, `speckit.analyze`, `speckit.taskstoissues` |
+| Documentation | `speckit.repoindex.overview`, `speckit.repoindex.architecture`, `speckit.repoindex.module` |
+| Extension commands | Full registry-derived list in [sdd-extensions.md](sdd-extensions.md). |
+
+### Services
+
+| Service | Files | Responsibility |
+|---------|-------|----------------|
+| Hook executor configuration | `.specify/extensions.yml` | Declares enabled pre/post lifecycle hooks, optionality, prompts, and command bindings. |
+| Memory loader | `.specify/extensions/memory-loader/extension.yml` and `speckit.memory-loader.load` wrappers | Reads all `.specify/memory/*.md` files before configured lifecycle phases. |
+| Git workflow | `.specify/extensions/git/extension.yml`, git scripts | Branch creation, branch validation, remote detection, initialization, and optional auto-commit hooks. |
+| Repo indexer | `.specify/extensions/repoindex/extension.yml`, repoindex command files | Generates code-derived docs and JSON file indexes. |
+| Quality gates | superb, spec-validate, review, cleanup, fix-findings, bugfix manifests and wrappers | Adds TDD, validation, review, verification, cleanup, finding resolution, and bugfix consistency checks. |
+| Orchestration | fleet, orchestrator, agent-assign manifests and wrappers | Coordinates full lifecycle runs, multi-feature visibility, and task-to-agent assignment. |
+
+### Repositories / Data Access
+
+There is no database repository layer. The module reads and writes local artifact repositories:
+
+| Artifact repository | Purpose |
+|---------------------|---------|
+| `.specify/extensions/.registry` | Installed extension metadata and registered command targets. |
+| `.specify/extensions.yml` | Hook registration and execution configuration. |
+| `.specify/memory/*.md` | Durable project memory loaded into command context. |
+| `specs/` | Per-feature specifications, plans, tasks, checklists, research, retrospectives, and memory synthesis. |
+| `docs/` | Curated docs index, explicit generated root documents, generated file indexes, ADRs, and how-tos under documented classes. |
+
+### Models / Entities
+
+| Entity | Fields / structure | Lifecycle |
+|--------|--------------------|-----------|
+| Extension | `id`, `name`, `version`, `description`, `author`, `repository`, `license`, `provides.commands`, `hooks`, `tags` | Declared in `extension.yml`, registered in `.registry`. |
+| Registered command | command name, integration target list, aliases where applicable | Stored under `.registry.extensions[*].registered_commands`. |
+| Hook binding | hook phase, extension id, command, enabled, optional, prompt, description, condition | Stored in `.specify/extensions.yml`. |
+| Memory file | Markdown content loaded before lifecycle commands | Maintained by archive/doc-system processes and project governance. |
+| Feature artifact | `spec.md`, `plan.md`, `tasks.md`, optional design/checklist/retrospective files | Created and updated across the SDD lifecycle. |
+| Generated file index | module metadata, component groups, paths, purposes, responsibilities, dependencies | Written by `repoindex.module` to `docs/_index/*.json`. |
+
+### Configuration
+
+| File | Owns |
+|------|------|
+| `.specify/init-options.json` | AI integration, branch numbering, context file, script flavor, Spec Kit version. |
+| `.specify/integration.json` | Active integration and integration version. |
+| `.specify/extensions/.registry` | Installed/enabled extension set and registered command entries. |
+| `.specify/extensions.yml` | Lifecycle hook bindings. The top-level `installed` list is empty; active installed state is recorded in `.registry`. |
+| `.specify/workflows/workflow-registry.json` | Installed workflow registry. |
+| `.specify/workflows/speckit/workflow.yml` | Full SDD workflow definition. |
+| `.specify/templates/*.md` | Core artifact templates. |
+| `.specify/memory/doc-system.md` | Documentation class rules and hook reminders. |
+
+### Utilities
+
+| Utility area | Files | Purpose |
+|--------------|-------|---------|
+| Core scripts | `.specify/scripts/powershell/*.ps1` | Prerequisite checks, shared helpers, feature setup, plan setup. |
+| Extension scripts | `.specify/extensions/*/scripts/{bash,powershell}/*` | Git, status, doctor, validation, superb status sync, and review changed-file helpers. |
+| Config templates | `.specify/extensions/*/*template*.yml` | Optional extension configuration templates. |
+
+## Workflow
+
+### Request Flow
 
 ```mermaid
-flowchart TD
-    A["💡 Feature Idea"] --> B{Complexity?}
-    B -->|Multi-file, need context| B1["@context-architect"]
-    B1 --> B2["Understand affected files & deps"]
-    B2 --> C1["/speckit.specify"]
-    B -->|Standard feature| C1
-    C1 --> C{Review spec?}
-    C -->|Needs clarification| D["/speckit.clarify"]
-    D --> C
-    C -->|Approved| E["/speckit.plan"]
-    E --> F{Review plan?}
-    F -->|Needs changes| E
-    F -->|Approved| G["/speckit.tasks"]
-    G --> H["/speckit.analyze"]
-    H --> I{Consistent?}
-    I -->|Issues found| J["Fix spec/plan/tasks"]
-    J --> H
-    I -->|All clear| K{Implementation strategy?}
-    K -->|Standard| K1["/speckit.implement"]
-    K -->|Complex, multi-agent| K2["@rug → @SWE + @QA"]
-    K1 --> L["/speckit.retrospective.analyze"]
-    K2 --> L
-    L --> N["Merge to main"]
-    N --> O["/speckit.archive.run"]
+sequenceDiagram
+    participant User
+    participant Prompt as Copilot prompt
+    participant Hooks as extensions.yml hooks
+    participant Memory as .specify/memory
+    participant Agent as Copilot agent
+    participant Artifacts as specs/docs/repo files
+
+    User->>Prompt: /speckit.<command> args
+    Prompt->>Hooks: inspect before_* hooks
+    Hooks->>Memory: run speckit.memory-loader.load when configured
+    Memory-->>Prompt: constitution, doc-system, spec, plan, changelog
+    Prompt->>Agent: execute command instructions
+    Agent->>Artifacts: create or update specs, code, docs, or registry artifacts
+    Agent->>Hooks: inspect after_* hooks
+    Hooks->>Artifacts: optional commits, validation, review, cleanup, archive, or learning outputs
 ```
 
-**Superpowers skills** (TDD, debugging, code review, brainstorming, etc.) auto-activate during any phase when the task matches.
+### Data Flow
 
-### Detailed Command Flow with Hooks
+1. User input enters through a `.github/prompts/speckit.*.prompt.md` slash-command wrapper.
+2. The prompt reads `.specify/extensions.yml` and surfaces executable `before_*` hooks.
+3. `speckit.memory-loader.load` loads `.specify/memory/constitution.md`, `.specify/memory/doc-system.md`, `.specify/memory/spec.md`, `.specify/memory/plan.md`, and `.specify/memory/changelog.md` before configured lifecycle commands.
+4. The selected Copilot agent applies command-specific instructions against templates, specs, code, docs, or extension metadata.
+5. `after_*` hooks may offer commits, validation, review, retrospectives, cleanup, finding resolution, learning guides, or bugfix consistency checks.
+6. Repoindex outputs only the explicit generated root documents listed in `docs/README.md` plus companion JSON indexes under `docs/_index/`.
 
-Each command follows this pattern:
+### Hook Mechanism
 
-```
-before_* hooks → COMMAND EXECUTION → after_* hooks
-```
+`.specify/memory/doc-system.md` is part of the memory-loader payload. Because memory-loader is configured as a required `before_*` hook for specification, clarification, planning, task generation, implementation, checklist generation, and analysis, the documentation rules are automatically reintroduced before those Spec Kit lifecycle commands.
 
-#### Phase 1: Specify
+The doc-system hook reminders include:
 
-```
-User: /speckit.specify "add user authentication"
-  ├── [HOOK] speckit.git.feature        → Creates branch 002-add-user-auth
-  ├── [HOOK] speckit.memory-loader.load → Loads constitution + memory
-  ├── [EXEC] Generate spec.md           → User stories, acceptance scenarios, requirements
-  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add specification"
-```
+- Regenerate generated profiles and file indexes with repoindex commands when code-derived surfaces change.
+- Keep ADRs under `docs/_decisions/` for judgement and tradeoff records.
+- Keep how-tos under `docs/_howto/` for external tool procedures.
+- Re-run `/speckit.repoindex.module "speckit"` after extension install/remove or constitution changes.
 
-**Output**: `specs/002-add-user-auth/spec.md`
+### Background Jobs
 
-#### Phase 2: Clarify (optional, repeatable)
+No daemon or scheduled background job is declared. Hooks run as command-time pre/post actions, and optional scripts run when their command wrappers are invoked.
 
-```
-User: /speckit.clarify
-  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
-  ├── [HOOK] speckit.memory-loader.load → Load context
-  ├── [EXEC] Scan spec for ambiguities  → Ask ≤5 questions, encode answers
-  └── [HOOK] speckit.git.commit         → "[Spec Kit] Clarify specification"
-```
+### Integration Points
 
-**Output**: Updated `spec.md` with Clarifications section
+| Integration | Files / commands | Purpose |
+|-------------|------------------|---------|
+| Git | git extension, PowerShell/Bash git scripts | Branch creation, validation, initialization, optional auto-commit. |
+| GitHub Copilot | `.github/agents/`, `.github/prompts/` | Slash-command and agent execution surface. |
+| Spec Kit extensions | `.specify/extensions/.registry`, `extension.yml` manifests | Installed lifecycle and quality-gate capabilities. |
+| Superpowers Bridge | superb extension and `speckit-superb-*` skills | TDD, debugging, review response, verification, and branch completion protocols. |
+| Context Engineering | `@context-architect` agent | Multi-file planning and impact mapping before broad edits. |
+| RUG orchestration | `@rug`, `@SWE`, `@QA` agents | Large-task decomposition, implementation delegation, and independent QA validation. |
+| Documentation system | [docs/README.md](README.md), `.specify/memory/doc-system.md` | Curated docs index, explicit generated-output list, and generated-doc refresh rules. |
+| ADR system | [ADR 0001](_decisions/0001-agent-first-stack.md), [ADR 0004](_decisions/0004-skipped-extensions.md) | Human decisions about the agent stack and skipped extensions. |
 
-#### Phase 3: Plan
+## API Documentation
 
-```
-User: /speckit.plan
-  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
-  ├── [HOOK] speckit.memory-loader.load → Load context
-  ├── [EXEC] Constitution Check         → GATE: all 5 principles must PASS
-  ├── [EXEC] Phase 0: Research          → Generate research.md
-  ├── [EXEC] Phase 1: Design            → Generate data-model.md, quickstart.md
-  ├── [EXEC] Write plan.md              → Technical context, project structure
-  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add implementation plan"
-```
+### Interface Type
 
-**Output**: `plan.md`, `research.md`, `data-model.md`, `quickstart.md`
+The module does not expose HTTP endpoints. Its API is the Copilot slash-command and agent interface.
 
-#### Phase 4: Tasks
+### Core Commands
 
-```
-User: /speckit.tasks
-  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
-  ├── [HOOK] speckit.memory-loader.load → Load context
-  ├── [EXEC] Read plan + spec           → Generate phased, dependency-ordered tasks
-  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add tasks"
-```
+| Command | Purpose | Primary output |
+|---------|---------|----------------|
+| `/speckit.constitution` | Create or update governance principles. | `.specify/memory/constitution.md` |
+| `/speckit.specify` | Create or update a feature specification from natural language. | `specs/NNN-name/spec.md` |
+| `/speckit.clarify` | Ask up to 5 targeted clarification questions and patch the spec. | Updated `spec.md` |
+| `/speckit.plan` | Generate implementation plan and supporting design artifacts. | `plan.md`, `research.md`, `data-model.md`, `quickstart.md` |
+| `/speckit.tasks` | Generate dependency-ordered implementation tasks. | `tasks.md` |
+| `/speckit.implement` | Execute `tasks.md` and update task state. | Code/docs/config changes plus completed tasks |
+| `/speckit.analyze` | Cross-check spec, plan, and tasks. | Analysis findings |
+| `/speckit.checklist` | Create a custom checklist. | `checklists/<name>.md` |
+| `/speckit.taskstoissues` | Convert tasks into GitHub Issues. | External GitHub Issues |
 
-**Output**: `tasks.md` with `- [ ] T001 [P] [US1] description` format
+### Extension Commands
 
-#### Phase 5: Analyze (optional, recommended)
+The current registry contains 22 enabled extensions: 6 bundled core extensions and 16 community extensions. It exposes 58 canonical extension commands and 65 registered Copilot command entries when aliases are included. See [sdd-extensions.md](sdd-extensions.md) for the command inventory and hook matrix.
 
-```
-User: /speckit.analyze
-  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
-  ├── [HOOK] speckit.memory-loader.load → Load context
-  ├── [EXEC] Cross-check spec ↔ plan ↔ tasks → Coverage matrix, drift detection
-  └── [HOOK] speckit.git.commit         → "[Spec Kit] Add analysis report"
-```
+### Authentication / Authorization
 
-**Output**: Analysis report with requirement coverage, ambiguities, inconsistencies
+No application auth is implemented by this module. External permissions are tool-specific: Git operations require a usable repository, GitHub issue creation requires the configured GitHub integration, and optional review/validation commands may depend on local scripts or agent access.
 
-#### Phase 6: Implement
+### Error Handling
 
-```
-User: /speckit.implement
-  ├── [HOOK] speckit.git.commit         → Save outstanding changes (optional)
-  ├── [HOOK] speckit.memory-loader.load → Load context
-  ├── [EXEC] Process tasks T001→T00N    → Edit files, mark [x] in tasks.md
-  ├── [HOOK] speckit.git.commit         → "[Spec Kit] Implementation progress"
-  └── [HOOK] speckit.retrospective.analyze → Offered (optional)
-```
+Command prompts generally treat unparsable hook YAML as non-fatal and continue without hook execution. Mandatory hooks are surfaced as commands that must complete before the main command proceeds. Extension-specific errors are handled by the invoked command instructions or scripts.
 
-**Output**: Source code changes + all tasks marked `[x]`
+## Data Model
 
-#### Phase 7: Retrospective (optional)
+### Entity Relationship Diagram
 
-```
-User: /speckit.retrospective.analyze
-  ├── [EXEC] Compare spec vs actual     → Adherence %, drift table, deviations
-  └── [HANDOFF] Can chain to:
-      ├── /speckit.constitution         → Update principles based on learnings
-      ├── /speckit.specify              → New feature from findings
-      └── /speckit.checklist            → Checklist from findings
+```mermaid
+erDiagram
+    EXTENSION ||--o{ REGISTERED_COMMAND : provides
+    EXTENSION ||--o{ HOOK_BINDING : declares
+    REGISTERED_COMMAND ||--o{ AGENT_WRAPPER : exposed_by
+    REGISTERED_COMMAND ||--o{ PROMPT_WRAPPER : exposed_by
+    LIFECYCLE_COMMAND ||--o{ FEATURE_ARTIFACT : creates
+    MEMORY_FILE ||--o{ LIFECYCLE_COMMAND : informs
+    REPOINDEX_COMMAND ||--o{ GENERATED_DOC : writes
 ```
 
-**Output**: `retrospective.md` with adherence score, deviation analysis, recommendations
+### Entities
 
-#### Phase 8: Archive
+#### Extension
 
-```
-User: /speckit.archive.run specs/NNN-feature-name
-  ├── [EXEC] Read feature artifacts     → Merge into .specify/memory/
-  └── [OUTPUT] Project-level memory     → Updated with feature knowledge
-```
+- **Purpose**: Installed capability package for the SDD workflow.
+- **Storage**: `.specify/extensions/<id>/extension.yml` plus `.specify/extensions/.registry`.
+- **Fields**: `id`, `name`, `version`, `description`, `author`, `repository`, `license`, `commands`, `hooks`, `config`, `tags`, `manifest_hash`, `enabled`, `priority`, `installed_at`.
+- **Validation rules**: Registry ids are lowercase extension ids; command names follow `speckit.<extension>.<command>` except registered aliases.
 
----
+#### Hook Binding
 
-## File Layout
+- **Purpose**: Pre/post lifecycle integration point.
+- **Storage**: `.specify/extensions.yml`.
+- **Fields**: hook phase, extension id, command, enabled flag, optional flag, prompt, description, condition.
+- **Lifecycle**: Read by prompt pre-execution checks and after-command guidance.
 
-### Feature Spec Directory (per feature)
+#### Memory File
 
-```
-specs/NNN-feature-name/
-├── spec.md              # User stories, requirements, acceptance scenarios
-├── plan.md              # Technical design, project structure, constitution check
-├── tasks.md             # Phased task list with [P] parallel markers
-├── research.md          # Technology research and decisions
-├── data-model.md        # Entity descriptions (if applicable)
-├── quickstart.md        # Verification steps after implementation
-├── retrospective.md     # Post-implementation spec adherence analysis
-└── checklists/
-    └── requirements.md  # Spec quality validation checklist
-```
+- **Purpose**: Durable context automatically loaded before lifecycle commands.
+- **Storage**: `.specify/memory/*.md`.
+- **Current files**: constitution, doc-system, spec, plan, changelog.
+- **Lifecycle**: Maintained by project governance, archive flows, and documentation rules.
 
-### Governance Memory
+#### Agent / Prompt Wrapper
 
-```
-.specify/memory/
-└── constitution.md      # v1.0.1 — 5 principles + governance
-```
+- **Purpose**: Copilot-facing execution surface for lifecycle and extension commands.
+- **Storage**: `.github/agents/*.agent.md`, `.github/prompts/*.prompt.md`.
+- **Current count**: 71 agent files and 71 prompt files.
+- **Lifecycle**: Updated when core commands or extension command wrappers change.
 
-### Spec Kit Infrastructure
+#### Skill
 
-```
-.specify/
-├── init-options.json    # Integration: copilot, branch numbering: sequential
-├── integration.json     # Active integration and Spec Kit version (0.8.1.dev0)
-├── extensions.yml       # Hook registry — all lifecycle events
-├── feature.json         # Currently active feature directory pointer
-├── templates/           # 5 templates (spec, plan, tasks, checklist, constitution)
-├── scripts/powershell/  # 4 scripts (common, check-prerequisites, create-new-feature, setup-plan)
-├── workflows/speckit/   # Full SDD cycle workflow definition
-├── integrations/        # Copilot + Spec Kit manifest files (SHA-256 integrity)
-└── extensions/          # 6 extensions (git, memory-loader, repoindex, archive, retrospective, status)
+- **Purpose**: Command-specific behavior capsules used by Copilot for installed extension workflows.
+- **Storage**: `.agents/skills/speckit*/SKILL.md`.
+- **Current count**: 49 Speckit-specific skills.
 
-.github/agents/          # 22 Copilot agent definitions (.agent.md)
-.github/prompts/         # 22 Copilot prompt files (.prompt.md)
-```
+#### Generated Documentation
 
----
+- **Purpose**: Code-derived profile and file index outputs.
+- **Storage**: Explicit generated root files listed in `docs/README.md` and companion `docs/_index/*.json` file indexes.
+- **Curated boundary**: `docs/README.md` lists generated outputs but is maintained as a curated docs index, not as a generated profile.
+- **Lifecycle**: Regenerated by repoindex commands, not manually curated.
 
-## Hook Configuration (Current State)
+## Dependencies
 
-### Auto-Commit Configuration
+### Internal Module Dependencies
 
-Auto-commit is **enabled for all `after_*` events** (except `after_taskstoissues`). All `before_*` events remain disabled to avoid committing work-in-progress.
+| Dependency | Why it is needed |
+|------------|------------------|
+| `.specify/memory/constitution.md` | Plan governance and project constraints. |
+| `.specify/memory/doc-system.md` | Documentation placement and regeneration rules. |
+| `.specify/templates/*.md` | Artifact skeletons for specs, plans, tasks, checklists, and constitution. |
+| `.github/agents/*.agent.md` | Agent execution definitions. |
+| `.github/prompts/*.prompt.md` | Slash-command prompt wrappers and hook prechecks. |
+| `.agents/skills/speckit*/SKILL.md` | Extension-specific command skills. |
+| `specs/` | Feature artifacts consumed by plan/tasks/analyze/implement/archive commands. |
+| `docs/README.md` | Documentation system index and generated profile rules. |
 
-| Event | before_* | after_* | Message |
-|-------|----------|---------|---------|
-| constitution | — | ✓ enabled | `[Spec Kit] Add project constitution` |
-| specify | — | ✓ enabled | `[Spec Kit] Add specification` |
-| clarify | — | ✓ enabled | `[Spec Kit] Clarify specification` |
-| plan | — | ✓ enabled | `[Spec Kit] Add implementation plan` |
-| tasks | — | ✓ enabled | `[Spec Kit] Add tasks` |
-| implement | — | ✓ enabled | `[Spec Kit] Implementation progress` |
-| checklist | — | ✓ enabled | `[Spec Kit] Add checklist` |
-| analyze | — | ✓ enabled | `[Spec Kit] Add analysis report` |
-| taskstoissues | — | ✗ disabled | — |
+### External Tools / Libraries
 
-### Memory Loading
+| Tool | Required | Purpose |
+|------|----------|---------|
+| Git | Optional in manifest, required for git commands | Branching, remote detection, initialization, commits. |
+| PowerShell | Selected by `.specify/init-options.json` (`script: ps`) | Local core script execution on Windows. |
+| Bash | Provided for cross-platform extension scripts | Alternative script implementation for supported commands. |
+| Superpowers | Optional in superb manifest | Bridge target for TDD, verification, debugging, review response, and finish protocols. |
+| GitHub integration | Needed for task-to-issues behavior | Create GitHub Issues from tasks. |
 
-`speckit.memory-loader.load` fires **before every lifecycle command** (mandatory, not optional). It reads all `.md` files from `.specify/memory/` and outputs them as context.
+### Configuration Requirements
 
-### Retrospective Hook
+| Variable / file | Required | Default / current | Description |
+|-----------------|----------|-------------------|-------------|
+| `.specify/extensions/.registry` | Yes | 22 enabled extensions | Installed extension state and registered commands. |
+| `.specify/extensions.yml` | Yes for hooks | `auto_execute_hooks: true` | Hook registration and optionality. |
+| `.specify/init-options.json` | Yes | Copilot, sequential branches, PowerShell scripts | Spec Kit initialization metadata. |
+| `.specify/memory/doc-system.md` | Yes for doc governance | Auto-loaded by memory-loader | Documentation class rules and hook reminders. |
+| `.specify/memory/constitution.md` | Yes for plan governance | Version `1.1.0` | Project constitution. |
 
-`speckit.retrospective.analyze` is **offered after `/speckit.implement`** (optional, prompted). Generates spec adherence analysis with deviation scoring.
+## File Organization
 
----
+### Component Distribution
 
-## Constitution v1.0.1 (Active)
+| Component | Count | Notes |
+|-----------|-------|-------|
+| Enabled extension registry entries | 22 | From `.specify/extensions/.registry`. |
+| Bundled core extensions | 6 | `git`, `memory-loader`, `repoindex`, `archive`, `retrospective`, `status`. |
+| Community extensions | 16 | Installed community catalog extensions; skipped rationale remains in ADR 0004. |
+| Extension manifests | 22 | One `extension.yml` per installed extension. |
+| Canonical extension commands | 58 | From `provides.commands` in manifests. |
+| Registered Copilot command entries | 65 | From `.registry`, including registered aliases. |
+| Extension command markdown files | 59 | Includes one helper/template command file outside manifest-provided commands. |
+| Extension scripts | 26 | PowerShell and Bash helper scripts. |
+| Copilot agent wrappers | 71 | `.github/agents/*.agent.md`. |
+| Copilot prompt wrappers | 71 | `.github/prompts/*.prompt.md`. |
+| Speckit skills | 49 | `.agents/skills/speckit*/SKILL.md`. |
+| Durable memory files | 5 | `.specify/memory/*.md`. |
+| Core templates | 5 | `.specify/templates/*.md`. |
 
-| # | Principle | Key Rule |
-|---|-----------|----------|
-| I | **Cross-Platform Parity** | Every feature MUST work on iOS, Android, and Web |
-| II | **Token-Based Theming** | All colors/spacing from `theme.ts`; use `ThemedText`/`ThemedView` |
-| III | **Platform File Splitting** | Non-trivial platform differences use `.web.tsx` suffix |
-| IV | **StyleSheet Discipline** | `StyleSheet.create()` for all styles; `Spacing` scale for dimensions |
-| V | **Test-First for New Features** | New features MUST include tests. **Exemption**: docs/config-only features use manual verification instead |
+### Key Files
 
-**Governance**: Constitution supersedes conflicting conventions. Amendments require version bump + rationale. Plans MUST pass Constitution Check gate.
+1. **`.specify/extensions/.registry`**: Installed extension source of truth.
+2. **`.specify/extensions.yml`**: Active lifecycle hook configuration.
+3. **`.specify/memory/doc-system.md`**: Auto-loaded documentation governance rules.
+4. **`.specify/memory/constitution.md`**: Current constitution and governance version.
+5. **`.github/agents/speckit.implement.agent.md`**: Implementation command wrapper.
+6. **`.github/prompts/speckit.specify.prompt.md`**: Specification command wrapper and hook precheck example.
+7. **`.specify/workflows/speckit/workflow.yml`**: Full SDD workflow definition.
+8. **`docs/README.md`**: Curated docs index and explicit generated-profile list.
+9. **`docs/sdd-extensions.md`**: Registry-derived extension reference from registry and manifests.
+10. **`docs/_index/speckit_fileindex.json`**: Machine-readable file classification for this module.
 
----
+## Quality Observations
 
-## Installed Extensions (6) + Companion Plugins (3)
+### Strengths
 
-### Spec Kit Extensions
-
-| Extension | Version | Author | Commands | Purpose |
-|-----------|---------|--------|----------|---------|
-| **git** | 1.0.0 | spec-kit-core | 5 | Branch creation, naming, auto-commit |
-| **memory-loader** | 1.0.0 | KevinBrown5280 | 1 | Load `.specify/memory/` before commands |
-| **repoindex** | 1.0.0 | Yiyu Liu | 3 | Repository documentation generation |
-| **archive** | 1.0.0 | Stanislav Deviatov | 1 | Post-merge feature archival |
-| **retrospective** | 1.0.0 | emi-dm | 1 | Spec adherence and drift analysis |
-| **status** | 1.0.0 | KhawarHabibKhan | 1 | SDD workflow progress dashboard |
-
-### Companion Plugins
-
-| Plugin | Version | What It Provides | How It Integrates |
-|--------|---------|-----------------|-------------------|
-| **Superpowers** | 5.0.7 | 14 skills: TDD, systematic-debugging, brainstorming, writing-plans, executing-plans, requesting-code-review, receiving-code-review, verification-before-completion, dispatching-parallel-agents, subagent-driven-development, using-git-worktrees, finishing-a-development-branch, writing-skills, using-superpowers | Auto-invoked by skill matching. Works alongside any SDD phase. TDD skill reinforces Constitution Principle V. |
-| **Context Engineering** | 1.0.0 | `@context-architect` agent | Use before `/speckit.specify` for complex multi-file features. Produces a file impact analysis that informs the spec. |
-| **RUG Agentic Workflow** | 1.0.0 | `@rug` orchestrator → `@SWE` + `@QA` subagents | Alternative to `/speckit.implement` for complex implementations. RUG decomposes tasks, delegates to SWE (code) and QA (verification), validates outcomes. |
-
-## Quality Status
+- The registry and manifests provide a clear installed extension inventory with version, hash, and command metadata.
+- The documentation system rules are loaded by memory-loader before key lifecycle phases, so agents receive doc placement rules during normal work.
+- Agent and prompt wrappers are present in matching counts, giving each exposed command a Copilot invocation surface.
+- Quality gates are layered across planning, task generation, implementation, and post-implementation phases.
+- Generated docs, the curated docs index, ADRs, and how-tos have separate documented homes.
 
 ### Concerns
 
-_(No open concerns — all 5 original concerns have been resolved.)_
+- `.specify/extensions.yml` has `installed: []`, so installed state must be read from `.specify/extensions/.registry` rather than the top-level config list.
+- Registry aliases are not uniformly materialized as separate agent files. This is intentional for repoindex aliases, but command counts should distinguish canonical commands from registered alias entries.
+- Durable memory currently references historical facts from archived features; generated docs should prefer current source files for counts and installed state.
 
 ### Recommendations
 
-_(No open recommendations)_
+- Re-run `/speckit.repoindex.module "speckit"` after any extension install/remove, hook change, or constitution version change.
+- Keep skipped-extension rationale in [ADR 0004](_decisions/0004-skipped-extensions.md) rather than in generated extension reference tables.
+- Keep [sdd-extensions.md](sdd-extensions.md) limited to registry, hook, and manifest data so workflow advice stays in this profile or ADRs.
+
+## Testing
+
+### Test Coverage
+
+There is no unit test suite for the Speckit documentation module. Verification is static:
+
+- Registry and manifest inspection.
+- Agent, prompt, skill, command, and script file counts.
+- JSON syntax validation for the generated file index.
+- Search checks for deleted or obsolete path references.
+
+### Key Verification Scenarios
+
+- `docs/sdd-extensions.md` lists only extensions present in `.specify/extensions/.registry`.
+- Generated profile references use the explicit file list in `docs/README.md`, and `docs/README.md` remains documented as curated.
+- `docs/_index/speckit_fileindex.json` is valid JSON and writes to `docs/_index/`.
+- Generated timestamps use `2026-04-28`.
+- Generated files do not reference deleted documentation paths or removed extension inventory.
+- The doc-system memory-loader hook mechanism is documented.
+
+## Performance Considerations
+
+### File Scanning
+
+Repoindex commands operate by static file scanning. Runtime cost scales with the number of manifests, wrappers, skills, scripts, and generated artifacts.
+
+### Caching
+
+The extension cache under `.specify/extensions/.cache/` supports catalog lookup data, but installed state for this profile comes from `.specify/extensions/.registry`.
+
+### Async Processing
+
+No async worker exists. Optional gates and scripts run during command invocation.
+
+### Scalability
+
+The largest local maintenance surface is wrapper proliferation: each command can require manifest metadata, command markdown, an agent file, a prompt file, and optionally a skill. Keeping registry-derived generated docs current reduces onboarding cost as extensions grow.
 
 ---
 
-**Generated**: April 25, 2026 | **Spec Kit Version**: 0.8.1.dev0 | **Constitution**: v1.0.1
+**Generated**: 2026-04-28<br>
+**Module Path**: `.specify/`, `.github/agents/`, `.github/prompts/`, `.agents/skills/speckit*/`, `docs/`

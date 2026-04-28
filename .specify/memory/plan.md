@@ -18,6 +18,7 @@
 | Lint (general) | `oxlint@1.61.0` | `oxlint.json` | Fast Rust linter |
 | Lint (Hooks) | `eslint-plugin-react-hooks@7.1.1` + `eslint@10.2.1` + `typescript-eslint@8.59.0` | `eslint.config.js` | React Compiler-era rules OXC lacks |
 | Test | `jest@29.7.0` + `jest-expo@55.0.16` + `@testing-library/react-native` | `jest.config.js` | Jest 30 blocked by `jest-expo` peer range |
+| Docs gate | `scripts/check-docs.ps1` | `package.json` `docs:check` | Automated doc-system and CRLF verification |
 | Build | `eas-cli` (global) | manual install | Cloud builds |
 | Animations | `react-native-reanimated` + `react-native-worklets` | `package.json` | Worklet-based animations |
 
@@ -43,7 +44,7 @@ test/
   setup.ts          shared mocks (run via jest-expo preset)
   unit/examples/    copyable patterns (TS logic, RN render, aliases)
 specs/              SDD feature specs (one folder per feature)
-docs/               three-class doc system (see docs/README.md)
+docs/               classed doc system (see docs/README.md)
 .specify/           Spec Kit engine + extensions + memory
 .github/            agent instructions, prompts, sub-agents
 .eas/build/         custom EAS build YAMLs
@@ -78,6 +79,8 @@ docs/               three-class doc system (see docs/README.md)
 | `jest.config.js` | Jest preset + alias mapping |
 | `pnpm-workspace.yaml` | Hoisted linker |
 | `.specify/extensions.yml` | Spec Kit hook registrations |
+| `.gitattributes`, `.editorconfig` | CRLF working-tree policy |
+| `scripts/check-docs.ps1` | Documentation automation gate |
 
 ## Architecture Conventions
 
@@ -89,7 +92,7 @@ docs/               three-class doc system (see docs/README.md)
 ## Quality Gate
 
 ```
-pnpm check  ≡  format:check + lint + typecheck + test
+pnpm check  ≡  format:check + lint + docs:check + typecheck + test
 ```
 
 Required green before commit. Remote EAS scripts (`ios:ipa`, `ios:simulator`) excluded — they consume cloud quota.
