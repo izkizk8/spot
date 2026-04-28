@@ -44,6 +44,12 @@ const styles = StyleSheet.create({
   empty: { padding: 24, alignItems: 'center' },
   row: { padding: 16, borderBottomWidth: 1, borderBottomColor: '#e0e0e0', gap: 4 },
   summary: { fontSize: 12, color: '#666' },
-  button: { marginTop: 8, padding: 8, backgroundColor: '#FF3B30', borderRadius: 4, alignItems: 'center' },
+  button: {
+    marginTop: 8,
+    padding: 8,
+    backgroundColor: '#FF3B30',
+    borderRadius: 4,
+    alignItems: 'center',
+  },
   cancelAll: { padding: 16, backgroundColor: '#FF3B30', alignItems: 'center' },
 });

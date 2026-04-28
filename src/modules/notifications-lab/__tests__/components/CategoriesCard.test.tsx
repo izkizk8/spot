@@ -4,9 +4,7 @@ import { CategoriesCard } from '../../components/CategoriesCard';
 
 describe('CategoriesCard', () => {
   it('renders 3 categories', () => {
-    const { getByText } = render(
-      <CategoriesCard lastReceived={null} onInvokeAction={jest.fn()} />,
-    );
+    const { getByText } = render(<CategoriesCard lastReceived={null} onInvokeAction={jest.fn()} />);
     expect(getByText(/yes-no/i)).toBeTruthy();
     expect(getByText(/snooze-done/i)).toBeTruthy();
     expect(getByText(/reply-text/i)).toBeTruthy();
@@ -21,9 +19,7 @@ describe('CategoriesCard', () => {
   });
 
   it('disables action replay when lastReceived is null', () => {
-    const { getByText } = render(
-      <CategoriesCard lastReceived={null} onInvokeAction={jest.fn()} />,
-    );
+    const { getByText } = render(<CategoriesCard lastReceived={null} onInvokeAction={jest.fn()} />);
     const button = getByText(/open last/i);
     expect(button.props.accessibilityState?.disabled).toBe(true);
   });

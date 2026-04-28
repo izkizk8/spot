@@ -44,8 +44,7 @@ const withRichNotifications: ConfigPlugin = (config) => {
     app['meta-data'] ??= [];
 
     const exists = app['meta-data'].some(
-      (m) =>
-        m.$['android:name'] === 'expo.modules.notifications.default_notification_channel_id',
+      (m) => m.$['android:name'] === 'expo.modules.notifications.default_notification_channel_id',
     );
 
     if (!exists) {

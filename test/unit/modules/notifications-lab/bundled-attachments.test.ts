@@ -1,4 +1,7 @@
-import { BUNDLED_ATTACHMENTS, DEFAULT_ATTACHMENT_ID } from '@/modules/notifications-lab/bundled-attachments';
+import {
+  BUNDLED_ATTACHMENTS,
+  DEFAULT_ATTACHMENT_ID,
+} from '@/modules/notifications-lab/bundled-attachments';
 
 describe('bundled-attachments', () => {
   it('has exactly 3 entries with unique ids', () => {

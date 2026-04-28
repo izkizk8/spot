@@ -42,11 +42,7 @@ export interface UseNotificationCenter {
   remove(identifier: string): Promise<void>;
   clearAll(): Promise<void>;
   refresh(): Promise<void>;
-  invokeAction(args: {
-    identifier: string;
-    actionIdentifier: string;
-    textInput?: string;
-  }): void;
+  invokeAction(args: { identifier: string; actionIdentifier: string; textInput?: string }): void;
   error: Error | null;
 }
 
@@ -72,7 +68,10 @@ export function useNotificationCenter(): UseNotificationCenter {
     mountedRef.current = true;
 
     // Idempotent category registration
-    if (!__categoriesRegistered && typeof Notifications.setNotificationCategoriesAsync === 'function') {
+    if (
+      !__categoriesRegistered &&
+      typeof Notifications.setNotificationCategoriesAsync === 'function'
+    ) {
       __categoriesRegistered = true;
       Notifications.setNotificationCategoriesAsync(CATEGORIES as any).catch((err) => {
         if (mountedRef.current) {

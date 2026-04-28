@@ -24,9 +24,7 @@ describe('DeliveredList', () => {
 
   it('calls onRemove with identifier', () => {
     const onRemove = jest.fn();
-    const delivered = [
-      { identifier: 'n1', title: 'Title 1', deliveredAt: new Date() },
-    ];
+    const delivered = [{ identifier: 'n1', title: 'Title 1', deliveredAt: new Date() }];
     const { getByText } = render(
       <DeliveredList delivered={delivered} onRemove={onRemove} onClearAll={jest.fn()} />,
     );
@@ -36,9 +34,7 @@ describe('DeliveredList', () => {
 
   it('calls onClearAll', () => {
     const onClearAll = jest.fn();
-    const delivered = [
-      { identifier: 'n1', title: 'Title 1', deliveredAt: new Date() },
-    ];
+    const delivered = [{ identifier: 'n1', title: 'Title 1', deliveredAt: new Date() }];
     const { getByText } = render(
       <DeliveredList delivered={delivered} onRemove={jest.fn()} onClearAll={onClearAll} />,
     );

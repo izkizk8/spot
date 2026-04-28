@@ -55,9 +55,7 @@ describe('EventLog', () => {
   });
 
   it('renders dismissed event', () => {
-    const events: NotificationEvent[] = [
-      { kind: 'dismissed', identifier: 'n1', at: new Date() },
-    ];
+    const events: NotificationEvent[] = [{ kind: 'dismissed', identifier: 'n1', at: new Date() }];
 
     const { getByText } = render(<EventLog events={events} />);
     expect(getByText(/dismissed/i)).toBeTruthy();
@@ -71,7 +69,7 @@ describe('EventLog', () => {
     }));
 
     const { queryByText } = render(<EventLog events={events} />);
-    
+
     // First 20 should render, beyond that should not
     expect(queryByText(/n19/)).toBeTruthy();
     expect(queryByText(/n24/)).toBeTruthy(); // Most recent should always show

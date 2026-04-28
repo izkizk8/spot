@@ -22,21 +22,34 @@ export default function NotificationsLabScreenWeb() {
 
     if (globalThis.Notification.permission === 'granted') {
       new globalThis.Notification(title, { body });
-      setEvents([{ kind: 'received', identifier: Date.now().toString(), at: new Date() }, ...events].slice(0, 20));
+      setEvents(
+        [{ kind: 'received', identifier: Date.now().toString(), at: new Date() }, ...events].slice(
+          0,
+          20,
+        ),
+      );
     }
   };
 
-  const disabled = typeof globalThis.Notification === 'undefined' || globalThis.Notification.permission === 'denied';
+  const disabled =
+    typeof globalThis.Notification === 'undefined' ||
+    globalThis.Notification.permission === 'denied';
 
   return (
     <ScrollView style={styles.container}>
       <ThemedView style={styles.card}>
         <TextInput placeholder="Title" value={title} onChangeText={setTitle} style={styles.input} />
         <TextInput placeholder="Body" value={body} onChangeText={setBody} style={styles.input} />
-        <TouchableOpacity onPress={fireNotification} disabled={disabled} style={[styles.button, disabled && styles.disabled]}>
+        <TouchableOpacity
+          onPress={fireNotification}
+          disabled={disabled}
+          style={[styles.button, disabled && styles.disabled]}
+        >
           <ThemedText>Schedule</ThemedText>
         </TouchableOpacity>
-        {disabled && <ThemedText>Reset notification permission in your browser settings</ThemedText>}
+        {disabled && (
+          <ThemedText>Reset notification permission in your browser settings</ThemedText>
+        )}
       </ThemedView>
       <ThemedView style={styles.card}>
         <EventLog events={events} />

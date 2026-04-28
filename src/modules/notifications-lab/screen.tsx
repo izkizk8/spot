@@ -31,7 +31,11 @@ export default function NotificationsLabScreen() {
         <PendingList pending={hook.pending} onCancel={hook.cancel} onCancelAll={hook.cancelAll} />
       </ThemedView>
       <ThemedView style={styles.card}>
-        <DeliveredList delivered={hook.delivered} onRemove={hook.remove} onClearAll={hook.clearAll} />
+        <DeliveredList
+          delivered={hook.delivered}
+          onRemove={hook.remove}
+          onClearAll={hook.clearAll}
+        />
       </ThemedView>
       <ThemedView style={styles.card}>
         <EventLog events={hook.events} />

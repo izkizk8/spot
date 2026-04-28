@@ -15,11 +15,7 @@ describe('ComposeForm', () => {
 
   it('renders all required fields', () => {
     const { getByPlaceholderText } = render(
-      <ComposeForm
-        permissionStatus="authorized"
-        locationAuthorized={true}
-        onSubmit={jest.fn()}
-      />,
+      <ComposeForm permissionStatus="authorized" locationAuthorized={true} onSubmit={jest.fn()} />,
     );
     expect(getByPlaceholderText(/title/i)).toBeTruthy();
     expect(getByPlaceholderText(/subtitle/i)).toBeTruthy();
@@ -28,11 +24,7 @@ describe('ComposeForm', () => {
 
   it('disables submit when permission denied', () => {
     const { getByText } = render(
-      <ComposeForm
-        permissionStatus="denied"
-        locationAuthorized={true}
-        onSubmit={jest.fn()}
-      />,
+      <ComposeForm permissionStatus="denied" locationAuthorized={true} onSubmit={jest.fn()} />,
     );
     const button = getByText(/schedule/i);
     expect(button.props.accessibilityState?.disabled).toBe(true);
@@ -41,11 +33,7 @@ describe('ComposeForm', () => {
 
   it('enables submit when provisional', () => {
     const { getByText } = render(
-      <ComposeForm
-        permissionStatus="provisional"
-        locationAuthorized={true}
-        onSubmit={jest.fn()}
-      />,
+      <ComposeForm permissionStatus="provisional" locationAuthorized={true} onSubmit={jest.fn()} />,
     );
     const button = getByText(/schedule/i);
     expect(button.props.accessibilityState?.disabled).toBe(false);
@@ -54,11 +42,7 @@ describe('ComposeForm', () => {
 
   it('shows entitlement notice for time-sensitive', () => {
     const { getByText } = render(
-      <ComposeForm
-        permissionStatus="authorized"
-        locationAuthorized={true}
-        onSubmit={jest.fn()}
-      />,
+      <ComposeForm permissionStatus="authorized" locationAuthorized={true} onSubmit={jest.fn()} />,
     );
     fireEvent.press(getByText(/time-sensitive/i));
     expect(getByText(/entitlement/i)).toBeTruthy();
@@ -67,11 +51,7 @@ describe('ComposeForm', () => {
   it('validates non-empty title', () => {
     const onSubmit = jest.fn();
     const { getByText } = render(
-      <ComposeForm
-        permissionStatus="authorized"
-        locationAuthorized={true}
-        onSubmit={onSubmit}
-      />,
+      <ComposeForm permissionStatus="authorized" locationAuthorized={true} onSubmit={onSubmit} />,
     );
     fireEvent.press(getByText(/schedule/i));
     expect(onSubmit).not.toHaveBeenCalled();
@@ -85,11 +65,7 @@ describe('ComposeForm', () => {
     });
 
     const { getByText } = render(
-      <ComposeForm
-        permissionStatus="authorized"
-        locationAuthorized={true}
-        onSubmit={jest.fn()}
-      />,
+      <ComposeForm permissionStatus="authorized" locationAuthorized={true} onSubmit={jest.fn()} />,
     );
     expect(getByText(/ios only/i)).toBeTruthy();
   });

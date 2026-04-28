@@ -23,10 +23,7 @@ describe('PermissionsCard', () => {
     'renders status pill for %s',
     (status) => {
       const { getByText } = render(
-        <PermissionsCard
-          permissions={{ ...basePermissions, status }}
-          onRequest={jest.fn()}
-        />,
+        <PermissionsCard permissions={{ ...basePermissions, status }} onRequest={jest.fn()} />,
       );
       expect(getByText(new RegExp(status, 'i'))).toBeTruthy();
     },
@@ -34,10 +31,7 @@ describe('PermissionsCard', () => {
 
   it('shows alerts indicator when alerts enabled', () => {
     const { getByText } = render(
-      <PermissionsCard
-        permissions={{ ...basePermissions, alerts: true }}
-        onRequest={jest.fn()}
-      />,
+      <PermissionsCard permissions={{ ...basePermissions, alerts: true }} onRequest={jest.fn()} />,
     );
     expect(getByText(/alert/i)).toBeTruthy();
   });

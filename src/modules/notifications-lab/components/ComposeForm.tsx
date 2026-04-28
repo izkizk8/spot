@@ -18,7 +18,9 @@ export function ComposeForm({ permissionStatus, locationAuthorized, onSubmit }: 
   const [subtitle, setSubtitle] = useState('');
   const [body, setBody] = useState('');
   const [attachmentId, setAttachmentId] = useState<string | null>(null);
-  const [interruptionLevel, setInterruptionLevel] = useState<'active' | 'time-sensitive' | 'critical'>('active');
+  const [interruptionLevel, setInterruptionLevel] = useState<
+    'active' | 'time-sensitive' | 'critical'
+  >('active');
   const [error, setError] = useState<string | null>(null);
 
   const disabled = permissionStatus === 'denied' || permissionStatus === 'notDetermined';
@@ -47,12 +49,7 @@ export function ComposeForm({ permissionStatus, locationAuthorized, onSubmit }: 
     <ThemedView style={styles.container}>
       {Platform.OS === 'android' && <IOSOnlyBanner reason="compose-fields" />}
 
-      <TextInput
-        placeholder="Title"
-        value={title}
-        onChangeText={setTitle}
-        style={styles.input}
-      />
+      <TextInput placeholder="Title" value={title} onChangeText={setTitle} style={styles.input} />
       <TextInput
         placeholder="Subtitle"
         value={subtitle}
@@ -68,7 +65,7 @@ export function ComposeForm({ permissionStatus, locationAuthorized, onSubmit }: 
       />
 
       <AttachmentPicker selected={attachmentId} onSelect={setAttachmentId} />
-      
+
       <View style={styles.interruptionLevel}>
         <TouchableOpacity onPress={() => setInterruptionLevel('active')}>
           <ThemedText>Active</ThemedText>
@@ -88,9 +85,7 @@ export function ComposeForm({ permissionStatus, locationAuthorized, onSubmit }: 
       )}
 
       {interruptionLevel === 'critical' && (
-        <ThemedText style={styles.notice}>
-          Requires entitlement to use critical level
-        </ThemedText>
+        <ThemedText style={styles.notice}>Requires entitlement to use critical level</ThemedText>
       )}
 
       <TriggerPicker
@@ -120,7 +115,13 @@ export function ComposeForm({ permissionStatus, locationAuthorized, onSubmit }: 
 
 const styles = StyleSheet.create({
   container: { padding: 16, gap: 12 },
-  input: { padding: 12, borderWidth: 1, borderColor: '#ccc', borderRadius: 8, backgroundColor: '#fff' },
+  input: {
+    padding: 12,
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 8,
+    backgroundColor: '#fff',
+  },
   interruptionLevel: { flexDirection: 'row', gap: 12 },
   notice: { fontSize: 12, color: '#FF9500', fontStyle: 'italic' },
   error: { color: '#FF3B30' },

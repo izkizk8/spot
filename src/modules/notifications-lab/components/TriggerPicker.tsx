@@ -29,18 +29,23 @@ export function TriggerPicker({ value, onChange, locationAuthorized }: Props) {
       <TouchableOpacity
         onPress={() =>
           locationAuthorized &&
-          onChange({ kind: 'on-region-entry', latitude: 37.7749, longitude: -122.4194, radius: 100 })
+          onChange({
+            kind: 'on-region-entry',
+            latitude: 37.7749,
+            longitude: -122.4194,
+            radius: 100,
+          })
         }
         accessibilityState={{ disabled: !locationAuthorized }}
         disabled={!locationAuthorized}
       >
         <ThemedText>On region entry</ThemedText>
       </TouchableOpacity>
-      
+
       {!locationAuthorized && <ThemedText>Location permission required</ThemedText>}
-      
+
       {value.kind === 'in-seconds' && value.seconds < 1 && (
-        <ThemedText testID="validation-error">Must be >= 1</ThemedText>
+        <ThemedText testID="validation-error">Must be at least 1</ThemedText>
       )}
     </View>
   );

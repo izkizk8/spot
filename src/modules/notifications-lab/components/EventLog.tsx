@@ -23,21 +23,15 @@ export function EventLog({ events }: Props) {
     <ScrollView style={styles.container}>
       {displayEvents.map((event, index) => (
         <ThemedView key={`${event.identifier}-${index}`} style={styles.row}>
-          <ThemedText style={styles.time}>
-            {event.at.toLocaleTimeString()}
-          </ThemedText>
-          {event.kind === 'received' && (
-            <ThemedText>Received: {event.identifier}</ThemedText>
-          )}
+          <ThemedText style={styles.time}>{event.at.toLocaleTimeString()}</ThemedText>
+          {event.kind === 'received' && <ThemedText>Received: {event.identifier}</ThemedText>}
           {event.kind === 'action-response' && (
             <ThemedText>
               Action: {event.actionIdentifier}
               {event.textInput && ` - "${event.textInput}"`}
             </ThemedText>
           )}
-          {event.kind === 'dismissed' && (
-            <ThemedText>Dismissed: {event.identifier}</ThemedText>
-          )}
+          {event.kind === 'dismissed' && <ThemedText>Dismissed: {event.identifier}</ThemedText>}
         </ThemedView>
       ))}
     </ScrollView>

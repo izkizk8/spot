@@ -35,11 +35,13 @@ export function CategoriesCard({ lastReceived, onInvokeAction }: Props) {
 
       {sheet && lastReceived && (
         <View style={styles.sheet}>
-          {CATEGORIES.find((c) => c.identifier === lastReceived.categoryId)?.actions.map((action) => (
-            <TouchableOpacity key={action.id} onPress={() => onInvokeAction(action.id)}>
-              <ThemedText>{action.id}</ThemedText>
-            </TouchableOpacity>
-          ))}
+          {CATEGORIES.find((c) => c.identifier === lastReceived.categoryId)?.actions.map(
+            (action) => (
+              <TouchableOpacity key={action.id} onPress={() => onInvokeAction(action.id)}>
+                <ThemedText>{action.id}</ThemedText>
+              </TouchableOpacity>
+            ),
+          )}
         </View>
       )}
     </ThemedView>

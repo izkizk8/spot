@@ -61,7 +61,7 @@ describe('with-rich-notifications plugin', () => {
     it('does not throw on re-run', () => {
       let config = createBaseConfig();
       config = withRichNotifications(config);
-      
+
       // Re-run should be idempotent (no throw)
       expect(() => withRichNotifications(config)).not.toThrow();
     });

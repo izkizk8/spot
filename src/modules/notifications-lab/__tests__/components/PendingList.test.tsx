@@ -24,9 +24,7 @@ describe('PendingList', () => {
 
   it('calls onCancel with identifier', () => {
     const onCancel = jest.fn();
-    const pending = [
-      { identifier: 'n1', title: 'Title 1', triggerSummary: 'immediate' },
-    ];
+    const pending = [{ identifier: 'n1', title: 'Title 1', triggerSummary: 'immediate' }];
     const { getByText } = render(
       <PendingList pending={pending} onCancel={onCancel} onCancelAll={jest.fn()} />,
     );
@@ -36,9 +34,7 @@ describe('PendingList', () => {
 
   it('calls onCancelAll', () => {
     const onCancelAll = jest.fn();
-    const pending = [
-      { identifier: 'n1', title: 'Title 1', triggerSummary: 'immediate' },
-    ];
+    const pending = [{ identifier: 'n1', title: 'Title 1', triggerSummary: 'immediate' }];
     const { getByText } = render(
       <PendingList pending={pending} onCancel={jest.fn()} onCancelAll={onCancelAll} />,
     );
