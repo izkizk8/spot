@@ -1,25 +1,91 @@
 /**
- * Camera Vision screen — iOS implementation (placeholder for Phase 2 Foundational).
+ * Camera Vision screen — iOS implementation (feature 017, User Story 1).
  *
- * This placeholder satisfies the manifest import. Full implementation in Phase 3 (US1).
+ * Displays live camera preview with Vision analysis overlays.
  */
 
-import React from 'react';
-import { StyleSheet } from 'react-native';
+import React, { useRef, useState } from 'react';
+import { StyleSheet, View, Pressable } from 'react-native';
+import { useCameraPermissions, CameraView } from 'expo-camera';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
+import { CameraPreview } from './components/CameraPreview';
+import { OverlayCanvas } from './components/OverlayCanvas';
+import { ModePicker } from './components/ModePicker';
+import { StatsBar } from './components/StatsBar';
+import { useFrameAnalyzer } from './hooks/useFrameAnalyzer';
+import type { VisionMode } from './vision-types';
+import { VisionNotSupported } from '@/native/vision-detector.types';
+
 export default function CameraVisionScreen() {
+  const [permission, requestPermission] = useCameraPermissions();
+  const [mode, setMode] = useState<VisionMode>('faces');
+  const [parentLayout, setParentLayout] = useState({ width: 0, height: 0 });
+  const cameraRef = useRef<CameraView | null>(null);
+
+  const { fps, lastAnalysisMs, detected, observations, error } = useFrameAnalyzer({
+    mode,
+    intervalMs: 250,
+    cameraRef,
+  });
+
+  // Request permission on mount
+  React.useEffect(() => {
+    if (!permission?.granted && permission?.canAskAgain) {
+      requestPermission();
+    }
+  }, [permission, requestPermission]);
+
+  // Permission denied UI
+  if (permission && !permission.granted) {
+    return (
+      <ThemedView style={styles.container}>
+        <ThemedText type="title" style={styles.messageTitle}>
+          Camera Permission Required
+        </ThemedText>
+        <ThemedText type="default" style={styles.messageText}>
+          This module needs camera access to perform live Vision analysis.
+        </ThemedText>
+        <Pressable
+          style={styles.retryButton}
+          onPress={requestPermission}
+        >
+          <ThemedText type="default" themeColor="tintA">
+            Retry
+          </ThemedText>
+        </Pressable>
+      </ThemedView>
+    );
+  }
+
   return (
     <ThemedView style={styles.container}>
-      <ThemedText type="title" style={styles.title}>
-        Camera Vision
-      </ThemedText>
-      <ThemedText type="small" themeColor="textSecondary">
-        Implementation in progress (Phase 3)
-      </ThemedText>
+      <View
+        style={styles.cameraContainer}
+        onLayout={(e) => {
+          const { width, height } = e.nativeEvent.layout;
+          setParentLayout({ width, height });
+        }}
+      >
+        <CameraPreview ref={cameraRef} facing="back" flashMode="off" />
+        {parentLayout.width > 0 && (
+          <OverlayCanvas observations={observations} parentLayout={parentLayout} />
+        )}
+      </View>
+
+      <ModePicker mode={mode} onModeChange={setMode} disabled={false} />
+      <StatsBar fps={fps} lastAnalysisMs={lastAnalysisMs} detected={detected} />
+
+      {error && !(error instanceof VisionNotSupported) && (
+        <ThemedView style={styles.errorBanner}>
+          <ThemedText type="small" themeColor="textSecondary">
+            Error: {error.message}
+          </ThemedText>
+        </ThemedView>
+      )}
     </ThemedView>
   );
 }
@@ -27,11 +93,27 @@ export default function CameraVisionScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: Spacing.four,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
-  title: {
-    marginBottom: Spacing.two,
+  cameraContainer: {
+    flex: 1,
+  },
+  messageTitle: {
+    marginTop: Spacing.four,
+    textAlign: 'center',
+  },
+  messageText: {
+    marginTop: Spacing.two,
+    marginHorizontal: Spacing.four,
+    textAlign: 'center',
+  },
+  retryButton: {
+    marginTop: Spacing.three,
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.four,
+    alignSelf: 'center',
+  },
+  errorBanner: {
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.three,
   },
 });
