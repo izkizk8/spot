@@ -97,7 +97,7 @@ description: "Task list for feature 026: Notifications Lab Module (Rich Local No
 
 ### Tests for the hook (write FIRST, ensure they FAIL)
 
-- [ ] T023 Write `src/modules/notifications-lab/__tests__/hooks/useNotificationCenter.test.tsx` covering every behavior listed in plan §Test Strategy → "Hook test — `useNotificationCenter.test.tsx`":
+- [x] T023 Write `src/modules/notifications-lab/__tests__/hooks/useNotificationCenter.test.tsx` covering every behavior listed in plan §Test Strategy → "Hook test — `useNotificationCenter.test.tsx`":
   - **Mount**: registers categories exactly once across remount-mount-remount (module-scope `__categoriesRegistered` flag); attaches both listeners exactly once; consults `getLastNotificationResponseAsync()` and replays a non-null result into the event log as an `action-response`.
   - **`request()`**: calls `requestPermissionsAsync` with `allowAlert/allowBadge/allowSound: true`; success maps `permissions.status === 'authorized'`. **`request({ provisional: true })`**: passes `allowProvisional: true` and surfaces `permissions.status === 'provisional'`.
   - **Permission-path branches**: each of `denied`, `notDetermined`, `provisional`, `authorized`, `ephemeral` round-trips through `__setPermissionsMock` to the expected `PermissionsState` shape.
@@ -117,7 +117,7 @@ description: "Task list for feature 026: Notifications Lab Module (Rich Local No
 
 ### Implementation for the hook
 
-- [ ] T024 Implement `src/modules/notifications-lab/hooks/useNotificationCenter.ts` per plan §Architecture → `useNotificationCenter` and §Trigger Translation (FR-NL-014):
+- [x] T024 Implement `src/modules/notifications-lab/hooks/useNotificationCenter.ts` per plan §Architecture → `useNotificationCenter` and §Trigger Translation (FR-NL-014):
   - State shape `UseNotificationCenter` exactly as documented in plan §Architecture.
   - **Mount**: idempotent `setNotificationCategoriesAsync(CATEGORIES)` guarded by module-scope `__categoriesRegistered`; on Android, idempotent `setNotificationChannelAsync('spot.default', ...)` guarded by `__defaultChannelRegistered`; attach `addNotificationReceivedListener` + `addNotificationResponseReceivedListener`; one-shot replay of `getLastNotificationResponseAsync()` memoised on `__lastResponseReplayed`.
   - **`request({ provisional? })`** → `requestPermissionsAsync({ ios: { allowAlert: true, allowBadge: true, allowSound: true, allowCriticalAlerts: false, allowProvisional: !!provisional, provideAppNotificationSettings: true } })`; map result to `PermissionsState`.
@@ -130,7 +130,7 @@ description: "Task list for feature 026: Notifications Lab Module (Rich Local No
   - **Errors** → captured into `error`.
 
   Make T023 pass. (depends on T019, T020, T021, T022)
-- [ ] T025 **Checkpoint commit**: `feat(026): catalogs (categories/interruption-levels/bundled-attachments) + types + useNotificationCenter hook`.
+- [x] T025 **Checkpoint commit**: `feat(026): catalogs (categories/interruption-levels/bundled-attachments) + types + useNotificationCenter hook`.
 
 **Checkpoint**: Phase 2 (plan) is complete — every constant table and the single hook are green. Components in Phase 5 may now begin in parallel.
 
