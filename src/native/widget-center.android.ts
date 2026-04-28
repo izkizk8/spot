@@ -1,5 +1,5 @@
 // src/native/widget-center.android.ts
-import type { WidgetCenterBridge, WidgetConfig } from './widget-center.types';
+import type { WidgetCenterBridge, WidgetConfig, LockConfig } from './widget-center.types';
 import { WidgetCenterNotSupportedError } from './widget-center.types';
 
 const bridge: WidgetCenterBridge = {
@@ -17,6 +17,18 @@ const bridge: WidgetCenterBridge = {
 
   async reloadAllTimelines(): Promise<void> {
     throw new WidgetCenterNotSupportedError();
+  },
+
+  async reloadTimelinesByKind(_kind: string): Promise<void> {
+    throw new WidgetCenterNotSupportedError('Lock screen widgets are iOS-only');
+  },
+
+  async getLockConfig(): Promise<LockConfig> {
+    throw new WidgetCenterNotSupportedError('Lock screen widgets are iOS-only');
+  },
+
+  async setLockConfig(_config: LockConfig): Promise<void> {
+    throw new WidgetCenterNotSupportedError('Lock screen widgets are iOS-only');
   },
 };
 
