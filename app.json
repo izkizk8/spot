@@ -48,6 +48,7 @@
       "./plugins/with-vision",
       "./plugins/with-speech-recognition",
       "./plugins/with-audio-recording",
+      "./plugins/with-sign-in-with-apple",
       [
         "expo-sensors",
         {
