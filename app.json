@@ -45,6 +45,7 @@
       "./plugins/with-home-widgets",
       "./plugins/with-screentime",
       "./plugins/with-coreml",
+      "./plugins/with-vision",
       [
         "expo-sensors",
         {
