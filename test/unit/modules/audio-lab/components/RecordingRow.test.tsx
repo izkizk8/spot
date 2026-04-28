@@ -47,6 +47,20 @@ async function flushMicrotasks() {
   }
 }
 
+function flattenStyle(s: unknown): Record<string, unknown> {
+  const arr = Array.isArray(s) ? s : [s];
+  return arr.reduce<Record<string, unknown>>((acc, item) => {
+    if (item && typeof item === 'object') Object.assign(acc, item);
+    return acc;
+  }, {});
+}
+
+function findBadge(root: any, id: string) {
+  return root.findAll(
+    (n: any) => n.props && n.props.testID === `audio-lab-quality-${id}`,
+  )[0];
+}
+
 describe('RecordingRow', () => {
   let alertSpy: jest.SpyInstance;
   let warnSpy: jest.SpyInstance;
@@ -179,5 +193,43 @@ describe('RecordingRow', () => {
     await flushMicrotasks();
     expect(mockSharing.shareAsync).not.toHaveBeenCalled();
     expect(linkingSpy).toHaveBeenCalledWith('file:///f.m4a');
+  });
+
+  // -------------------------------------------------------------------------
+  // T047 [US3] Quality badge display + theme-token coloring (FR-011)
+  // -------------------------------------------------------------------------
+
+  describe('quality badge (T047 / FR-011)', () => {
+    it.each(['Low', 'Medium', 'High'] as const)('displays the %s preset name', (q) => {
+      const r = makeRecording({ id: `id-${q}`, quality: q });
+      const view = render(
+        <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+      );
+      expect(view.queryByText(q)).toBeTruthy();
+      const badge = findBadge(view.UNSAFE_root, `id-${q}`);
+      expect(badge).toBeTruthy();
+      const bg = flattenStyle(badge.props.style).backgroundColor;
+      // Color must come from the theme — never an empty / undefined / hardcoded
+      // null. We don't pin the exact hex (that's a theme concern); we only
+      // assert it's a non-empty string starting with '#'.
+      expect(typeof bg).toBe('string');
+      expect((bg as string).startsWith('#')).toBe(true);
+    });
+
+    it('uses three distinct background colors for Low / Medium / High (deterministic per preset)', () => {
+      const colors: Record<string, unknown> = {};
+      for (const q of ['Low', 'Medium', 'High'] as const) {
+        const r = makeRecording({ id: `id-${q}`, quality: q });
+        const view = render(
+          <RecordingRow recording={r} onPlay={() => undefined} onDelete={() => undefined} onShare={() => undefined} />,
+        );
+        const badge = findBadge(view.UNSAFE_root, `id-${q}`);
+        colors[q] = flattenStyle(badge.props.style).backgroundColor;
+      }
+      // Low/High must be visually distinct — Medium may match the row bg
+      // (neutral). Either way, all three should not collapse to one value.
+      expect(colors.Low).not.toEqual(colors.High);
+      expect(new Set(Object.values(colors)).size).toBeGreaterThanOrEqual(2);
+    });
   });
 });

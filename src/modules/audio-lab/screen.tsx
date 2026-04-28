@@ -20,7 +20,7 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
-import type { Recording } from './audio-types';
+import type { QualityName, Recording } from './audio-types';
 import PermissionBanner from './components/PermissionBanner';
 import RecorderCard from './components/RecorderCard';
 import RecordingsList from './components/RecordingsList';
@@ -45,6 +45,10 @@ export default function AudioLabScreen({
   const recorder = useAudioRecorder();
   const player = useAudioPlayer();
   const [recordings, setRecordings] = React.useState<Recording[]>([]);
+  // FR-007 / D-03: quality state lives at the screen level so that the
+  // selection survives `RecorderCard` re-renders and remains the single source
+  // of truth handed back into the recorder hook.
+  const [quality, setQualityState] = React.useState<QualityName>('Medium');
   const recordingsRef = React.useRef<Recording[]>([]);
   recordingsRef.current = recordings;
   const mountedRef = React.useRef(true);
@@ -94,6 +98,18 @@ export default function AudioLabScreen({
   const handleRequestPermission = React.useCallback(() => {
     recorder.requestPermission().catch(() => undefined);
   }, [recorder]);
+
+  const handleChangeQuality = React.useCallback(
+    (q: QualityName) => {
+      // recorder.setQuality is itself a no-op while recording (FR-008); the
+      // screen mirrors that guard so the visible selection cannot diverge
+      // from the recorder's working preset mid-capture.
+      if (recorder.status === 'recording' || recorder.status === 'stopping') return;
+      setQualityState(q);
+      recorder.setQuality(q);
+    },
+    [recorder],
+  );
 
   const handlePlay = React.useCallback(
     (id: string) => {
@@ -152,10 +168,10 @@ export default function AudioLabScreen({
           status={recorder.status}
           elapsedMs={recorder.elapsedMs}
           meterLevel={recorder.meterLevel}
-          quality={recorder.quality}
+          quality={quality}
           onStart={handleStart}
           onStop={handleStop}
-          onChangeQuality={recorder.setQuality}
+          onChangeQuality={handleChangeQuality}
         />
 
         <RecordingsList

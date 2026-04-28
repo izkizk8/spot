@@ -82,7 +82,7 @@ export const requestRecordingPermissionsAsync = jest.fn(async () => ({
   expires: 'never',
 }));
 
-export function createAudioRecorder(_options: unknown): MockRecorder {
+export const createAudioRecorder = jest.fn((_options: unknown): MockRecorder => {
   if (constructRecorderShouldThrow) {
     throw new Error('Mock recorder construction failure');
   }
@@ -103,7 +103,7 @@ export function createAudioRecorder(_options: unknown): MockRecorder {
   };
   activeRecorder = recorder;
   return recorder;
-}
+});
 
 export function createAudioPlayer(_uri: string, _options?: unknown): MockPlayer {
   if (constructPlayerShouldThrow) {
@@ -140,6 +140,7 @@ export function __reset(): void {
   setAudioModeAsync.mockClear();
   getRecordingPermissionsAsync.mockClear();
   requestRecordingPermissionsAsync.mockClear();
+  createAudioRecorder.mockClear();
 }
 
 export function __setPermission(s: PermissionStatus): void {

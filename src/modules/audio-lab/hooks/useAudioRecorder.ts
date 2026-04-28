@@ -20,6 +20,7 @@
  */
 
 import React from 'react';
+import { Platform } from 'react-native';
 
 import {
   AudioPermissionDenied,
@@ -29,7 +30,7 @@ import {
   type Recording,
   type RecorderState,
 } from '../audio-types';
-import { getPreset } from '../quality-presets';
+import { getPreset, WEB_PRESETS } from '../quality-presets';
 import { saveRecording as defaultSaveRecording } from '../recordings-store';
 
 /** Subset of the `expo-audio` surface this hook depends on. */
@@ -180,13 +181,20 @@ export function useAudioRecorder(options: UseAudioRecorderOptions = {}): UseAudi
     let recorder: RecorderHandle;
     try {
       const preset = getPreset(qualityRef.current);
-      recorder = bridge.createAudioRecorder({
-        sampleRate: preset.sampleRate,
-        bitrate: preset.bitrate,
-        numberOfChannels: preset.channels,
-        format: preset.format,
-        isMeteringEnabled: true,
-      });
+      // R-005: Web ignores sampleRate/channels (driven by source MediaStream);
+      // only `audioBitsPerSecond` is honored. Native (iOS/Android) accepts the
+      // expo-audio recorder option shape: `bitRate` (camelCase, capital R).
+      const config =
+        Platform.OS === 'web'
+          ? { ...WEB_PRESETS[qualityRef.current] }
+          : {
+              sampleRate: preset.sampleRate,
+              numberOfChannels: preset.channels,
+              bitRate: preset.bitrate,
+              format: preset.format,
+              isMeteringEnabled: true,
+            };
+      recorder = bridge.createAudioRecorder(config);
     } catch {
       safeSetStatus('idle');
       throw new AudioRecorderUnavailable('expo-audio failed to construct recorder');

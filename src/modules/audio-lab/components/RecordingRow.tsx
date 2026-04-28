@@ -19,8 +19,9 @@ import { Alert, Linking, Pressable, StyleSheet, View } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
+import { useTheme } from '@/hooks/use-theme';
 
-import type { Recording } from '../audio-types';
+import type { QualityName, Recording } from '../audio-types';
 import { bytesToHuman, formatDurationMs } from '../format-utils';
 
 export interface RecordingRowProps {
@@ -70,6 +71,10 @@ export default function RecordingRow({
   onShare,
 }: RecordingRowProps) {
   const { id, name, uri, durationMs, sizeBytes, quality } = recording;
+  const theme = useTheme();
+  const badgeBg = qualityBackground(quality, theme);
+  const badgeFg: 'background' | 'text' | 'textSecondary' =
+    quality === 'High' ? 'background' : quality === 'Low' ? 'textSecondary' : 'text';
 
   const handlePlay = React.useCallback(() => {
     onPlay(id);
@@ -110,8 +115,11 @@ export default function RecordingRow({
         </ThemedText>
       </View>
 
-      <View style={styles.badge} testID={`audio-lab-quality-${id}`}>
-        <ThemedText type="small" themeColor="textSecondary">
+      <View
+        style={[styles.badge, { backgroundColor: badgeBg }]}
+        testID={`audio-lab-quality-${id}`}
+      >
+        <ThemedText type="small" themeColor={badgeFg}>
           {quality}
         </ThemedText>
       </View>
@@ -150,6 +158,30 @@ export default function RecordingRow({
       </View>
     </ThemedView>
   );
+}
+
+/**
+ * Maps a `QualityName` to a deterministic background color from the active
+ * theme. No hardcoded hex values — every color is derived from `useTheme()`
+ * tokens so light/dark mode flip cleanly (FR-011).
+ *
+ *   Low    → subtle  (backgroundSelected)
+ *   Medium → neutral (backgroundElement — same as row, reads as "no badge")
+ *   High   → strong accent (tintA)
+ */
+function qualityBackground(
+  quality: QualityName,
+  theme: ReturnType<typeof useTheme>,
+): string {
+  switch (quality) {
+    case 'High':
+      return theme.tintA;
+    case 'Low':
+      return theme.backgroundSelected;
+    case 'Medium':
+    default:
+      return theme.backgroundElement;
+  }
 }
 
 const styles = StyleSheet.create({
