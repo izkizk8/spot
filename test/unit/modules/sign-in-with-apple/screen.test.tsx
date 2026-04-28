@@ -38,7 +38,7 @@ describe('SignInWithAppleScreen (iOS)', () => {
     await act(async () => {
       await new Promise((resolve) => setTimeout(resolve, 10));
     });
-    expect(getByTestId('siwa-user-card-state')).toHaveTextContent('signed-out');
+    expect(getByTestId('siwa-user-card-state')).toHaveTextContent('State: signed-out');
   });
 
   it('loads persisted user on mount', async () => {
@@ -51,7 +51,7 @@ describe('SignInWithAppleScreen (iOS)', () => {
 
     await waitFor(
       () => {
-        expect(getByTestId('siwa-user-card-state')).toHaveTextContent('signed-in');
+        expect(getByTestId('siwa-user-card-state')).toHaveTextContent('State: signed-in');
       },
       { timeout: 1000 },
     );

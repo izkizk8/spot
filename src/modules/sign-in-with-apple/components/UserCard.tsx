@@ -28,7 +28,7 @@ export default function UserCard({ state, user, error }: UserCardProps) {
         User Status
       </ThemedText>
       <ThemedText type="default" testID="siwa-user-card-state">
-        State: {state}
+        {`State: ${state}`}
       </ThemedText>
 
       {state === 'signed-in' && user && (

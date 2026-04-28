@@ -13,7 +13,7 @@ describe('UserCard', () => {
       <UserCard state="signed-out" user={null} error={null} />,
     );
     expect(getByTestId('siwa-user-card')).toBeTruthy();
-    expect(getByTestId('siwa-user-card-state')).toHaveTextContent('signed-out');
+    expect(getByTestId('siwa-user-card-state')).toHaveTextContent('State: signed-out');
     expect(getByText('Not signed in')).toBeTruthy();
   });
 
