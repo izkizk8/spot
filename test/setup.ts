@@ -87,6 +87,9 @@ jest.mock('expo-location', () => jest.requireActual('@test/__mocks__/expo-locati
 // Mock expo-task-manager (feature 025)
 jest.mock('expo-task-manager', () => jest.requireActual('@test/__mocks__/expo-task-manager'));
 
+// Mock expo-notifications (feature 026)
+jest.mock('expo-notifications', () => jest.requireActual('@test/__mocks__/expo-notifications'));
+
 // Mock the MapKit native bridges directly (feature 024).
 // Mocking expo-modules-core globally breaks `requireNativeModule` for other
 // consumers (expo-clipboard etc.) because jest-expo's preset doesn't kick in
