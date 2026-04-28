@@ -47,6 +47,7 @@
       "./plugins/with-coreml",
       "./plugins/with-vision",
       "./plugins/with-speech-recognition",
+      "./plugins/with-audio-recording",
       [
         "expo-sensors",
         {
