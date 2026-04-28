@@ -44,6 +44,18 @@ export enum GeofencingEventType {
   Exit = 2,
 }
 
+// Feature 025: Activity type enum
+export enum ActivityType {
+  Other = 1,
+  AutomotiveNavigation = 2,
+  Fitness = 3,
+  OtherNavigation = 4,
+  Airborne = 5,
+}
+
+// Alias for compatibility with Location.Accuracy
+export const Accuracy = LocationAccuracy;
+
 // Mock implementations
 export const requestForegroundPermissionsAsync = jest.fn(async () => ({
   status: mockStatus,

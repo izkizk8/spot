@@ -37,7 +37,8 @@ export interface LocationSample {
 
 /** A heading sample from watchHeadingAsync */
 export interface HeadingSample {
-  readonly headingMagneticNorth: number;
+  readonly magHeading: number;
+  readonly trueHeading: number;
   /** 0 = uncalibrated, 1-3 = calibrated to varying degrees */
   readonly accuracy: number;
   readonly timestamp: Date;
