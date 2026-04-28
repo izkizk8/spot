@@ -22,6 +22,7 @@ import mapkitLab from './mapkit-lab';
 import coreLocationLab from './core-location-lab';
 import notificationsLab from './notifications-lab';
 import lockWidgetsLab from './lock-widgets-lab';
+import standbyLab from './standby-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -64,5 +65,6 @@ export const MODULES: readonly ModuleManifest[] = [
   coreLocationLab,
   notificationsLab,
   lockWidgetsLab,
+  standbyLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
