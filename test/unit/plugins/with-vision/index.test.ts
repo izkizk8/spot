@@ -12,6 +12,22 @@
 
 import type { ExpoConfig } from '@expo/config-types';
 
+// Mock @expo/config-plugins so withInfoPlist runs its callback synchronously
+// and writes the resulting modResults back onto config.ios.infoPlist.
+jest.mock('@expo/config-plugins', () => ({
+  withInfoPlist: (config: any, callback: (cfg: any) => any) => {
+    const modResults: Record<string, unknown> = { ...config.ios?.infoPlist };
+    const result = callback({ ...config, modResults, modRequest: {} });
+    return {
+      ...config,
+      ios: {
+        ...config.ios,
+        infoPlist: result.modResults,
+      },
+    };
+  },
+}));
+
 describe('with-vision plugin', () => {
   let withVision: (config: ExpoConfig) => ExpoConfig;
 
