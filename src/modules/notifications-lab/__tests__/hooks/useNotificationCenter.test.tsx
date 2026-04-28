@@ -1,7 +1,6 @@
 import { renderHook, act, waitFor } from '@testing-library/react-native';
 import { Platform, Image } from 'react-native';
 import * as Location from 'expo-location';
-import * as TaskManager from 'expo-task-manager';
 import * as Notifications from 'expo-notifications';
 import { useNotificationCenter, __resetModuleFlags } from '../../hooks/useNotificationCenter';
 
@@ -37,23 +36,24 @@ describe('useNotificationCenter', () => {
     it('registers categories exactly once across remount-mount-remount', async () => {
       const { unmount: unmount1 } = renderHook(() => useNotificationCenter());
       await waitFor(() => {
-        expect(Notifications.setNotificationCategoriesAsync).toHaveBeenCalledTimes(1);
+        // Should be called 3 times (once per category)
+        expect(Notifications.setNotificationCategoryAsync).toHaveBeenCalledTimes(3);
       });
 
       unmount1();
 
       const { unmount: unmount2 } = renderHook(() => useNotificationCenter());
       await waitFor(() => {
-        // Should still be 1, not 2
-        expect(Notifications.setNotificationCategoriesAsync).toHaveBeenCalledTimes(1);
+        // Should still be 3, not 6 (idempotent)
+        expect(Notifications.setNotificationCategoryAsync).toHaveBeenCalledTimes(3);
       });
 
       unmount2();
 
       const { unmount: unmount3 } = renderHook(() => useNotificationCenter());
       await waitFor(() => {
-        // Should still be 1, not 3
-        expect(Notifications.setNotificationCategoriesAsync).toHaveBeenCalledTimes(1);
+        // Should still be 3, not 9 (idempotent)
+        expect(Notifications.setNotificationCategoryAsync).toHaveBeenCalledTimes(3);
       });
 
       unmount3();
@@ -735,7 +735,7 @@ describe('useNotificationCenter', () => {
               radius: 100,
             },
           });
-        } catch (err) {
+        } catch {
           // Expected to throw
         }
       });

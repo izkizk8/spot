@@ -26,13 +26,32 @@ describe('IOSOnlyBanner', () => {
   });
 
   it('renders unique copy for each reason', () => {
-    const copies = reasons.map((reason) => {
-      const { container } = render(<IOSOnlyBanner reason={reason} />);
-      return container.props.children;
+    const textContents: string[] = [];
+
+    reasons.forEach((reason) => {
+      const { getByText } = render(<IOSOnlyBanner reason={reason} />);
+
+      // Get the rendered text based on expected content patterns
+      let foundText = '';
+      if (reason === 'permissions') {
+        foundText = getByText(/Permission management/i).props.children;
+      } else if (reason === 'categories') {
+        foundText = getByText(/Action categories/i).props.children;
+      } else if (reason === 'pending') {
+        foundText = getByText(/Scheduled notifications/i).props.children;
+      } else if (reason === 'delivered') {
+        foundText = getByText(/Delivered notifications list/i).props.children;
+      } else if (reason === 'compose-fields') {
+        foundText = getByText(/Some compose fields/i).props.children;
+      } else if (reason === 'web-fallback') {
+        foundText = getByText(/native Notifications API/i).props.children;
+      }
+
+      textContents.push(foundText);
     });
 
     // Each copy should be unique (no duplicates)
-    const uniqueCopies = new Set(copies.map(JSON.stringify));
+    const uniqueCopies = new Set(textContents);
     expect(uniqueCopies.size).toBe(reasons.length);
   });
 

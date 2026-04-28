@@ -68,7 +68,12 @@ export const requestPermissionsAsync = jest.fn(async (_options?: { ios?: unknown
   return { ...mockPermissions };
 });
 
-export const setNotificationCategoriesAsync = jest.fn(async (_categories: unknown[]) => {});
+export const setNotificationCategoryAsync = jest.fn(
+  async (_identifier: string, _actions: unknown[], _options?: unknown) => ({
+    identifier: _identifier,
+    actions: _actions,
+  }),
+);
 
 export const scheduleNotificationAsync = jest.fn(
   async (request: { content: unknown; trigger: unknown }) => {

@@ -2,27 +2,26 @@
  * @jest-environment node
  */
 
-import type { ExpoConfig } from '@expo/config-plugins';
+import type { ExpoConfig } from '@expo/config-types';
 import withRichNotifications from '../../../../plugins/with-rich-notifications';
 
-describe('with-rich-notifications plugin', () => {
-  // Baseline config for testing
-  const createBaseConfig = (): ExpoConfig => ({
-    name: 'test-app',
-    slug: 'test-app',
-    _internal: {
-      projectRoot: process.cwd(),
-    },
-    ios: {
-      bundleIdentifier: 'com.test.app',
-      infoPlist: {},
-    },
-    android: {
-      package: 'com.test.app',
-    },
-    plugins: [],
-  });
+const createBaseConfig = (): ExpoConfig => ({
+  name: 'test-app',
+  slug: 'test-app',
+  _internal: {
+    projectRoot: process.cwd(),
+  },
+  ios: {
+    bundleIdentifier: 'com.test.app',
+    infoPlist: {},
+  },
+  android: {
+    package: 'com.test.app',
+  },
+  plugins: [],
+});
 
+describe('with-rich-notifications plugin', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });

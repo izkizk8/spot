@@ -25,10 +25,11 @@ describe('PendingList', () => {
   it('calls onCancel with identifier', () => {
     const onCancel = jest.fn();
     const pending = [{ identifier: 'n1', title: 'Title 1', triggerSummary: 'immediate' }];
-    const { getByText } = render(
+    const { getAllByText } = render(
       <PendingList pending={pending} onCancel={onCancel} onCancelAll={jest.fn()} />,
     );
-    fireEvent.press(getByText(/cancel/i));
+    const cancelButtons = getAllByText(/cancel/i);
+    fireEvent.press(cancelButtons[0]); // First "Cancel" button is for the item
     expect(onCancel).toHaveBeenCalledWith('n1');
   });
 

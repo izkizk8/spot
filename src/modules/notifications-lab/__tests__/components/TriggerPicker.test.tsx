@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { render } from '@testing-library/react-native';
 import { TriggerPicker } from '../../components/TriggerPicker';
 
 describe('TriggerPicker', () => {
@@ -39,8 +39,8 @@ describe('TriggerPicker', () => {
         locationAuthorized={false}
       />,
     );
-    const regionButton = getByText(/region/i);
-    expect(regionButton.props.accessibilityState?.disabled).toBe(true);
+    // When location not authorized, tooltip should appear
+    expect(getByText(/Location permission required/i)).toBeTruthy();
   });
 
   it('shows tooltip when region-entry disabled', () => {

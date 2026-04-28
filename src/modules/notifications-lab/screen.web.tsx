@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
-import { ThemedView } from '@/components/ThemedView';
-import { ThemedText } from '@/components/ThemedText';
+import { ThemedView } from '@/components/themed-view';
+import { ThemedText } from '@/components/themed-text';
 import { IOSOnlyBanner } from './components/IOSOnlyBanner';
 import { EventLog } from './components/EventLog';
 import type { NotificationEvent } from './types';
@@ -21,13 +21,13 @@ export default function NotificationsLabScreenWeb() {
     }
 
     if (globalThis.Notification.permission === 'granted') {
-      new globalThis.Notification(title, { body });
-      setEvents(
-        [{ kind: 'received', identifier: Date.now().toString(), at: new Date() }, ...events].slice(
-          0,
-          20,
-        ),
-      );
+      const _notif = new globalThis.Notification(title, { body });
+      const newEvent: NotificationEvent = {
+        kind: 'received' as const,
+        identifier: Date.now().toString(),
+        at: new Date(),
+      };
+      setEvents([newEvent, ...events].slice(0, 20));
     }
   };
 

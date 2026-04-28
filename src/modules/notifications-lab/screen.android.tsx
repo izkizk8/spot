@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedView } from '@/components/themed-view';
 import { useNotificationCenter } from './hooks/useNotificationCenter';
 import { IOSOnlyBanner } from './components/IOSOnlyBanner';
 import { ComposeForm } from './components/ComposeForm';

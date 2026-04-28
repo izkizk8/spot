@@ -1,6 +1,6 @@
 import React from 'react';
 import { ScrollView, StyleSheet } from 'react-native';
-import { ThemedView } from '@/components/ThemedView';
+import { ThemedView } from '@/components/themed-view';
 import { useNotificationCenter } from './hooks/useNotificationCenter';
 import { PermissionsCard } from './components/PermissionsCard';
 import { ComposeForm } from './components/ComposeForm';
@@ -25,7 +25,16 @@ export default function NotificationsLabScreen() {
         />
       </ThemedView>
       <ThemedView style={styles.card}>
-        <CategoriesCard lastReceived={null} onInvokeAction={hook.invokeAction} />
+        <CategoriesCard
+          lastReceived={null}
+          onInvokeAction={(actionId, textInput) =>
+            hook.invokeAction({
+              identifier: 'last-notif',
+              actionIdentifier: actionId,
+              textInput,
+            })
+          }
+        />
       </ThemedView>
       <ThemedView style={styles.card}>
         <PendingList pending={hook.pending} onCancel={hook.cancel} onCancelAll={hook.cancelAll} />

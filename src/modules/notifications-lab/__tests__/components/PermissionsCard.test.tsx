@@ -3,11 +3,11 @@
  */
 import React from 'react';
 import { render, fireEvent } from '@testing-library/react-native';
-import * as Linking from 'react-native/Libraries/Linking/Linking';
+import { Linking } from 'react-native';
 import { PermissionsCard } from '../../components/PermissionsCard';
 import type { PermissionsState } from '../../types';
 
-jest.spyOn(Linking, 'openSettings').mockImplementation(() => Promise.resolve());
+jest.spyOn(Linking, 'openSettings').mockResolvedValue();
 
 describe('PermissionsCard', () => {
   const basePermissions: PermissionsState = {
@@ -22,10 +22,12 @@ describe('PermissionsCard', () => {
   it.each(['notDetermined', 'provisional', 'authorized', 'denied', 'ephemeral'] as const)(
     'renders status pill for %s',
     (status) => {
-      const { getByText } = render(
+      const { getAllByText } = render(
         <PermissionsCard permissions={{ ...basePermissions, status }} onRequest={jest.fn()} />,
       );
-      expect(getByText(new RegExp(status, 'i'))).toBeTruthy();
+      // Status appears - may appear multiple times (e.g., "provisional" in status + button)
+      const statusElements = getAllByText(new RegExp(status, 'i'));
+      expect(statusElements.length).toBeGreaterThan(0);
     },
   );
 
@@ -52,7 +54,7 @@ describe('PermissionsCard', () => {
       <PermissionsCard permissions={basePermissions} onRequest={onRequest} />,
     );
 
-    fireEvent.press(getByText(/request/i));
+    fireEvent.press(getByText(/^Request Permission$/i));
     expect(onRequest).toHaveBeenCalledWith();
   });
 

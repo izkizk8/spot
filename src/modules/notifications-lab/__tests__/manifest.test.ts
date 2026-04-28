@@ -1,12 +1,21 @@
-import manifest from '../../index';
+import manifest from '../index';
 
 describe('notifications-lab manifest', () => {
   it('has correct id', () => {
     expect(manifest.id).toBe('notifications-lab');
   });
 
-  it('has correct label', () => {
-    expect(manifest.label).toBe('Notifications Lab');
+  it('has correct title', () => {
+    expect(manifest.title).toBe('Notifications Lab');
+  });
+
+  it('has description', () => {
+    expect(manifest.description).toBeTruthy();
+  });
+
+  it('has icon with ios and fallback', () => {
+    expect(manifest.icon.ios).toBe('bell.badge.fill');
+    expect(manifest.icon.fallback).toBe('🔔');
   });
 
   it('supports ios, android, web', () => {
@@ -17,8 +26,8 @@ describe('notifications-lab manifest', () => {
     expect(manifest.minIOS).toBe('10.0');
   });
 
-  it('has screen component', () => {
-    expect(manifest.screen).toBeDefined();
-    expect(typeof manifest.screen).toBe('function');
+  it('has render function', () => {
+    expect(manifest.render).toBeDefined();
+    expect(typeof manifest.render).toBe('function');
   });
 });

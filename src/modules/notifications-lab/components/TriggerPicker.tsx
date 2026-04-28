@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, TextInput } from 'react-native';
-import { ThemedText } from '@/components/ThemedText';
+import React from 'react';
+import { View, TouchableOpacity, StyleSheet } from 'react-native';
+import { ThemedText } from '@/components/themed-text';
 import type { TriggerSpec } from '../types';
 
 interface Props {
@@ -10,8 +10,6 @@ interface Props {
 }
 
 export function TriggerPicker({ value, onChange, locationAuthorized }: Props) {
-  const [validationError, setValidationError] = useState<string | null>(null);
-
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => onChange({ kind: 'immediate' })}>

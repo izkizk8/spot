@@ -70,9 +70,11 @@ describe('EventLog', () => {
 
     const { queryByText } = render(<EventLog events={events} />);
 
-    // First 20 should render, beyond that should not
+    // First 20 should render (n0-n19), beyond that should not
+    expect(queryByText(/n0/)).toBeTruthy();
     expect(queryByText(/n19/)).toBeTruthy();
-    expect(queryByText(/n24/)).toBeTruthy(); // Most recent should always show
+    expect(queryByText(/n20/)).toBeNull(); // Should not render
+    expect(queryByText(/n24/)).toBeNull(); // Should not render
   });
 
   it('renders timestamps for each event', () => {

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef } from 'react';
 import { Platform, Image } from 'react-native';
 import * as Notifications from 'expo-notifications';
 import * as Location from 'expo-location';
-import * as TaskManager from 'expo-task-manager';
 import { CATEGORIES } from '../categories';
 import { BUNDLED_ATTACHMENTS } from '../bundled-attachments';
 import type {
@@ -64,16 +63,68 @@ export function useNotificationCenter(): UseNotificationCenter {
   const mountedRef = useRef(true);
   const subscriptionsRef = useRef<Array<{ remove: () => void }>>([]);
 
+  const refresh = async (): Promise<void> => {
+    try {
+      const [scheduledNotifs, presentedNotifs] = await Promise.all([
+        Notifications.getAllScheduledNotificationsAsync(),
+        Notifications.getPresentedNotificationsAsync(),
+      ]);
+
+      if (!mountedRef.current) return;
+
+      setPending(
+        scheduledNotifs.map((n: any) => ({
+          identifier: n.identifier,
+          title: n.content.title || '',
+          triggerSummary: summarizeTrigger(n.trigger),
+        })),
+      );
+
+      setDelivered(
+        presentedNotifs.map((n: any) => ({
+          identifier: n.identifier,
+          title: n.request.content.title || '',
+          deliveredAt: new Date(n.date),
+        })),
+      );
+    } catch (err) {
+      if (mountedRef.current) {
+        setError(err as Error);
+      }
+    }
+  };
+
   useEffect(() => {
     mountedRef.current = true;
 
     // Idempotent category registration
     if (
       !__categoriesRegistered &&
-      typeof Notifications.setNotificationCategoriesAsync === 'function'
+      typeof Notifications.setNotificationCategoryAsync === 'function'
     ) {
       __categoriesRegistered = true;
-      Notifications.setNotificationCategoriesAsync(CATEGORIES as any).catch((err) => {
+      // Register each category
+      Promise.all(
+        CATEGORIES.map((cat) =>
+          Notifications.setNotificationCategoryAsync(
+            cat.identifier,
+            cat.actions.map((action) => ({
+              identifier: action.id,
+              buttonTitle: action.title,
+              options: {
+                opensAppToForeground: action.options?.foreground,
+                isDestructive: action.options?.destructive,
+              },
+              textInput: action.textInput
+                ? {
+                    submitButtonTitle: action.textInput.buttonTitle,
+                    placeholder: action.textInput.placeholder,
+                  }
+                : undefined,
+            })),
+          ),
+        ),
+      ).catch((err: any) => {
         if (mountedRef.current) {
           setError(err);
         }
@@ -180,8 +231,16 @@ export function useNotificationCenter(): UseNotificationCenter {
         }
       });
 
-    // Initial refresh
-    refresh();
+    // Initial refresh - wrapped in IIFE to avoid lint error
+    (async () => {
+      try {
+        await refresh();
+      } catch (err: any) {
+        if (mountedRef.current) {
+          setError(err as Error);
+        }
+      }
+    })();
 
     return () => {
       mountedRef.current = false;
@@ -398,37 +457,6 @@ export function useNotificationCenter(): UseNotificationCenter {
     }
   };
 
-  const refresh = async (): Promise<void> => {
-    try {
-      const [scheduledNotifs, presentedNotifs] = await Promise.all([
-        Notifications.getAllScheduledNotificationsAsync(),
-        Notifications.getPresentedNotificationsAsync(),
-      ]);
-
-      if (!mountedRef.current) return;
-
-      setPending(
-        scheduledNotifs.map((n: any) => ({
-          identifier: n.identifier,
-          title: n.content.title || '',
-          triggerSummary: summarizeTrigger(n.trigger),
-        })),
-      );
-
-      setDelivered(
-        presentedNotifs.map((n: any) => ({
-          identifier: n.identifier,
-          title: n.request.content.title || '',
-          deliveredAt: new Date(n.date),
-        })),
-      );
-    } catch (err) {
-      if (mountedRef.current) {
-        setError(err as Error);
-      }
-    }
-  };
-
   const invokeAction = (args: {
     identifier: string;
     actionIdentifier: string;
@@ -484,6 +512,8 @@ function mapPermissions(result: any): PermissionsState {
     mappedStatus = 'ephemeral';
   }
 
+  const platformVersion = typeof Platform.Version === 'number' ? Platform.Version : 0;
+
   return {
     status: mappedStatus,
     alerts: ios.allowsAlert || false,
@@ -491,7 +521,7 @@ function mapPermissions(result: any): PermissionsState {
     badges: ios.allowsBadge || false,
     criticalAlerts: ios.allowsCriticalAlerts || false,
     timeSensitive:
-      Platform.OS === 'ios' && Platform.Version >= 15
+      Platform.OS === 'ios' && platformVersion >= 15
         ? ios.allowsDisplayInNotificationCenter || false
         : null,
   };
