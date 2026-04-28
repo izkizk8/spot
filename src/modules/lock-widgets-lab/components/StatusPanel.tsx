@@ -23,7 +23,7 @@ import {
   DEFAULT_LOCK_CONFIG,
   loadShadowLockConfig,
 } from '@/modules/lock-widgets-lab/lock-config';
-import * as WidgetCenterBridge from '@/native/widget-center';
+import bridge from '@/native/widget-center';
 import { WidgetCenterBridgeError } from '@/native/widget-center.types';
 
 const REFRESH_INTERVAL_MS = 30 * 60 * 1000;
@@ -54,7 +54,7 @@ export function StatusPanel({ version, lastPushedAt }: StatusPanelProps) {
       try {
         setHasError(false);
         if (isIOS16Plus()) {
-          const fetchedConfig = await WidgetCenterBridge.getLockConfig();
+          const fetchedConfig = await bridge.getLockConfig();
           setConfig(fetchedConfig);
         } else {
           // Android / Web / iOS < 16: read from AsyncStorage shadow

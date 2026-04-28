@@ -62,7 +62,7 @@ describe('AccessoryPreview (lock-widgets-lab)', () => {
   });
 
   it('updating showcaseValue re-renders all three cards', () => {
-    const { getByLabelText, rerender, getByText } = render(
+    const { rerender, getByText } = render(
       <AccessoryPreview showcaseValue="First" counter={1} tint="blue" />,
     );
 
@@ -74,7 +74,7 @@ describe('AccessoryPreview (lock-widgets-lab)', () => {
   });
 
   it('updating counter re-renders all three cards', () => {
-    const { getByLabelText, rerender, getAllByText } = render(
+    const { rerender, getAllByText } = render(
       <AccessoryPreview showcaseValue="Test" counter={10} tint="blue" />,
     );
 

@@ -110,7 +110,6 @@ describe('lock-config module', () => {
     const {
       loadShadowLockConfig,
       DEFAULT_LOCK_CONFIG,
-      SHADOW_STORE_KEY,
     } = require('@/modules/lock-widgets-lab/lock-config');
     (AsyncStorage.getItem as jest.Mock).mockResolvedValueOnce('not-json{');
     const loaded = await loadShadowLockConfig();

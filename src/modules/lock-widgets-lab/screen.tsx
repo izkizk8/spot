@@ -16,7 +16,7 @@ import { ScrollView, StyleSheet, Platform } from 'react-native';
 import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
-import * as bridge from '@/native/widget-center';
+import bridge from '@/native/widget-center';
 import { ConfigPanel } from '@/modules/lock-widgets-lab/components/ConfigPanel';
 import {
   ReloadEventLog,
@@ -59,7 +59,7 @@ export default function LockWidgetsLabScreen() {
   const ios16 = isIOS16Plus();
   const [config, setConfig] = useState<LockConfig>(DEFAULT_LOCK_CONFIG);
   const [configEpoch, setConfigEpoch] = useState(0);
-  const [lastPushedAt, setLastPushedAt] = useState(Date.now());
+  const [lastPushedAt, setLastPushedAt] = useState(0);
   const [log, dispatch] = useReducer(logReducer, []);
 
   useEffect(() => {

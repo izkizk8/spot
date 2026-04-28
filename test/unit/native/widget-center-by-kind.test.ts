@@ -12,8 +12,6 @@
  * @see specs/027-lock-screen-widgets/contracts/widget-center-bridge.contract.ts
  */
 
-import { Platform } from 'react-native';
-
 const mockNativeModule = {
   isAvailable: jest.fn(),
   getCurrentConfig: jest.fn(),

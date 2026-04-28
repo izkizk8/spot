@@ -3,13 +3,16 @@ import { render } from '@testing-library/react-native';
 
 import { StatusPanel } from '@/modules/lock-widgets-lab/components/StatusPanel';
 import { DEFAULT_LOCK_CONFIG } from '@/modules/lock-widgets-lab/lock-config';
-import * as WidgetCenterBridge from '@/native/widget-center';
+import bridge from '@/native/widget-center';
 import { WidgetCenterBridgeError } from '@/native/widget-center.types';
 
 // Mock the bridge
 jest.mock('@/native/widget-center', () => ({
-  getLockConfig: jest.fn(),
-  isAvailable: jest.fn(),
+  __esModule: true,
+  default: {
+    getLockConfig: jest.fn(),
+    isAvailable: jest.fn(),
+  },
 }));
 
 // Mock loadShadowLockConfig
@@ -24,12 +27,12 @@ jest.mock('@/modules/lock-widgets-lab/lock-config', () => {
 describe('StatusPanel (lock-widgets-lab)', () => {
   beforeEach(() => {
     jest.clearAllMocks();
-    (WidgetCenterBridge.getLockConfig as jest.Mock).mockResolvedValue(DEFAULT_LOCK_CONFIG);
-    (WidgetCenterBridge.isAvailable as jest.Mock).mockReturnValue(true);
+    (bridge.getLockConfig as jest.Mock).mockResolvedValue(DEFAULT_LOCK_CONFIG);
+    (bridge.isAvailable as jest.Mock).mockReturnValue(true);
   });
 
   it('renders the showcase value, counter, tint label', async () => {
-    const { findByText, getByText } = render(<StatusPanel version={1} lastPushedAt={Date.now()} />);
+    const { findByText } = render(<StatusPanel version={1} lastPushedAt={Date.now()} />);
 
     expect(await findByText(new RegExp(DEFAULT_LOCK_CONFIG.showcaseValue))).toBeTruthy();
     // Counter may be embedded in text, just check component renders
@@ -37,13 +40,11 @@ describe('StatusPanel (lock-widgets-lab)', () => {
   });
 
   it('renders error state when bridge.getLockConfig() rejects with WidgetCenterBridgeError', async () => {
-    (WidgetCenterBridge.getLockConfig as jest.Mock).mockRejectedValue(
+    (bridge.getLockConfig as jest.Mock).mockRejectedValue(
       new WidgetCenterBridgeError('Test bridge error'),
     );
 
-    const { findByText, queryByText } = render(
-      <StatusPanel version={1} lastPushedAt={Date.now()} />,
-    );
+    const { findByText } = render(<StatusPanel version={1} lastPushedAt={Date.now()} />);
 
     // Should fall back to DEFAULT_LOCK_CONFIG.showcaseValue and render without crashing
     expect(await findByText(new RegExp(DEFAULT_LOCK_CONFIG.showcaseValue))).toBeTruthy();
