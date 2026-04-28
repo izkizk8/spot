@@ -42,6 +42,8 @@ describe('native/keychain', () => {
     beforeEach(() => {
       requireOptionalNativeModule.mockReturnValue(NativeKeychainMock.keychain);
       jest.resetModules();
+      NativeKeychainMock = require('@test/__mocks__/native-keychain');
+      NativeKeychainMock.__reset();
       keychain = require('@/native/keychain').keychain;
     });
 

@@ -2,16 +2,31 @@
  * @jest-environment jsdom
  */
 
-import * as NativeKeychainMock from '@test/__mocks__/native-keychain';
+import { keychain as NativeKeychainMock } from '@test/__mocks__/native-keychain';
 
 // Import store after mocks are set up
 let keychainStore: typeof import('@/modules/keychain-lab/keychain-store');
 
 describe('keychain-store', () => {
+  let consoleWarnSpy: jest.SpyInstance;
+  let consoleErrorSpy: jest.SpyInstance;
+
   beforeEach(() => {
-    NativeKeychainMock.__reset();
     jest.resetModules();
+
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__reset();
+
+    // Set up console spies fresh for each test
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+
     keychainStore = require('@/modules/keychain-lab/keychain-store');
+  });
+
+  afterEach(() => {
+    consoleWarnSpy.mockRestore();
+    consoleErrorSpy.mockRestore();
   });
 
   describe('list', () => {
@@ -30,7 +45,8 @@ describe('keychain-store', () => {
         ],
       };
 
-      NativeKeychainMock.__setNextResult({ kind: 'ok', value: JSON.stringify(index) });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'ok', value: JSON.stringify(index) });
 
       const items = await keychainStore.list();
 
@@ -38,28 +54,29 @@ describe('keychain-store', () => {
       expect(items![0].label).toBe('key1');
       expect(items![0].accessibilityClass).toBe('whenUnlocked');
 
-      const calls = NativeKeychainMock.__getCallHistory();
+      const calls = mock.__getCallHistory();
       expect(calls[0].method).toBe('getItem');
       expect(calls[0].label).toBe('spot.keychain.lab.index');
     });
 
     it('returns null if the index read throws', async () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      consoleWarnSpy.mockClear();
 
-      NativeKeychainMock.__setNextResult({ kind: 'error', message: 'Keychain locked' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'error', message: 'Keychain locked' });
 
       const items = await keychainStore.list();
 
       expect(items).toBeNull();
       expect(consoleWarnSpy).toHaveBeenCalledWith(
         expect.stringContaining('Failed to read keychain index'),
+        expect.anything(),
       );
-
-      consoleWarnSpy.mockRestore();
     });
 
     it('returns empty array if index not found', async () => {
-      NativeKeychainMock.__setNextResult({ kind: 'not-found' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'not-found' });
 
       const items = await keychainStore.list();
 
@@ -67,6 +84,8 @@ describe('keychain-store', () => {
     });
 
     it('never includes the value field in the index', async () => {
+      const mock = require('@test/__mocks__/native-keychain');
+
       // Add an item with a value
       await keychainStore.add({
         label: 'secret-key',
@@ -75,15 +94,16 @@ describe('keychain-store', () => {
         biometryRequired: false,
       });
 
-      // Read the index back
-      const getResult = await NativeKeychainMock.keychain.getItem({
+      // Read the index back from the mock store
+      const getResult = await NativeKeychainMock.getItem({
         label: 'spot.keychain.lab.index',
       });
 
       expect(getResult.kind).toBe('ok');
-      const value = getResult.kind === 'ok' ? getResult.value! : '';
-      const index = JSON.parse(value);
-      expect(index.items.every((item: any) => !('value' in item))).toBe(true);
+      if (getResult.kind === 'ok') {
+        const index = JSON.parse(getResult.value!);
+        expect(index.items.every((item: any) => !('value' in item))).toBe(true);
+      }
     });
   });
 
@@ -96,7 +116,8 @@ describe('keychain-store', () => {
         biometryRequired: true,
       });
 
-      const calls = NativeKeychainMock.__getCallHistory();
+      const mock = require('@test/__mocks__/native-keychain');
+      const calls = mock.__getCallHistory();
 
       // Should have called addItem for the actual secret
       const addCall = calls.find((c) => c.method === 'addItem' && c.label === 'test-key');
@@ -165,9 +186,10 @@ describe('keychain-store', () => {
     });
 
     it('tolerates bridge errors with a single console.warn', async () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      consoleWarnSpy.mockClear();
 
-      NativeKeychainMock.__setNextResult({ kind: 'error', message: 'Keychain full' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'error', message: 'Keychain full' });
 
       await keychainStore.add({
         label: 'fail-key',
@@ -177,16 +199,18 @@ describe('keychain-store', () => {
       });
 
       expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
-      expect(consoleWarnSpy).toHaveBeenCalledWith(expect.stringContaining('Failed to add item'));
-
-      consoleWarnSpy.mockRestore();
+      expect(consoleWarnSpy).toHaveBeenCalledWith(
+        expect.stringContaining('Failed to add item'),
+        expect.anything(),
+      );
     });
 
     it('produces zero warns/errors on cancellation', async () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+      consoleWarnSpy.mockClear();
+      consoleErrorSpy.mockClear();
 
-      NativeKeychainMock.__setNextResult({ kind: 'cancelled' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'cancelled' });
 
       await keychainStore.add({
         label: 'cancel-key',
@@ -197,9 +221,6 @@ describe('keychain-store', () => {
 
       expect(consoleWarnSpy).not.toHaveBeenCalled();
       expect(consoleErrorSpy).not.toHaveBeenCalled();
-
-      consoleWarnSpy.mockRestore();
-      consoleErrorSpy.mockRestore();
     });
   });
 
@@ -222,16 +243,15 @@ describe('keychain-store', () => {
     });
 
     it('tolerates bridge errors with a single console.warn', async () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      consoleWarnSpy.mockClear();
 
-      NativeKeychainMock.__setNextResult({ kind: 'error', message: 'Keychain error' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'error', message: 'Keychain error' });
 
       const value = await keychainStore.get('error-key');
 
       expect(value).toBeNull();
       expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
-
-      consoleWarnSpy.mockRestore();
     });
   });
 
@@ -249,38 +269,37 @@ describe('keychain-store', () => {
       const items = await keychainStore.list();
       expect(items).toHaveLength(0);
 
-      const calls = NativeKeychainMock.__getCallHistory();
+      const mock = require('@test/__mocks__/native-keychain');
+      const calls = mock.__getCallHistory();
       const delCall = calls.find((c) => c.method === 'deleteItem' && c.label === 'del-key');
       expect(delCall).toBeDefined();
     });
 
     it('is idempotent when item not found', async () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      consoleWarnSpy.mockClear();
 
       await keychainStore.deleteItem('nonexistent');
 
       // No warning for not-found (idempotent delete)
       expect(consoleWarnSpy).not.toHaveBeenCalled();
-
-      consoleWarnSpy.mockRestore();
     });
 
     it('tolerates bridge errors with a single console.warn', async () => {
-      const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+      consoleWarnSpy.mockClear();
 
-      NativeKeychainMock.__setNextResult({ kind: 'error', message: 'Delete failed' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'error', message: 'Delete failed' });
 
       await keychainStore.deleteItem('fail-key');
 
       expect(consoleWarnSpy).toHaveBeenCalledTimes(1);
-
-      consoleWarnSpy.mockRestore();
     });
   });
 
   describe('tryAccessGroupProbe', () => {
     it('delegates to the bridge', async () => {
-      NativeKeychainMock.__setNextResult({ kind: 'ok', value: { bytes: 42 } });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'ok', value: { bytes: 42 } });
 
       const result = await keychainStore.tryAccessGroupProbe('group.test');
 
@@ -288,22 +307,21 @@ describe('keychain-store', () => {
       const value = result.kind === 'ok' ? result.value : undefined;
       expect(value).toEqual({ bytes: 42 });
 
-      const calls = NativeKeychainMock.__getCallHistory();
+      const calls = mock.__getCallHistory();
       expect(calls[0].method).toBe('tryAccessGroupProbe');
       expect(calls[0].accessGroup).toBe('group.test');
     });
 
     it('returns missing-entitlement without console.error', async () => {
-      const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation();
+      consoleErrorSpy.mockClear();
 
-      NativeKeychainMock.__setNextResult({ kind: 'missing-entitlement' });
+      const mock = require('@test/__mocks__/native-keychain');
+      mock.__setNextResult({ kind: 'missing-entitlement' });
 
       const result = await keychainStore.tryAccessGroupProbe('group.test');
 
       expect(result.kind).toBe('missing-entitlement');
       expect(consoleErrorSpy).not.toHaveBeenCalled();
-
-      consoleErrorSpy.mockRestore();
     });
   });
 });

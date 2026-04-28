@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import withKeychainServices from '../../plugins/with-keychain-services';
+import withKeychainServices from '../../../../plugins/with-keychain-services';
 import type { ExpoConfig } from '@expo/config-types';
 
 describe('with-keychain-services', () => {
@@ -70,7 +70,7 @@ describe('with-keychain-services', () => {
   });
 
   it('coexistence smoke test: plugin count grows by one', () => {
-    const appJson = require('../../app.json');
+    const appJson = require('../../../../app.json');
     const pluginsBefore = appJson.expo.plugins.length;
 
     // Simulate adding the plugin

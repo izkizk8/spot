@@ -14,13 +14,14 @@ describe('IOSOnlyBanner', () => {
   });
 
   it('has alert role for accessibility', () => {
-    const { getByRole } = render(<IOSOnlyBanner />);
-    expect(getByRole('alert')).toBeTruthy();
+    const { root } = render(<IOSOnlyBanner />);
+    const alertElement = root.findByProps({ accessibilityRole: 'alert' });
+    expect(alertElement).toBeTruthy();
   });
 
   it('uses themed components', () => {
-    const { getByRole } = render(<IOSOnlyBanner />);
-    const container = getByRole('alert');
-    expect(container).toBeTruthy();
+    const { root } = render(<IOSOnlyBanner />);
+    const alertElement = root.findByProps({ accessibilityRole: 'alert' });
+    expect(alertElement).toBeTruthy();
   });
 });

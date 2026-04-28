@@ -4,21 +4,30 @@
 
 import React from 'react';
 import { renderHook, waitFor } from '@testing-library/react-native';
-import * as NativeKeychainMock from '@test/__mocks__/native-keychain';
 
-// Import hook after mocks
-let useKeychainItems: typeof import('@/modules/keychain-lab/hooks/useKeychainItems').useKeychainItems;
+// Import hook and mock after React is loaded
+const useKeychainItems = require('@/modules/keychain-lab/hooks/useKeychainItems').useKeychainItems;
 
 describe('useKeychainItems', () => {
+  let consoleWarnSpy: jest.SpyInstance;
+
   beforeEach(() => {
-    NativeKeychainMock.__reset();
-    jest.resetModules();
-    useKeychainItems = require('@/modules/keychain-lab/hooks/useKeychainItems').useKeychainItems;
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__reset();
+
+    // Set up console spy fresh for each test
+    consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+  });
+
+  afterEach(() => {
+    consoleWarnSpy.mockRestore();
   });
 
   it('loads items from the store on initial mount', async () => {
+    const mock = require('@test/__mocks__/native-keychain');
+
     // Pre-populate store
-    await NativeKeychainMock.keychain.addItem({
+    await mock.keychain.addItem({
       label: 'key1',
       value: 'value1',
       accessibilityClass: 'whenUnlocked',
@@ -42,7 +51,8 @@ describe('useKeychainItems', () => {
   });
 
   it('sets error state if initial load fails', async () => {
-    NativeKeychainMock.__setNextResult({ kind: 'error', message: 'Keychain locked' });
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__setNextResult({ kind: 'error', message: 'Keychain locked' });
 
     const { result } = renderHook(() => useKeychainItems());
 
@@ -79,7 +89,7 @@ describe('useKeychainItems', () => {
   });
 
   it('addItem returns cancelled without warning on user cancellation', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    consoleWarnSpy.mockClear();
 
     const { result } = renderHook(() => useKeychainItems());
 
@@ -87,7 +97,8 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    NativeKeychainMock.__setNextResult({ kind: 'cancelled' });
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__setNextResult({ kind: 'cancelled' });
 
     const addResult = await result.current.addItem({
       label: 'cancel-key',
@@ -98,8 +109,6 @@ describe('useKeychainItems', () => {
 
     expect(addResult.kind).toBe('cancelled');
     expect(consoleWarnSpy).not.toHaveBeenCalled();
-
-    consoleWarnSpy.mockRestore();
   });
 
   it('revealItem returns cleartext on ok', async () => {
@@ -121,7 +130,7 @@ describe('useKeychainItems', () => {
   });
 
   it('revealItem returns null on cancelled', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    consoleWarnSpy.mockClear();
 
     const { result } = renderHook(() => useKeychainItems());
 
@@ -136,17 +145,16 @@ describe('useKeychainItems', () => {
       biometryRequired: true,
     });
 
-    NativeKeychainMock.__setNextResult({ kind: 'cancelled' });
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__setNextResult({ kind: 'cancelled' });
 
     const revealed = await result.current.revealItem('auth-key');
     expect(revealed).toBeNull();
     expect(consoleWarnSpy).not.toHaveBeenCalled();
-
-    consoleWarnSpy.mockRestore();
   });
 
   it('revealItem returns null on auth-failed without warning', async () => {
-    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation();
+    consoleWarnSpy.mockClear();
 
     const { result } = renderHook(() => useKeychainItems());
 
@@ -154,13 +162,12 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    NativeKeychainMock.__setNextResult({ kind: 'auth-failed' });
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__setNextResult({ kind: 'auth-failed' });
 
     const revealed = await result.current.revealItem('fail-key');
     expect(revealed).toBeNull();
     expect(consoleWarnSpy).not.toHaveBeenCalled();
-
-    consoleWarnSpy.mockRestore();
   });
 
   it('never holds cleartext in hook state', async () => {
@@ -216,7 +223,8 @@ describe('useKeychainItems', () => {
   });
 
   it('refresh reloads items and clears error state', async () => {
-    NativeKeychainMock.__setNextResult({ kind: 'error', message: 'Initial error' });
+    const mock = require('@test/__mocks__/native-keychain');
+    mock.__setNextResult({ kind: 'error', message: 'Initial error' });
 
     const { result } = renderHook(() => useKeychainItems());
 
@@ -225,7 +233,7 @@ describe('useKeychainItems', () => {
     });
 
     // Now clear the error and allow refresh to succeed
-    NativeKeychainMock.__setNextResult({
+    mock.__setNextResult({
       kind: 'ok',
       value: JSON.stringify({ version: 1, items: [] }),
     });
