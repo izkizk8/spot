@@ -26,10 +26,30 @@ describe('useKeychainItems', () => {
   it('loads items from the store on initial mount', async () => {
     const mock = require('@test/__mocks__/native-keychain');
 
-    // Pre-populate store
+    // Pre-populate store with both item and index
     await mock.keychain.addItem({
       label: 'key1',
       value: 'value1',
+      accessibilityClass: 'whenUnlocked',
+      biometryRequired: false,
+    });
+
+    // Add the index entry
+    const index = {
+      version: 1,
+      items: [
+        {
+          id: 'key1',
+          label: 'key1',
+          accessibilityClass: 'whenUnlocked' as const,
+          biometryRequired: false,
+          createdAt: new Date().toISOString(),
+        },
+      ],
+    };
+    await mock.keychain.addItem({
+      label: 'spot.keychain.lab.index',
+      value: JSON.stringify(index),
       accessibilityClass: 'whenUnlocked',
       biometryRequired: false,
     });

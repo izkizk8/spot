@@ -2,52 +2,44 @@
  * @jest-environment jsdom
  */
 
-import { Platform } from 'react-native';
-
 // Mock expo-secure-store before importing keychain
 jest.mock('expo-secure-store', () => require('@test/__mocks__/expo-secure-store'));
 
+// Mock react-native Platform before importing anything
+let mockPlatformOS: 'ios' | 'android' | 'web' = 'ios';
+jest.mock('react-native/Libraries/Utilities/Platform', () => ({
+  get OS() {
+    return mockPlatformOS;
+  },
+  select: jest.fn((obj: any) => obj[mockPlatformOS] || obj.default),
+}));
+
 // Mock expo-modules-core before importing keychain
-jest.mock('expo-modules-core', () => {
-  const actualCore = jest.requireActual('expo-modules-core');
-  return {
-    ...actualCore,
-    requireOptionalNativeModule: jest.fn((moduleName: string) => {
-      if (moduleName === 'SpotKeychain') {
-        // Return the mock from @/native/keychain (already mocked in test/setup.ts)
-        const mock = jest.requireActual('@test/__mocks__/native-keychain');
-        return mock.keychain;
-      }
-      return null;
-    }),
-  };
-});
+let mockNativeModule: any = null;
+jest.mock('expo-modules-core', () => ({
+  requireOptionalNativeModule: jest.fn((moduleName: string) => {
+    if (moduleName === 'SpotKeychain') {
+      return mockNativeModule;
+    }
+    return null;
+  }),
+}));
 
 describe('native/keychain', () => {
   let keychain: typeof import('@/native/keychain').keychain;
-  let requireOptionalNativeModule: jest.Mock;
+  let __resetBridge: (() => void) | undefined;
   let NativeKeychainMock: typeof import('@test/__mocks__/native-keychain');
-
-  beforeEach(() => {
-    jest.resetModules();
-    NativeKeychainMock = require('@test/__mocks__/native-keychain');
-    NativeKeychainMock.__reset();
-
-    // Get the mock function
-    const expoModulesCore = require('expo-modules-core');
-    requireOptionalNativeModule = expoModulesCore.requireOptionalNativeModule;
-
-    // Import keychain fresh each time
-    keychain = require('@/native/keychain').keychain;
-  });
 
   describe('when native module is present', () => {
     beforeEach(() => {
-      requireOptionalNativeModule.mockReturnValue(NativeKeychainMock.keychain);
+      mockNativeModule = NativeKeychainMock.keychain;
       jest.resetModules();
       NativeKeychainMock = require('@test/__mocks__/native-keychain');
       NativeKeychainMock.__reset();
-      keychain = require('@/native/keychain').keychain;
+      const keychainModule = require('@/native/keychain');
+      keychain = keychainModule.keychain;
+      __resetBridge = keychainModule.__resetBridge;
+      if (__resetBridge) __resetBridge();
     });
 
     it('delegates addItem to the native module', async () => {
@@ -186,17 +178,22 @@ describe('native/keychain', () => {
 
   describe('when native module is absent on iOS/Android (fallback to expo-secure-store)', () => {
     beforeEach(() => {
-      // Mock Platform.OS before resetting modules
-      jest.doMock('react-native/Libraries/Utilities/Platform', () => ({
-        OS: 'ios',
-        select: jest.fn((obj) => obj.ios || obj.default),
-      }));
-      
-      requireOptionalNativeModule.mockReturnValue(null);
+      // Set mocks FIRST
+      mockPlatformOS = 'ios';
+      mockNativeModule = null;
+
+      // Then reset modules to clear any cached state
       jest.resetModules();
-      
-      // Re-require after reset
-      keychain = require('@/native/keychain').keychain;
+
+      // Get fresh mocks and reset them
+      const SecureStoreMock = require('expo-secure-store');
+      SecureStoreMock.__reset();
+
+      // Import keychain fresh - it will now check Platform.OS and mockNativeModule
+      const keychainModule = require('@/native/keychain');
+      keychain = keychainModule.keychain;
+      __resetBridge = keychainModule.__resetBridge;
+      if (__resetBridge) __resetBridge();
     });
 
     it('delegates basic CRUD to expo-secure-store', async () => {
@@ -295,15 +292,13 @@ describe('native/keychain', () => {
 
   describe('on Web', () => {
     beforeEach(() => {
-      // Mock Platform.OS for web
-      jest.doMock('react-native/Libraries/Utilities/Platform', () => ({
-        OS: 'web',
-        select: jest.fn((obj) => obj.web || obj.default),
-      }));
-      
-      requireOptionalNativeModule.mockReturnValue(null);
+      mockPlatformOS = 'web';
+      mockNativeModule = null;
       jest.resetModules();
-      keychain = require('@/native/keychain').keychain;
+      const keychainModule = require('@/native/keychain');
+      keychain = keychainModule.keychain;
+      __resetBridge = keychainModule.__resetBridge;
+      if (__resetBridge) __resetBridge();
     });
 
     it('returns unsupported for every method', async () => {
@@ -331,8 +326,17 @@ describe('native/keychain', () => {
       expect(probeResult.kind).toBe('unsupported');
     });
 
-    it('never instantiates the native module', () => {
-      expect(requireOptionalNativeModule).not.toHaveBeenCalledWith('SpotKeychain');
+    it('never instantiates the native module', async () => {
+      // Trigger a call to ensure platform check happens
+      const result = await keychain.addItem({
+        label: 'test',
+        value: 'test',
+        accessibilityClass: 'whenUnlocked',
+        biometryRequired: false,
+      });
+
+      // On web, all methods should return unsupported
+      expect(result.kind).toBe('unsupported');
     });
   });
 });

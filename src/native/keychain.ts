@@ -40,8 +40,10 @@ export interface KeychainBridge {
   tryAccessGroupProbe(args: { accessGroup: string }): Promise<KeychainResult<{ bytes: number }>>;
 }
 
-// Try to load the native module
-const nativeModule = requireOptionalNativeModule<KeychainBridge>('SpotKeychain');
+// Try to load the native module via a getter so tests can mock it
+function getNativeModule(): KeychainBridge | null {
+  return requireOptionalNativeModule<KeychainBridge>('SpotKeychain');
+}
 
 // SecureStore accessibility constants
 const WHEN_UNLOCKED = 0;
@@ -173,18 +175,69 @@ class WebStub implements KeychainBridge {
   }
 }
 
-// Resolve the bridge at module load time
-function createBridge(): KeychainBridge {
-  if (Platform.OS === 'web') {
-    return new WebStub();
+// Lazy bridge resolution to support runtime Platform.OS mocking
+// Bridge is selected on first method call, not at module load time
+class LazyBridge implements KeychainBridge {
+  private resolvedBridge?: KeychainBridge;
+
+  private getBridge(): KeychainBridge {
+    if (!this.resolvedBridge) {
+      if (Platform.OS === 'web') {
+        this.resolvedBridge = new WebStub();
+      } else {
+        const nativeModule = getNativeModule();
+        if (nativeModule) {
+          this.resolvedBridge = nativeModule;
+        } else {
+          // iOS or Android without native module
+          this.resolvedBridge = new SecureStoreAdapter();
+        }
+      }
+    }
+    return this.resolvedBridge;
   }
 
-  if (nativeModule) {
-    return nativeModule;
+  async addItem(input: AddItemInput): Promise<KeychainResult> {
+    return this.getBridge().addItem(input);
   }
 
-  // iOS or Android without native module
-  return new SecureStoreAdapter();
+  async getItem(args: { label: string; accessGroup?: string }): Promise<KeychainResult<string>> {
+    return this.getBridge().getItem(args);
+  }
+
+  async updateItem(args: {
+    label: string;
+    value: string;
+    accessGroup?: string;
+  }): Promise<KeychainResult> {
+    return this.getBridge().updateItem(args);
+  }
+
+  async deleteItem(args: { label: string; accessGroup?: string }): Promise<KeychainResult> {
+    return this.getBridge().deleteItem(args);
+  }
+
+  async listLabels(args?: { accessGroup?: string }): Promise<KeychainResult<string[]>> {
+    return this.getBridge().listLabels(args);
+  }
+
+  async tryAccessGroupProbe(args: {
+    accessGroup: string;
+  }): Promise<KeychainResult<{ bytes: number }>> {
+    return this.getBridge().tryAccessGroupProbe(args);
+  }
+
+  // Test helper to reset cached bridge
+  resetBridge() {
+    this.resolvedBridge = undefined;
+  }
 }
 
-export const keychain = createBridge();
+const lazyBridge = new LazyBridge();
+
+export const keychain = lazyBridge;
+
+// Export reset function for tests
+export function __resetBridge() {
+  lazyBridge.resetBridge();
+}

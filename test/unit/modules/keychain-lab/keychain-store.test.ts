@@ -2,8 +2,6 @@
  * @jest-environment jsdom
  */
 
-import { keychain as NativeKeychainMock } from '@test/__mocks__/native-keychain';
-
 // Import store after mocks are set up
 let keychainStore: typeof import('@/modules/keychain-lab/keychain-store');
 
@@ -94,16 +92,15 @@ describe('keychain-store', () => {
         biometryRequired: false,
       });
 
-      // Read the index back from the mock store
-      const getResult = await NativeKeychainMock.getItem({
+      // Read the index back from the mock store (use the same mock instance)
+      const getResult = await mock.keychain.getItem({
         label: 'spot.keychain.lab.index',
       });
 
       expect(getResult.kind).toBe('ok');
-      if (getResult.kind === 'ok') {
-        const index = JSON.parse(getResult.value!);
-        expect(index.items.every((item: any) => !('value' in item))).toBe(true);
-      }
+      // Only parse and check if we got 'ok' (assertion already made above)
+      const index = JSON.parse((getResult as any).value!);
+      expect(index.items.every((item: any) => !('value' in item))).toBe(true);
     });
   });
 
@@ -120,7 +117,7 @@ describe('keychain-store', () => {
       const calls = mock.__getCallHistory();
 
       // Should have called addItem for the actual secret
-      const addCall = calls.find((c) => c.method === 'addItem' && c.label === 'test-key');
+      const addCall = calls.find((c: any) => c.method === 'addItem' && c.label === 'test-key');
       expect(addCall).toBeDefined();
       expect(addCall?.accessibleConstant).toBe('kSecAttrAccessibleWhenUnlockedThisDeviceOnly');
       expect(addCall?.biometryRequired).toBe(true);
@@ -271,7 +268,7 @@ describe('keychain-store', () => {
 
       const mock = require('@test/__mocks__/native-keychain');
       const calls = mock.__getCallHistory();
-      const delCall = calls.find((c) => c.method === 'deleteItem' && c.label === 'del-key');
+      const delCall = calls.find((c: any) => c.method === 'deleteItem' && c.label === 'del-key');
       expect(delCall).toBeDefined();
     });
 

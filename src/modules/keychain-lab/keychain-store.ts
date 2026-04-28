@@ -95,6 +95,7 @@ export async function add(input: AddItemInput): Promise<KeychainResult> {
 /**
  * Get the cleartext value for an item.
  * Returns null if not found or on error (single console.warn emitted).
+ * User-driven results (cancelled, auth-failed) never warn.
  */
 export async function get(label: string): Promise<string | null> {
   const result = await keychain.getItem({ label });
@@ -103,8 +104,8 @@ export async function get(label: string): Promise<string | null> {
     return null;
   }
 
-  if (result.kind === 'cancelled') {
-    // User cancelled — no warn
+  if (result.kind === 'cancelled' || result.kind === 'auth-failed') {
+    // User-driven outcomes — no warn
     return null;
   }
 
@@ -118,30 +119,37 @@ export async function get(label: string): Promise<string | null> {
 
 /**
  * Delete an item.
+ * Returns the KeychainResult so callers can distinguish not-found from other errors.
  * Idempotent — no warning if not found.
- * Swallows errors with a single console.warn.
+ * Swallows other errors with a single console.warn.
  */
-export async function deleteItem(label: string): Promise<void> {
+export async function deleteItem(label: string): Promise<KeychainResult> {
   const deleteResult = await keychain.deleteItem({ label });
 
   if (deleteResult.kind === 'not-found') {
-    // Idempotent delete — just remove from index
+    // Idempotent delete — just remove from index if present
+    await updateIndex(async (items) => {
+      return items.filter((i) => i.id !== label);
+    });
+    return deleteResult;
   } else if (deleteResult.kind === 'cancelled') {
     // User cancelled — no warn
-    return;
+    return deleteResult;
   } else if (deleteResult.kind !== 'ok') {
     if (deleteResult.kind === 'error') {
       console.warn('Failed to delete item from keychain:', deleteResult.message);
     } else {
       console.warn('Failed to delete item from keychain:', deleteResult.kind);
     }
-    return;
+    return deleteResult;
   }
 
   // Update the metadata index
   await updateIndex(async (items) => {
     return items.filter((i) => i.id !== label);
   });
+
+  return deleteResult;
 }
 
 /**

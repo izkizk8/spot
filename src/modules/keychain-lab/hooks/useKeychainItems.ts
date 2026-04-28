@@ -94,24 +94,20 @@ export function useKeychainItems(): UseKeychainItems {
   }
 
   async function deleteItem(id: string): Promise<KeychainResult> {
-    await keychainStore.deleteItem(id);
+    const result = await keychainStore.deleteItem(id);
 
-    if (!mountedRef.current) return { kind: 'ok' };
+    if (!mountedRef.current) return result;
 
-    // Refresh the list
-    const updatedItems = await keychainStore.list();
-    if (mountedRef.current && updatedItems) {
-      setItems(updatedItems);
-      setError(null);
+    // Refresh the list after successful delete (or idempotent not-found)
+    if (result.kind === 'ok' || result.kind === 'not-found') {
+      const updatedItems = await keychainStore.list();
+      if (mountedRef.current && updatedItems) {
+        setItems(updatedItems);
+        setError(null);
+      }
     }
 
-    // Check if item was actually deleted
-    const stillExists = updatedItems?.some((item) => item.id === id);
-    if (stillExists) {
-      return { kind: 'error', message: 'Failed to delete item' };
-    }
-
-    return { kind: 'ok' };
+    return result;
   }
 
   return {

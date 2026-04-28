@@ -16,7 +16,7 @@ describe('with-keychain-services', () => {
 
   it('adds $(AppIdentifierPrefix)<bundleId> when entitlement is absent', () => {
     const config = withKeychainServices(baseConfig);
-    const entitlements =
+    const _entitlements =
       (config._internal?.pluginHistory?.['expo-build-properties'] as any)?.ios?.entitlementsPlist ??
       {};
 
