@@ -39,10 +39,7 @@ export default function CameraVisionScreen() {
         <ThemedText type="default" style={styles.messageText}>
           This module needs camera access.
         </ThemedText>
-        <Pressable
-          style={styles.retryButton}
-          onPress={requestPermission}
-        >
+        <Pressable style={styles.retryButton} onPress={requestPermission}>
           <ThemedText type="default" themeColor="tintA">
             Retry
           </ThemedText>

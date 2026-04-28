@@ -16,15 +16,8 @@ export interface CameraPreviewProps {
 
 export const CameraPreview = forwardRef<CameraView, CameraPreviewProps>(
   ({ facing = 'back', flashMode = 'off' }, ref) => {
-    return (
-      <CameraView
-        ref={ref}
-        style={styles.camera}
-        facing={facing}
-        flash={flashMode}
-      />
-    );
-  }
+    return <CameraView ref={ref} style={styles.camera} facing={facing} flash={flashMode} />;
+  },
 );
 
 CameraPreview.displayName = 'CameraPreview';

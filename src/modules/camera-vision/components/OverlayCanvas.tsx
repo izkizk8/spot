@@ -7,11 +7,7 @@
 
 import React from 'react';
 import { View, StyleSheet } from 'react-native';
-import Animated, {
-  useSharedValue,
-  useAnimatedStyle,
-  withTiming,
-} from 'react-native-reanimated';
+import Animated, { useSharedValue, useAnimatedStyle, withTiming } from 'react-native-reanimated';
 import { useReducedMotion } from '@/hooks/useReducedMotion';
 import { useTheme } from '@/hooks/use-theme';
 import type { Observation } from '../vision-types';
@@ -35,7 +31,7 @@ export function OverlayCanvas({ observations, parentLayout }: OverlayCanvasProps
           observation={observation}
           parentLayout={parentLayout}
           reducedMotion={reducedMotion}
-          borderColor={theme.colors.tint}
+          borderColor={theme.tintA}
         />
       ))}
     </View>
@@ -77,7 +73,17 @@ function OverlayRect({
     animatedTop.value = withTiming(top, { duration });
     animatedWidth.value = withTiming(width, { duration });
     animatedHeight.value = withTiming(height, { duration });
-  }, [left, top, width, height, reducedMotion, animatedLeft, animatedTop, animatedWidth, animatedHeight]);
+  }, [
+    left,
+    top,
+    width,
+    height,
+    reducedMotion,
+    animatedLeft,
+    animatedTop,
+    animatedWidth,
+    animatedHeight,
+  ]);
 
   const animatedStyle = useAnimatedStyle(() => ({
     left: animatedLeft.value,

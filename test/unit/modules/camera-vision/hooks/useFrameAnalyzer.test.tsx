@@ -2,7 +2,7 @@
  * useFrameAnalyzer hook tests (feature 017, User Story 1).
  */
 
-import { renderHook, act } from '@testing-library/react-hooks';
+import { renderHook, act } from '@testing-library/react-native';
 import { useFrameAnalyzer } from '@/modules/camera-vision/hooks/useFrameAnalyzer';
 import type { VisionBridge } from '@/native/vision-detector.types';
 import { VisionAnalysisFailed } from '@/native/vision-detector.types';
@@ -27,7 +27,7 @@ describe('useFrameAnalyzer', () => {
           height: 1080,
         }),
       ),
-    },
+    } as any,
   };
 
   const mockBridge: VisionBridge = {
@@ -48,7 +48,7 @@ describe('useFrameAnalyzer', () => {
   };
 
   it('triggers takePictureAsync within intervalMs when mode is faces', async () => {
-    const { result, unmount } = renderHook(() =>
+    const { unmount } = renderHook(() =>
       useFrameAnalyzer({
         mode: 'faces',
         intervalMs: 250,
@@ -74,7 +74,7 @@ describe('useFrameAnalyzer', () => {
   });
 
   it('calls bridge.analyze with the correct mode and payload', async () => {
-    const { result, unmount } = renderHook(() =>
+    const { unmount } = renderHook(() =>
       useFrameAnalyzer({
         mode: 'faces',
         intervalMs: 250,
@@ -144,9 +144,9 @@ describe('useFrameAnalyzer', () => {
 
   it('clears observations and detected when switching to off', async () => {
     const { result, rerender, unmount } = renderHook(
-      ({ mode }) =>
+      (props: { mode: 'faces' | 'off' }) =>
         useFrameAnalyzer({
-          mode,
+          mode: props.mode,
           intervalMs: 250,
           cameraRef: mockCameraRef,
           bridgeOverride: mockBridge,
@@ -173,9 +173,9 @@ describe('useFrameAnalyzer', () => {
 
   it('retains fps and lastAnalysisMs when switching to off', async () => {
     const { result, rerender, unmount } = renderHook(
-      ({ mode }) =>
+      (props: { mode: 'faces' | 'off' }) =>
         useFrameAnalyzer({
-          mode,
+          mode: props.mode,
           intervalMs: 250,
           cameraRef: mockCameraRef,
           bridgeOverride: mockBridge,
@@ -214,9 +214,9 @@ describe('useFrameAnalyzer', () => {
     };
 
     const { result, rerender, unmount } = renderHook(
-      ({ mode }) =>
+      (props: { mode: 'faces' | 'text' }) =>
         useFrameAnalyzer({
-          mode,
+          mode: props.mode,
           intervalMs: 250,
           cameraRef: mockCameraRef,
           bridgeOverride: slowBridge,

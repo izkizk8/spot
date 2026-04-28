@@ -33,16 +33,16 @@ describe('ModePicker', () => {
     const { getByText } = render(
       <ModePicker mode="faces" onModeChange={onModeChange} disabled={false} />,
     );
-    
+
     fireEvent.press(getByText('Text'));
     expect(onModeChange).toHaveBeenCalledWith('text');
     expect(onModeChange).toHaveBeenCalledTimes(1);
-    
+
     onModeChange.mockClear();
     fireEvent.press(getByText('Barcodes'));
     expect(onModeChange).toHaveBeenCalledWith('barcodes');
     expect(onModeChange).toHaveBeenCalledTimes(1);
-    
+
     onModeChange.mockClear();
     fireEvent.press(getByText('Off'));
     expect(onModeChange).toHaveBeenCalledWith('off');
@@ -54,7 +54,7 @@ describe('ModePicker', () => {
     const { getByText } = render(
       <ModePicker mode="faces" onModeChange={onModeChange} disabled={true} />,
     );
-    
+
     fireEvent.press(getByText('Text'));
     // When disabled, the press should be a no-op
     expect(onModeChange).not.toHaveBeenCalled();

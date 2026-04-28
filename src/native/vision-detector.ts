@@ -40,7 +40,7 @@ export function isAvailable(): boolean {
  */
 export async function analyze(
   mode: ActiveVisionMode,
-  payload: AnalyzePayload
+  payload: AnalyzePayload,
 ): Promise<AnalysisResult> {
   // Check availability
   if (!isAvailable()) {

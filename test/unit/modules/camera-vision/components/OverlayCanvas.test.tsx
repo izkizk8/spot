@@ -9,12 +9,12 @@ import type { Observation } from '@/modules/camera-vision/vision-types';
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
   const RN = require('react-native');
-  
+
   const Animated = {
     View: RN.View,
     createAnimatedComponent: (component: any) => component,
   };
-  
+
   return {
     __esModule: true,
     default: Animated,
@@ -33,9 +33,7 @@ jest.mock('@/hooks/useReducedMotion', () => ({
 // Mock useTheme
 jest.mock('@/hooks/use-theme', () => ({
   useTheme: jest.fn(() => ({
-    colors: {
-      tint: '#007AFF',
-    },
+    tint: '#007AFF',
   })),
 }));
 
@@ -87,7 +85,7 @@ describe('OverlayCanvas', () => {
     const { UNSAFE_root } = render(
       <OverlayCanvas observations={observations} parentLayout={parentLayout} />,
     );
-    
+
     // Just verify the overlay renders without checking exact positioning
     // (positioning is tested via integration tests)
     expect(UNSAFE_root).toBeTruthy();
@@ -115,7 +113,7 @@ describe('OverlayCanvas', () => {
         boundingBox: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 },
       },
     ];
-    
+
     // When reduced motion is enabled, withTiming should not be used
     // or should render with duration 0. This is verified by the implementation
     // using the useReducedMotion hook result.

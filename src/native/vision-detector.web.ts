@@ -25,8 +25,8 @@ export function isAvailable(): boolean {
  * Always rejects with VisionNotSupported on web.
  */
 export async function analyze(
-  mode: ActiveVisionMode,
-  payload: AnalyzePayload
+  _mode: ActiveVisionMode,
+  _payload: AnalyzePayload,
 ): Promise<AnalysisResult> {
   throw new VisionNotSupported('Vision is not available on web.');
 }

@@ -36,7 +36,7 @@ describe('with-vision plugin', () => {
       const result = withVision(baseConfig);
 
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
     });
 
@@ -67,7 +67,7 @@ describe('with-vision plugin', () => {
       const result = withVision(baseConfig);
 
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
     });
 
@@ -83,7 +83,7 @@ describe('with-vision plugin', () => {
       const result = withVision(baseConfig);
 
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
     });
   });
@@ -102,7 +102,7 @@ describe('with-vision plugin', () => {
       // Deep equality check
       expect(result2).toEqual(result1);
       expect(result2.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        result1.ios?.infoPlist?.NSCameraUsageDescription
+        result1.ios?.infoPlist?.NSCameraUsageDescription,
       );
     });
 
@@ -149,16 +149,13 @@ describe('with-vision plugin', () => {
 
       // Should add NSCameraUsageDescription
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
 
       // Should preserve feature 007's config
-      expect(result.ios?.infoPlist?.UIBackgroundModes).toEqual([
-        'fetch',
-        'remote-notification',
-      ]);
+      expect(result.ios?.infoPlist?.UIBackgroundModes).toEqual(['fetch', 'remote-notification']);
       expect(result.ios?.entitlements?.['com.apple.developer.usernotifications.filtering']).toBe(
-        true
+        true,
       );
       expect(result.plugins).toContain('./plugins/with-live-activity');
     });
@@ -179,7 +176,7 @@ describe('with-vision plugin', () => {
 
       // Should add NSCameraUsageDescription
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
 
       // Should preserve feature 014's App Groups
@@ -204,7 +201,7 @@ describe('with-vision plugin', () => {
 
       // Should add NSCameraUsageDescription
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
 
       // Should preserve feature 015's entitlements
@@ -223,7 +220,7 @@ describe('with-vision plugin', () => {
 
       // Should add NSCameraUsageDescription
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
 
       // Should preserve feature 016 plugin
@@ -247,7 +244,7 @@ describe('with-vision plugin', () => {
 
       // Should add NSCameraUsageDescription
       expect(result.ios?.infoPlist?.NSCameraUsageDescription).toBe(
-        'Used to demonstrate on-device Vision analysis'
+        'Used to demonstrate on-device Vision analysis',
       );
 
       // Should preserve ALL existing entitlements unchanged
@@ -256,7 +253,7 @@ describe('with-vision plugin', () => {
         'group.com.test.widgets',
       ]);
       expect(result.ios?.entitlements?.['com.apple.developer.usernotifications.filtering']).toBe(
-        true
+        true,
       );
     });
 

@@ -98,6 +98,6 @@ export interface VisionBridge {
    */
   analyze(
     mode: import('@/modules/camera-vision/vision-types').ActiveVisionMode,
-    payload: import('@/modules/camera-vision/vision-types').AnalyzePayload
+    payload: import('@/modules/camera-vision/vision-types').AnalyzePayload,
   ): Promise<import('@/modules/camera-vision/vision-types').AnalysisResult>;
 }

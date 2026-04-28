@@ -16,11 +16,7 @@ import { Spacing } from '@/constants/theme';
 
 export default function IOSOnlyBanner() {
   return (
-    <ThemedView
-      style={styles.container}
-      themeColor="backgroundElement"
-      accessibilityRole="alert"
-    >
+    <ThemedView style={styles.container} type="backgroundElement" accessibilityRole="alert">
       <ThemedText type="small" themeColor="textSecondary" style={styles.text}>
         ⚠️ Vision is iOS-only — open this module on an iOS 13+ device to see live face / text /
         barcode detection.

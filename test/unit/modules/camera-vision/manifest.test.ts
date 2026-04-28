@@ -25,15 +25,14 @@ describe('camera-vision manifest', () => {
     expect(manifest.minIOS).toBe('13.0');
   });
 
-  it('has a screen property', () => {
-    expect(manifest.screen).toBeDefined();
-    expect(typeof manifest.screen).toBe('function');
+  it('has a render function', () => {
+    expect(manifest.render).toBeDefined();
+    expect(typeof manifest.render).toBe('function');
   });
 
-  it('screen reference resolves without throwing', async () => {
-    const screenImport = manifest.screen();
-    expect(screenImport).toBeInstanceOf(Promise);
-    await expect(screenImport).resolves.toBeDefined();
+  it('render function returns a React node', () => {
+    const rendered = manifest.render();
+    expect(rendered).toBeDefined();
   });
 
   it('has a title', () => {

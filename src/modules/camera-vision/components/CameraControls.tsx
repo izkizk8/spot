@@ -19,7 +19,7 @@ export interface CameraControlsProps {
 }
 
 export function CameraControls({
-  facing,
+  facing: _facing,
   flashMode,
   flashAvailable,
   onFlipCamera,
@@ -27,7 +27,7 @@ export function CameraControls({
 }: CameraControlsProps) {
   const handleFlashPress = () => {
     if (!flashAvailable) return;
-    
+
     const nextMode: Record<'off' | 'auto' | 'on', 'off' | 'auto' | 'on'> = {
       off: 'auto',
       auto: 'on',

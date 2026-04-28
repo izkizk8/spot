@@ -12,31 +12,32 @@ jest.mock('expo-camera', () => ({
 }));
 
 // Mock the vision-detector bridge before importing the screen
+const mockAnalyze = jest.fn(() =>
+  Promise.resolve({
+    observations: [
+      {
+        kind: 'face',
+        boundingBox: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 },
+      },
+    ],
+    analysisMs: 50,
+    imageWidth: 1920,
+    imageHeight: 1080,
+  }),
+);
+
 jest.mock('@/native/vision-detector', () => ({
   __esModule: true,
   default: {
     isAvailable: jest.fn(() => true),
-    analyze: jest.fn(() =>
-      Promise.resolve({
-        observations: [
-          {
-            kind: 'face',
-            boundingBox: { x: 0.1, y: 0.2, width: 0.3, height: 0.4 },
-          },
-        ],
-        analysisMs: 50,
-        imageWidth: 1920,
-        imageHeight: 1080,
-      }),
-    ),
+    analyze: mockAnalyze,
   },
 }));
 
 // Mock react-native-reanimated
 jest.mock('react-native-reanimated', () => {
-  const React = require('react');
   const RN = require('react-native');
-  
+
   return {
     default: {
       View: RN.View,
@@ -55,7 +56,6 @@ jest.mock('@/hooks/useReducedMotion', () => ({
 
 import CameraVisionScreen from '@/modules/camera-vision/screen';
 import { useCameraPermissions } from 'expo-camera';
-import visionBridge from '@/native/vision-detector';
 
 const mockUseCameraPermissions = useCameraPermissions as jest.MockedFunction<
   typeof useCameraPermissions
@@ -92,10 +92,10 @@ describe('CameraVisionScreen (iOS)', () => {
 
     const { getByText } = render(<CameraVisionScreen />);
     expect(getByText(/camera permission/i)).toBeTruthy();
-    
+
     const retryButton = getByText(/retry/i);
     expect(retryButton).toBeTruthy();
-    
+
     fireEvent.press(retryButton);
     expect(requestPermission).toHaveBeenCalled();
   });
@@ -118,7 +118,7 @@ describe('CameraVisionScreen (iOS)', () => {
     });
 
     // Bridge analyze should never be called
-    expect(visionBridge.analyze).not.toHaveBeenCalled();
+    expect(mockAnalyze).not.toHaveBeenCalled();
   });
 
   it('renders CameraPreview when permission granted', () => {
@@ -129,7 +129,7 @@ describe('CameraVisionScreen (iOS)', () => {
     ] as any);
 
     const { UNSAFE_getByType } = render(<CameraVisionScreen />);
-    expect(UNSAFE_getByType('CameraView')).toBeTruthy();
+    expect(UNSAFE_getByType('CameraView' as any)).toBeTruthy();
   });
 
   it('renders ModePicker preselected to Faces', () => {
@@ -196,7 +196,7 @@ describe('CameraVisionScreen (iOS)', () => {
     ] as any);
 
     // Mock bridge to reject
-    (visionBridge.analyze as jest.Mock).mockRejectedValueOnce(new Error('Test error'));
+    mockAnalyze.mockRejectedValueOnce(new Error('Test error'));
 
     const { queryByText } = render(<CameraVisionScreen />);
 

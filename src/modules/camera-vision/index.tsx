@@ -18,7 +18,7 @@ const manifest: ModuleManifest = {
   icon: { ios: 'camera', fallback: '📷' },
   platforms: ['ios', 'android', 'web'],
   minIOS: '13.0',
-  screen: () => Promise.resolve({ default: CameraVisionScreen }),
+  render: () => <CameraVisionScreen />,
 };
 
 export default manifest;

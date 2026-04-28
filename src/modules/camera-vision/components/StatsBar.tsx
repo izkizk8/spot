@@ -27,7 +27,7 @@ export function StatsBar({ fps, lastAnalysisMs, detected }: StatsBarProps) {
           {fps.toFixed(1)}
         </ThemedText>
       </View>
-      
+
       <View style={styles.stat}>
         <ThemedText type="default" style={styles.label}>
           Analysis:
@@ -36,7 +36,7 @@ export function StatsBar({ fps, lastAnalysisMs, detected }: StatsBarProps) {
           {lastAnalysisMs !== null ? `${lastAnalysisMs} ms` : '—'}
         </ThemedText>
       </View>
-      
+
       <View style={styles.stat}>
         <ThemedText type="default" style={styles.label}>
           Detected:

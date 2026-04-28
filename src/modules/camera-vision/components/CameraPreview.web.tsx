@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
@@ -16,7 +16,7 @@ export interface CameraPreviewProps {
 }
 
 export const CameraPreview = React.forwardRef<any, CameraPreviewProps>(
-  ({ facing = 'back', flashMode = 'off' }, ref) => {
+  ({ facing: _facing = 'back', flashMode: _flashMode = 'off' }, _ref) => {
     return (
       <ThemedView style={styles.container}>
         <ThemedText type="default" style={styles.text}>
@@ -24,7 +24,7 @@ export const CameraPreview = React.forwardRef<any, CameraPreviewProps>(
         </ThemedText>
       </ThemedView>
     );
-  }
+  },
 );
 
 CameraPreview.displayName = 'CameraPreview';
