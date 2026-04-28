@@ -16,6 +16,7 @@ import { CameraPreview } from './components/CameraPreview';
 import { OverlayCanvas } from './components/OverlayCanvas';
 import { ModePicker } from './components/ModePicker';
 import { StatsBar } from './components/StatsBar';
+import { CameraControls } from './components/CameraControls';
 import { useFrameAnalyzer } from './hooks/useFrameAnalyzer';
 import type { VisionMode } from './vision-types';
 import { VisionNotSupported } from '@/native/vision-detector.types';
@@ -23,6 +24,8 @@ import { VisionNotSupported } from '@/native/vision-detector.types';
 export default function CameraVisionScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [mode, setMode] = useState<VisionMode>('faces');
+  const [facing, setFacing] = useState<'back' | 'front'>('back');
+  const [flashMode, setFlashMode] = useState<'off' | 'auto' | 'on'>('off');
   const [parentLayout, setParentLayout] = useState({ width: 0, height: 0 });
   const cameraRef = useRef<CameraView | null>(null);
 
@@ -31,6 +34,8 @@ export default function CameraVisionScreen() {
     intervalMs: 250,
     cameraRef,
   });
+
+  const flashAvailable = facing === 'back';
 
   // Request permission on mount
   React.useEffect(() => {
@@ -70,12 +75,19 @@ export default function CameraVisionScreen() {
           setParentLayout({ width, height });
         }}
       >
-        <CameraPreview ref={cameraRef} facing="back" flashMode="off" />
+        <CameraPreview ref={cameraRef} facing={facing} flashMode={flashMode} />
         {parentLayout.width > 0 && (
           <OverlayCanvas observations={observations} parentLayout={parentLayout} />
         )}
       </View>
 
+      <CameraControls
+        facing={facing}
+        flashMode={flashMode}
+        flashAvailable={flashAvailable}
+        onFlipCamera={() => setFacing(facing === 'back' ? 'front' : 'back')}
+        onFlashModeChange={setFlashMode}
+      />
       <ModePicker mode={mode} onModeChange={setMode} disabled={false} />
       <StatsBar fps={fps} lastAnalysisMs={lastAnalysisMs} detected={detected} />
 
