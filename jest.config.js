@@ -6,6 +6,7 @@ module.exports = {
   moduleNameMapper: {
     '^@/assets/(.*)$': '<rootDir>/assets/$1',
     '^@/(.*)$': '<rootDir>/src/$1',
+    '^@test/(.*)$': '<rootDir>/test/$1',
     '\\.(css|less|sass|scss)$': '<rootDir>/test/style-mock.js',
   },
   transformIgnorePatterns: [

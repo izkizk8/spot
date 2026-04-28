@@ -71,3 +71,9 @@ jest.mock('expo-image-picker', () => ({
     Promise.resolve({ status: 'granted', canAskAgain: true, granted: true, expires: 'never' }),
   ),
 }));
+
+// Mock native keychain bridge (feature 023)
+jest.mock('@/native/keychain', () => {
+  const mock = require('@test/__mocks__/native-keychain');
+  return { keychain: mock.keychain };
+});

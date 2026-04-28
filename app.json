@@ -50,6 +50,7 @@
       "./plugins/with-audio-recording",
       "./plugins/with-sign-in-with-apple",
       "./plugins/with-local-auth",
+      "./plugins/with-keychain-services",
       [
         "expo-sensors",
         {
