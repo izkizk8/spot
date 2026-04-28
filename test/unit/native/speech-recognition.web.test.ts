@@ -66,9 +66,11 @@ function loadWebBridge(opts: {
       const queue = [...(opts.instances ?? [createWebkitInstance()])];
       webkitCtor = jest.fn(function () {
         const inst = queue.shift() ?? createWebkitInstance();
-        Object.assign(this, inst);
-        // copy mocks so callers can observe via the queue's instance
-        return undefined;
+        // Returning an object from a constructor causes `new Ctor()` to
+        // resolve to that object — keeping the test's `inst` reference
+        // identical to what the bridge mutates (so `inst.onresult` etc.
+        // observe the bridge's wiring).
+        return inst;
       }) as unknown as jest.Mock;
       (globalThis as any).webkitSpeechRecognition = webkitCtor;
     } else {
@@ -233,5 +235,38 @@ describe('speech-recognition bridge (Web — webkitSpeechRecognition present)', 
     await bridge.start({ locale: 'en-US', onDevice: false });
     await bridge.stop();
     expect(inst.stop).toHaveBeenCalled();
+  });
+
+  // -------------------------------------------------------------------------
+  // T060 (US5): explicit onDevice coercion + onerror kind mapping
+  // -------------------------------------------------------------------------
+
+  it('start({ onDevice: true }) does not propagate onDevice to webkit (recognizer has no such field)', async () => {
+    const inst = createWebkitInstance();
+    const { bridge } = loadWebBridge({ webkitPresent: true, instances: [inst] });
+    await bridge.start({ locale: 'en-US', onDevice: true });
+    // The bridge must not crash and must have configured the recognizer with
+    // the standard webkit fields (no on-device flag exists on web).
+    expect(inst.start).toHaveBeenCalled();
+    expect(inst.continuous).toBe(true);
+    expect(inst.interimResults).toBe(true);
+    expect(inst.lang).toBe('en-US');
+  });
+
+  it.each([
+    ['no-speech', 'audioEngine'],
+    ['audio-capture', 'audioEngine'],
+    ['not-allowed', 'authorization'],
+    ['network', 'network'],
+    ['mystery-code', 'unknown'],
+  ] as const)('maps webkit error "%s" to SpeechErrorKind "%s"', async (code, expected) => {
+    const inst = createWebkitInstance();
+    const { bridge } = loadWebBridge({ webkitPresent: true, instances: [inst] });
+    const onError = jest.fn();
+    bridge.events.addListener('error', onError);
+    await bridge.start({ locale: 'en-US', onDevice: false });
+    inst.onerror?.({ error: code, message: 'm' });
+    expect(onError).toHaveBeenCalledTimes(1);
+    expect(onError.mock.calls[0][0].kind).toBe(expected);
   });
 });

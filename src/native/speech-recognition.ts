@@ -23,6 +23,7 @@ import { SpeechRecognitionNotSupported } from './speech-recognition.types';
 
 interface NativeSpeechRecognition {
   isAvailable(locale: Locale): boolean;
+  supportsOnDeviceRecognition?(locale: Locale): boolean;
   availableLocales(): Locale[];
   requestAuthorization(): Promise<AuthStatus>;
   getAuthorizationStatus(): Promise<AuthStatus>;
@@ -70,6 +71,16 @@ function availableLocales(): Locale[] {
   }
 }
 
+function supportsOnDeviceRecognition(locale: Locale): boolean {
+  if (Platform.OS !== 'ios' || nativeModule == null) return false;
+  if (typeof nativeModule.supportsOnDeviceRecognition !== 'function') return false;
+  try {
+    return nativeModule.supportsOnDeviceRecognition(locale) === true;
+  } catch {
+    return false;
+  }
+}
+
 async function requestAuthorization(): Promise<AuthStatus> {
   if (nativeModule == null) throw new SpeechRecognitionNotSupported();
   return nativeModule.requestAuthorization();
@@ -92,6 +103,7 @@ async function stop(): Promise<void> {
 
 const bridge: SpeechBridge = {
   isAvailable,
+  supportsOnDeviceRecognition,
   availableLocales,
   requestAuthorization,
   getAuthorizationStatus,

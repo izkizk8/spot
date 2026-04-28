@@ -35,8 +35,11 @@ export default function RecognitionModePicker({
     <ThemedView type="backgroundElement" style={styles.container}>
       {SEGMENTS.map((s) => {
         const isSelected = s.value === mode;
-        const segmentDisabled =
-          disabled || (s.value === 'on-device' && !onDeviceAvailable);
+        const isOnDeviceUnavailable = s.value === 'on-device' && !onDeviceAvailable;
+        const segmentDisabled = disabled || isOnDeviceUnavailable;
+        const accessibilityLabel = isOnDeviceUnavailable
+          ? 'On-device recognition not available for this locale on this device'
+          : `Recognition mode: ${s.label}`;
         return (
           <Pressable
             key={s.value}
@@ -46,7 +49,7 @@ export default function RecognitionModePicker({
             }}
             disabled={segmentDisabled}
             accessibilityRole="button"
-            accessibilityLabel={`Recognition mode: ${s.label}`}
+            accessibilityLabel={accessibilityLabel}
             accessibilityState={{ selected: isSelected, disabled: segmentDisabled }}
             style={[
               styles.segment,

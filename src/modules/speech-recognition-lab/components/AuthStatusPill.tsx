@@ -63,12 +63,12 @@ export default function AuthStatusPill({
       {status === 'denied' || status === 'restricted' ? (
         <Pressable
           onPress={onOpenSettingsPress}
-          accessibilityRole="button"
-          accessibilityLabel="Open Settings"
+          accessibilityRole="link"
+          accessibilityLabel="Open Settings to enable"
           style={styles.button}
         >
           <ThemedText type="smallBold" themeColor="tintA">
-            Settings
+            Open Settings
           </ThemedText>
         </Pressable>
       ) : null}

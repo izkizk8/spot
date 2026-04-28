@@ -97,4 +97,61 @@ describe('AuthStatusPill', () => {
       expect(buttons.length).toBeGreaterThan(0);
     });
   });
+
+  describe('Settings affordance (US4 / T053)', () => {
+    it.each(['denied', 'restricted'] as const)(
+      'renders an Open Settings link when status === "%s"',
+      (status) => {
+        const { UNSAFE_root } = render(
+          <AuthStatusPill status={status} onOpenSettingsPress={jest.fn()} />,
+        );
+        const links = UNSAFE_root.findAll(
+          (n: any) =>
+            Boolean(n.props) &&
+            n.props.accessibilityRole === 'link' &&
+            /open settings to enable/i.test(String(n.props.accessibilityLabel ?? '')),
+        );
+        expect(links.length).toBeGreaterThan(0);
+      },
+    );
+
+    it.each(['denied', 'restricted'] as const)(
+      'hides the Request button when status === "%s"',
+      (status) => {
+        render(
+          <AuthStatusPill
+            status={status}
+            onRequestPress={jest.fn()}
+            onOpenSettingsPress={jest.fn()}
+          />,
+        );
+        expect(screen.queryByText(/^request$/i)).toBeNull();
+      },
+    );
+
+    it('tapping the Open Settings affordance invokes onOpenSettingsPress exactly once', () => {
+      const onOpenSettingsPress = jest.fn();
+      const { UNSAFE_root } = render(
+        <AuthStatusPill status="denied" onOpenSettingsPress={onOpenSettingsPress} />,
+      );
+      const link = UNSAFE_root.find(
+        (n: any) =>
+          Boolean(n.props) &&
+          n.props.accessibilityRole === 'link' &&
+          /open settings to enable/i.test(String(n.props.accessibilityLabel ?? '')),
+      );
+      fireEvent.press(link);
+      expect(onOpenSettingsPress).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not render the Open Settings affordance when status === "authorized"', () => {
+      const { UNSAFE_root } = render(
+        <AuthStatusPill status="authorized" onOpenSettingsPress={jest.fn()} />,
+      );
+      const links = UNSAFE_root.findAll(
+        (n: any) => Boolean(n.props) && n.props.accessibilityRole === 'link',
+      );
+      expect(links.length).toBe(0);
+    });
+  });
 });

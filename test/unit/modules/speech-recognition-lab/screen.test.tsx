@@ -205,3 +205,211 @@ describe('SpeechRecognitionLab screen (US1, iOS)', () => {
     errSpy.mockRestore();
   });
 });
+
+// ---------------------------------------------------------------------------
+// US2 (T044) — On-device mode + mode-change-while-listening
+// ---------------------------------------------------------------------------
+
+describe('SpeechRecognitionLab screen (US2)', () => {
+  beforeEach(() => {
+    listeners.length = 0;
+    mockBridge.start.mockClear();
+    mockBridge.stop.mockClear();
+    mockBridge.requestAuthorization.mockClear();
+    mockBridge.getAuthorizationStatus.mockClear();
+    mockBridge.isAvailable.mockClear();
+    mockBridge.isAvailable.mockReturnValue(true);
+    mockBridge.getAuthorizationStatus.mockResolvedValue('authorized' as any);
+    mockBridge.availableLocales.mockReturnValue([
+      'en-US',
+      'zh-CN',
+      'ja-JP',
+      'es-ES',
+      'fr-FR',
+      'de-DE',
+    ]);
+    (mockBridge as any).supportsOnDeviceRecognition = jest.fn(() => true);
+  });
+
+  it('On-device segment is enabled when bridge.supportsOnDeviceRecognition returns true', async () => {
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    const buttons = view.UNSAFE_root.findAll(
+      (n: any) => n.props && n.props.accessibilityRole === 'button',
+    );
+    const onDevice = buttons.find((b: any) =>
+      String(b.props.accessibilityLabel ?? '').toLowerCase().includes('on-device'),
+    );
+    expect(onDevice).toBeTruthy();
+    expect(onDevice.props.accessibilityState?.disabled).toBeFalsy();
+  });
+
+  it('switching mode to On-device then starting passes onDevice=true', async () => {
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    const buttons = view.UNSAFE_root.findAll(
+      (n: any) => n.props && n.props.accessibilityRole === 'button',
+    );
+    const onDevice = buttons.find((b: any) =>
+      String(b.props.accessibilityLabel ?? '').toLowerCase().includes('on-device'),
+    );
+    await act(async () => {
+      fireEvent.press(onDevice);
+    });
+    const micBtn = findButtonByLabel(view.UNSAFE_root, /microphone/i);
+    await act(async () => {
+      fireEvent.press(micBtn);
+    });
+    expect(mockBridge.start).toHaveBeenCalledTimes(1);
+    expect(mockBridge.start.mock.calls[0][0]).toMatchObject({ onDevice: true });
+  });
+
+  it('changing mode while listening calls bridge.stop then bridge.start with new mode', async () => {
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    const micBtn = findButtonByLabel(view.UNSAFE_root, /microphone/i);
+    await act(async () => {
+      fireEvent.press(micBtn);
+    });
+    expect(mockBridge.start).toHaveBeenCalledTimes(1);
+    expect(mockBridge.start.mock.calls[0][0]).toMatchObject({ onDevice: false });
+
+    const buttons = view.UNSAFE_root.findAll(
+      (n: any) => n.props && n.props.accessibilityRole === 'button',
+    );
+    const onDeviceSeg = buttons.find((b: any) =>
+      String(b.props.accessibilityLabel ?? '').toLowerCase().includes('on-device'),
+    );
+    await act(async () => {
+      fireEvent.press(onDeviceSeg);
+    });
+    await flushAsync();
+    expect(mockBridge.stop).toHaveBeenCalled();
+    expect(mockBridge.start).toHaveBeenCalledTimes(2);
+    expect(mockBridge.start.mock.calls[1][0]).toMatchObject({ onDevice: true });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// US3 (T049) — Locale switching
+// ---------------------------------------------------------------------------
+
+describe('SpeechRecognitionLab screen (US3)', () => {
+  beforeEach(() => {
+    listeners.length = 0;
+    mockBridge.start.mockClear();
+    mockBridge.stop.mockClear();
+    mockBridge.requestAuthorization.mockClear();
+    mockBridge.getAuthorizationStatus.mockClear();
+    mockBridge.isAvailable.mockClear();
+    mockBridge.isAvailable.mockReturnValue(true);
+    mockBridge.getAuthorizationStatus.mockResolvedValue('authorized' as any);
+    mockBridge.availableLocales.mockReturnValue([
+      'en-US',
+      'zh-CN',
+      'ja-JP',
+      'es-ES',
+      'fr-FR',
+      'de-DE',
+    ]);
+  });
+
+  function findChip(root: any, locale: string) {
+    const buttons = root.findAll(
+      (n: any) => n.props && n.props.accessibilityRole === 'button',
+    );
+    return buttons.find((b: any) =>
+      String(b.props.accessibilityLabel ?? '').includes(locale),
+    );
+  }
+
+  it('changing locale while idle commits and the next start uses the new locale', async () => {
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    const ja = findChip(view.UNSAFE_root, 'ja-JP');
+    await act(async () => {
+      fireEvent.press(ja);
+    });
+    const micBtn = findButtonByLabel(view.UNSAFE_root, /microphone/i);
+    await act(async () => {
+      fireEvent.press(micBtn);
+    });
+    expect(mockBridge.start).toHaveBeenCalledTimes(1);
+    expect(mockBridge.start.mock.calls[0][0]).toMatchObject({ locale: 'ja-JP' });
+  });
+
+  it('changing locale while listening calls bridge.stop then bridge.start with new locale', async () => {
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    const micBtn = findButtonByLabel(view.UNSAFE_root, /microphone/i);
+    await act(async () => {
+      fireEvent.press(micBtn);
+    });
+    expect(mockBridge.start).toHaveBeenCalledTimes(1);
+
+    const ja = findChip(view.UNSAFE_root, 'ja-JP');
+    await act(async () => {
+      fireEvent.press(ja);
+    });
+    await flushAsync();
+    expect(mockBridge.stop).toHaveBeenCalled();
+    expect(mockBridge.start).toHaveBeenCalledTimes(2);
+    expect(mockBridge.start.mock.calls[1][0]).toMatchObject({ locale: 'ja-JP' });
+  });
+});
+
+// ---------------------------------------------------------------------------
+// US4 (T054) — Auth UX
+// ---------------------------------------------------------------------------
+
+describe('SpeechRecognitionLab screen (US4 — auth)', () => {
+  beforeEach(() => {
+    listeners.length = 0;
+    mockBridge.start.mockClear();
+    mockBridge.stop.mockClear();
+    mockBridge.requestAuthorization.mockClear();
+    mockBridge.getAuthorizationStatus.mockClear();
+    mockBridge.isAvailable.mockClear();
+    mockBridge.isAvailable.mockReturnValue(true);
+  });
+
+  it('renders denied pill and disables the mic when getAuthorizationStatus resolves "denied"', async () => {
+    mockBridge.getAuthorizationStatus.mockResolvedValueOnce('denied' as any);
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    expect(screen.queryByText(/denied/i)).toBeTruthy();
+    const micBtn = findButtonByLabel(view.UNSAFE_root, /microphone/i);
+    expect(micBtn.props.accessibilityState).toMatchObject({ disabled: true });
+    await act(async () => {
+      fireEvent.press(micBtn);
+    });
+    expect(mockBridge.start).not.toHaveBeenCalled();
+  });
+
+  it('renders restricted pill, disables mic, and Settings affordance is present', async () => {
+    mockBridge.getAuthorizationStatus.mockResolvedValueOnce('restricted' as any);
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    expect(screen.queryByText(/restricted/i)).toBeTruthy();
+    const links = view.UNSAFE_root.findAll(
+      (n: any) =>
+        Boolean(n.props) &&
+        n.props.accessibilityRole === 'link' &&
+        /open settings to enable/i.test(String(n.props.accessibilityLabel ?? '')),
+    );
+    expect(links.length).toBeGreaterThan(0);
+  });
+
+  it('tapping Request when status is notDetermined invokes requestAuthorization once', async () => {
+    mockBridge.getAuthorizationStatus.mockResolvedValueOnce('notDetermined' as any);
+    mockBridge.requestAuthorization.mockResolvedValueOnce('authorized' as any);
+    const view = render(<SpeechRecognitionScreen />);
+    await flushAsync();
+    const requestBtn = findButtonByLabel(view.UNSAFE_root, /request speech recognition permission/i);
+    expect(requestBtn).toBeTruthy();
+    await act(async () => {
+      fireEvent.press(requestBtn);
+    });
+    expect(mockBridge.requestAuthorization).toHaveBeenCalledTimes(1);
+  });
+});

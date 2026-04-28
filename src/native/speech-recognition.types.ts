@@ -59,6 +59,12 @@ export interface SpeechBridgeEventEmitter {
 
 export interface SpeechBridge {
   isAvailable(locale: Locale): boolean;
+  /**
+   * Per-locale on-device support probe. Optional — only iOS exposes this
+   * synchronously via the native module. On Android / web fallbacks the
+   * field is omitted (the consumer must treat `undefined` as `false`).
+   */
+  supportsOnDeviceRecognition?(locale: Locale): boolean;
   availableLocales(): Locale[];
   requestAuthorization(): Promise<AuthStatus>;
   getAuthorizationStatus(): Promise<AuthStatus>;

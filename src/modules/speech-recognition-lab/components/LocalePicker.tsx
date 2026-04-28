@@ -27,9 +27,11 @@ export default function LocalePicker({
   onLocaleChange,
   disabled = false,
 }: LocalePickerProps) {
-  const list = availableLocales && availableLocales.length > 0
-    ? availableLocales
-    : TOP_LOCALES;
+  // Always render the top-6 list. When `availableLocales` is provided,
+  // chips not in that list render disabled (US3 / FR-008).
+  const filterSet = availableLocales && availableLocales.length > 0
+    ? new Set(availableLocales)
+    : null;
 
   return (
     <ThemedView type="background" style={styles.container} accessibilityLabel="Locale picker">
@@ -37,23 +39,25 @@ export default function LocalePicker({
         Locale
       </ThemedText>
       <View style={styles.row}>
-        {list.map((loc) => {
+        {TOP_LOCALES.map((loc) => {
           const isSelected = loc === locale;
+          const isUnsupported = filterSet ? !filterSet.has(loc) : false;
+          const chipDisabled = disabled || isUnsupported;
           return (
             <Pressable
               key={loc}
               onPress={() => {
-                if (disabled) return;
+                if (chipDisabled) return;
                 onLocaleChange(loc);
               }}
-              disabled={disabled}
+              disabled={chipDisabled}
               accessibilityRole="button"
               accessibilityLabel={`Select locale ${loc}`}
-              accessibilityState={{ selected: isSelected, disabled }}
+              accessibilityState={{ selected: isSelected, disabled: chipDisabled }}
               style={[
                 styles.chip,
                 isSelected && styles.chipSelected,
-                disabled && styles.chipDisabled,
+                chipDisabled && styles.chipDisabled,
               ]}
             >
               <ThemedText

@@ -71,6 +71,16 @@ public class SpeechRecognizerModule: Module {
         .sorted()
     }
 
+    // US2 (T046, T047): synchronous probe so the JS layer can disable the
+    // **On-device** segment when the current locale doesn't support it.
+    Function("supportsOnDeviceRecognition") { (locale: String) -> Bool in
+      let id = locale.replacingOccurrences(of: "-", with: "_")
+      guard let r = SFSpeechRecognizer(locale: Locale(identifier: id)) else {
+        return false
+      }
+      return r.supportsOnDeviceRecognition
+    }
+
     AsyncFunction("requestAuthorization") { () async throws -> String in
       // TODO US1: wire SFSpeechRecognizer.requestAuthorization.
       return await withCheckedContinuation { (cont: CheckedContinuation<String, Never>) in
