@@ -86,11 +86,7 @@ describe('date-ranges', () => {
         startDate.getMonth(),
         startDate.getDate(),
       );
-      const endMidnight = new Date(
-        endDate.getFullYear(),
-        endDate.getMonth(),
-        endDate.getDate(),
-      );
+      const endMidnight = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
       const dayCount = Math.round((endMidnight.getTime() - startMidnight.getTime()) / msPerDay) + 1;
       expect(dayCount).toBe(expectedDays[preset]);
     });
@@ -113,11 +109,7 @@ describe('date-ranges', () => {
           startDate.getMonth(),
           startDate.getDate(),
         );
-        const endMidnight = new Date(
-          endDate.getFullYear(),
-          endDate.getMonth(),
-          endDate.getDate(),
-        );
+        const endMidnight = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
         const msPerDay = 24 * 60 * 60 * 1000;
         const dayCount =
           Math.round((endMidnight.getTime() - startMidnight.getTime()) / msPerDay) + 1;
@@ -139,11 +131,7 @@ describe('date-ranges', () => {
           startDate.getMonth(),
           startDate.getDate(),
         );
-        const endMidnight = new Date(
-          endDate.getFullYear(),
-          endDate.getMonth(),
-          endDate.getDate(),
-        );
+        const endMidnight = new Date(endDate.getFullYear(), endDate.getMonth(), endDate.getDate());
         const msPerDay = 24 * 60 * 60 * 1000;
         const dayCount =
           Math.round((endMidnight.getTime() - startMidnight.getTime()) / msPerDay) + 1;

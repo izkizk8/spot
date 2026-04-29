@@ -73,9 +73,7 @@ const WEB_ERROR: ClassifiedError = {
 
 // ─── Mappers ───────────────────────────────────────────────────────
 
-function mapPermissionStatus(
-  response: Calendar.PermissionResponse,
-): ReminderAuthorizationStatus {
+function mapPermissionStatus(response: Calendar.PermissionResponse): ReminderAuthorizationStatus {
   if (response.status === 'granted') return 'authorized';
   if (response.status === 'denied') return 'denied';
   if (response.status === 'undetermined') return 'notDetermined';
@@ -92,20 +90,13 @@ function mapList(cal: Calendar.Calendar): CalendarSummary {
   };
 }
 
-function mapPriority(p: number | undefined): ReminderSummary['priority'] {
-  if (p === undefined || p === 0) return 'none';
-  if (p <= 3) return 'high';
-  if (p <= 6) return 'medium';
-  return 'low';
-}
-
 function mapReminder(r: Calendar.Reminder): ReminderSummary {
   return {
-    id: r.id,
-    title: r.title,
+    id: r.id ?? '',
+    title: r.title ?? '',
     dueDate: r.dueDate ? new Date(r.dueDate) : undefined,
     listId: r.calendarId ?? '',
-    priority: mapPriority(r.priority),
+    priority: 'none',
     completed: r.completed ?? false,
   };
 }
@@ -137,14 +128,11 @@ export function useReminders(): UseRemindersReturn {
     if (mounted.current) dispatch(action);
   }, []);
 
-  const enqueue = useCallback(
-    (work: () => Promise<void>): Promise<void> => {
-      const next = queueRef.current.then(work, work);
-      queueRef.current = next;
-      return next;
-    },
-    [],
-  );
+  const enqueue = useCallback((work: () => Promise<void>): Promise<void> => {
+    const next = queueRef.current.then(work, work);
+    queueRef.current = next;
+    return next;
+  }, []);
 
   const isWeb = Platform.OS === 'web';
   const isAndroid = Platform.OS === 'android';
@@ -159,47 +147,45 @@ export function useReminders(): UseRemindersReturn {
     }
   }, [isWeb, safeDispatch]);
 
-  const refreshRemindersInner = useCallback(async (filterOverride?: RemindersFilter) => {
-    if (isWeb) return;
-    const effectiveFilter = filterOverride ?? state.filter;
-    try {
-      const listIds = state.lists.map((l) => l.id);
-      if (listIds.length === 0) {
-        safeDispatch({ type: 'SET_REMINDERS', reminders: [] });
-        return;
-      }
-      let reminders: Calendar.Reminder[];
+  const refreshRemindersInner = useCallback(
+    async (filterOverride?: RemindersFilter) => {
+      if (isWeb) return;
+      const effectiveFilter = filterOverride ?? state.filter;
+      try {
+        const listIds = state.lists.map((l) => l.id);
+        if (listIds.length === 0) {
+          safeDispatch({ type: 'SET_REMINDERS', reminders: [] });
+          return;
+        }
+        let reminders: Calendar.Reminder[];
 
-      if (effectiveFilter === 'completed') {
-        reminders = await Calendar.getRemindersAsync(
-          listIds,
-          Calendar.ReminderStatus?.COMPLETED ?? ('completed' as unknown as undefined),
-          new Date(2000, 0, 1),
-          new Date(),
-        );
-      } else if (effectiveFilter === 'incomplete') {
-        reminders = await Calendar.getRemindersAsync(
-          listIds,
-          Calendar.ReminderStatus?.INCOMPLETE ?? ('incomplete' as unknown as undefined),
-          undefined as unknown as Date,
-          undefined as unknown as Date,
-        );
-      } else {
-        // 'all'
-        reminders = await Calendar.getRemindersAsync(
-          listIds,
-          undefined as unknown as number,
-          undefined as unknown as Date,
-          undefined as unknown as Date,
-        );
-      }
+        if (effectiveFilter === 'completed') {
+          reminders = await Calendar.getRemindersAsync(
+            listIds,
+            Calendar.ReminderStatus?.COMPLETED ?? null,
+            new Date(2000, 0, 1),
+            new Date(),
+          );
+        } else if (effectiveFilter === 'incomplete') {
+          reminders = await Calendar.getRemindersAsync(
+            listIds,
+            Calendar.ReminderStatus?.INCOMPLETE ?? null,
+            null,
+            null,
+          );
+        } else {
+          // 'all'
+          reminders = await Calendar.getRemindersAsync(listIds, null, null, null);
+        }
 
-      safeDispatch({ type: 'SET_REMINDERS', reminders: (reminders ?? []).map(mapReminder) });
-      safeDispatch({ type: 'SET_ERROR', error: null });
-    } catch (e) {
-      safeDispatch({ type: 'SET_ERROR', error: classifyEventKitError(e) });
-    }
-  }, [isWeb, state.filter, state.lists, safeDispatch]);
+        safeDispatch({ type: 'SET_REMINDERS', reminders: (reminders ?? []).map(mapReminder) });
+        safeDispatch({ type: 'SET_ERROR', error: null });
+      } catch (e) {
+        safeDispatch({ type: 'SET_ERROR', error: classifyEventKitError(e) });
+      }
+    },
+    [isWeb, state.filter, state.lists, safeDispatch],
+  );
 
   // H3: On mount, check permissions once
   useEffect(() => {
@@ -207,7 +193,9 @@ export function useReminders(): UseRemindersReturn {
     if (isWeb) {
       safeDispatch({ type: 'SET_STATUS', status: 'restricted' });
       safeDispatch({ type: 'SET_ERROR', error: WEB_ERROR });
-      return () => { mounted.current = false; };
+      return () => {
+        mounted.current = false;
+      };
     }
     (async () => {
       try {
@@ -222,9 +210,9 @@ export function useReminders(): UseRemindersReturn {
             try {
               const reminders = await Calendar.getRemindersAsync(
                 lists.map((l) => l.id),
-                undefined as unknown as number,
-                undefined as unknown as Date,
-                undefined as unknown as Date,
+                null,
+                null,
+                null,
               );
               safeDispatch({
                 type: 'SET_REMINDERS',
@@ -239,8 +227,10 @@ export function useReminders(): UseRemindersReturn {
         safeDispatch({ type: 'SET_ERROR', error: classifyEventKitError(e) });
       }
     })();
-    return () => { mounted.current = false; };
-  }, []); // mount-only
+    return () => {
+      mounted.current = false;
+    };
+  }, [isWeb, safeDispatch]); // mount-only
 
   const requestAccess = useCallback(async () => {
     if (isWeb) {
@@ -260,9 +250,9 @@ export function useReminders(): UseRemindersReturn {
           if (lists.length > 0) {
             const reminders = await Calendar.getRemindersAsync(
               lists.map((l) => l.id),
-              undefined as unknown as number,
-              undefined as unknown as Date,
-              undefined as unknown as Date,
+              null,
+              null,
+              null,
             );
             safeDispatch({
               type: 'SET_REMINDERS',

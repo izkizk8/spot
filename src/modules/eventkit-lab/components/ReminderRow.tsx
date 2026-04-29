@@ -32,18 +32,14 @@ function formatDue(d: Date): string {
 
 export function ReminderRow({ reminder, onEdit, onDelete }: ReminderRowProps) {
   const handleLongPress = () => {
-    Alert.alert(
-      'Delete reminder?',
-      `"${reminder.title}" will be removed.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => onDelete(reminder.id),
-        },
-      ],
-    );
+    Alert.alert('Delete reminder?', `"${reminder.title}" will be removed.`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => onDelete(reminder.id),
+      },
+    ]);
   };
 
   const priorityLabel = PRIORITY_LABELS[reminder.priority];

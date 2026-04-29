@@ -10,11 +10,7 @@ import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 import { useTheme } from '@/hooks/use-theme';
 
-import {
-  DATE_RANGE_LABELS,
-  DATE_RANGE_PRESETS,
-  type DateRangePreset,
-} from '../date-ranges';
+import { DATE_RANGE_LABELS, DATE_RANGE_PRESETS, type DateRangePreset } from '../date-ranges';
 import type { EventSummary } from '../types';
 import { EventRow } from './EventRow';
 

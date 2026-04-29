@@ -70,11 +70,7 @@ describe('ReminderComposer', () => {
     const { ReminderComposer } = require('@/modules/eventkit-lab/components/ReminderComposer');
 
     const { queryByTestId, getByTestId } = render(
-      <ReminderComposer
-        lists={[writableList, readonlyList]}
-        onSave={jest.fn()}
-        inFlight={false}
-      />,
+      <ReminderComposer lists={[writableList, readonlyList]} onSave={jest.fn()} inFlight={false} />,
     );
 
     expect(getByTestId('eventkit-reminder-list-list-1')).toBeTruthy();

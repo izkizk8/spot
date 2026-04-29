@@ -82,12 +82,7 @@ export function RemindersQueryCard({
         </ThemedText>
       ) : (
         reminders.map((reminder) => (
-          <ReminderRow
-            key={reminder.id}
-            reminder={reminder}
-            onEdit={onEdit}
-            onDelete={onDelete}
-          />
+          <ReminderRow key={reminder.id} reminder={reminder} onEdit={onEdit} onDelete={onDelete} />
         ))
       )}
     </ThemedView>

@@ -55,9 +55,7 @@ describe('RemindersList', () => {
     const { RemindersList } = require('@/modules/eventkit-lab/components/RemindersList');
     const onRefresh = jest.fn();
 
-    const { getByTestId } = render(
-      <RemindersList lists={sampleLists} onRefresh={onRefresh} />,
-    );
+    const { getByTestId } = render(<RemindersList lists={sampleLists} onRefresh={onRefresh} />);
 
     fireEvent.press(getByTestId('eventkit-reminder-lists-refresh'));
     expect(onRefresh).toHaveBeenCalledTimes(1);

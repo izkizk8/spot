@@ -32,7 +32,7 @@ function makeCalendarState(
     status: 'notDetermined',
     calendars: [],
     events: [],
-    range: 'next-7-days',
+    range: 'today',
     inFlight: false,
     lastError: null,
     requestAccess: jest.fn().mockResolvedValue(undefined),

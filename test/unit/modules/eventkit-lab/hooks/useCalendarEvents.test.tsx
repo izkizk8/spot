@@ -60,7 +60,10 @@ jest.mock('expo-calendar', () => ({
   EntityTypes: { EVENT: 'event' },
 }));
 
-import { classifyEventKitError, useCalendarEvents } from '@/modules/eventkit-lab/hooks/useCalendarEvents';
+import {
+  classifyEventKitError,
+  useCalendarEvents,
+} from '@/modules/eventkit-lab/hooks/useCalendarEvents';
 import { toAlarmsArray } from '@/modules/eventkit-lab/alarm-offsets';
 
 function resetMocks(): void {
@@ -325,7 +328,9 @@ describe('useCalendarEvents hook', () => {
 
   // ─── C3: writeOnly gating ────────────────────────────────────────
   // writeOnly state is currently unreachable through mapPermissionStatus.
-  it.todo('C3: writeOnly — refresh short-circuits; createEvent allowed; updateEvent/deleteEvent reject');
+  it.todo(
+    'C3: writeOnly — refresh short-circuits; createEvent allowed; updateEvent/deleteEvent reject',
+  );
 
   // ─── C4: alarm offset translation ────────────────────────────────
   it('C4: createEvent translates alarmOffset via toAlarmsArray', async () => {
@@ -387,7 +392,10 @@ describe('useCalendarEvents hook', () => {
       });
     });
 
-    const [, details] = mockCalendar.createEventAsync.mock.calls[0] as [string, Record<string, unknown>];
+    const [, details] = mockCalendar.createEventAsync.mock.calls[0] as [
+      string,
+      Record<string, unknown>,
+    ];
     expect(details).not.toHaveProperty('alarms');
   });
 

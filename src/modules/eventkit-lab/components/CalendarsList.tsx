@@ -21,11 +21,7 @@ export function CalendarsList({ calendars, onRefresh }: CalendarsListProps) {
     <ThemedView style={styles.container} type="backgroundElement" testID="eventkit-calendars">
       <View style={styles.header}>
         <ThemedText type="subtitle">Calendars</ThemedText>
-        <Pressable
-          style={styles.refresh}
-          onPress={onRefresh}
-          testID="eventkit-calendars-refresh"
-        >
+        <Pressable style={styles.refresh} onPress={onRefresh} testID="eventkit-calendars-refresh">
           <ThemedText type="link" themeColor="tintA">
             Refresh
           </ThemedText>

@@ -57,8 +57,7 @@ export function EventComposer({ calendars, onSave, inFlight, eventId }: EventCom
   const [calendarId, setCalendarId] = useState<string>(writableCalendars[0]?.id ?? '');
 
   const trimmedTitle = title.trim();
-  const canSave =
-    trimmedTitle.length > 0 && calendarId !== '' && !inFlight;
+  const canSave = trimmedTitle.length > 0 && calendarId !== '' && !inFlight;
 
   const handleSave = () => {
     const start = defaultStart();

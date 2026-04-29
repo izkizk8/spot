@@ -65,11 +65,7 @@ describe('EventComposer', () => {
     const { EventComposer } = require('@/modules/eventkit-lab/components/EventComposer');
 
     const { queryByTestId, getByTestId } = render(
-      <EventComposer
-        calendars={[writableCal, readonlyCal]}
-        onSave={jest.fn()}
-        inFlight={false}
-      />,
+      <EventComposer calendars={[writableCal, readonlyCal]} onSave={jest.fn()} inFlight={false} />,
     );
 
     expect(getByTestId('eventkit-event-cal-cal-1')).toBeTruthy();

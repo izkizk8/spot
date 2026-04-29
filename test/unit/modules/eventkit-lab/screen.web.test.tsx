@@ -34,7 +34,7 @@ function makeCalendarState(
     status: 'restricted',
     calendars: [],
     events: [],
-    range: 'next-7-days',
+    range: 'today',
     inFlight: false,
     lastError: null,
     requestAccess: jest.fn().mockResolvedValue(undefined),
@@ -114,7 +114,17 @@ describe('EventKit Lab Screen (Web)', () => {
 
   it('does NOT statically import expo-calendar', () => {
     const source = fs.readFileSync(
-      path.join(__dirname, '..', '..', '..', '..', 'src', 'modules', 'eventkit-lab', 'screen.web.tsx'),
+      path.join(
+        __dirname,
+        '..',
+        '..',
+        '..',
+        '..',
+        'src',
+        'modules',
+        'eventkit-lab',
+        'screen.web.tsx',
+      ),
       'utf8',
     );
 

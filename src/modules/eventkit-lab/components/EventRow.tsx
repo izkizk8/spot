@@ -37,18 +37,14 @@ function formatRange(event: EventSummary): string {
 
 export function EventRow({ event, onEdit, onDelete }: EventRowProps) {
   const handleLongPress = () => {
-    Alert.alert(
-      'Delete event?',
-      `"${event.title}" will be removed from your calendar.`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        {
-          text: 'Delete',
-          style: 'destructive',
-          onPress: () => onDelete(event.id),
-        },
-      ],
-    );
+    Alert.alert('Delete event?', `"${event.title}" will be removed from your calendar.`, [
+      { text: 'Cancel', style: 'cancel' },
+      {
+        text: 'Delete',
+        style: 'destructive',
+        onPress: () => onDelete(event.id),
+      },
+    ]);
   };
 
   return (

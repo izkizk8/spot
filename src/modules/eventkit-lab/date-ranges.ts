@@ -9,11 +9,7 @@
 export type DateRangePreset = 'today' | 'next7' | 'next30';
 
 /** Ordered list of presets for picker UI. */
-export const DATE_RANGE_PRESETS: readonly DateRangePreset[] = [
-  'today',
-  'next7',
-  'next30',
-] as const;
+export const DATE_RANGE_PRESETS: readonly DateRangePreset[] = ['today', 'next7', 'next30'] as const;
 
 /** Human-readable labels for each preset. */
 export const DATE_RANGE_LABELS: Readonly<Record<DateRangePreset, string>> = {

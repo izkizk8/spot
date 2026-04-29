@@ -106,9 +106,7 @@ export interface UseCalendarEventsReturn {
   deleteEvent: (eventId: string) => Promise<void>;
 }
 
-function mapPermissionStatus(
-  response: Calendar.PermissionResponse,
-): AuthorizationStatus {
+function mapPermissionStatus(response: Calendar.PermissionResponse): AuthorizationStatus {
   if (response.status === 'granted') return 'authorized';
   if (response.status === 'denied') return 'denied';
   if (response.status === 'undetermined') return 'notDetermined';
@@ -149,14 +147,11 @@ export function useCalendarEvents(): UseCalendarEventsReturn {
   }, []);
 
   // Serialisation queue — H5 / R-A
-  const enqueue = useCallback(
-    (work: () => Promise<void>): Promise<void> => {
-      const next = queueRef.current.then(work, work);
-      queueRef.current = next;
-      return next;
-    },
-    [],
-  );
+  const enqueue = useCallback((work: () => Promise<void>): Promise<void> => {
+    const next = queueRef.current.then(work, work);
+    queueRef.current = next;
+    return next;
+  }, []);
 
   // H7: web short-circuit
   const isWeb = Platform.OS === 'web';
@@ -171,28 +166,34 @@ export function useCalendarEvents(): UseCalendarEventsReturn {
     }
   }, [isWeb, safeDispatch]);
 
-  const refreshEventsInner = useCallback(async (rangeOverride?: DateRangePreset, currentStatus?: AuthorizationStatus) => {
-    if (isWeb) return;
-    const effectiveStatus = currentStatus ?? state.status;
-    // C3: writeOnly blocks reads
-    if (effectiveStatus === 'writeOnly') {
-      safeDispatch({ type: 'SET_ERROR', error: { kind: 'write-only', message: 'Write-only access cannot read events.' } });
-      return;
-    }
-    if (effectiveStatus !== 'authorized') return;
-    try {
-      const range = computeRange(rangeOverride ?? state.range, new Date());
-      const evts = await Calendar.getEventsAsync(
-        state.calendars.map((c) => c.id),
-        range.startDate,
-        range.endDate,
-      );
-      safeDispatch({ type: 'SET_EVENTS', events: evts.map(mapEvent) });
-      safeDispatch({ type: 'SET_ERROR', error: null });
-    } catch (e) {
-      safeDispatch({ type: 'SET_ERROR', error: classifyEventKitError(e) });
-    }
-  }, [isWeb, state.status, state.range, state.calendars, safeDispatch]);
+  const refreshEventsInner = useCallback(
+    async (rangeOverride?: DateRangePreset, currentStatus?: AuthorizationStatus) => {
+      if (isWeb) return;
+      const effectiveStatus = currentStatus ?? state.status;
+      // C3: writeOnly blocks reads
+      if (effectiveStatus === 'writeOnly') {
+        safeDispatch({
+          type: 'SET_ERROR',
+          error: { kind: 'write-only', message: 'Write-only access cannot read events.' },
+        });
+        return;
+      }
+      if (effectiveStatus !== 'authorized') return;
+      try {
+        const range = computeRange(rangeOverride ?? state.range, new Date());
+        const evts = await Calendar.getEventsAsync(
+          state.calendars.map((c) => c.id),
+          range.startDate,
+          range.endDate,
+        );
+        safeDispatch({ type: 'SET_EVENTS', events: evts.map(mapEvent) });
+        safeDispatch({ type: 'SET_ERROR', error: null });
+      } catch (e) {
+        safeDispatch({ type: 'SET_ERROR', error: classifyEventKitError(e) });
+      }
+    },
+    [isWeb, state.status, state.range, state.calendars, safeDispatch],
+  );
 
   // H3: On mount, check permissions exactly once
   useEffect(() => {
@@ -200,7 +201,9 @@ export function useCalendarEvents(): UseCalendarEventsReturn {
     if (isWeb) {
       safeDispatch({ type: 'SET_STATUS', status: 'restricted' });
       safeDispatch({ type: 'SET_ERROR', error: WEB_ERROR });
-      return () => { mounted.current = false; };
+      return () => {
+        mounted.current = false;
+      };
     }
     (async () => {
       try {
@@ -224,8 +227,10 @@ export function useCalendarEvents(): UseCalendarEventsReturn {
         safeDispatch({ type: 'SET_ERROR', error: classifyEventKitError(e) });
       }
     })();
-    return () => { mounted.current = false; };
-  }, []); // mount-only: intentionally empty deps for one-time permission check
+    return () => {
+      mounted.current = false;
+    };
+  }, [isWeb, safeDispatch]); // mount-only: intentionally empty deps for one-time permission check
 
   const requestAccess = useCallback(async () => {
     if (isWeb) {
@@ -294,13 +299,19 @@ export function useCalendarEvents(): UseCalendarEventsReturn {
               startDate.getFullYear(),
               startDate.getMonth(),
               startDate.getDate(),
-              0, 0, 0, 0,
+              0,
+              0,
+              0,
+              0,
             );
             endDate = new Date(
               endDate.getFullYear(),
               endDate.getMonth(),
               endDate.getDate(),
-              23, 59, 59, 999,
+              23,
+              59,
+              59,
+              999,
             );
           }
           // C4: alarm translation
@@ -350,13 +361,19 @@ export function useCalendarEvents(): UseCalendarEventsReturn {
               startDate.getFullYear(),
               startDate.getMonth(),
               startDate.getDate(),
-              0, 0, 0, 0,
+              0,
+              0,
+              0,
+              0,
             );
             endDate = new Date(
               endDate.getFullYear(),
               endDate.getMonth(),
               endDate.getDate(),
-              23, 59, 59, 999,
+              23,
+              59,
+              59,
+              999,
             );
           }
           const alarms = draft.alarmOffset ? toAlarmsArray(draft.alarmOffset) : undefined;

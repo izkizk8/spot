@@ -88,7 +88,7 @@ describe('with-eventkit plugin', () => {
     for (const key of writtenKeys) {
       expect(KEYS).toContain(key as (typeof KEYS)[number]);
     }
-    expect(writtenKeys.sort()).toEqual([...KEYS].sort());
+    expect(writtenKeys.toSorted()).toEqual([...KEYS].toSorted());
   });
 
   it('P5: running plugin twice is idempotent (deep-equal)', () => {
@@ -114,8 +114,8 @@ describe('with-eventkit plugin', () => {
 
     expect(result.ios?.entitlements?.['aps-environment']).toBe('production');
     expect(result.ios?.entitlements?.['com.apple.developer.siri']).toBe(true);
-    expect(Object.keys(result.ios?.entitlements ?? {}).sort()).toEqual(
-      ['aps-environment', 'com.apple.developer.siri'].sort(),
+    expect(Object.keys(result.ios?.entitlements ?? {}).toSorted()).toEqual(
+      ['aps-environment', 'com.apple.developer.siri'].toSorted(),
     );
   });
 });

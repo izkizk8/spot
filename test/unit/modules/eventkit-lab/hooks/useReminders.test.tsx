@@ -119,7 +119,13 @@ describe('useReminders hook', () => {
       canAskAgain: true,
     });
     mockCalendar.getCalendarsAsync.mockResolvedValue([
-      { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+      {
+        id: 'list-1',
+        title: 'My Reminders',
+        type: 'local',
+        color: '#fff',
+        allowsModifications: true,
+      },
     ]);
 
     const { result } = renderHook(() => useReminders());
@@ -139,7 +145,13 @@ describe('useReminders hook', () => {
       canAskAgain: true,
     });
     mockCalendar.getCalendarsAsync.mockResolvedValue([
-      { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+      {
+        id: 'list-1',
+        title: 'My Reminders',
+        type: 'local',
+        color: '#fff',
+        allowsModifications: true,
+      },
     ]);
 
     const { result } = renderHook(() => useReminders());
@@ -170,7 +182,13 @@ describe('useReminders hook', () => {
       canAskAgain: true,
     });
     mockCalendar.getCalendarsAsync.mockResolvedValue([
-      { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+      {
+        id: 'list-1',
+        title: 'My Reminders',
+        type: 'local',
+        color: '#fff',
+        allowsModifications: true,
+      },
     ]);
 
     const { result } = renderHook(() => useReminders());
@@ -203,7 +221,13 @@ describe('useReminders hook', () => {
       canAskAgain: true,
     });
     mockCalendar.getCalendarsAsync.mockResolvedValue([
-      { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+      {
+        id: 'list-1',
+        title: 'My Reminders',
+        type: 'local',
+        color: '#fff',
+        allowsModifications: true,
+      },
     ]);
 
     const due = new Date('2025-06-01T09:00:00Z');
@@ -287,7 +311,13 @@ describe('useReminders hook', () => {
         canAskAgain: true,
       });
       mockCalendar.getCalendarsAsync.mockResolvedValue([
-        { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+        {
+          id: 'list-1',
+          title: 'My Reminders',
+          type: 'local',
+          color: '#fff',
+          allowsModifications: true,
+        },
       ]);
     });
 
@@ -346,7 +376,13 @@ describe('useReminders hook', () => {
         canAskAgain: true,
       });
       mockCalendar.getCalendarsAsync.mockResolvedValue([
-        { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+        {
+          id: 'list-1',
+          title: 'My Reminders',
+          type: 'local',
+          color: '#fff',
+          allowsModifications: true,
+        },
       ]);
     });
 
@@ -403,7 +439,13 @@ describe('useReminders hook', () => {
         canAskAgain: true,
       });
       mockCalendar.getCalendarsAsync.mockResolvedValue([
-        { id: 'list-1', title: 'My Reminders', type: 'local', color: '#fff', allowsModifications: true },
+        {
+          id: 'list-1',
+          title: 'My Reminders',
+          type: 'local',
+          color: '#fff',
+          allowsModifications: true,
+        },
       ]);
     });
 

@@ -39,12 +39,7 @@ function defaultDue(): Date {
   return d;
 }
 
-export function ReminderComposer({
-  lists,
-  onSave,
-  inFlight,
-  reminderId,
-}: ReminderComposerProps) {
+export function ReminderComposer({ lists, onSave, inFlight, reminderId }: ReminderComposerProps) {
   const theme = useTheme();
   const isUpdate = reminderId !== undefined;
 
