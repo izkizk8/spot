@@ -7,7 +7,7 @@
  */
 
 import { withInfoPlist } from '@expo/config-plugins';
-import withArkit from '../../plugins/with-arkit';
+import withArkit from '../../../plugins/with-arkit';
 
 describe('with-arkit plugin', () => {
   const mockConfig = {
@@ -18,7 +18,6 @@ describe('with-arkit plugin', () => {
 
   it('adds NSCameraUsageDescription when absent', () => {
     const result = withArkit(mockConfig as any);
-    const modResults = (result as any).mods?.ios?.infoPlist;
 
     // Plugin uses withInfoPlist, so we need to simulate its execution
     const finalConfig = withInfoPlist(result, (config) => {
@@ -30,9 +29,7 @@ describe('with-arkit plugin', () => {
       return config;
     });
 
-    expect(
-      (finalConfig as any).modResults.NSCameraUsageDescription,
-    ).toBeTruthy();
+    expect((finalConfig as any).modResults.NSCameraUsageDescription).toBeTruthy();
   });
 
   it('preserves existing NSCameraUsageDescription (coexistence with 017)', () => {
@@ -52,25 +49,22 @@ describe('with-arkit plugin', () => {
       return config;
     });
 
-    expect((finalConfig as any).modResults.NSCameraUsageDescription).toBe(
-      existingDescription,
-    );
+    expect((finalConfig as any).modResults.NSCameraUsageDescription).toBe(existingDescription);
   });
 
   it('appends "arkit" to UIRequiredDeviceCapabilities when absent', () => {
     const result = withArkit(mockConfig as any);
     const finalConfig = withInfoPlist(result, (config) => {
       config.modResults = config.modResults || {};
-      const caps = config.modResults.UIRequiredDeviceCapabilities || [];
+      const caps = (config.modResults.UIRequiredDeviceCapabilities ||
+        []) as string[];
       if (!caps.includes('arkit')) {
         config.modResults.UIRequiredDeviceCapabilities = [...caps, 'arkit'];
       }
       return config;
     });
 
-    expect(
-      (finalConfig as any).modResults.UIRequiredDeviceCapabilities,
-    ).toContain('arkit');
+    expect((finalConfig as any).modResults.UIRequiredDeviceCapabilities).toContain('arkit');
   });
 
   it('is a no-op when "arkit" already in UIRequiredDeviceCapabilities', () => {
@@ -82,14 +76,16 @@ describe('with-arkit plugin', () => {
     const result = withArkit(configWithArkit as any);
     const finalConfig = withInfoPlist(result, (config) => {
       config.modResults = config.modResults || {};
-      const caps = config.modResults.UIRequiredDeviceCapabilities || [];
+      const caps = (config.modResults.UIRequiredDeviceCapabilities ||
+        []) as string[];
       if (!caps.includes('arkit')) {
         config.modResults.UIRequiredDeviceCapabilities = [...caps, 'arkit'];
       }
       return config;
     });
 
-    const caps = (finalConfig as any).modResults.UIRequiredDeviceCapabilities;
+    const caps = (finalConfig as any).modResults
+      .UIRequiredDeviceCapabilities as string[];
     expect(caps.filter((c: string) => c === 'arkit')).toHaveLength(1);
   });
 

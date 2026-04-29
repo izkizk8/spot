@@ -21,35 +21,27 @@ describe('StatsBar', () => {
   };
 
   it('renders FPS value', () => {
-    const { getByText } = render(
-      <StatsBar info={{ ...mockInfo, fps: 58.5 }} />,
-    );
+    const { getByText } = render(<StatsBar info={{ ...mockInfo, fps: 58.5 }} />);
 
     expect(getByText(/58\.5/)).toBeTruthy();
     expect(getByText(/fps/i)).toBeTruthy();
   });
 
   it('renders FPS as 0 when state is paused', () => {
-    const { getByText } = render(
-      <StatsBar info={{ ...mockInfo, state: 'paused', fps: 0 }} />,
-    );
+    const { getByText } = render(<StatsBar info={{ ...mockInfo, state: 'paused', fps: 0 }} />);
 
-    expect(getByText(/^0/)).toBeTruthy();
+    expect(getByText('0.0')).toBeTruthy();
   });
 
   it('renders tracking state: normal', () => {
-    const { getByText } = render(
-      <StatsBar info={{ ...mockInfo, trackingState: 'normal' }} />,
-    );
+    const { getByText } = render(<StatsBar info={{ ...mockInfo, trackingState: 'normal' }} />);
 
     expect(getByText(/normal/i)).toBeTruthy();
   });
 
   it('renders tracking state: limited:initializing', () => {
     const { getByText } = render(
-      <StatsBar
-        info={{ ...mockInfo, trackingState: 'limited:initializing' }}
-      />,
+      <StatsBar info={{ ...mockInfo, trackingState: 'limited:initializing' }} />,
     );
 
     expect(getByText(/limited:initializing/i)).toBeTruthy();
@@ -57,9 +49,7 @@ describe('StatsBar', () => {
 
   it('renders tracking state: limited:excessiveMotion', () => {
     const { getByText } = render(
-      <StatsBar
-        info={{ ...mockInfo, trackingState: 'limited:excessiveMotion' }}
-      />,
+      <StatsBar info={{ ...mockInfo, trackingState: 'limited:excessiveMotion' }} />,
     );
 
     expect(getByText(/limited:excessiveMotion/i)).toBeTruthy();
@@ -67,9 +57,7 @@ describe('StatsBar', () => {
 
   it('renders tracking state: limited:insufficientFeatures', () => {
     const { getByText } = render(
-      <StatsBar
-        info={{ ...mockInfo, trackingState: 'limited:insufficientFeatures' }}
-      />,
+      <StatsBar info={{ ...mockInfo, trackingState: 'limited:insufficientFeatures' }} />,
     );
 
     expect(getByText(/limited:insufficientFeatures/i)).toBeTruthy();
@@ -77,9 +65,7 @@ describe('StatsBar', () => {
 
   it('renders tracking state: limited:relocalizing', () => {
     const { getByText } = render(
-      <StatsBar
-        info={{ ...mockInfo, trackingState: 'limited:relocalizing' }}
-      />,
+      <StatsBar info={{ ...mockInfo, trackingState: 'limited:relocalizing' }} />,
     );
 
     expect(getByText(/limited:relocalizing/i)).toBeTruthy();
@@ -94,25 +80,19 @@ describe('StatsBar', () => {
   });
 
   it('formats duration as mm:ss for 0 seconds', () => {
-    const { getByText } = render(
-      <StatsBar info={{ ...mockInfo, duration: 0 }} />,
-    );
+    const { getByText } = render(<StatsBar info={{ ...mockInfo, duration: 0 }} />);
 
     expect(getByText(/00:00/)).toBeTruthy();
   });
 
   it('formats duration as mm:ss for 65 seconds', () => {
-    const { getByText } = render(
-      <StatsBar info={{ ...mockInfo, duration: 65 }} />,
-    );
+    const { getByText } = render(<StatsBar info={{ ...mockInfo, duration: 65 }} />);
 
     expect(getByText(/01:05/)).toBeTruthy();
   });
 
   it('formats duration as mm:ss for 3599 seconds', () => {
-    const { getByText } = render(
-      <StatsBar info={{ ...mockInfo, duration: 3599 }} />,
-    );
+    const { getByText } = render(<StatsBar info={{ ...mockInfo, duration: 3599 }} />);
 
     expect(getByText(/59:59/)).toBeTruthy();
   });

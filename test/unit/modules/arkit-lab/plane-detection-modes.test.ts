@@ -30,12 +30,7 @@ describe('plane-detection-modes', () => {
   });
 
   it('each mode value matches PlaneDetectionMode type', () => {
-    const validModes: PlaneDetectionMode[] = [
-      'none',
-      'horizontal',
-      'vertical',
-      'both',
-    ];
+    const validModes: PlaneDetectionMode[] = ['none', 'horizontal', 'vertical', 'both'];
 
     PLANE_DETECTION_MODES.forEach((mode) => {
       expect(validModes).toContain(mode.value);
@@ -58,8 +53,6 @@ describe('plane-detection-modes', () => {
 
   it('DEFAULT_PLANE_DETECTION_MODE matches DEFAULT_CONFIGURATION from types', () => {
     const { DEFAULT_CONFIGURATION } = require('@/native/arkit.types');
-    expect(DEFAULT_PLANE_DETECTION_MODE).toBe(
-      DEFAULT_CONFIGURATION.planeDetection,
-    );
+    expect(DEFAULT_PLANE_DETECTION_MODE).toBe(DEFAULT_CONFIGURATION.planeDetection);
   });
 });

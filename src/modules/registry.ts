@@ -29,7 +29,6 @@ import spotlightLab from './spotlight-lab';
 import documentsLab from './documents-lab';
 import shareSheetLab from './share-sheet-lab';
 import arkitLab from './arkit-lab';
-
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.

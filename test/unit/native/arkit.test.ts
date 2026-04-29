@@ -263,9 +263,7 @@ describe('arkit bridge', () => {
 
       // Second call still succeeds (chain not poisoned)
       const result = await placeAnchorAt(20, 20);
-      expect(result).toEqual(
-        expect.objectContaining({ id: 'second-anchor' }),
-      );
+      expect(result).toEqual(expect.objectContaining({ id: 'second-anchor' }));
       expect(mockNative.placeAnchorAt).toHaveBeenCalledTimes(2);
     });
   });
@@ -276,60 +274,53 @@ describe('arkit bridge', () => {
     });
 
     it('placeAnchorAt rejects with ARKitNotSupported', async () => {
-      const { placeAnchorAt, ARKitNotSupported } =
-        require('@/native/arkit');
+      const { placeAnchorAt, ARKitNotSupported } = require('@/native/arkit.android');
 
-      await expect(placeAnchorAt(100, 200)).rejects.toThrow(
-        ARKitNotSupported,
-      );
-      await expect(placeAnchorAt(100, 200)).rejects.toThrow(
-        /not available/i,
-      );
+      await expect(placeAnchorAt(100, 200)).rejects.toThrow(ARKitNotSupported);
+      await expect(placeAnchorAt(100, 200)).rejects.toThrow(/not available/i);
     });
 
     it('clearAnchors rejects with ARKitNotSupported', async () => {
-      const { clearAnchors, ARKitNotSupported } = require('@/native/arkit');
+      const { clearAnchors, ARKitNotSupported } = require('@/native/arkit.android');
 
       await expect(clearAnchors()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('pauseSession rejects with ARKitNotSupported', async () => {
-      const { pauseSession, ARKitNotSupported } = require('@/native/arkit');
+      const { pauseSession, ARKitNotSupported } = require('@/native/arkit.android');
 
       await expect(pauseSession()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('resumeSession rejects with ARKitNotSupported', async () => {
-      const { resumeSession, ARKitNotSupported } = require('@/native/arkit');
+      const { resumeSession, ARKitNotSupported } = require('@/native/arkit.android');
 
       await expect(resumeSession()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('getSessionInfo rejects with ARKitNotSupported', async () => {
-      const { getSessionInfo, ARKitNotSupported } =
-        require('@/native/arkit');
+      const { getSessionInfo, ARKitNotSupported } = require('@/native/arkit.android');
 
       await expect(getSessionInfo()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('isAvailable returns false and never throws', () => {
-      const { isAvailable } = require('@/native/arkit');
+      const { isAvailable } = require('@/native/arkit.android');
 
       expect(() => isAvailable()).not.toThrow();
       expect(isAvailable()).toBe(false);
     });
 
     it('ARKitNotSupported has stable code field', async () => {
-      const { placeAnchorAt, ARKitNotSupported } =
-        require('@/native/arkit');
+      const { placeAnchorAt, ARKitNotSupported } = require('@/native/arkit.android');
 
-      try {
-        await placeAnchorAt(0, 0);
-        fail('Expected rejection');
-      } catch (err) {
-        expect(err).toBeInstanceOf(ARKitNotSupported);
-        expect((err as any).code).toBe('ARKIT_NOT_SUPPORTED');
-      }
+      await expect(placeAnchorAt(0, 0)).rejects.toMatchObject({
+        code: 'ARKIT_NOT_SUPPORTED',
+      });
+
+      await expect(placeAnchorAt(0, 0)).rejects.toBeInstanceOf(
+        ARKitNotSupported,
+      );
     });
   });
 
@@ -339,41 +330,37 @@ describe('arkit bridge', () => {
     });
 
     it('placeAnchorAt rejects with ARKitNotSupported', async () => {
-      const { placeAnchorAt, ARKitNotSupported } =
-        require('@/native/arkit');
+      const { placeAnchorAt, ARKitNotSupported } = require('@/native/arkit.web');
 
-      await expect(placeAnchorAt(100, 200)).rejects.toThrow(
-        ARKitNotSupported,
-      );
+      await expect(placeAnchorAt(100, 200)).rejects.toThrow(ARKitNotSupported);
     });
 
     it('clearAnchors rejects with ARKitNotSupported', async () => {
-      const { clearAnchors, ARKitNotSupported } = require('@/native/arkit');
+      const { clearAnchors, ARKitNotSupported } = require('@/native/arkit.web');
 
       await expect(clearAnchors()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('pauseSession rejects with ARKitNotSupported', async () => {
-      const { pauseSession, ARKitNotSupported } = require('@/native/arkit');
+      const { pauseSession, ARKitNotSupported } = require('@/native/arkit.web');
 
       await expect(pauseSession()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('resumeSession rejects with ARKitNotSupported', async () => {
-      const { resumeSession, ARKitNotSupported } = require('@/native/arkit');
+      const { resumeSession, ARKitNotSupported } = require('@/native/arkit.web');
 
       await expect(resumeSession()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('getSessionInfo rejects with ARKitNotSupported', async () => {
-      const { getSessionInfo, ARKitNotSupported } =
-        require('@/native/arkit');
+      const { getSessionInfo, ARKitNotSupported } = require('@/native/arkit.web');
 
       await expect(getSessionInfo()).rejects.toThrow(ARKitNotSupported);
     });
 
     it('isAvailable returns false and never throws', () => {
-      const { isAvailable } = require('@/native/arkit');
+      const { isAvailable } = require('@/native/arkit.web');
 
       expect(() => isAvailable()).not.toThrow();
       expect(isAvailable()).toBe(false);
@@ -382,14 +369,12 @@ describe('arkit bridge', () => {
     it('web bundle does NOT import iOS bridge at module evaluation time', () => {
       jest.isolateModules(() => {
         jest.doMock('@/native/arkit.ts', () => {
-          throw new Error(
-            'iOS bridge MUST NOT be imported at evaluation time on web',
-          );
+          throw new Error('iOS bridge MUST NOT be imported at evaluation time on web');
         });
 
         // If this throws, the web variant is incorrectly importing the iOS file
         expect(() => {
-          require('@/native/arkit');
+          require('@/native/arkit.web');
         }).not.toThrow();
       });
     });

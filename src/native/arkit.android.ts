@@ -12,14 +12,9 @@ import { ARKitNotSupported, AnchorRecord, SessionInfo } from './arkit.types';
 
 export { ARKitNotSupported };
 
-const notSupportedError = new ARKitNotSupported(
-  'ARKit is not available on Android',
-);
+const notSupportedError = new ARKitNotSupported('ARKit is not available on Android');
 
-export function placeAnchorAt(
-  _x: number,
-  _y: number,
-): Promise<AnchorRecord | null> {
+export function placeAnchorAt(_x: number, _y: number): Promise<AnchorRecord | null> {
   return Promise.reject(notSupportedError);
 }
 

@@ -17,13 +17,12 @@ interface PlaneDetectionModeEntry {
  * Catalog of plane detection modes in the fixed order displayed by
  * ConfigurationCard's segmented control.
  */
-export const PLANE_DETECTION_MODES: readonly PlaneDetectionModeEntry[] =
-  Object.freeze([
-    { value: 'none', label: 'None' },
-    { value: 'horizontal', label: 'Horizontal' },
-    { value: 'vertical', label: 'Vertical' },
-    { value: 'both', label: 'Both' },
-  ] as const);
+export const PLANE_DETECTION_MODES: readonly PlaneDetectionModeEntry[] = Object.freeze([
+  { value: 'none', label: 'None' },
+  { value: 'horizontal', label: 'Horizontal' },
+  { value: 'vertical', label: 'Vertical' },
+  { value: 'both', label: 'Both' },
+] as const);
 
 /**
  * Default plane detection mode (matches DEFAULT_CONFIGURATION.planeDetection).

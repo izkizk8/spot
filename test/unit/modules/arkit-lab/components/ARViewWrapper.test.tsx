@@ -88,7 +88,7 @@ describe('ARViewWrapper', () => {
     });
 
     it('renders IOSOnlyBanner', () => {
-      const { getByRole } = render(
+      const { getByText } = render(
         <ARViewWrapper
           isAvailable={false}
           permissionGranted={false}
@@ -101,7 +101,7 @@ describe('ARViewWrapper', () => {
         />,
       );
 
-      expect(getByRole('alert')).toBeTruthy();
+      expect(getByText('ARKit requires iOS 11+. The UI structure is preserved for educational purposes.')).toBeTruthy();
     });
   });
 
@@ -111,7 +111,7 @@ describe('ARViewWrapper', () => {
     });
 
     it('renders IOSOnlyBanner', () => {
-      const { getByRole } = render(
+      const { getByText } = render(
         <ARViewWrapper
           isAvailable={false}
           permissionGranted={false}
@@ -124,7 +124,7 @@ describe('ARViewWrapper', () => {
         />,
       );
 
-      expect(getByRole('alert')).toBeTruthy();
+      expect(getByText('ARKit requires iOS 11+. The UI structure is preserved for educational purposes.')).toBeTruthy();
     });
   });
 });

@@ -85,8 +85,8 @@ describe('ConfigurationCard', () => {
     );
 
     expect(getByText(/people occlusion/i)).toBeTruthy();
-    const row = getByLabelText(/people occlusion/i);
-    expect(row.props.accessibilityState?.disabled).toBe(true);
+    const switchEl = getByLabelText(/people occlusion/i);
+    expect(switchEl.props.disabled).toBe(true);
   });
 
   it('calls onChange when lightEstimation switch toggles', () => {

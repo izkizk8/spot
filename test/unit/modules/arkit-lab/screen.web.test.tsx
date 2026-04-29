@@ -60,22 +60,20 @@ describe('ARKitScreen (Web)', () => {
     const { getByText } = render(<ARKitScreen />);
 
     expect(getByText(/capabilities/i)).toBeTruthy();
-    expect(getByText(/configuration/i)).toBeTruthy();
-    expect(getByText(/anchors/i)).toBeTruthy();
+    expect(getByText(/plane detection/i)).toBeTruthy(); // ConfigurationCard
+    expect(getByText(/no anchors placed yet/i)).toBeTruthy(); // AnchorsPanel
   });
 
   it('renders IOSOnlyBanner in AR region', () => {
-    const { getByRole } = render(<ARKitScreen />);
+    const { getByText } = render(<ARKitScreen />);
 
-    expect(getByRole('alert')).toBeTruthy();
+    expect(getByText(/ARKit requires iOS 11\+/i)).toBeTruthy();
   });
 
   it('web bundle does NOT import iOS bridge at evaluation time', () => {
     jest.isolateModules(() => {
       jest.doMock('@/native/arkit.ts', () => {
-        throw new Error(
-          'iOS bridge MUST NOT be imported at evaluation time on web',
-        );
+        throw new Error('iOS bridge MUST NOT be imported at evaluation time on web');
       });
 
       // If this throws, the web screen is incorrectly importing the iOS file

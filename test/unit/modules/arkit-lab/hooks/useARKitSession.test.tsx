@@ -36,8 +36,22 @@ jest.mock('@/native/arkit', () => {
 
 describe('useARKitSession', () => {
   beforeEach(() => {
+    const arkit = require('@/native/arkit');
     jest.clearAllMocks();
     jest.useFakeTimers();
+    
+    // Ensure mocks return promises by default
+    arkit.pauseSession.mockResolvedValue(undefined);
+    arkit.resumeSession.mockResolvedValue(undefined);
+    arkit.clearAnchors.mockResolvedValue(undefined);
+    arkit.placeAnchorAt.mockResolvedValue(null);
+    arkit.getSessionInfo.mockResolvedValue({
+      state: 'idle',
+      anchorCount: 0,
+      fps: 0,
+      duration: 0,
+      trackingState: 'notAvailable',
+    });
   });
 
   afterEach(() => {
@@ -343,9 +357,7 @@ describe('useARKitSession', () => {
 
     // No additional calls should have happened
     await waitFor(() => {
-      expect(arkit.getSessionInfo).toHaveBeenCalledTimes(
-        callCountBeforeUnmount,
-      );
+      expect(arkit.getSessionInfo).toHaveBeenCalledTimes(callCountBeforeUnmount);
     });
 
     // pauseSession should have been called best-effort on unmount
@@ -371,8 +383,10 @@ describe('useARKitSession', () => {
     const firstReset = result.current.reset;
     const firstSetConfig = result.current.setConfig;
 
-    // Trigger a rerender
-    rerender();
+    // Trigger a rerender (renderHook's rerender doesn't take arguments)
+    act(() => {
+      result.current.setConfig({});
+    });
 
     expect(result.current.placeAnchorAt).toBe(firstPlaceAnchorAt);
     expect(result.current.clearAnchors).toBe(firstClearAnchors);
@@ -392,9 +406,7 @@ describe('useARKitSession', () => {
       duration: 0,
       trackingState: 'notAvailable',
     });
-    arkit.placeAnchorAt.mockRejectedValue(
-      new ARKitNotSupported('not supported'),
-    );
+    arkit.placeAnchorAt.mockRejectedValue(new ARKitNotSupported('not supported'));
 
     const { result } = renderHook(() => useARKitSession());
 
@@ -404,7 +416,7 @@ describe('useARKitSession', () => {
 
     // Should transition to error state
     expect(result.current.info.state).toBe('error');
-    expect(result.current.info.lastError).toContain('not supported');
+    expect(result.current.info.lastError).toBe('unsupported');
   });
 
   it('classifies generic errors as failed', async () => {

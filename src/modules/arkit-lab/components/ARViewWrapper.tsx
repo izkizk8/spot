@@ -44,9 +44,7 @@ export default function ARViewWrapper({
   if (!isAvailable) {
     return (
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.placeholderText}>
-          Unsupported on this device
-        </ThemedText>
+        <ThemedText style={styles.placeholderText}>Unsupported on this device</ThemedText>
         <ThemedText style={styles.caption}>
           ARWorldTrackingConfiguration.isSupported returned false.
         </ThemedText>
@@ -58,9 +56,7 @@ export default function ARViewWrapper({
   if (!permissionGranted) {
     return (
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.placeholderText}>
-          Camera Permission Required
-        </ThemedText>
+        <ThemedText style={styles.placeholderText}>Camera Permission Required</ThemedText>
         <ThemedText style={styles.caption}>
           ARKit needs camera access to demonstrate world tracking and plane detection.
         </ThemedText>
@@ -86,12 +82,10 @@ export default function ARViewWrapper({
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText style={styles.placeholderText}>
-        ARKitView (native view placeholder)
-      </ThemedText>
+      <ThemedText style={styles.placeholderText}>ARKitView (native view placeholder)</ThemedText>
       <ThemedText style={styles.caption}>
-        In production, this renders RealityKit ARView.
-        Config: {config.planeDetection} | Light: {config.lightEstimation ? 'ON' : 'OFF'}
+        In production, this renders RealityKit ARView. Config: {config.planeDetection} | Light:{' '}
+        {config.lightEstimation ? 'ON' : 'OFF'}
       </ThemedText>
     </ThemedView>
   );

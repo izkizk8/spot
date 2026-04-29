@@ -31,10 +31,7 @@ export default function ARKitLabScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.content}
-      >
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         {/* Panel 1: CapabilitiesCard */}
         <CapabilitiesCard
           worldTrackingSupported={isAvailable}
@@ -62,13 +59,8 @@ export default function ARKitLabScreen() {
         {/* Panel 4: Tap-to-place controls (disabled on Web) */}
         <ThemedView style={styles.section}>
           <View style={styles.row}>
-            <ThemedText style={styles.label}>
-              Anchors: {session.anchors.length}
-            </ThemedText>
-            <TouchableOpacity
-              style={[styles.button, styles.buttonDisabled]}
-              disabled
-            >
+            <ThemedText style={styles.label}>Anchors: {session.anchors.length}</ThemedText>
+            <TouchableOpacity style={[styles.button, styles.buttonDisabled]} disabled>
               <ThemedText style={styles.buttonText}>Clear all</ThemedText>
             </TouchableOpacity>
           </View>

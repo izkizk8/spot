@@ -54,9 +54,7 @@ describe('AnchorsPanel', () => {
       createdAt: 2000,
     };
 
-    const { getAllByText } = render(
-      <AnchorsPanel anchors={[anchor1, anchor2]} />,
-    );
+    const { getAllByText } = render(<AnchorsPanel anchors={[anchor1, anchor2]} />);
 
     const ids = getAllByText(/00000000/);
     // Assuming newest-first, anchor2 should appear before anchor1

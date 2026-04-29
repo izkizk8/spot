@@ -30,7 +30,7 @@ const withArkit: ConfigPlugin = (config) => {
     }
 
     // 2. Append 'arkit' to UIRequiredDeviceCapabilities if absent
-    const caps = cfg.modResults.UIRequiredDeviceCapabilities || [];
+    const caps = (cfg.modResults.UIRequiredDeviceCapabilities || []) as string[];
     if (!caps.includes('arkit')) {
       cfg.modResults.UIRequiredDeviceCapabilities = [...caps, 'arkit'];
     }

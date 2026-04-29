@@ -16,12 +16,7 @@
 import { Platform } from 'react-native';
 import { requireOptionalNativeModule } from 'expo-modules-core';
 
-import {
-  NATIVE_MODULE_NAME,
-  ARKitNotSupported,
-  AnchorRecord,
-  SessionInfo,
-} from './arkit.types';
+import { NATIVE_MODULE_NAME, ARKitNotSupported, AnchorRecord, SessionInfo } from './arkit.types';
 
 export { ARKitNotSupported };
 
@@ -34,8 +29,7 @@ interface NativeARKitBridge {
   isAvailable(): boolean;
 }
 
-const native =
-  requireOptionalNativeModule<NativeARKitBridge>(NATIVE_MODULE_NAME);
+const native = requireOptionalNativeModule<NativeARKitBridge>(NATIVE_MODULE_NAME);
 
 function isReady(): boolean {
   return Platform.OS === 'ios' && native != null;
@@ -61,14 +55,9 @@ function enqueue<T>(fn: () => Promise<T>): Promise<T> {
  * on the first detected plane. Returns the anchor record on success, null
  * if raycast misses, rejects on error.
  */
-export function placeAnchorAt(
-  x: number,
-  y: number,
-): Promise<AnchorRecord | null> {
-  if (!isReady()) {
-    return Promise.reject(
-      new ARKitNotSupported('ARKit bridge is not available'),
-    );
+export function placeAnchorAt(x: number, y: number): Promise<AnchorRecord | null> {
+  if (!isReady() || !native) {
+    return Promise.reject(new ARKitNotSupported('ARKit bridge is not available'));
   }
   return enqueue(() => native.placeAnchorAt(x, y));
 }
@@ -77,10 +66,8 @@ export function placeAnchorAt(
  * Remove all anchors placed by this session and emit onAnchorRemoved for each.
  */
 export function clearAnchors(): Promise<void> {
-  if (!isReady()) {
-    return Promise.reject(
-      new ARKitNotSupported('ARKit bridge is not available'),
-    );
+  if (!isReady() || !native) {
+    return Promise.reject(new ARKitNotSupported('ARKit bridge is not available'));
   }
   return enqueue(() => native.clearAnchors());
 }
@@ -89,10 +76,8 @@ export function clearAnchors(): Promise<void> {
  * Pause the underlying ARSession. FPS drops to 0, duration counter freezes.
  */
 export function pauseSession(): Promise<void> {
-  if (!isReady()) {
-    return Promise.reject(
-      new ARKitNotSupported('ARKit bridge is not available'),
-    );
+  if (!isReady() || !native) {
+    return Promise.reject(new ARKitNotSupported('ARKit bridge is not available'));
   }
   return enqueue(() => native.pauseSession());
 }
@@ -101,10 +86,8 @@ export function pauseSession(): Promise<void> {
  * Resume the session with the current configuration. Duration counter continues.
  */
 export function resumeSession(): Promise<void> {
-  if (!isReady()) {
-    return Promise.reject(
-      new ARKitNotSupported('ARKit bridge is not available'),
-    );
+  if (!isReady() || !native) {
+    return Promise.reject(new ARKitNotSupported('ARKit bridge is not available'));
   }
   return enqueue(() => native.resumeSession());
 }
@@ -114,10 +97,8 @@ export function resumeSession(): Promise<void> {
  * Default polling cadence: 500 ms (R-D).
  */
 export function getSessionInfo(): Promise<SessionInfo> {
-  if (!isReady()) {
-    return Promise.reject(
-      new ARKitNotSupported('ARKit bridge is not available'),
-    );
+  if (!isReady() || !native) {
+    return Promise.reject(new ARKitNotSupported('ARKit bridge is not available'));
   }
   return enqueue(() => native.getSessionInfo());
 }
@@ -127,7 +108,7 @@ export function getSessionInfo(): Promise<SessionInfo> {
  * Never throws; returns false on Android, Web, and unsupported iOS devices.
  */
 export function isAvailable(): boolean {
-  if (!isReady()) {
+  if (!isReady() || !native) {
     return false;
   }
   try {

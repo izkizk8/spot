@@ -46,9 +46,7 @@ export default function CapabilitiesCard({
       <View style={styles.row}>
         <ThemedText style={styles.label}>Session State:</ThemedText>
         <View style={[styles.pill, getPillStyle(info.state)]}>
-          <ThemedText style={styles.pillText}>
-            {info.state.toUpperCase()}
-          </ThemedText>
+          <ThemedText style={styles.pillText}>{info.state.toUpperCase()}</ThemedText>
         </View>
       </View>
 

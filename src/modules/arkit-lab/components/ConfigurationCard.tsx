@@ -14,7 +14,7 @@ import { ThemedView } from '@/components/themed-view';
 import { ThemedText } from '@/components/themed-text';
 import { Spacing } from '@/constants/theme';
 import { PLANE_DETECTION_MODES } from '../plane-detection-modes';
-import type { ARKitConfiguration, PlaneDetectionMode } from '@/native/arkit.types';
+import type { ARKitConfiguration } from '@/native/arkit.types';
 
 interface ConfigurationCardProps {
   readonly config: ARKitConfiguration;
@@ -51,10 +51,7 @@ export default function ConfigurationCard({
         {PLANE_DETECTION_MODES.map((mode) => (
           <TouchableOpacity
             key={mode.value}
-            style={[
-              styles.segment,
-              config.planeDetection === mode.value && styles.segmentSelected,
-            ]}
+            style={[styles.segment, config.planeDetection === mode.value && styles.segmentSelected]}
             onPress={() => !isDisabled && onChange({ planeDetection: mode.value })}
             disabled={isDisabled}
             accessibilityRole="button"
@@ -73,16 +70,13 @@ export default function ConfigurationCard({
       </View>
 
       {/* People Occlusion Switch */}
-      <View
-        style={styles.switchRow}
-        accessibilityLabel="People Occlusion"
-        accessibilityState={{ disabled: !peopleOcclusionSupported || isDisabled }}
-      >
+      <View style={styles.switchRow}>
         <ThemedText style={styles.label}>People Occlusion</ThemedText>
         <Switch
           value={config.peopleOcclusion}
           onValueChange={(value) => onChange({ peopleOcclusion: value })}
           disabled={!peopleOcclusionSupported || isDisabled}
+          accessibilityLabel="People Occlusion"
         />
       </View>
       {!peopleOcclusionSupported && (
@@ -92,30 +86,25 @@ export default function ConfigurationCard({
       )}
 
       {/* Light Estimation Switch */}
-      <View
-        style={styles.switchRow}
-        accessibilityLabel="Light Estimation"
-        accessibilityState={{ disabled: isDisabled }}
-      >
+      <View style={styles.switchRow}>
         <ThemedText style={styles.label}>Light Estimation</ThemedText>
         <Switch
           value={config.lightEstimation}
           onValueChange={(value) => onChange({ lightEstimation: value })}
           disabled={isDisabled}
+          accessibilityLabel="Light Estimation"
         />
       </View>
 
       {/* World Map Persistence Switch (v1 placeholder) */}
-      <View
-        style={styles.switchRow}
-        accessibilityLabel="World Map Persistence"
-        accessibilityState={{ disabled: isDisabled }}
-      >
+      <View style={styles.switchRow}>
         <ThemedText style={styles.label}>World Map Persistence</ThemedText>
         <Switch
           value={config.worldMapPersistence}
           onValueChange={(value) => onChange({ worldMapPersistence: value })}
           disabled={isDisabled}
+          accessibilityLabel="World Map Persistence"
+        />
         />
       </View>
       <ThemedText style={styles.caption}>

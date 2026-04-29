@@ -64,8 +64,8 @@ describe('ARKitScreen (iOS)', () => {
     const { getByText } = render(<ARKitScreen />);
 
     expect(getByText(/capabilities/i)).toBeTruthy();
-    expect(getByText(/configuration/i)).toBeTruthy();
-    expect(getByText(/anchors/i)).toBeTruthy();
+    expect(getByText(/plane detection/i)).toBeTruthy(); // ConfigurationCard
+    expect(getByText(/no anchors placed yet/i)).toBeTruthy(); // AnchorsPanel
     expect(getByText(/fps/i)).toBeTruthy(); // StatsBar
   });
 

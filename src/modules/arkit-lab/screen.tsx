@@ -39,10 +39,7 @@ export default function ARKitLabScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView
-        style={styles.scrollView}
-        contentContainerStyle={styles.content}
-      >
+      <ScrollView style={styles.scrollView} contentContainerStyle={styles.content}>
         {/* Panel 1: CapabilitiesCard */}
         <CapabilitiesCard
           worldTrackingSupported={isAvailable}
@@ -58,14 +55,8 @@ export default function ARKitLabScreen() {
             config={session.config}
           />
           {/* Tap placeholder - in production, tap gesture on ARKitView */}
-          <TouchableOpacity
-            style={styles.tapOverlay}
-            onPress={handleTap}
-            activeOpacity={0.8}
-          >
-            <ThemedText style={styles.tapHint}>
-              Tap to place anchor (simulated)
-            </ThemedText>
+          <TouchableOpacity style={styles.tapOverlay} onPress={handleTap} activeOpacity={0.8}>
+            <ThemedText style={styles.tapHint}>Tap to place anchor (simulated)</ThemedText>
           </TouchableOpacity>
         </View>
 
@@ -80,13 +71,8 @@ export default function ARKitLabScreen() {
         {/* Panel 4: Tap-to-place controls */}
         <ThemedView style={styles.section}>
           <View style={styles.row}>
-            <ThemedText style={styles.label}>
-              Anchors: {session.anchors.length}
-            </ThemedText>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={session.clearAnchors}
-            >
+            <ThemedText style={styles.label}>Anchors: {session.anchors.length}</ThemedText>
+            <TouchableOpacity style={styles.button} onPress={session.clearAnchors}>
               <ThemedText style={styles.buttonText}>Clear all</ThemedText>
             </TouchableOpacity>
           </View>

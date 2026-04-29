@@ -12,8 +12,12 @@ describe('ARKit Basics manifest', () => {
     expect(manifest.id).toBe('arkit-basics');
   });
 
-  it('has label "ARKit Basics"', () => {
-    expect(manifest.label).toBe('ARKit Basics');
+  it('has title "ARKit Basics"', () => {
+    expect(manifest.title).toBe('ARKit Basics');
+  });
+
+  it('has a description', () => {
+    expect(manifest.description).toBeTruthy();
   });
 
   it('declares platforms: ios, android, web', () => {
@@ -22,5 +26,9 @@ describe('ARKit Basics manifest', () => {
 
   it('declares minIOS "11.0"', () => {
     expect(manifest.minIOS).toBe('11.0');
+  });
+
+  it('has a render function', () => {
+    expect(typeof manifest.render).toBe('function');
   });
 });

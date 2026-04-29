@@ -25,9 +25,7 @@ export default function AnchorsPanel({ anchors }: AnchorsPanelProps) {
   if (anchors.length === 0) {
     return (
       <ThemedView style={styles.container}>
-        <ThemedText style={styles.emptyText}>
-          No anchors placed yet
-        </ThemedText>
+        <ThemedText style={styles.emptyText}>No anchors placed yet</ThemedText>
       </ThemedView>
     );
   }
@@ -35,22 +33,16 @@ export default function AnchorsPanel({ anchors }: AnchorsPanelProps) {
   return (
     <ThemedView style={styles.container}>
       <View style={styles.header}>
-        <ThemedText style={styles.title}>
-          Anchors ({anchors.length})
-        </ThemedText>
+        <ThemedText style={styles.title}>Anchors ({anchors.length})</ThemedText>
         {anchors.length >= 100 && (
-          <ThemedText style={styles.caption}>
-            Soft cap: showing 100 newest-first
-          </ThemedText>
+          <ThemedText style={styles.caption}>Soft cap: showing 100 newest-first</ThemedText>
         )}
       </View>
 
       <ScrollView style={styles.scrollView}>
         {displayAnchors.map((anchor) => (
           <View key={anchor.id} style={styles.row}>
-            <ThemedText style={styles.idText}>
-              {anchor.id.substring(0, 8)}
-            </ThemedText>
+            <ThemedText style={styles.idText}>{anchor.id.substring(0, 8)}</ThemedText>
             <ThemedText style={styles.coordsText}>
               ({anchor.x.toFixed(2)}, {anchor.y.toFixed(2)}, {anchor.z.toFixed(2)})
             </ThemedText>
