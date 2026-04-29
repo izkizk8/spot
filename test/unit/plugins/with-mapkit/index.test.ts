@@ -62,7 +62,7 @@ describe('with-mapkit', () => {
     const plugins: unknown[] = appJson.expo.plugins;
 
     // After feature 037, plugins.length should be 28 (added with-eventkit after with-passkit)
-    expect(plugins.length).toBe(28);
+    expect(plugins.length).toBe(29);
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(
