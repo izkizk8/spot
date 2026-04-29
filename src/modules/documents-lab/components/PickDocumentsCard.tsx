@@ -71,11 +71,7 @@ export default function PickDocumentsCard({
       <ThemedText style={styles.body}>
         Choose any file from the system Files app. Filter selection narrows the picker.
       </ThemedText>
-      <Pressable
-        accessibilityRole="button"
-        onPress={handlePick}
-        style={styles.button}
-      >
+      <Pressable accessibilityRole="button" onPress={handlePick} style={styles.button}>
         <ThemedText style={styles.buttonText}>Open documents</ThemedText>
       </Pressable>
     </ThemedView>

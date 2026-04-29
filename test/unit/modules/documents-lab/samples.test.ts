@@ -66,7 +66,7 @@ describe('samples', () => {
         const asset = Asset.fromModule(sample.requireAsset);
         expect(asset.localUri).toBeTruthy();
         expect(typeof asset.localUri).toBe('string');
-        expect(asset.localUri.length).toBeGreaterThan(0);
+        expect((asset.localUri ?? '').length).toBeGreaterThan(0);
       });
     });
   });

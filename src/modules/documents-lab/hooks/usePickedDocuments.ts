@@ -107,17 +107,23 @@ export function usePickedDocuments(): UsePickedDocumentsReturn {
     };
   }, []);
 
-  const persist = useCallback(async (snapshotBefore: { files: readonly DocumentEntry[]; filter: DocumentFilter }, next: DocumentsStoreState) => {
-    try {
-      await storeSave(next);
-    } catch (err) {
-      dispatch({ type: 'REVERT', snapshot: snapshotBefore });
-      dispatch({
-        type: 'SET_ERROR',
-        error: err instanceof Error ? err : new Error(String(err)),
-      });
-    }
-  }, []);
+  const persist = useCallback(
+    async (
+      snapshotBefore: { files: readonly DocumentEntry[]; filter: DocumentFilter },
+      next: DocumentsStoreState,
+    ) => {
+      try {
+        await storeSave(next);
+      } catch (err) {
+        dispatch({ type: 'REVERT', snapshot: snapshotBefore });
+        dispatch({
+          type: 'SET_ERROR',
+          error: err instanceof Error ? err : new Error(String(err)),
+        });
+      }
+    },
+    [],
+  );
 
   const add = useCallback(
     (entry: DocumentEntry) => {

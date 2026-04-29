@@ -24,11 +24,7 @@ export default function QuickLookFallback({ onShare, style }: QuickLookFallbackP
         Quick Look preview is only available on iOS. Use Share to open this file in another app.
       </ThemedText>
       {onShare ? (
-        <Pressable
-          accessibilityRole="button"
-          onPress={onShare}
-          style={styles.button}
-        >
+        <Pressable accessibilityRole="button" onPress={onShare} style={styles.button}>
           <ThemedText style={styles.buttonText}>Share</ThemedText>
         </Pressable>
       ) : null}

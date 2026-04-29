@@ -27,6 +27,15 @@ jest.mock('@react-native-async-storage/async-storage', () => ({
   setItem: jest.fn(),
 }));
 
+// Resolvers hoisted to module scope (oxlint: consistent-function-scoping)
+const acceptExistsResolver = async (uri: string) => uri === 'file://exists';
+const rejectBadResolver = async (uri: string) => {
+  if (uri === 'file://bad') {
+    throw new Error('resolver error');
+  }
+  return true;
+};
+
 describe('documents-store', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -92,9 +101,7 @@ describe('documents-store', () => {
       expect(result.files).toHaveLength(1);
       expect(result.files[0].id).toBe('1');
       expect(onError).toHaveBeenCalledTimes(1);
-      expect(onError).toHaveBeenCalledWith(
-        expect.objectContaining({ kind: 'rows', dropped: 1 })
-      );
+      expect(onError).toHaveBeenCalledWith(expect.objectContaining({ kind: 'rows', dropped: 1 }));
     });
 
     it('falls back unrecognised filter to "all" without error (S7)', () => {
@@ -202,9 +209,7 @@ describe('documents-store', () => {
         filter: 'all',
       };
 
-      const resolver = async (uri: string) => uri === 'file://exists';
-
-      const result = await dropMissingURIs(state, resolver);
+      const result = await dropMissingURIs(state, acceptExistsResolver);
 
       expect(result.files).toHaveLength(1);
       expect(result.files[0].id).toBe('1');
@@ -235,14 +240,7 @@ describe('documents-store', () => {
         filter: 'all',
       };
 
-      const resolver = async (uri: string) => {
-        if (uri === 'file://bad') {
-          throw new Error('resolver error');
-        }
-        return true;
-      };
-
-      const result = await dropMissingURIs(state, resolver);
+      const result = await dropMissingURIs(state, rejectBadResolver);
 
       expect(result.files).toHaveLength(1);
       expect(result.files[0].id).toBe('1');

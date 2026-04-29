@@ -50,11 +50,7 @@ export function familyOfMime(mimeType: string): MimeFamily {
     return 'image';
   }
 
-  if (
-    lower === 'text/plain' ||
-    lower === 'text/markdown' ||
-    lower === 'application/json'
-  ) {
+  if (lower === 'text/plain' || lower === 'text/markdown' || lower === 'application/json') {
     return 'text';
   }
 
@@ -68,9 +64,7 @@ export function familyOfMime(mimeType: string): MimeFamily {
 /**
  * Converts a DocumentFilter to expo-document-picker's type parameter.
  */
-export function pickerTypeForFilter(
-  filter: DocumentFilter
-): string | string[] | undefined {
+export function pickerTypeForFilter(filter: DocumentFilter): string | string[] | undefined {
   switch (filter) {
     case 'all':
       return undefined; // expo-document-picker accepts undefined for all types
@@ -86,10 +80,7 @@ export function pickerTypeForFilter(
 /**
  * Checks if a document entry matches the given filter.
  */
-export function filterMatchesEntry(
-  filter: DocumentFilter,
-  entry: { mimeType: string }
-): boolean {
+export function filterMatchesEntry(filter: DocumentFilter, entry: { mimeType: string }): boolean {
   if (filter === 'all') {
     return true;
   }

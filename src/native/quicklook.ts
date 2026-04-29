@@ -50,7 +50,7 @@ function enqueue<T>(fn: () => Promise<T>): Promise<T> {
   // through the returned `result` promise.
   chain = result.then(
     () => undefined,
-    () => undefined
+    () => undefined,
   );
   return result;
 }
@@ -61,7 +61,7 @@ export const bridge: QuickLookBridge = Object.freeze({
   present: (uri: string): Promise<QuickLookPresentResult> => {
     if (!isReady() || native == null) {
       return Promise.reject(
-        new QuickLookNotSupported('Quick Look requires iOS 11+ and native module')
+        new QuickLookNotSupported('Quick Look requires iOS 11+ and native module'),
       );
     }
     return enqueue(() => native.present(uri));

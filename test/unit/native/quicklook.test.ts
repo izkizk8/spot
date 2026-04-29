@@ -8,9 +8,7 @@
  * @see specs/032-document-picker-quicklook/contracts/quicklook-bridge.contract.ts
  */
 
-import { Platform } from 'react-native';
 import { requireOptionalNativeModule } from 'expo-modules-core';
-import { QuickLookNotSupported } from '@/native/quicklook.types';
 
 // Mock expo-modules-core
 jest.mock('expo-modules-core', () => ({
@@ -34,7 +32,7 @@ describe('QuickLook Bridge Runtime', () => {
 
       // Clear the module cache to re-evaluate with new mock
       delete require.cache[require.resolve('@/native/quicklook')];
-      
+
       // Check if the module loads without error
       const quicklook = require('@/native/quicklook');
       expect(quicklook.bridge).toBeDefined();
@@ -77,7 +75,7 @@ describe('QuickLook Bridge Runtime', () => {
       const { bridge } = require('@/native/quicklook.android');
       const promise = bridge.present('file://test.pdf');
       expect(promise).toBeInstanceOf(Promise);
-      await expect(promise).rejects.toThrow();
+      await expect(promise).rejects.toThrow(/Quick Look is iOS-only/);
     });
   });
 
@@ -91,7 +89,7 @@ describe('QuickLook Bridge Runtime', () => {
       const { bridge } = require('@/native/quicklook.web');
       const promise = bridge.present('file://test.pdf');
       expect(promise).toBeInstanceOf(Promise);
-      await expect(promise).rejects.toThrow();
+      await expect(promise).rejects.toThrow(/Quick Look is iOS-only/);
     });
   });
 });

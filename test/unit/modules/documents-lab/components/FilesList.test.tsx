@@ -62,7 +62,9 @@ describe('FilesList', () => {
     const b = makeEntry('b', 'second.txt');
     const c = makeEntry('c', 'third.txt');
     render(<FilesList entries={[a, b, c]} filter="all" onRemove={() => {}} />);
-    const tree = JSON.stringify(render(<FilesList entries={[a, b, c]} filter="all" onRemove={() => {}} />).toJSON());
+    const tree = JSON.stringify(
+      render(<FilesList entries={[a, b, c]} filter="all" onRemove={() => {}} />).toJSON(),
+    );
     // third.txt should appear before first.txt in the rendered output
     expect(tree.indexOf('third.txt')).toBeLessThan(tree.indexOf('first.txt'));
   });

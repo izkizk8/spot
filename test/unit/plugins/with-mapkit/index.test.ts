@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 031, plugins.length should be 23 (added with-spotlight after with-background-tasks)
-    expect(plugins.length).toBe(23);
+    // After feature 032, plugins.length should be 24 (added with-documents after with-spotlight)
+    expect(plugins.length).toBe(24);
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(

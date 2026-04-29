@@ -50,10 +50,7 @@ export interface URIResolver {
 /**
  * Pure parser. Tolerates corrupt JSON / bad shapes per S3..S7.
  */
-export function parsePersisted(
-  raw: string | null,
-  opts?: ParseOptions
-): DocumentsStoreState {
+export function parsePersisted(raw: string | null, opts?: ParseOptions): DocumentsStoreState {
   // S3: null -> default state, no error
   if (raw === null) {
     return DEFAULT_STATE;
@@ -153,7 +150,7 @@ export async function save(state: DocumentsStoreState): Promise<void> {
  */
 export async function dropMissingURIs(
   state: DocumentsStoreState,
-  resolver: URIResolver
+  resolver: URIResolver,
 ): Promise<DocumentsStoreState> {
   const results = await Promise.allSettled(
     state.files.map(async (entry) => {
@@ -163,7 +160,7 @@ export async function dropMissingURIs(
       } catch {
         return null;
       }
-    })
+    }),
   );
 
   const files = results

@@ -8,16 +8,13 @@
  * @see specs/032-document-picker-quicklook/contracts/quicklook-bridge.contract.ts
  */
 
-import {
-  QuickLookBridge,
-  QuickLookNotSupported,
-} from './quicklook.types';
+import { QuickLookBridge, QuickLookNotSupported } from './quicklook.types';
 
 export { QuickLookNotSupported };
 
 export const bridge: QuickLookBridge = Object.freeze({
   isAvailable: (): boolean => false,
 
-  present: (uri: string): Promise<never> =>
+  present: (_uri: string): Promise<never> =>
     Promise.reject(new QuickLookNotSupported('Quick Look is iOS-only')),
 });

@@ -39,8 +39,7 @@ export default function FilesList({ entries, filter, onRemove, style }: FilesLis
     );
   }
 
-  // Newest-first: store appends, so reverse for display.
-  const ordered = [...entries].reverse();
+  const ordered = entries.toReversed();
 
   return (
     <ThemedView style={[styles.container, style]}>
