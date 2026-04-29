@@ -105,7 +105,7 @@ describe('ContactsLabScreen (iOS)', () => {
     });
 
     const { getByTestId } = render(<ContactsLabScreen />);
-    
+
     // PickerCard button should be disabled via accessibilityState
     expect(getByTestId('contacts-picker-button').props.accessibilityState?.disabled).toBe(true);
   });

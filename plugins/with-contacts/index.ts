@@ -14,9 +14,9 @@ const withContacts: ConfigPlugin<ContactsPluginProps | void> = (config, props) =
     props?.contactsUsageDescription ||
     'This module demonstrates Contacts access for educational purposes.';
 
-  return withInfoPlist(config, (config) => {
-    config.modResults.NSContactsUsageDescription = contactsUsageDescription;
-    return config;
+  return withInfoPlist(config, (plistConfig) => {
+    plistConfig.modResults.NSContactsUsageDescription = contactsUsageDescription;
+    return plistConfig;
   });
 };
 

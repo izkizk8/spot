@@ -32,7 +32,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { queryByTestId } = render(
-      <ContactDetailModal contact={null} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={null}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     expect(queryByTestId('contacts-detail-modal')).toBeNull();
@@ -44,7 +49,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId, getByText } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     expect(getByTestId('contacts-detail-modal')).toBeTruthy();
@@ -61,7 +71,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     expect(getByTestId('contacts-detail-edit-button')).toBeTruthy();
@@ -75,7 +90,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId, getByText } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-detail-edit-button'));
@@ -92,7 +112,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-detail-edit-button'));
@@ -110,7 +135,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-detail-edit-button'));
@@ -134,7 +164,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId, getByText } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-detail-edit-button'));
@@ -150,7 +185,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-detail-delete-button'));
@@ -168,7 +208,12 @@ describe('ContactDetailModal', () => {
     const onDelete = jest.fn();
 
     const { getByTestId } = render(
-      <ContactDetailModal contact={mockContact} onClose={onClose} onUpdate={onUpdate} onDelete={onDelete} />,
+      <ContactDetailModal
+        contact={mockContact}
+        onClose={onClose}
+        onUpdate={onUpdate}
+        onDelete={onDelete}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-detail-close-button'));

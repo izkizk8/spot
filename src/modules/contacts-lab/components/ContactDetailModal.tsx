@@ -27,24 +27,25 @@ export function ContactDetailModal({
   onDelete,
 }: ContactDetailModalProps) {
   const [editing, setEditing] = useState(false);
-  const [givenName, setGivenName] = useState('');
-  const [familyName, setFamilyName] = useState('');
-  const [phone, setPhone] = useState('');
-  const [email, setEmail] = useState('');
-  const [company, setCompany] = useState('');
+  const [givenName, setGivenName] = useState(contact?.givenName || '');
+  const [familyName, setFamilyName] = useState(contact?.familyName || '');
+  const [phone, setPhone] = useState(contact?.phoneNumbers?.[0]?.number || '');
+  const [email, setEmail] = useState(contact?.emails?.[0]?.email || '');
+  const [company, setCompany] = useState(contact?.company || '');
   const [inFlight, setInFlight] = useState(false);
+  const [currentContactId, setCurrentContactId] = useState(contact?.id);
   const theme = useTheme();
 
-  React.useEffect(() => {
-    if (contact) {
-      setGivenName(contact.givenName || '');
-      setFamilyName(contact.familyName || '');
-      setPhone(contact.phoneNumbers?.[0]?.number || '');
-      setEmail(contact.emails?.[0]?.email || '');
-      setCompany(contact.company || '');
-      setEditing(false);
-    }
-  }, [contact]);
+  // Reset form when contact changes
+  if (contact?.id !== currentContactId) {
+    setCurrentContactId(contact?.id);
+    setGivenName(contact?.givenName || '');
+    setFamilyName(contact?.familyName || '');
+    setPhone(contact?.phoneNumbers?.[0]?.number || '');
+    setEmail(contact?.emails?.[0]?.email || '');
+    setCompany(contact?.company || '');
+    setEditing(false);
+  }
 
   const handleSave = async () => {
     if (!contact || inFlight) return;

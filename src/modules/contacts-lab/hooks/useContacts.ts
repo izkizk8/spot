@@ -314,7 +314,7 @@ export function useContacts(): ContactsState {
         } catch (e) {
           const error = e instanceof Error ? e.message : String(e);
           safeDispatch({ type: 'SET_ERROR', error });
-          throw new Error(error);
+          throw e instanceof Error ? e : new Error(error);
         } finally {
           safeDispatch({ type: 'SET_IN_FLIGHT', inFlight: false });
         }
@@ -353,7 +353,7 @@ export function useContacts(): ContactsState {
         } catch (e) {
           const error = e instanceof Error ? e.message : String(e);
           safeDispatch({ type: 'SET_ERROR', error });
-          throw new Error(error);
+          throw e instanceof Error ? e : new Error(error);
         } finally {
           safeDispatch({ type: 'SET_IN_FLIGHT', inFlight: false });
         }
@@ -375,7 +375,7 @@ export function useContacts(): ContactsState {
         } catch (e) {
           const error = e instanceof Error ? e.message : String(e);
           safeDispatch({ type: 'SET_ERROR', error });
-          throw new Error(error);
+          throw e instanceof Error ? e : new Error(error);
         } finally {
           safeDispatch({ type: 'SET_IN_FLIGHT', inFlight: false });
         }

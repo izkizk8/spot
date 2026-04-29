@@ -76,9 +76,7 @@ describe('SearchCard', () => {
 
   it('disables input and button when disabled prop is true', () => {
     const onSearch = jest.fn();
-    const { getByTestId } = render(
-      <SearchCard onSearch={onSearch} results={[]} disabled={true} />,
-    );
+    const { getByTestId } = render(<SearchCard onSearch={onSearch} results={[]} disabled={true} />);
 
     const input = getByTestId('contacts-search-input');
     const button = getByTestId('contacts-search-button');

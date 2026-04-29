@@ -355,9 +355,9 @@ describe('useContacts hook', () => {
     PlatformMutable.OS = 'web';
     const { result } = renderHook(() => useContacts());
 
-    await expect(
-      result.current.addContact({ givenName: 'Test' }),
-    ).rejects.toThrow('Web platform does not support Contacts.');
+    await expect(result.current.addContact({ givenName: 'Test' })).rejects.toThrow(
+      'Web platform does not support Contacts.',
+    );
   });
 
   it('updateContact updates existing contact', async () => {
@@ -386,9 +386,9 @@ describe('useContacts hook', () => {
   it('updateContact requires id', async () => {
     const { result } = renderHook(() => useContacts());
 
-    await expect(
-      result.current.updateContact({ givenName: 'Test' }),
-    ).rejects.toThrow('Contact ID is required for update');
+    await expect(result.current.updateContact({ givenName: 'Test' })).rejects.toThrow(
+      'Contact ID is required for update',
+    );
   });
 
   it('removeContact deletes contact by id', async () => {
@@ -534,10 +534,8 @@ describe('useContacts hook', () => {
 
     const { result } = renderHook(() => useContacts());
 
-    await expect(
-      result.current.addContact({ givenName: 'Test' }),
-    ).rejects.toThrow('Create failed');
-    
+    await expect(result.current.addContact({ givenName: 'Test' })).rejects.toThrow('Create failed');
+
     await waitFor(() => {
       expect(result.current.lastError).toBe('Create failed');
     });

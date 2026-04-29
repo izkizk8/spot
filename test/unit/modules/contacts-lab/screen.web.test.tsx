@@ -41,9 +41,11 @@ describe('ContactsLabScreen (Web)', () => {
 
   it('all interactive cards are disabled', () => {
     const { getByTestId } = render(<ContactsLabScreen />);
-    
+
     // All buttons should be disabled on web via accessibilityState
     expect(getByTestId('contacts-picker-button').props.accessibilityState?.disabled).toBe(true);
-    expect(getByTestId('contacts-list-refresh-button').props.accessibilityState?.disabled).toBe(true);
+    expect(getByTestId('contacts-list-refresh-button').props.accessibilityState?.disabled).toBe(
+      true,
+    );
   });
 });

@@ -94,7 +94,9 @@ describe('ComposeCard', () => {
     expect(getByTestId('contacts-compose-phone').props.editable).toBe(false);
     expect(getByTestId('contacts-compose-email').props.editable).toBe(false);
     expect(getByTestId('contacts-compose-company').props.editable).toBe(false);
-    expect(getByTestId('contacts-compose-save-button').props.accessibilityState?.disabled).toBe(true);
+    expect(getByTestId('contacts-compose-save-button').props.accessibilityState?.disabled).toBe(
+      true,
+    );
   });
 
   it('shows "Saving..." while in flight', async () => {

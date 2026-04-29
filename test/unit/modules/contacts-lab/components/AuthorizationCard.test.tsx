@@ -21,7 +21,11 @@ describe('AuthorizationCard', () => {
   it('renders notDetermined status with request button', () => {
     const onRequestAccess = jest.fn();
     const { getByTestId, getByText } = render(
-      <AuthorizationCard status="notDetermined" onRequestAccess={onRequestAccess} inFlight={false} />,
+      <AuthorizationCard
+        status="notDetermined"
+        onRequestAccess={onRequestAccess}
+        inFlight={false}
+      />,
     );
 
     expect(getByTestId('contacts-auth-card')).toBeTruthy();
@@ -66,7 +70,11 @@ describe('AuthorizationCard', () => {
   it('calls onRequestAccess when request button pressed', () => {
     const onRequestAccess = jest.fn();
     const { getByTestId } = render(
-      <AuthorizationCard status="notDetermined" onRequestAccess={onRequestAccess} inFlight={false} />,
+      <AuthorizationCard
+        status="notDetermined"
+        onRequestAccess={onRequestAccess}
+        inFlight={false}
+      />,
     );
 
     fireEvent.press(getByTestId('contacts-request-button'));
@@ -76,7 +84,11 @@ describe('AuthorizationCard', () => {
   it('disables request button when inFlight', () => {
     const onRequestAccess = jest.fn();
     const { getByTestId, getByText } = render(
-      <AuthorizationCard status="notDetermined" onRequestAccess={onRequestAccess} inFlight={true} />,
+      <AuthorizationCard
+        status="notDetermined"
+        onRequestAccess={onRequestAccess}
+        inFlight={true}
+      />,
     );
 
     const button = getByTestId('contacts-request-button');
