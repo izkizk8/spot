@@ -23,7 +23,7 @@ description: "Dependency-ordered TDD task list for 039-quick-actions"
 
 **Purpose**: Install the native bridge dependency. Library's own config plugin is **not** registered (we own `plugins/with-quick-actions/`).
 
-- [ ] T001 Install `expo-quick-actions` via `npx expo install expo-quick-actions` (adds `expo-quick-actions: 6.0.1` to `package.json` + `pnpm-lock.yaml`). Do **not** add the library's plugin to `app.json` `plugins`.
+- [X] T001 Install `expo-quick-actions` via `npx expo install expo-quick-actions` (adds `expo-quick-actions: 6.0.1` to `package.json` + `pnpm-lock.yaml`). Do **not** add the library's plugin to `app.json` `plugins`.
 
 **Checkpoint**: dependency resolves; `node_modules/expo-quick-actions` present.
 
@@ -37,34 +37,34 @@ description: "Dependency-ordered TDD task list for 039-quick-actions"
 
 ### 2a. Defaults & shared types (TDD)
 
-- [ ] T002 [P] Write failing tests for the 4 defaults in `test/unit/modules/quick-actions-lab/default-actions.test.ts` — assert (a) exactly 4 entries, (b) ordered `open-liquid-glass`, `open-sensors`, `open-audio-lab`, `add-mood-happy`, (c) each entry conforms to `QuickActionDefinition` (kebab-case `type`, non-empty `title`, SF Symbol `iconName`, `userInfo.route` non-empty), (d) `add-mood-happy` carries `userInfo.mood === 'happy'` and route `'/modules/app-intents-lab'`, (e) array is `readonly` (compile-time `as const`).
-- [ ] T003 Implement `src/modules/quick-actions-lab/default-actions.ts` exporting `QuickActionDefinition` interface (per data-model.md §1) and `DEFAULT_QUICK_ACTIONS` const-asserted readonly tuple of the 4 defaults with SF Symbols (`drop.fill`, `gauge`, `mic.fill`, `face.smiling`) and routes per data-model.md. Tests from T002 must pass.
+- [X] T002 [P] Write failing tests for the 4 defaults in `test/unit/modules/quick-actions-lab/default-actions.test.ts` — assert (a) exactly 4 entries, (b) ordered `open-liquid-glass`, `open-sensors`, `open-audio-lab`, `add-mood-happy`, (c) each entry conforms to `QuickActionDefinition` (kebab-case `type`, non-empty `title`, SF Symbol `iconName`, `userInfo.route` non-empty), (d) `add-mood-happy` carries `userInfo.mood === 'happy'` and route `'/modules/app-intents-lab'`, (e) array is `readonly` (compile-time `as const`).
+- [X] T003 Implement `src/modules/quick-actions-lab/default-actions.ts` exporting `QuickActionDefinition` interface (per data-model.md §1) and `DEFAULT_QUICK_ACTIONS` const-asserted readonly tuple of the 4 defaults with SF Symbols (`drop.fill`, `gauge`, `mic.fill`, `face.smiling`) and routes per data-model.md. Tests from T002 must pass.
 
 ### 2b. Mood log (TDD, used by US3 & US6 cross-module side effect)
 
-- [ ] T004 [P] Write failing tests for `test/unit/modules/quick-actions-lab/mood-log.test.ts` — covers `appendMoodEntry({ mood, source, timestamp })`, `getMoodEntries()` returns inserted entries in order, `clearMoodEntries()` empties the array, module-scoped state is isolated per `jest.resetModules()` invocation.
-- [ ] T005 Implement `src/modules/quick-actions-lab/mood-log.ts` — module-scoped `let entries: MoodEntry[] = []`, exports `appendMoodEntry`, `getMoodEntries` (returns a defensive copy), `clearMoodEntries`. No persistence. Tests from T004 must pass.
+- [X] T004 [P] Write failing tests for `test/unit/modules/quick-actions-lab/mood-log.test.ts` — covers `appendMoodEntry({ mood, source, timestamp })`, `getMoodEntries()` returns inserted entries in order, `clearMoodEntries()` empties the array, module-scoped state is isolated per `jest.resetModules()` invocation.
+- [X] T005 Implement `src/modules/quick-actions-lab/mood-log.ts` — module-scoped `let entries: MoodEntry[] = []`, exports `appendMoodEntry`, `getMoodEntries` (returns a defensive copy), `clearMoodEntries`. No persistence. Tests from T004 must pass.
 
 ### 2c. Project-owned config plugin (TDD, idempotent)
 
-- [ ] T006 [P] Write failing co-located plugin test `plugins/with-quick-actions/index.test.ts` — mirrors the `plugins/with-contacts/index.test.ts` shape; asserts the export is a `ConfigPlugin`, calling it once produces `UIApplicationShortcutItems` with the 4 mapped entries (`UIApplicationShortcutItemType`, `UIApplicationShortcutItemTitle`, `UIApplicationShortcutItemSubtitle`, `UIApplicationShortcutItemIconType: 'systemImageName'` + iconName, `UIApplicationShortcutItemUserInfo`), and calling it twice on the same config is byte-stable (idempotent — no duplicates, same order).
-- [ ] T007 [P] Write failing jest-runnable plugin test at `test/unit/plugins/with-quick-actions/index.test.ts` — same assertions as T006 plus: (a) merges with pre-existing `UIApplicationShortcutItems` instead of overwriting, (b) deduplication keys on `UIApplicationShortcutItemType`, (c) preserves any pre-existing entry whose `type` is not in defaults, (d) returns the modified `ExpoConfig`.
-- [ ] T008 Implement `plugins/with-quick-actions/index.ts` — single `withInfoPlist` modifier; reads `DEFAULT_QUICK_ACTIONS` from `src/modules/quick-actions-lab/default-actions.ts`; merges by `UIApplicationShortcutItemType` per research.md §Decision 2 idempotency strategy. Tests T006 + T007 must pass. **No `eslint-disable`**.
+- [X] T006 [P] Write failing co-located plugin test `plugins/with-quick-actions/index.test.ts` — mirrors the `plugins/with-contacts/index.test.ts` shape; asserts the export is a `ConfigPlugin`, calling it once produces `UIApplicationShortcutItems` with the 4 mapped entries (`UIApplicationShortcutItemType`, `UIApplicationShortcutItemTitle`, `UIApplicationShortcutItemSubtitle`, `UIApplicationShortcutItemIconType: 'systemImageName'` + iconName, `UIApplicationShortcutItemUserInfo`), and calling it twice on the same config is byte-stable (idempotent — no duplicates, same order).
+- [X] T007 [P] Write failing jest-runnable plugin test at `test/unit/plugins/with-quick-actions/index.test.ts` — same assertions as T006 plus: (a) merges with pre-existing `UIApplicationShortcutItems` instead of overwriting, (b) deduplication keys on `UIApplicationShortcutItemType`, (c) preserves any pre-existing entry whose `type` is not in defaults, (d) returns the modified `ExpoConfig`.
+- [X] T008 Implement `plugins/with-quick-actions/index.ts` — single `withInfoPlist` modifier; reads `DEFAULT_QUICK_ACTIONS` from `src/modules/quick-actions-lab/default-actions.ts`; merges by `UIApplicationShortcutItemType` per research.md §Decision 2 idempotency strategy. Tests T006 + T007 must pass. **No `eslint-disable`**.
 
 ### 2d. Plugin-count assertion bump
 
-- [ ] T009 Update `test/unit/plugins/with-mapkit/index.test.ts` — bump `expect(plugins.length).toBe(29)` → `toBe(30)` and update the adjacent comment to reference feature 039 (per research.md §Decision 7). Run the test in isolation to confirm it now drives the app.json edit.
+- [X] T009 Update `test/unit/plugins/with-mapkit/index.test.ts` — bump `expect(plugins.length).toBe(29)` → `toBe(30)` and update the adjacent comment to reference feature 039 (per research.md §Decision 7). Run the test in isolation to confirm it now drives the app.json edit.
 
 ### 2e. App.json registration
 
-- [ ] T010 Add `"./plugins/with-quick-actions"` to `app.json` `plugins[]` (29 → 30 entries). Order: append after the last existing plugin entry; do **not** register `expo-quick-actions`'s own plugin. T009 assertion must pass after this change.
+- [X] T010 Add `"./plugins/with-quick-actions"` to `app.json` `plugins[]` (29 → 30 entries). Order: append after the last existing plugin entry; do **not** register `expo-quick-actions`'s own plugin. T009 assertion must pass after this change.
 
 ### 2f. Module registry slot
 
-- [ ] T011 [P] Write failing manifest test `test/unit/modules/quick-actions-lab/manifest.test.ts` — asserts the default export from `src/modules/quick-actions-lab/index.tsx` matches the `ModuleManifest` shape used by 037/038 (`id: 'quick-actions-lab'`, non-empty `title`, `description`, `platforms: ['ios','android','web']`, lazy `screen` component reference resolves on each platform).
-- [ ] T012 Implement `src/modules/quick-actions-lab/index.tsx` — `ModuleManifest` export with `id: 'quick-actions-lab'`, title/description copy, `platforms: ['ios','android','web']`, screen reference (lazy / direct import per the 038 pattern). Test T011 must pass.
-- [ ] T013 Write failing registry test (extend or add to existing registry test file pattern) asserting the registry contains `quick-actions-lab` and total registered modules count incremented by 1. If no such test exists, add one at `test/unit/modules/registry.test.ts` scoped narrowly to the new entry.
-- [ ] T014 Update `src/modules/registry.ts` — one import line + one entry (additive only, per FR-016). T013 must pass.
+- [X] T011 [P] Write failing manifest test `test/unit/modules/quick-actions-lab/manifest.test.ts` — asserts the default export from `src/modules/quick-actions-lab/index.tsx` matches the `ModuleManifest` shape used by 037/038 (`id: 'quick-actions-lab'`, non-empty `title`, `description`, `platforms: ['ios','android','web']`, lazy `screen` component reference resolves on each platform).
+- [X] T012 Implement `src/modules/quick-actions-lab/index.tsx` — `ModuleManifest` export with `id: 'quick-actions-lab'`, title/description copy, `platforms: ['ios','android','web']`, screen reference (lazy / direct import per the 038 pattern). Test T011 must pass.
+- [X] T013 Write failing registry test (extend or add to existing registry test file pattern) asserting the registry contains `quick-actions-lab` and total registered modules count incremented by 1. If no such test exists, add one at `test/unit/modules/registry.test.ts` scoped narrowly to the new entry.
+- [X] T014 Update `src/modules/registry.ts` — one import line + one entry (additive only, per FR-016). T013 must pass.
 
 **Checkpoint**: plugin emits Info.plist correctly + idempotently; registry +1; app.json +1; mood-log + defaults available; all foundational tests green.
 
@@ -86,15 +86,15 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD)
 
-- [ ] T015 [P] [US7] Write failing test `test/unit/modules/quick-actions-lab/components/IOSOnlyBanner.test.tsx` — renders title + body copy, uses `ThemedText`/`ThemedView`, snapshot is non-empty, no native imports.
-- [ ] T016 [P] [US7] Write failing test `test/unit/modules/quick-actions-lab/screen.android.test.tsx` — renders `IOSOnlyBanner` only; mocks for `expo-quick-actions` are NOT called (assert no `setItems` / `addListener` invocation via `jest.mock` spies).
-- [ ] T017 [P] [US7] Write failing test `test/unit/modules/quick-actions-lab/screen.web.test.tsx` — same shape as T016, web variant.
+- [X] T015 [P] [US7] Write failing test `test/unit/modules/quick-actions-lab/components/IOSOnlyBanner.test.tsx` — renders title + body copy, uses `ThemedText`/`ThemedView`, snapshot is non-empty, no native imports.
+- [X] T016 [P] [US7] Write failing test `test/unit/modules/quick-actions-lab/screen.android.test.tsx` — renders `IOSOnlyBanner` only; mocks for `expo-quick-actions` are NOT called (assert no `setItems` / `addListener` invocation via `jest.mock` spies).
+- [X] T017 [P] [US7] Write failing test `test/unit/modules/quick-actions-lab/screen.web.test.tsx` — same shape as T016, web variant.
 
 ### Implementation
 
-- [ ] T018 [P] [US7] Implement `src/modules/quick-actions-lab/components/IOSOnlyBanner.tsx` — `ThemedView` + `ThemedText`, `Spacing` only, single quotes, `StyleSheet.create()`. T015 must pass.
-- [ ] T019 [P] [US7] Implement `src/modules/quick-actions-lab/screen.android.tsx` — renders only `<IOSOnlyBanner />` inside a `ThemedView` page wrapper. T016 must pass.
-- [ ] T020 [P] [US7] Implement `src/modules/quick-actions-lab/screen.web.tsx` — same as T019 for web. T017 must pass.
+- [X] T018 [P] [US7] Implement `src/modules/quick-actions-lab/components/IOSOnlyBanner.tsx` — `ThemedView` + `ThemedText`, `Spacing` only, single quotes, `StyleSheet.create()`. T015 must pass.
+- [X] T019 [P] [US7] Implement `src/modules/quick-actions-lab/screen.android.tsx` — renders only `<IOSOnlyBanner />` inside a `ThemedView` page wrapper. T016 must pass.
+- [X] T020 [P] [US7] Implement `src/modules/quick-actions-lab/screen.web.tsx` — same as T019 for web. T017 must pass.
 
 **Checkpoint**: Android + Web variants render banner; manifest platform claim is honored without native bridge calls.
 
@@ -104,15 +104,15 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD)
 
-- [ ] T021 [P] [US2] Write failing test `test/unit/modules/quick-actions-lab/components/ExplainerCard.test.tsx` — renders 4-item-cap explanation copy, uses themed primitives.
-- [ ] T022 [P] [US2] Write failing test `test/unit/modules/quick-actions-lab/components/ActionRow.test.tsx` — accepts `{ title, subtitle, iconName, route, onPress?, disabled? }`; renders SF Symbol placeholder, title, subtitle, route; calls `onPress` only when not disabled.
-- [ ] T023 [P] [US2] Write failing test `test/unit/modules/quick-actions-lab/components/StaticActionsList.test.tsx` — reads `DEFAULT_QUICK_ACTIONS`, renders 4 read-only `ActionRow` instances in order, no edit affordances.
+- [X] T021 [P] [US2] Write failing test `test/unit/modules/quick-actions-lab/components/ExplainerCard.test.tsx` — renders 4-item-cap explanation copy, uses themed primitives.
+- [X] T022 [P] [US2] Write failing test `test/unit/modules/quick-actions-lab/components/ActionRow.test.tsx` — accepts `{ title, subtitle, iconName, route, onPress?, disabled? }`; renders SF Symbol placeholder, title, subtitle, route; calls `onPress` only when not disabled.
+- [X] T023 [P] [US2] Write failing test `test/unit/modules/quick-actions-lab/components/StaticActionsList.test.tsx` — reads `DEFAULT_QUICK_ACTIONS`, renders 4 read-only `ActionRow` instances in order, no edit affordances.
 
 ### Implementation
 
-- [ ] T024 [P] [US2] Implement `src/modules/quick-actions-lab/components/ExplainerCard.tsx`. T021 passes.
-- [ ] T025 [P] [US2] Implement `src/modules/quick-actions-lab/components/ActionRow.tsx`. T022 passes.
-- [ ] T026 [US2] Implement `src/modules/quick-actions-lab/components/StaticActionsList.tsx` (depends on T025 + T003). T023 passes.
+- [X] T024 [P] [US2] Implement `src/modules/quick-actions-lab/components/ExplainerCard.tsx`. T021 passes.
+- [X] T025 [P] [US2] Implement `src/modules/quick-actions-lab/components/ActionRow.tsx`. T022 passes.
+- [X] T026 [US2] Implement `src/modules/quick-actions-lab/components/StaticActionsList.tsx` (depends on T025 + T003). T023 passes.
 
 **Checkpoint**: Static-list UI renders independently of any native bridge.
 
@@ -124,19 +124,19 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD, JS-pure with `jest.mock('expo-quick-actions')` + `jest.mock('expo-router')` at top of file)
 
-- [ ] T027 [P] Write failing test `test/unit/modules/quick-actions-lab/hooks/useQuickActions.test.tsx` — covers:
+- [X] T027 [P] Write failing test `test/unit/modules/quick-actions-lab/hooks/useQuickActions.test.tsx` — covers:
   - `setItems(items)` forwards to `expo-quick-actions.setItems` and rejects when `items.length > 4` (max-4 enforcement returns/throws before bridge call).
   - `getInitial()` returns the cold-launch payload mapped to `InvocationEvent` (with ISO timestamp); `null` when none.
   - `addListener(handler)` subscribes, returns the bridge subscription object, propagates events as `InvocationEvent`.
   - On invocation with `type === 'add-mood-happy'`, calls `appendMoodEntry({ mood: 'happy', source: 'quick-action', timestamp })` (mood-log mocked or spied).
   - Cold-launch invocation routes via `router.replace(userInfo.route)`; warm-launch via `router.navigate(userInfo.route)`.
   - Unknown / missing route is a dev-only `console.warn` no-op (verify warn called once, no `router.*` call).
-- [ ] T028 [P] Write failing web-stub test `test/unit/modules/quick-actions-lab/hooks/useQuickActions.web.test.tsx` — asserts the web export is a no-op (returns stable shape, never imports `expo-quick-actions`, never calls `router`).
+- [X] T028 [P] Write failing web-stub test `test/unit/modules/quick-actions-lab/hooks/useQuickActions.web.test.tsx` — asserts the web export is a no-op (returns stable shape, never imports `expo-quick-actions`, never calls `router`).
 
 ### Implementation
 
-- [ ] T029 Implement `src/modules/quick-actions-lab/hooks/useQuickActions.ts` (native) — subscribes once via `useEffect`, fetches `getInitial()`, reads cold-vs-warm flag from a ref, maps to `InvocationEvent`, dispatches `router.replace` / `router.navigate`, fires mood-log side-effect, enforces `items.length ≤ 4` in `setItems`. **No `eslint-disable`**. T027 passes.
-- [ ] T030 [P] Implement `src/modules/quick-actions-lab/hooks/useQuickActions.web.ts` — JS-pure stub returning the same TypeScript shape with all bridge methods as `async () => undefined / null` and no listener. T028 passes.
+- [X] T029 Implement `src/modules/quick-actions-lab/hooks/useQuickActions.ts` (native) — subscribes once via `useEffect`, fetches `getInitial()`, reads cold-vs-warm flag from a ref, maps to `InvocationEvent`, dispatches `router.replace` / `router.navigate`, fires mood-log side-effect, enforces `items.length ≤ 4` in `setItems`. **No `eslint-disable`**. T027 passes.
+- [X] T030 [P] Implement `src/modules/quick-actions-lab/hooks/useQuickActions.web.ts` — JS-pure stub returning the same TypeScript shape with all bridge methods as `async () => undefined / null` and no listener. T028 passes.
 
 **Checkpoint**: Hook is ready to consume by every remaining story; native bridge is fully mocked at the import boundary in all tests.
 
@@ -146,7 +146,7 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD)
 
-- [ ] T031 [P] [US3] Write failing test `test/unit/modules/quick-actions-lab/components/DynamicActionsManager.test.tsx` — covers:
+- [X] T031 [P] [US3] Write failing test `test/unit/modules/quick-actions-lab/components/DynamicActionsManager.test.tsx` — covers:
   - "Pretend N statics" toggle (1..4) updates `effectiveStaticCount`.
   - "Add" disabled when `dynamicItems.length >= 4 - effectiveStaticCount`; tapping a disabled add shows the cap banner copy.
   - Adding pushes a new item and calls hook.`setItems` with the new full list.
@@ -156,7 +156,7 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Implementation
 
-- [ ] T032 [US3] Implement `src/modules/quick-actions-lab/components/DynamicActionsManager.tsx` — local `ManagerState`, invariants per data-model.md §3, calls hook methods, uses `ActionRow` for rows. T031 passes.
+- [X] T032 [US3] Implement `src/modules/quick-actions-lab/components/DynamicActionsManager.tsx` — local `ManagerState`, invariants per data-model.md §3, calls hook methods, uses `ActionRow` for rows. T031 passes.
 
 **Checkpoint**: Manager component works end-to-end against the mocked hook.
 
@@ -166,14 +166,14 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD)
 
-- [ ] T033 [P] [US4] Write failing test `test/unit/modules/quick-actions-lab/components/LastInvokedCard.test.tsx` — covers:
+- [X] T033 [P] [US4] Write failing test `test/unit/modules/quick-actions-lab/components/LastInvokedCard.test.tsx` — covers:
   - Empty state (`event === null`) shows "No quick action invoked this session".
   - Populated state renders `type`, formatted `userInfo` JSON, ISO timestamp.
   - Most-recent-wins: rerendering with a new event replaces the old display.
 
 ### Implementation
 
-- [ ] T034 [P] [US4] Implement `src/modules/quick-actions-lab/components/LastInvokedCard.tsx`. T033 passes.
+- [X] T034 [P] [US4] Implement `src/modules/quick-actions-lab/components/LastInvokedCard.tsx`. T033 passes.
 
 **Checkpoint**: Card surface verified in isolation.
 
@@ -185,7 +185,7 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD)
 
-- [ ] T035 [P] Write failing test `test/unit/modules/quick-actions-lab/screen.test.tsx` — covers:
+- [X] T035 [P] Write failing test `test/unit/modules/quick-actions-lab/screen.test.tsx` — covers:
   - Mounts on iOS (assume `Platform.OS = 'ios'` via test setup).
   - Renders ExplainerCard, StaticActionsList, DynamicActionsManager, LastInvokedCard.
   - **US5**: Reset button shows confirm prompt; confirming calls `useQuickActions().setItems([])` (or `clearItems()`); cancelling is a no-op.
@@ -194,7 +194,7 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Implementation
 
-- [ ] T036 Implement `src/modules/quick-actions-lab/screen.tsx` — composes all child components, wires Reset (US5) with `Alert.alert` confirm + `clearItems()`, surfaces `lastInvoked` state from the hook into `LastInvokedCard`. **No `eslint-disable`**. T035 passes.
+- [X] T036 Implement `src/modules/quick-actions-lab/screen.tsx` — composes all child components, wires Reset (US5) with `Alert.alert` confirm + `clearItems()`, surfaces `lastInvoked` state from the hook into `LastInvokedCard`. **No `eslint-disable`**. T035 passes.
 
 **Checkpoint**: Lab screen renders end-to-end on iOS in tests; US2/3/4/5 all exercised.
 
@@ -206,11 +206,11 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ### Tests (TDD)
 
-- [ ] T037 Write failing test `test/unit/app/_layout.test.tsx` (or extend existing `_layout` test if present) — asserts the root layout component invokes `useQuickActions()` once on mount. Mock the hook module and verify it is called. (If a root-layout test already exists, add the assertion to it.)
+- [X] T037 Write failing test `test/unit/app/_layout.test.tsx` (or extend existing `_layout` test if present) — asserts the root layout component invokes `useQuickActions()` once on mount. Mock the hook module and verify it is called. (If a root-layout test already exists, add the assertion to it.)
 
 ### Implementation
 
-- [ ] T038 Wire `useQuickActions()` into `app/_layout.tsx` — call the hook once at the top of the root layout component (additive line per FR-016, no behavior change for non-invocation launches). T037 passes; existing root-layout tests still pass.
+- [X] T038 Wire `useQuickActions()` into `app/_layout.tsx` — call the hook once at the top of the root layout component (additive line per FR-016, no behavior change for non-invocation launches). T037 passes; existing root-layout tests still pass.
 
 **Checkpoint**: Cold + warm invocations route correctly per quickstart §6.
 
@@ -218,13 +218,13 @@ US1 is fully delivered by Phase 2 (T003 + T008 + T010). No additional source tas
 
 ## Phase 11: Polish & Cross-Cutting
 
-- [ ] T039 [P] Run `pnpm format` from repo root; verify no diff in already-formatted files.
-- [ ] T040 [P] Run `pnpm typecheck`; verify zero TS errors across the new module + plugin.
-- [ ] T041 [P] Run `pnpm lint`; verify zero errors and **zero `eslint-disable`** directives in new files (`git grep -nE 'eslint-disable' src/modules/quick-actions-lab plugins/with-quick-actions test/unit/modules/quick-actions-lab test/unit/plugins/with-quick-actions` must return empty).
-- [ ] T042 Run `pnpm test`; all suites green including new ~14 test files (~35 cases) and bumped plugin-count assertion.
-- [ ] T043 Run `pnpm check` (typecheck + lint + format + tests bundle); zero failures.
-- [ ] T044 Execute quickstart.md §4–§11 on a real iOS device (prebuild, run:ios, long-press, verify routing, verify dynamic mgmt, verify last-invoked card, verify reset, verify Android/Web banner, verify plugin idempotency). Capture pass/fail per success criterion (SC-1..SC-11).
-- [ ] T045 Update the `<!-- SPECKIT START --> ... <!-- SPECKIT END -->` block in `.github/copilot-instructions.md` to reference `specs/039-quick-actions/plan.md` (per plan.md "Agent context update" note).
+- [X] T039 [P] Run `pnpm format` from repo root; verify no diff in already-formatted files.
+- [X] T040 [P] Run `pnpm typecheck`; verify zero TS errors across the new module + plugin.
+- [X] T041 [P] Run `pnpm lint`; verify zero errors and **zero `eslint-disable`** directives in new files (`git grep -nE 'eslint-disable' src/modules/quick-actions-lab plugins/with-quick-actions test/unit/modules/quick-actions-lab test/unit/plugins/with-quick-actions` must return empty).
+- [X] T042 Run `pnpm test`; all suites green including new ~14 test files (~35 cases) and bumped plugin-count assertion.
+- [X] T043 Run `pnpm check` (typecheck + lint + format + tests bundle); zero failures.
+- [ ] T044 Execute quickstart.md §4–§11 on a real iOS device (prebuild, run:ios, long-press, verify routing, verify dynamic mgmt, verify last-invoked card, verify reset, verify Android/Web banner, verify plugin idempotency). Capture pass/fail per success criterion (SC-1..SC-11). **DEFERRED — manual on-device verification; out-of-scope for autonomous run.**
+- [X] T045 Update the `<!-- SPECKIT START --> ... <!-- SPECKIT END -->` block in `.github/copilot-instructions.md` to reference `specs/039-quick-actions/plan.md` (per plan.md "Agent context update" note).
 
 ---
 
