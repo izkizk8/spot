@@ -83,36 +83,28 @@ const bridge: BackgroundTasksBridge = Object.freeze({
   scheduleAppRefresh: (earliestBeginIntervalMs?: number): Promise<void> => {
     const ms = earliestBeginIntervalMs ?? DEFAULT_REFRESH_INTERVAL_MS;
     if (!isReady() || native == null) {
-      return Promise.reject(
-        new BackgroundTasksNotSupported('Background Tasks require iOS 13+'),
-      );
+      return Promise.reject(new BackgroundTasksNotSupported('Background Tasks require iOS 13+'));
     }
     return enqueue(() => native.scheduleAppRefresh(ms));
   },
 
   scheduleProcessing: (opts: ScheduleProcessingOptions): Promise<void> => {
     if (!isReady() || native == null) {
-      return Promise.reject(
-        new BackgroundTasksNotSupported('Background Tasks require iOS 13+'),
-      );
+      return Promise.reject(new BackgroundTasksNotSupported('Background Tasks require iOS 13+'));
     }
     return enqueue(() => native.scheduleProcessing(opts));
   },
 
   cancelAll: (): Promise<void> => {
     if (!isReady() || native == null) {
-      return Promise.reject(
-        new BackgroundTasksNotSupported('Background Tasks require iOS 13+'),
-      );
+      return Promise.reject(new BackgroundTasksNotSupported('Background Tasks require iOS 13+'));
     }
     return enqueue(() => native.cancelAll());
   },
 
   getLastRun: (): Promise<LastRunSnapshot | null> => {
     if (!isReady() || native == null) {
-      return Promise.reject(
-        new BackgroundTasksNotSupported('Background Tasks require iOS 13+'),
-      );
+      return Promise.reject(new BackgroundTasksNotSupported('Background Tasks require iOS 13+'));
     }
     return native.getLastRun();
   },

@@ -16,7 +16,8 @@ interface IOSOnlyBannerProps {
 
 const COPY: Record<NonNullable<IOSOnlyBannerProps['reason']>, string> = {
   platform: 'Background Tasks require iOS 13+',
-  'older-ios': 'This device is running an iOS version older than 13. Background Tasks are unavailable.',
+  'older-ios':
+    'This device is running an iOS version older than 13. Background Tasks are unavailable.',
 };
 
 export default function IOSOnlyBanner({ style, reason = 'platform' }: IOSOnlyBannerProps) {

@@ -29,8 +29,9 @@ beforeEach(() => {
   mockBridge.scheduleAppRefresh.mockResolvedValue(undefined);
   mockBridge.scheduleProcessing.mockResolvedValue(undefined);
   mockBridge.cancelAll.mockResolvedValue(undefined);
-  (mockBridge as unknown as { BackgroundTasksNotSupported: typeof MockNotSupported }).BackgroundTasksNotSupported =
-    MockNotSupported;
+  (
+    mockBridge as unknown as { BackgroundTasksNotSupported: typeof MockNotSupported }
+  ).BackgroundTasksNotSupported = MockNotSupported;
   mockStore.listRuns.mockResolvedValue([]);
   mockStore.appendRun.mockImplementation(async (r) => [r]);
   mockStore.clearRuns.mockResolvedValue(undefined);
@@ -100,10 +101,13 @@ describe('background-tasks-lab screen (iOS)', () => {
     expect(screen.queryByText('Schedule Processing')).toBeNull();
   });
 
-  it('does NOT import any prior feature\'s screen module', () => {
+  it("does NOT import any prior feature's screen module", () => {
     const fs = require('fs');
     const path = require('path');
-    const filePath = path.resolve(__dirname, '../../../../src/modules/background-tasks-lab/screen.tsx');
+    const filePath = path.resolve(
+      __dirname,
+      '../../../../src/modules/background-tasks-lab/screen.tsx',
+    );
     const src = fs.readFileSync(filePath, 'utf8');
     // No imports of other feature screen files
     expect(src).not.toMatch(/focus-filters-lab\/screen/);

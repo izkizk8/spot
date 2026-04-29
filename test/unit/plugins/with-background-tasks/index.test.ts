@@ -21,13 +21,18 @@ import type { ExpoConfig } from '@expo/config-types';
 const PERMITTED_IDS_KEY = 'BGTaskSchedulerPermittedIdentifiers';
 const BACKGROUND_MODES_KEY = 'UIBackgroundModes';
 
+function identity<T>(value: T): T {
+  return value;
+}
+
+function sortStr(xs: unknown): string {
+  return Array.isArray(xs) ? [...xs].toSorted().join(',') : '';
+}
+
 describe('with-background-tasks (pure mutation)', () => {
   it('on a fresh Info.plist, BGTaskSchedulerPermittedIdentifiers === [refresh, processing] (FR-090)', () => {
     const out = applyBackgroundTasksInfoPlist({});
-    expect(out[PERMITTED_IDS_KEY]).toEqual([
-      TASK_IDENTIFIER_REFRESH,
-      TASK_IDENTIFIER_PROCESSING,
-    ]);
+    expect(out[PERMITTED_IDS_KEY]).toEqual([TASK_IDENTIFIER_REFRESH, TASK_IDENTIFIER_PROCESSING]);
   });
 
   it('preserves prior identifiers (union, FR-090 / EC-006)', () => {
@@ -84,7 +89,11 @@ describe('with-background-tasks (pure mutation)', () => {
     const ids = out[PERMITTED_IDS_KEY] as string[];
     // toEqual asserts prior ordering preserved + new entries appended
     expect(modes).toEqual(['location', 'fetch', 'processing']);
-    expect(ids).toEqual(['com.example.legacy', TASK_IDENTIFIER_REFRESH, TASK_IDENTIFIER_PROCESSING]);
+    expect(ids).toEqual([
+      'com.example.legacy',
+      TASK_IDENTIFIER_REFRESH,
+      TASK_IDENTIFIER_PROCESSING,
+    ]);
   });
 
   it('commutativity across {025, 029, 030} mutations (FR-093)', () => {
@@ -99,7 +108,7 @@ describe('with-background-tasks (pure mutation)', () => {
       next[BACKGROUND_MODES_KEY] = modes;
       return next;
     };
-    const apply029: Mut = (i) => i; // 029 only adds Swift sources, no Info.plist keys.
+    const apply029: Mut = identity; // 029 only adds Swift sources, no Info.plist keys.
     const apply030: Mut = applyBackgroundTasksInfoPlist;
 
     const orderings = [
@@ -116,8 +125,6 @@ describe('with-background-tasks (pure mutation)', () => {
     for (let i = 1; i < results.length; i++) {
       const a = results[0];
       const b = results[i];
-      const sortStr = (xs: unknown) =>
-        Array.isArray(xs) ? [...xs].sort().join(',') : '';
       expect(sortStr(a[BACKGROUND_MODES_KEY])).toBe(sortStr(b[BACKGROUND_MODES_KEY]));
       expect(sortStr(a[PERMITTED_IDS_KEY])).toBe(sortStr(b[PERMITTED_IDS_KEY]));
     }

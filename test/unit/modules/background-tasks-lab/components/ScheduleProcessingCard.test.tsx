@@ -18,9 +18,7 @@ function makeRecord(): TaskRunRecord {
 
 describe('ScheduleProcessingCard', () => {
   it('renders CTA label "Schedule Processing" (FR-030)', () => {
-    render(
-      <ScheduleProcessingCard status="idle" lastRun={null} onSchedule={() => undefined} />,
-    );
+    render(<ScheduleProcessingCard status="idle" lastRun={null} onSchedule={() => undefined} />);
     expect(screen.getByText('Schedule Processing')).toBeTruthy();
   });
 
@@ -32,17 +30,13 @@ describe('ScheduleProcessingCard', () => {
   });
 
   it('renders both read-only requirement indicators (FR-032)', () => {
-    render(
-      <ScheduleProcessingCard status="idle" lastRun={null} onSchedule={() => undefined} />,
-    );
+    render(<ScheduleProcessingCard status="idle" lastRun={null} onSchedule={() => undefined} />);
     expect(screen.getByLabelText('requires external power')).toBeTruthy();
     expect(screen.getByLabelText('requires network connectivity')).toBeTruthy();
   });
 
   it('requirement indicators are not pressable (read-only)', () => {
-    render(
-      <ScheduleProcessingCard status="idle" lastRun={null} onSchedule={() => undefined} />,
-    );
+    render(<ScheduleProcessingCard status="idle" lastRun={null} onSchedule={() => undefined} />);
     const power = screen.getByLabelText('requires external power');
     expect(power.props.onPress).toBeUndefined();
   });

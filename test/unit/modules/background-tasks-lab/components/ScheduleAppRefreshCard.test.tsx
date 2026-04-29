@@ -18,9 +18,7 @@ function makeRecord(): TaskRunRecord {
 
 describe('ScheduleAppRefreshCard', () => {
   it('renders CTA label "Schedule App Refresh" (FR-020)', () => {
-    render(
-      <ScheduleAppRefreshCard status="idle" lastRun={null} onSchedule={() => undefined} />,
-    );
+    render(<ScheduleAppRefreshCard status="idle" lastRun={null} onSchedule={() => undefined} />);
     expect(screen.getByText('Schedule App Refresh')).toBeTruthy();
   });
 
@@ -32,9 +30,7 @@ describe('ScheduleAppRefreshCard', () => {
   });
 
   it('renders empty-state dash when lastRun is null (FR-023)', () => {
-    render(
-      <ScheduleAppRefreshCard status="idle" lastRun={null} onSchedule={() => undefined} />,
-    );
+    render(<ScheduleAppRefreshCard status="idle" lastRun={null} onSchedule={() => undefined} />);
     expect(screen.getAllByText('—').length).toBeGreaterThan(0);
   });
 
@@ -45,9 +41,7 @@ describe('ScheduleAppRefreshCard', () => {
         <ScheduleAppRefreshCard status={s} lastRun={null} onSchedule={() => undefined} />,
       );
       // status label rendered through STATUS_LABEL (capitalized)
-      expect(
-        screen.queryByText(/Idle|Scheduled|Running|Completed|Expired|Canceled/),
-      ).toBeTruthy();
+      expect(screen.queryByText(/Idle|Scheduled|Running|Completed|Expired|Canceled/)).toBeTruthy();
       unmount();
     }
   });

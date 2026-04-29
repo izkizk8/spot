@@ -51,16 +51,10 @@ export default function ScheduleProcessingCard({
         <ThemedText style={styles.buttonText}>Schedule Processing</ThemedText>
       </Pressable>
       <ThemedView style={styles.requirements}>
-        <ThemedText
-          style={styles.requirement}
-          accessibilityLabel="requires external power"
-        >
+        <ThemedText style={styles.requirement} accessibilityLabel="requires external power">
           • Requires external power
         </ThemedText>
-        <ThemedText
-          style={styles.requirement}
-          accessibilityLabel="requires network connectivity"
-        >
+        <ThemedText style={styles.requirement} accessibilityLabel="requires network connectivity">
           • Requires network connectivity
         </ThemedText>
       </ThemedView>

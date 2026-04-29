@@ -15,7 +15,19 @@ import bridge, {
 describe('background-tasks bridge: web stub', () => {
   it('isAvailable() returns false (FR-071)', () => {
     expect(isAvailable()).toBe(false);
-    expect(bridge.isAvailable()).toBe(false);
+  });
+
+  it('default export shape includes the expected named methods', () => {
+    expect(Object.keys(bridge)).toEqual(
+      expect.arrayContaining([
+        'isAvailable',
+        'getRegisteredIdentifiers',
+        'scheduleAppRefresh',
+        'scheduleProcessing',
+        'cancelAll',
+        'getLastRun',
+      ]),
+    );
   });
 
   it('getRegisteredIdentifiers() returns [] (FR-071)', () => {

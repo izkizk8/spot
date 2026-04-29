@@ -40,9 +40,7 @@ export function applyBackgroundTasksInfoPlist(
   const next: Record<string, unknown> = { ...input };
 
   const priorIds = Array.isArray(next[PERMITTED_IDS_KEY])
-    ? (next[PERMITTED_IDS_KEY] as unknown[]).filter(
-        (v): v is string => typeof v === 'string',
-      )
+    ? (next[PERMITTED_IDS_KEY] as unknown[]).filter((v): v is string => typeof v === 'string')
     : [];
   const mergedIds = [...priorIds];
   for (const id of REQUIRED_IDENTIFIERS) {
@@ -51,9 +49,7 @@ export function applyBackgroundTasksInfoPlist(
   next[PERMITTED_IDS_KEY] = mergedIds;
 
   const priorModes = Array.isArray(next[BACKGROUND_MODES_KEY])
-    ? (next[BACKGROUND_MODES_KEY] as unknown[]).filter(
-        (v): v is string => typeof v === 'string',
-      )
+    ? (next[BACKGROUND_MODES_KEY] as unknown[]).filter((v): v is string => typeof v === 'string')
     : [];
   const mergedModes = [...priorModes];
   for (const m of REQUIRED_BACKGROUND_MODES) {

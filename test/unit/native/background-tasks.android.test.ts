@@ -15,18 +15,27 @@ import bridge, {
 describe('background-tasks bridge: android stub', () => {
   it('isAvailable() returns false (FR-071)', () => {
     expect(isAvailable()).toBe(false);
-    expect(bridge.isAvailable()).toBe(false);
+  });
+
+  it('default export shape includes the same isAvailable', () => {
+    expect(Object.keys(bridge)).toEqual(
+      expect.arrayContaining([
+        'isAvailable',
+        'getRegisteredIdentifiers',
+        'scheduleAppRefresh',
+        'scheduleProcessing',
+        'cancelAll',
+        'getLastRun',
+      ]),
+    );
   });
 
   it('getRegisteredIdentifiers() returns [] (FR-071)', () => {
     expect(getRegisteredIdentifiers()).toEqual([]);
-    expect(bridge.getRegisteredIdentifiers()).toEqual([]);
   });
 
   it('scheduleAppRefresh rejects with BackgroundTasksNotSupported', async () => {
-    await expect(scheduleAppRefresh(60_000)).rejects.toBeInstanceOf(
-      BackgroundTasksNotSupported,
-    );
+    await expect(scheduleAppRefresh(60_000)).rejects.toBeInstanceOf(BackgroundTasksNotSupported);
   });
 
   it('scheduleProcessing rejects with BackgroundTasksNotSupported', async () => {

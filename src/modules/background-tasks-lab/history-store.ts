@@ -9,11 +9,7 @@
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-import type {
-  TaskRunRecord,
-  TaskStatus,
-  TaskType,
-} from '@/native/background-tasks.types';
+import type { TaskRunRecord, TaskStatus, TaskType } from '@/native/background-tasks.types';
 
 /** AsyncStorage key. Frozen — see contract I1 / FR-040. */
 export const HISTORY_STORAGE_KEY = 'spot.bgtasks.history' as const;
@@ -26,11 +22,7 @@ export interface HistoryStoreOptions {
 }
 
 const VALID_TYPES: ReadonlySet<TaskType> = new Set(['refresh', 'processing']);
-const VALID_STATUSES: ReadonlySet<TaskStatus> = new Set([
-  'completed',
-  'expired',
-  'canceled',
-]);
+const VALID_STATUSES: ReadonlySet<TaskStatus> = new Set(['completed', 'expired', 'canceled']);
 
 function isFiniteNumber(value: unknown): value is number {
   return typeof value === 'number' && Number.isFinite(value);
@@ -100,9 +92,7 @@ export function parsePersistedArray(
 /**
  * Read the persisted history. Newest first. Returns [] on any failure.
  */
-export async function listRuns(
-  opts?: HistoryStoreOptions,
-): Promise<readonly TaskRunRecord[]> {
+export async function listRuns(opts?: HistoryStoreOptions): Promise<readonly TaskRunRecord[]> {
   let raw: string | null;
   try {
     raw = await AsyncStorage.getItem(HISTORY_STORAGE_KEY);

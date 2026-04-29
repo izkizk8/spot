@@ -53,11 +53,7 @@ describe('RunHistoryList', () => {
 
   it('renders an inline error indicator when error is set (FR-044 / US3 AS3)', () => {
     render(
-      <RunHistoryList
-        history={[]}
-        error={new Error('storage broken')}
-        onClear={() => undefined}
-      />,
+      <RunHistoryList history={[]} error={new Error('storage broken')} onClear={() => undefined} />,
     );
     expect(screen.getByLabelText('history error')).toBeTruthy();
   });

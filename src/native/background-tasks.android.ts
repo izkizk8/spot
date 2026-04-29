@@ -18,9 +18,7 @@ export { BackgroundTasksNotSupported };
 const EMPTY_IDENTIFIERS: readonly string[] = Object.freeze([]);
 
 function reject(): Promise<never> {
-  return Promise.reject(
-    new BackgroundTasksNotSupported('Background Tasks require iOS 13+'),
-  );
+  return Promise.reject(new BackgroundTasksNotSupported('Background Tasks require iOS 13+'));
 }
 
 const bridge: BackgroundTasksBridge = Object.freeze({

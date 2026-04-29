@@ -22,10 +22,8 @@ interface TestTriggerCardProps {
   readonly style?: ViewStyle;
 }
 
-const REFRESH_COMMAND =
-  `e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"${TASK_IDENTIFIER_REFRESH}"]`;
-const PROCESSING_COMMAND =
-  `e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"${TASK_IDENTIFIER_PROCESSING}"]`;
+const REFRESH_COMMAND = `e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"${TASK_IDENTIFIER_REFRESH}"]`;
+const PROCESSING_COMMAND = `e -l objc -- (void)[[BGTaskScheduler sharedScheduler] _simulateLaunchForTaskWithIdentifier:@"${TASK_IDENTIFIER_PROCESSING}"]`;
 
 export default function TestTriggerCard({ style }: TestTriggerCardProps) {
   const copyRefresh = useCallback(() => {
@@ -39,8 +37,8 @@ export default function TestTriggerCard({ style }: TestTriggerCardProps) {
     <ThemedView style={[styles.container, style]}>
       <ThemedText style={styles.heading}>Test triggers (debugger only)</ThemedText>
       <ThemedText style={styles.caveat}>
-        Uses Apple-private SPI (_simulateLaunchForTaskWithIdentifier:). Debug
-        builds only — never ship a binary that calls this directly.
+        Uses Apple-private SPI (_simulateLaunchForTaskWithIdentifier:). Debug builds only — never
+        ship a binary that calls this directly.
       </ThemedText>
 
       <ThemedText style={styles.label}>App refresh</ThemedText>

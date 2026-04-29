@@ -169,12 +169,12 @@ describe('background-tasks bridge: serialised promise chain (R-A / FR-083)', () 
   it('two back-to-back scheduleAppRefresh calls produce two native invocations in order', async () => {
     const native = freshNativeMock();
     const order: number[] = [];
-    let resolveFirst: () => void = () => undefined;
+    let resolveFirstHolder: { current: () => void } = { current: () => undefined };
     native.scheduleAppRefresh
       .mockImplementationOnce(
         () =>
           new Promise<void>((res) => {
-            resolveFirst = () => {
+            resolveFirstHolder.current = () => {
               order.push(1);
               res();
             };
@@ -193,7 +193,7 @@ describe('background-tasks bridge: serialised promise chain (R-A / FR-083)', () 
     await Promise.resolve();
     await Promise.resolve();
     expect(native.scheduleAppRefresh).toHaveBeenCalledTimes(1);
-    resolveFirst();
+    resolveFirstHolder.current();
     await Promise.all([p1, p2]);
     expect(order).toEqual([1, 2]);
     expect(native.scheduleAppRefresh).toHaveBeenCalledTimes(2);

@@ -26,10 +26,9 @@ export default function ExplainerCard({ style }: ExplainerCardProps) {
     <ThemedView style={[styles.container, style]}>
       <ThemedText style={styles.heading}>About Background Tasks</ThemedText>
       <ThemedText style={styles.body}>
-        iOS 13+ exposes the BGTaskScheduler API. App refresh runs short
-        opportunistic work via BGAppRefreshTask; longer chores run via
-        BGProcessingTask. The system coalesces and may keep work deferred
-        until conditions are favourable.
+        iOS 13+ exposes the BGTaskScheduler API. App refresh runs short opportunistic work via
+        BGAppRefreshTask; longer chores run via BGProcessingTask. The system coalesces and may keep
+        work deferred until conditions are favourable.
       </ThemedText>
       <ThemedText style={styles.identifier}>{TASK_IDENTIFIER_REFRESH}</ThemedText>
       <ThemedText style={styles.identifier}>{TASK_IDENTIFIER_PROCESSING}</ThemedText>

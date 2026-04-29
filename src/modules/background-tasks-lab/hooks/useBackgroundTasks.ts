@@ -17,10 +17,7 @@ import { useCallback, useEffect, useReducer, useRef } from 'react';
 import { AppState, type AppStateStatus } from 'react-native';
 
 import * as bridge from '@/native/background-tasks';
-import {
-  appendRun,
-  listRuns,
-} from '@/modules/background-tasks-lab/history-store';
+import { appendRun, listRuns } from '@/modules/background-tasks-lab/history-store';
 import {
   DEFAULT_REFRESH_INTERVAL_MS,
   type LastRunSnapshot,
@@ -34,7 +31,10 @@ export type ScheduleStatus = 'idle' | 'scheduled' | 'running';
 export interface UseBackgroundTasksState {
   readonly lastRunByType: LastRunSnapshot;
   readonly history: readonly TaskRunRecord[];
-  readonly scheduledByType: { readonly refresh: ScheduleStatus; readonly processing: ScheduleStatus };
+  readonly scheduledByType: {
+    readonly refresh: ScheduleStatus;
+    readonly processing: ScheduleStatus;
+  };
   readonly error: Error | null;
 }
 
@@ -174,7 +174,7 @@ export function useBackgroundTasks(): UseBackgroundTasks {
     };
   }, []);
 
-  const enqueue = useCallback(<T,>(fn: () => Promise<T>): Promise<T> => {
+  const enqueue = useCallback(<T>(fn: () => Promise<T>): Promise<T> => {
     const next = chainRef.current.then(fn, fn);
     chainRef.current = next.then(
       () => undefined,

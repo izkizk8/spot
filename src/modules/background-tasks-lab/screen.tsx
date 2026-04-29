@@ -27,14 +27,8 @@ function getIOSVersion(): number {
 }
 
 export default function BackgroundTasksLabScreen() {
-  const {
-    schedule,
-    history,
-    error,
-    lastRunByType,
-    scheduledByType,
-    refresh,
-  } = useBackgroundTasks();
+  const { schedule, history, error, lastRunByType, scheduledByType, refresh } =
+    useBackgroundTasks();
 
   const onScheduleRefresh = useCallback(() => schedule('refresh'), [schedule]);
   const onScheduleProcessing = useCallback(() => schedule('processing'), [schedule]);
@@ -48,10 +42,7 @@ export default function BackgroundTasksLabScreen() {
   if (!available) {
     return (
       <ScrollView contentContainerStyle={styles.container}>
-        <IOSOnlyBanner
-          style={styles.card}
-          reason={iOSTooOld ? 'older-ios' : 'platform'}
-        />
+        <IOSOnlyBanner style={styles.card} reason={iOSTooOld ? 'older-ios' : 'platform'} />
         <ExplainerCard style={styles.card} />
         <TestTriggerCard style={styles.card} />
       </ScrollView>

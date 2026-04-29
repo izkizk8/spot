@@ -29,12 +29,7 @@ function formatTimestampOrDash(value: number | null): string {
   return new Date(value).toLocaleString();
 }
 
-export default function RunHistoryList({
-  history,
-  error,
-  onClear,
-  style,
-}: RunHistoryListProps) {
+export default function RunHistoryList({ history, error, onClear, style }: RunHistoryListProps) {
   const visible = history.slice(0, HISTORY_MAX_ENTRIES);
 
   return (

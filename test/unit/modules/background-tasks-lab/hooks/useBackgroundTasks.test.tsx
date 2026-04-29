@@ -44,8 +44,9 @@ beforeEach(() => {
   mockBridge.cancelAll.mockResolvedValue(undefined);
   // The error class needs to be on the mocked module so instanceof checks work.
   // jest.mock auto-mocks classes as jest.fn — we override with our concrete class.
-  (mockBridge as unknown as { BackgroundTasksNotSupported: typeof MockNotSupported }).BackgroundTasksNotSupported =
-    MockNotSupported;
+  (
+    mockBridge as unknown as { BackgroundTasksNotSupported: typeof MockNotSupported }
+  ).BackgroundTasksNotSupported = MockNotSupported;
   mockStore.listRuns.mockResolvedValue([]);
   mockStore.appendRun.mockImplementation(async (r) => [r]);
   mockStore.clearRuns.mockResolvedValue(undefined);
@@ -53,7 +54,9 @@ beforeEach(() => {
 
 describe('useBackgroundTasks', () => {
   it('on mount calls bridge.getLastRun() and historyStore.listRuns() once each (FR-081)', async () => {
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     renderHook(() => useBackgroundTasks());
 
     await waitFor(() => {
@@ -67,7 +70,9 @@ describe('useBackgroundTasks', () => {
     mockBridge.getLastRun.mockResolvedValueOnce({ refresh: rec, processing: null });
     mockStore.listRuns.mockResolvedValueOnce([rec]);
 
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => {
@@ -77,7 +82,9 @@ describe('useBackgroundTasks', () => {
   });
 
   it('AppState background → active triggers a refetch (FR-081 / EC-003)', async () => {
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     renderHook(() => useBackgroundTasks());
 
     await waitFor(() => expect(mockBridge.getLastRun).toHaveBeenCalledTimes(1));
@@ -94,7 +101,9 @@ describe('useBackgroundTasks', () => {
   });
 
   it('schedule("refresh") calls bridge.scheduleAppRefresh(60_000) exactly once (US1 AS1)', async () => {
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => expect(mockBridge.getLastRun).toHaveBeenCalledTimes(1));
@@ -110,7 +119,9 @@ describe('useBackgroundTasks', () => {
   });
 
   it('schedule("processing") forwards both default flags (US2 AS1)', async () => {
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => expect(mockBridge.getLastRun).toHaveBeenCalledTimes(1));
@@ -129,7 +140,9 @@ describe('useBackgroundTasks', () => {
   });
 
   it('two rapid schedule("refresh") produce two ordered native invocations (FR-083)', async () => {
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => expect(mockBridge.getLastRun).toHaveBeenCalledTimes(1));
@@ -145,7 +158,9 @@ describe('useBackgroundTasks', () => {
   });
 
   it('cancelAll() delegates and resets scheduledByType to idle (FR-082 / US2 AS3)', async () => {
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => expect(mockBridge.getLastRun).toHaveBeenCalledTimes(1));
@@ -154,9 +169,7 @@ describe('useBackgroundTasks', () => {
       result.current.schedule('refresh');
     });
 
-    await waitFor(() =>
-      expect(mockBridge.scheduleAppRefresh).toHaveBeenCalledTimes(1),
-    );
+    await waitFor(() => expect(mockBridge.scheduleAppRefresh).toHaveBeenCalledTimes(1));
 
     act(() => {
       result.current.cancelAll();
@@ -171,7 +184,9 @@ describe('useBackgroundTasks', () => {
   it('bridge.getLastRun rejecting BackgroundTasksNotSupported -> degraded state, error null (US4 AS3 / EC-002)', async () => {
     mockBridge.getLastRun.mockRejectedValueOnce(new MockNotSupported());
 
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => {
@@ -188,7 +203,9 @@ describe('useBackgroundTasks', () => {
       return [];
     });
 
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => {
@@ -201,7 +218,9 @@ describe('useBackgroundTasks', () => {
     const failure = new Error('schedule failed');
     mockBridge.scheduleAppRefresh.mockRejectedValueOnce(failure);
 
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => expect(mockBridge.getLastRun).toHaveBeenCalledTimes(1));
@@ -223,7 +242,9 @@ describe('useBackgroundTasks', () => {
       .mockResolvedValueOnce([]) // mount read (empty)
       .mockResolvedValueOnce([completed]); // post-append re-read
 
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { result } = renderHook(() => useBackgroundTasks());
 
     await waitFor(() => {
@@ -240,7 +261,9 @@ describe('useBackgroundTasks', () => {
     const remove = jest.fn();
     (AppState.addEventListener as jest.Mock).mockReturnValueOnce({ remove });
 
-    const { useBackgroundTasks } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
+    const {
+      useBackgroundTasks,
+    } = require('@/modules/background-tasks-lab/hooks/useBackgroundTasks');
     const { unmount } = renderHook(() => useBackgroundTasks());
 
     unmount();
