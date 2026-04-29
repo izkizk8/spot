@@ -318,9 +318,7 @@ describe('arkit bridge', () => {
         code: 'ARKIT_NOT_SUPPORTED',
       });
 
-      await expect(placeAnchorAt(0, 0)).rejects.toBeInstanceOf(
-        ARKitNotSupported,
-      );
+      await expect(placeAnchorAt(0, 0)).rejects.toBeInstanceOf(ARKitNotSupported);
     });
   });
 

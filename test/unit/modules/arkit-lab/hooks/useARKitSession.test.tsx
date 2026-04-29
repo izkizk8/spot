@@ -39,7 +39,7 @@ describe('useARKitSession', () => {
     const arkit = require('@/native/arkit');
     jest.clearAllMocks();
     jest.useFakeTimers();
-    
+
     // Ensure mocks return promises by default
     arkit.pauseSession.mockResolvedValue(undefined);
     arkit.resumeSession.mockResolvedValue(undefined);
@@ -374,7 +374,7 @@ describe('useARKitSession', () => {
       trackingState: 'notAvailable',
     });
 
-    const { result, rerender } = renderHook(() => useARKitSession());
+    const { result } = renderHook(() => useARKitSession());
 
     const firstPlaceAnchorAt = result.current.placeAnchorAt;
     const firstClearAnchors = result.current.clearAnchors;

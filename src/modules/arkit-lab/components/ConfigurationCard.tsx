@@ -105,7 +105,6 @@ export default function ConfigurationCard({
           disabled={isDisabled}
           accessibilityLabel="World Map Persistence"
         />
-        />
       </View>
       <ThemedText style={styles.caption}>
         v1 placeholder — session-scoped only (no on-disk persistence)

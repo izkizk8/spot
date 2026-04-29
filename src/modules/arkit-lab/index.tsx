@@ -11,8 +11,7 @@ import Screen from './screen';
 export const manifest: ModuleManifest = {
   id: 'arkit-basics',
   title: 'ARKit Basics',
-  description:
-    'World-tracking, plane detection, tap-to-place anchors, and session introspection',
+  description: 'World-tracking, plane detection, tap-to-place anchors, and session introspection',
   icon: {
     ios: 'cube.box.fill',
     fallback: '◼',

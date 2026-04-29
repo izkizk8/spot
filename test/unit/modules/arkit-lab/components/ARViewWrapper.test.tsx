@@ -101,7 +101,11 @@ describe('ARViewWrapper', () => {
         />,
       );
 
-      expect(getByText('ARKit requires iOS 11+. The UI structure is preserved for educational purposes.')).toBeTruthy();
+      expect(
+        getByText(
+          'ARKit requires iOS 11+. The UI structure is preserved for educational purposes.',
+        ),
+      ).toBeTruthy();
     });
   });
 
@@ -124,7 +128,11 @@ describe('ARViewWrapper', () => {
         />,
       );
 
-      expect(getByText('ARKit requires iOS 11+. The UI structure is preserved for educational purposes.')).toBeTruthy();
+      expect(
+        getByText(
+          'ARKit requires iOS 11+. The UI structure is preserved for educational purposes.',
+        ),
+      ).toBeTruthy();
     });
   });
 });
