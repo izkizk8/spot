@@ -18,7 +18,7 @@ import type { ShowcaseFilterMode } from '@/modules/focus-filters-lab/filter-mode
 
 export default function FocusFiltersLabScreen() {
   const [draft, setDraft] = useState<{ mode: ShowcaseFilterMode; accentColor: string }>(
-    DRAFT_DEFAULTS
+    DRAFT_DEFAULTS,
   );
   const { values, eventLog, simulateActivation } = useFocusFilter();
 
@@ -60,4 +60,3 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md,
   },
 });
-

@@ -21,7 +21,7 @@ import type { ShowcaseFilterMode } from '@/modules/focus-filters-lab/filter-mode
 
 export default function FocusFiltersLabScreen() {
   const [draft, setDraft] = useState<{ mode: ShowcaseFilterMode; accentColor: string }>(
-    DRAFT_DEFAULTS
+    DRAFT_DEFAULTS,
   );
   const { values, eventLog, simulateActivation } = useFocusFilter();
 
@@ -33,8 +33,7 @@ export default function FocusFiltersLabScreen() {
     setDraft((prev) => ({ ...prev, accentColor }));
   };
 
-  const isIOS16Plus =
-    Platform.OS === 'ios' && parseInt(String(Platform.Version), 10) >= 16;
+  const isIOS16Plus = Platform.OS === 'ios' && parseInt(String(Platform.Version), 10) >= 16;
 
   if (!isIOS16Plus) {
     // Fallback layout for iOS <16
@@ -92,4 +91,3 @@ const styles = StyleSheet.create({
     marginBottom: Spacing.md,
   },
 });
-
