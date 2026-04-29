@@ -15,6 +15,6 @@ module.exports = {
     '\\.(css|less|sass|scss)$': '<rootDir>/test/style-mock.js',
   },
   transformIgnorePatterns: [
-    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|expo-.*|@expo/.*|@react-navigation/.*|react-native-reanimated|react-native-worklets)/)',
+    'node_modules/(?!((jest-)?react-native|@react-native(-community)?|expo(nent)?|@expo(nent)?/.*|expo-.*|@expo/.*|@react-navigation/.*|react-native-reanimated|react-native-worklets|react-native-ble-plx)/)',
   ],
 };
