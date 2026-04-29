@@ -80,6 +80,6 @@ Rules:
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/028-standby-mode/plan.md`
+at `specs/030-background-tasks/plan.md`
 
 <!-- SPECKIT END -->
