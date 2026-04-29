@@ -65,6 +65,7 @@
       "./plugins/with-passkit",
       "./plugins/with-eventkit",
       "./plugins/with-contacts",
+      "./plugins/with-quick-actions",
       [
         "expo-sensors",
         {
