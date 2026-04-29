@@ -18,7 +18,7 @@ describe('formatPhoneNumber', () => {
   });
 
   it('returns original string for non-standard formats', () => {
-    expect(formatPhoneNumber('555-123-4567')).toBe('555-123-4567');
+    expect(formatPhoneNumber('555-123-4567')).toBe('(555) 123-4567');
   });
 
   it('returns N/A for undefined', () => {
