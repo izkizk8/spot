@@ -97,13 +97,13 @@ yet (the `expo-calendar` install is deferred to Phase 14 so the
 RED tests in Phases 3 / 5 mock the library before it physically
 resolves on disk).
 
-- [ ] T001 Create directory scaffolding:
+- [X] T001 Create directory scaffolding:
   `src/modules/eventkit-lab/{components,hooks}/`,
   `plugins/with-eventkit/`,
   `test/unit/modules/eventkit-lab/{components,hooks}/`,
   `test/unit/plugins/with-eventkit/`.
   - Acceptance: every directory above exists; no source files added yet.
-- [ ] T002 [P] Create `plugins/with-eventkit/package.json` matching
+- [X] T002 [P] Create `plugins/with-eventkit/package.json` matching
   the shape used by `plugins/with-passkit/package.json` and
   `plugins/with-bluetooth/package.json`: `name: 'with-eventkit'`,
   `version: '1.0.0'`, `main: 'index.ts'`, `private: true`, NO
@@ -125,7 +125,7 @@ exhaustively unit-tested.
 
 ### Helper tests (RED)
 
-- [ ] T003 [P] [US1] Author
+- [X] T003 [P] [US1] Author
   `test/unit/modules/eventkit-lab/date-ranges.test.ts` per
   `contracts/helpers.md` §A invariants **D1**–**D7**:
   - **D1 (purity)**: `computeRange(p, t)` deep-equals
@@ -147,7 +147,7 @@ exhaustively unit-tested.
   - **D7**: implementation uses `setDate(d.getDate() + N)` for day
     arithmetic, never `+ N * 24 * 60 * 60 * 1000`.
   - Acceptance: test fails (RED) before T005 lands.
-- [ ] T004 [P] [US2] Author
+- [X] T004 [P] [US2] Author
   `test/unit/modules/eventkit-lab/alarm-offsets.test.ts` per
   `contracts/helpers.md` §B invariants **A1**–**A6**:
   - **A1**: the four preset keys are unique and exactly equal to
@@ -165,7 +165,7 @@ exhaustively unit-tested.
 
 ### Helper implementations (GREEN)
 
-- [ ] T005 [P] [US1] Implement
+- [X] T005 [P] [US1] Implement
   `src/modules/eventkit-lab/date-ranges.ts`: exports
   `DateRangePreset` union (`'today' | 'next7' | 'next30'`) and pure
   `computeRange(preset, now)` returning
@@ -175,7 +175,7 @@ exhaustively unit-tested.
   reads.
   - Acceptance: T003 passes (GREEN); zero side effects; no
     `eslint-disable`.
-- [ ] T006 [P] [US2] Implement
+- [X] T006 [P] [US2] Implement
   `src/modules/eventkit-lab/alarm-offsets.ts`: exports
   `AlarmOffsetPreset` union, an `ALARM_OFFSET_LABELS` frozen
   record, and pure `toAlarmsArray(preset)` returning either
@@ -195,7 +195,7 @@ slices) that every later test/impl imports. Re-exported from
 `data-model.md` Entities 1–8. No tests of its own — exercised
 transitively by every subsequent test.
 
-- [ ] T007 Author `src/modules/eventkit-lab/types.ts` per
+- [X] T007 Author `src/modules/eventkit-lab/types.ts` per
   `data-model.md`:
   - `AuthorizationStatus` =
     `'notDetermined' | 'denied' | 'restricted' | 'authorized' | 'writeOnly'`
@@ -229,7 +229,7 @@ RED tests pin every invariant from `contracts/hooks.md`
 land. All `expo-calendar` interactions mocked at the import
 boundary via `jest.mock('expo-calendar')` (FR-022).
 
-- [ ] T008 [US1] [US2] Author
+- [X] T008 [US1] [US2] Author
   `test/unit/modules/eventkit-lab/hooks/useCalendarEvents.test.tsx`
   per `contracts/hooks.md` invariants:
   - **H1**: hook is the only surface; the test never imports
@@ -289,7 +289,7 @@ boundary via `jest.mock('expo-calendar')` (FR-022).
   - Acceptance: test fails (RED) before T010 lands; uses
     `jest.mock('expo-calendar')` at the import boundary
     (FR-022); zero post-unmount setState warnings.
-- [ ] T009 [US3] Author
+- [X] T009 [US3] Author
   `test/unit/modules/eventkit-lab/hooks/useReminders.test.tsx`
   per `contracts/hooks.md` invariants (mirrors T008 with
   reminders-specific deltas):
@@ -327,7 +327,7 @@ boundary via `jest.mock('expo-calendar')` (FR-022).
 
 ## Phase 5: Hooks — GREEN
 
-- [ ] T010 [US1] [US2] Implement
+- [X] T010 [US1] [US2] Implement
   `src/modules/eventkit-lab/hooks/useCalendarEvents.ts` per
   **H1**–**H8**, **C1**–**C5**: single `useReducer` +
   `useCallback` action functions; `mounted` ref guarding every
@@ -341,7 +341,7 @@ boundary via `jest.mock('expo-calendar')` (FR-022).
   `expo-calendar` once at the module top (the only such import
   outside the `useReminders` peer).
   - Acceptance: T008 passes (GREEN); no `eslint-disable`.
-- [ ] T011 [US3] Implement
+- [X] T011 [US3] Implement
   `src/modules/eventkit-lab/hooks/useReminders.ts` per
   **H1**–**H8**, **R1**–**R5**: same shape as T010 with
   reminders-specific actions (`refreshLists`,
@@ -365,7 +365,7 @@ by the three screen variants. Eleven components total
 `AndroidRemindersNotice`). Each component test file is
 disjoint — fully parallelisable.
 
-- [ ] T012 [P] [US1] [US3] Author
+- [X] T012 [P] [US1] [US3] Author
   `test/unit/modules/eventkit-lab/components/AuthorizationCard.test.tsx`:
   parameterised by `entityType: 'calendar' | 'reminder'` (R-C);
   exercises all five status branches for calendar
@@ -378,14 +378,14 @@ disjoint — fully parallelisable.
   `react-native`'s `Linking`); when `status === 'authorized'` /
   `'writeOnly'` / `'fullAccess'`, neither button renders and the
   card displays an entity-specific description.
-- [ ] T013 [P] [US1] Author
+- [X] T013 [P] [US1] Author
   `test/unit/modules/eventkit-lab/components/CalendarsList.test.tsx`:
   empty state ("No calendars") rendered when `calendars.length
   === 0`; populated rows render with `title`, `type`, and `color`
   (the colour is bound to a stylable surface, asserted via the
   rendered style or testID); tapping "Refresh" invokes
   `onRefresh` exactly once.
-- [ ] T014 [P] [US1] Author
+- [X] T014 [P] [US1] Author
   `test/unit/modules/eventkit-lab/components/EventsQueryCard.test.tsx`:
   3-segment date-range picker
   (`'today' | 'next7' | 'next30'`); selecting a segment invokes
@@ -394,7 +394,7 @@ disjoint — fully parallelisable.
   ("No events in this range") rendered when `events.length ===
   0`; the segment picker reads its label set from
   `date-ranges.ts` exports.
-- [ ] T015 [P] [US1] [US2] Author
+- [X] T015 [P] [US1] [US2] Author
   `test/unit/modules/eventkit-lab/components/EventRow.test.tsx`:
   renders `title`, `location` (omitted gracefully when empty),
   formatted start/end times, and an `all-day` badge iff
@@ -402,7 +402,7 @@ disjoint — fully parallelisable.
   long-press → opens a destructive confirmation prompt; confirm
   → calls `onDelete(event.id)` once; cancel → does NOT call
   `onDelete` (FR-010).
-- [ ] T016 [P] [US2] Author
+- [X] T016 [P] [US2] Author
   `test/unit/modules/eventkit-lab/components/EventComposer.test.tsx`:
   required-field gating (Save disabled when `title` is empty);
   read-only calendar picker selection (`allowsModifications ===
@@ -417,18 +417,18 @@ disjoint — fully parallelisable.
   on Save while `inFlight === true` is short-circuited (the
   hook's `inFlight` flag is the source of truth — the test
   drives it via prop).
-- [ ] T017 [P] [US3] Author
+- [X] T017 [P] [US3] Author
   `test/unit/modules/eventkit-lab/components/RemindersQueryCard.test.tsx`:
   Completed / Incomplete / All toggle invokes
   `onFilterChange(next)` once with the chosen `RemindersFilter`
   value; renders `ReminderRow` per result; empty state ("No
   reminders match") rendered when `reminders.length === 0`.
-- [ ] T018 [P] [US3] Author
+- [X] T018 [P] [US3] Author
   `test/unit/modules/eventkit-lab/components/RemindersList.test.tsx`:
   empty state ("No lists") when `lists.length === 0`; populated
   rows render with `title` and `color`; tapping "Refresh" invokes
   `onRefresh` exactly once.
-- [ ] T019 [P] [US3] Author
+- [X] T019 [P] [US3] Author
   `test/unit/modules/eventkit-lab/components/ReminderRow.test.tsx`:
   renders `title`, `dueDate` (when present; omitted gracefully
   when `undefined` — no due-date badge), and a priority badge
@@ -436,7 +436,7 @@ disjoint — fully parallelisable.
   `onEdit(reminder)` once; long-press → destructive confirm
   prompt → confirm → calls `onDelete(reminder.id)` once; cancel
   → does NOT call `onDelete`.
-- [ ] T020 [P] [US3] Author
+- [X] T020 [P] [US3] Author
   `test/unit/modules/eventkit-lab/components/ReminderComposer.test.tsx`:
   required-field gating (Save disabled when `title` is empty);
   no-due-date allowed (Save remains enabled with an unset due
@@ -444,14 +444,14 @@ disjoint — fully parallelisable.
   priority picker (`'none' | 'low' | 'medium' | 'high'`)
   forwarded to the draft; create vs update mode determined by
   the optional `reminderId` prop.
-- [ ] T021 [P] [US4] Author
+- [X] T021 [P] [US4] Author
   `test/unit/modules/eventkit-lab/components/IOSOnlyBanner.test.tsx`:
   renders the unsupported-platform message ("EventKit is
   iOS-only — controls below are disabled");
   `accessibilityRole === 'alert'`; reuses theme tokens (no
   hardcoded hex); renders identically under Android and Web
   platform mocks.
-- [ ] T022 [P] [US4] Author
+- [X] T022 [P] [US4] Author
   `test/unit/modules/eventkit-lab/components/AndroidRemindersNotice.test.tsx`:
   renders the limitation copy ("Reminders are limited or
   unavailable on Android"); `accessibilityRole === 'alert'`;
@@ -464,29 +464,29 @@ disjoint — fully parallelisable.
 
 ## Phase 7: Components — GREEN (implementations, all parallelisable)
 
-- [ ] T023 [P] [US1] [US3] Implement
+- [X] T023 [P] [US1] [US3] Implement
   `src/modules/eventkit-lab/components/AuthorizationCard.tsx`
   per R-C: parameterised by `entityType`; renders the precise
   status string; gates Request Access vs Open Settings per
   FR-006; tapping Open Settings dispatches
   `Linking.openSettings()` (imported from `react-native`).
   Acceptance: T012 passes.
-- [ ] T024 [P] [US1] Implement
+- [X] T024 [P] [US1] Implement
   `src/modules/eventkit-lab/components/CalendarsList.tsx`:
   consumes `calendars` + `onRefresh` props; renders empty state
   or row list. Acceptance: T013 passes.
-- [ ] T025 [P] [US1] Implement
+- [X] T025 [P] [US1] Implement
   `src/modules/eventkit-lab/components/EventsQueryCard.tsx`:
   3-segment picker over `date-ranges.ts`'s `DateRangePreset`;
   consumes `range`, `events`, `onRangeChange`, `onRefresh`
   props; renders `EventRow` per event; empty state.
   Acceptance: T014 passes.
-- [ ] T026 [P] [US1] [US2] Implement
+- [X] T026 [P] [US1] [US2] Implement
   `src/modules/eventkit-lab/components/EventRow.tsx`: renders
   metadata; consumes `onEdit`, `onDelete` callbacks;
   long-press destructive confirm prompt via React Native's
   `Alert.alert`. Acceptance: T015 passes.
-- [ ] T027 [P] [US2] Implement
+- [X] T027 [P] [US2] Implement
   `src/modules/eventkit-lab/components/EventComposer.tsx`:
   consumes `useCalendarEvents` action callbacks via props (NOT
   via direct hook usage — keeps the component pure); fields per
@@ -494,30 +494,30 @@ disjoint — fully parallelisable.
   read-only-calendar Save gating; `allDay` normalisation
   performed at submit time before the draft is dispatched.
   Acceptance: T016 passes.
-- [ ] T028 [P] [US3] Implement
+- [X] T028 [P] [US3] Implement
   `src/modules/eventkit-lab/components/RemindersQueryCard.tsx`:
   3-segment toggle over `RemindersFilter`; consumes `filter`,
   `reminders`, `onFilterChange`, `onRefresh` props; renders
   `ReminderRow` per reminder; empty state.
   Acceptance: T017 passes.
-- [ ] T029 [P] [US3] Implement
+- [X] T029 [P] [US3] Implement
   `src/modules/eventkit-lab/components/RemindersList.tsx`:
   consumes `lists` + `onRefresh` props; renders empty state or
   row list. Acceptance: T018 passes.
-- [ ] T030 [P] [US3] Implement
+- [X] T030 [P] [US3] Implement
   `src/modules/eventkit-lab/components/ReminderRow.tsx`:
   renders metadata; long-press destructive confirm prompt.
   Acceptance: T019 passes.
-- [ ] T031 [P] [US3] Implement
+- [X] T031 [P] [US3] Implement
   `src/modules/eventkit-lab/components/ReminderComposer.tsx`:
   fields per FR-011; due-date is optional; priority picker;
   create vs update mode by `reminderId` prop.
   Acceptance: T020 passes.
-- [ ] T032 [P] [US4] Implement
+- [X] T032 [P] [US4] Implement
   `src/modules/eventkit-lab/components/IOSOnlyBanner.tsx`:
   renders the iOS-only message; theme tokens only;
   `accessibilityRole="alert"`. Acceptance: T021 passes.
-- [ ] T033 [P] [US4] Implement
+- [X] T033 [P] [US4] Implement
   `src/modules/eventkit-lab/components/AndroidRemindersNotice.tsx`:
   renders the limitation copy; theme tokens only;
   `accessibilityRole="alert"`. Acceptance: T022 passes.
@@ -534,7 +534,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
 
 ### Screen tests (RED)
 
-- [ ] T034 [P] [US1] [US2] [US3] Author
+- [X] T034 [P] [US1] [US2] [US3] Author
   `test/unit/modules/eventkit-lab/screen.test.tsx` (iOS):
   - Two top-level tabs render in order (Calendar, Reminders);
     Calendar tab is the default.
@@ -553,7 +553,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
   - `IOSOnlyBanner` is hidden on iOS.
   - Mocks `useCalendarEvents` and `useReminders` so the screen
     test never invokes the real `expo-calendar` mock.
-- [ ] T035 [P] [US4] Author
+- [X] T035 [P] [US4] Author
   `test/unit/modules/eventkit-lab/screen.android.test.tsx`:
   Calendar tab is fully functional (Authorization → Calendars
   → EventsQueryCard → EventComposer all render with enabled
@@ -563,7 +563,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
   methods on the `useReminders` mock are NEVER invoked at
   module evaluation time (asserted via mock spy);
   `IOSOnlyBanner` is hidden.
-- [ ] T036 [P] [US4] Author
+- [X] T036 [P] [US4] Author
   `test/unit/modules/eventkit-lab/screen.web.test.tsx`:
   `IOSOnlyBanner` rendered at the top; the two-tab shell
   renders beneath it with all interactive controls disabled;
@@ -575,7 +575,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
 
 ### Screen implementations (GREEN)
 
-- [ ] T037 [US1] [US2] [US3] Implement
+- [X] T037 [US1] [US2] [US3] Implement
   `src/modules/eventkit-lab/screen.tsx` (iOS variant): consumes
   two independent hook instances (`useCalendarEvents`,
   `useReminders`); two `Tabs.Screen`-style or local-state tab
@@ -583,13 +583,13 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
   cards and four Reminder cards in the documented order; wires
   component callbacks to hook actions.
   Acceptance: T034 passes.
-- [ ] T038 [P] [US4] Implement
+- [X] T038 [P] [US4] Implement
   `src/modules/eventkit-lab/screen.android.tsx`: same two-tab
   shell; Calendar tab fully functional; Reminders tab body
   renders `AndroidRemindersNotice` at the top and disables CRUD
   controls; consumes the same hooks (which short-circuit on
   Android per **R5**). Acceptance: T035 passes.
-- [ ] T039 [P] [US4] Implement
+- [X] T039 [P] [US4] Implement
   `src/modules/eventkit-lab/screen.web.tsx`: top-mount
   `IOSOnlyBanner`; renders the two-tab shell with all controls
   disabled; MUST NOT import `expo-calendar` (consumes the
@@ -603,7 +603,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
 
 ## Phase 9: Manifest — RED → GREEN
 
-- [ ] T040 Author
+- [X] T040 Author
   `test/unit/modules/eventkit-lab/manifest.test.ts` per
   `contracts/eventkit-lab-manifest.md`: `id === 'eventkit-lab'`
   (**M2**); `label === 'EventKit Lab'` (**M3**); `platforms`
@@ -612,7 +612,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
   renderable React component (**M6**); the manifest object shape
   matches every other 0xx module manifest (**M1**).
   Acceptance: test fails (RED) before T041.
-- [ ] T041 Implement `src/modules/eventkit-lab/index.tsx`:
+- [X] T041 Implement `src/modules/eventkit-lab/index.tsx`:
   default-exports the `ModuleManifest` matching the test;
   re-exports the iOS / Android / Web `screen` via the
   platform-resolved entry. Acceptance: T040 passes (GREEN).
@@ -621,7 +621,7 @@ NOT eagerly import `expo-calendar` (carryover SC-007).
 
 ## Phase 10: Registry integration
 
-- [ ] T042 Modify `src/modules/registry.ts` (**M7**): +1 import
+- [X] T042 Modify `src/modules/registry.ts` (**M7**): +1 import
   line for `eventkitLab` from `./eventkit-lab`; +1 array entry
   appended after the 036 (`passkitLab`) entry; no other edits.
   Re-run the existing `test/unit/modules/registry.test.ts` (no
@@ -646,7 +646,7 @@ idempotent (**P5** / SC-008); coexists with all 23 prior plugins
 frameworks, or any non-Info.plist surface (**P7**). JS-pure tests
 against `@expo/config-plugins`.
 
-- [ ] T043 Author
+- [X] T043 Author
   `test/unit/plugins/with-eventkit/index.test.ts` per
   `contracts/with-eventkit-plugin.md`:
   - **P1 (export shape)**: default export is a `ConfigPlugin`
@@ -687,7 +687,7 @@ against `@expo/config-plugins`.
     `ios.entitlements` dict and `xcodeProject` framework list
     are byte-identical to the pre-run snapshots.
   - Acceptance: test fails (RED) before T044 lands.
-- [ ] T044 Implement `plugins/with-eventkit/index.ts`:
+- [X] T044 Implement `plugins/with-eventkit/index.ts`:
   default-export `ConfigPlugin` per **P1**; one
   `withInfoPlist` mod that sets each of the four keys ONLY when
   absent (preserving operator-supplied values per **P3**);
@@ -696,7 +696,7 @@ against `@expo/config-plugins`.
   block documents the four default strings and points operators
   at where to customise them.
   - Acceptance: T043 passes (GREEN); no `eslint-disable`.
-- [ ] T045 [P] Author `plugins/with-eventkit/index.test.ts`
+- [X] T045 [P] Author `plugins/with-eventkit/index.test.ts`
   (co-located smoke test): imports `./index` and asserts the
   export shape (`typeof default === 'function'`) — per the
   precedent set by 035's / 036's co-located smoke tests.
@@ -710,7 +710,7 @@ against `@expo/config-plugins`.
 
 ## Phase 12: `app.json` plugin entry
 
-- [ ] T046 Modify `app.json`: append the string
+- [X] T046 Modify `app.json`: append the string
   `"./plugins/with-eventkit"` to `expo.plugins`; no other edits.
   Order: appended last (after 036's `"./plugins/with-passkit"`).
   Strictly additive — `expo.plugins` length grows by exactly 1
@@ -725,7 +725,7 @@ against `@expo/config-plugins`.
 
 ## Phase 13: Runtime dependency install
 
-- [ ] T047 Run `npx expo install expo-calendar` from the repo
+- [X] T047 Run `npx expo install expo-calendar` from the repo
   root (FR-022, plan §"Primary Dependencies"). Pins the
   SDK-55-compatible version into `package.json` `dependencies`
   and `pnpm-lock.yaml`.
@@ -739,25 +739,25 @@ against `@expo/config-plugins`.
 
 ## Phase 14: Final integration & verification
 
-- [ ] T048 Run `pnpm format` from the repo root (FR-028).
+- [X] T048 Run `pnpm format` from the repo root (FR-028).
   - Acceptance: exits 0; the resulting diff is committed (or
     no-op if formatting is already clean); `pnpm format` is a
     no-op on a second run.
-- [ ] T049 Run `pnpm typecheck`.
+- [X] T049 Run `pnpm typecheck`.
   - Acceptance: exits 0; no type errors introduced.
-- [ ] T050 Run `pnpm lint` (or `pnpm oxlint` — match the
+- [X] T050 Run `pnpm lint` (or `pnpm oxlint` — match the
   project's existing script name).
   - Acceptance: exits 0; ZERO `eslint-disable` directives
     anywhere in the diff
     (`git diff main -- src plugins | rg 'eslint-disable'`
     returns no matches — FR-023, SC-010).
-- [ ] T051 Run `pnpm test` (Jest Expo).
+- [X] T051 Run `pnpm test` (Jest Expo).
   - Acceptance: exits 0; suite delta ≥ +20 vs the 036 closing
     baseline (helpers +2, hooks +2, components +11, screens +3,
     manifest +1, plugin +1; co-located plugin smoke counts
     within the plugin suite — see plan §"Test baseline
     tracking").
-- [ ] T052 Run `pnpm check` (composite: format + lint +
+- [X] T052 Run `pnpm check` (composite: format + lint +
   typecheck + test) and create the final commit on branch
   `037-eventkit`.
   - Acceptance: `pnpm check` exits 0;
