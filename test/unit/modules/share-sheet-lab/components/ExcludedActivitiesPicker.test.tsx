@@ -20,7 +20,7 @@ describe('ExcludedActivitiesPicker', () => {
       <ExcludedActivitiesPicker
         selection={{ checked: new Set(), hideAll: false }}
         onChange={() => {}}
-      />
+      />,
     );
 
     const checkboxes = getAllByRole('checkbox');
@@ -34,7 +34,7 @@ describe('ExcludedActivitiesPicker', () => {
       <ExcludedActivitiesPicker
         selection={{ checked: new Set(), hideAll: false }}
         onChange={onChange}
-      />
+      />,
     );
 
     const checkboxes = screen.getAllByRole('checkbox');
@@ -50,7 +50,7 @@ describe('ExcludedActivitiesPicker', () => {
       <ExcludedActivitiesPicker
         selection={{ checked: new Set(), hideAll: false }}
         onChange={onChange}
-      />
+      />,
     );
 
     const hideAllSwitch = screen.getByText(/Hide all/i);
@@ -67,7 +67,7 @@ describe('ExcludedActivitiesPicker', () => {
       <ExcludedActivitiesPicker
         selection={{ checked: new Set(), hideAll: false }}
         onChange={() => {}}
-      />
+      />,
     );
 
     const tree = JSON.stringify(toJSON());

@@ -56,11 +56,7 @@ export default function ExcludedActivitiesPicker({
         accessibilityState={{ checked: selection.hideAll, disabled }}
       >
         <ThemedText style={styles.label}>Hide all built-in activities</ThemedText>
-        <Switch
-          value={selection.hideAll}
-          onValueChange={handleHideAllToggle}
-          disabled={disabled}
-        />
+        <Switch value={selection.hideAll} onValueChange={handleHideAllToggle} disabled={disabled} />
       </Pressable>
 
       {!disabled && (
@@ -75,12 +71,7 @@ export default function ExcludedActivitiesPicker({
                 accessibilityRole="checkbox"
                 accessibilityState={{ checked, disabled: selection.hideAll }}
               >
-                <ThemedView
-                  style={[
-                    styles.checkbox,
-                    checked && styles.checkboxChecked,
-                  ]}
-                >
+                <ThemedView style={[styles.checkbox, checked && styles.checkboxChecked]}>
                   {checked && <ThemedText style={styles.checkmark}>✓</ThemedText>}
                 </ThemedView>
                 <ThemedText style={styles.rowLabel}>{entry.label}</ThemedText>

@@ -12,12 +12,12 @@ import AnchorSelector from '@/modules/share-sheet-lab/components/AnchorSelector'
 
 describe('AnchorSelector', () => {
   beforeEach(() => {
-    // Reset Platform.isPad before each test
-    Platform.isPad = false;
+    // Reset Platform.OS before each test
+    Platform.OS = 'android';
   });
 
   it('renders 4 buttons', () => {
-    Platform.isPad = true;
+    Platform.OS = 'ios';
     const { getAllByRole } = render(<AnchorSelector onAnchorChange={() => {}} />);
 
     const buttons = getAllByRole('button');
@@ -25,7 +25,7 @@ describe('AnchorSelector', () => {
   });
 
   it('selecting each propagates the latest AnchorRect from the most recent onLayout event', () => {
-    Platform.isPad = true;
+    Platform.OS = 'ios';
     const onAnchorChange = jest.fn();
     const { getAllByRole } = render(<AnchorSelector onAnchorChange={onAnchorChange} />);
 
@@ -48,8 +48,8 @@ describe('AnchorSelector', () => {
     });
   });
 
-  it('returns null when Platform.isPad is false', () => {
-    Platform.isPad = false;
+  it('returns null when Platform.OS is not ios', () => {
+    Platform.OS = 'android';
     const onAnchorChange = jest.fn();
     const { toJSON } = render(<AnchorSelector onAnchorChange={onAnchorChange} />);
 

@@ -29,7 +29,7 @@ function isValidShareUrl(url: string): boolean {
   if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) return false;
 
   try {
-    new URL(trimmed);
+    const _url = new URL(trimmed);
     return true;
   } catch {
     return false;

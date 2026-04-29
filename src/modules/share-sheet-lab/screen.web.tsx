@@ -29,7 +29,7 @@ export default function ShareSheetLabScreen() {
 
   const handleContentKindChange = (kind: 'text' | 'url' | 'image' | 'file') => {
     setContentKind(kind);
-    
+
     switch (kind) {
       case 'text':
         session.setContent({ kind: 'text', text: 'Hello from spot showcase' });
@@ -80,7 +80,9 @@ export default function ShareSheetLabScreen() {
         {contentKind === 'image' && (
           <ImageContentPicker
             selectedSource={session.content.kind === 'image' ? session.content.source : null}
-            onSelect={(img) => session.setContent({ kind: 'image', source: img.source, alt: img.alt })}
+            onSelect={(img) =>
+              session.setContent({ kind: 'image', source: img.source, alt: img.alt })
+            }
           />
         )}
         {contentKind === 'file' && (
@@ -93,10 +95,7 @@ export default function ShareSheetLabScreen() {
 
       <ThemedView style={styles.section}>
         <ThemedText style={styles.sectionTitle}>Excluded Activities (iOS only)</ThemedText>
-        <ExcludedActivitiesPicker
-          selection={session.exclusions}
-          onChange={session.setExclusions}
-        />
+        <ExcludedActivitiesPicker selection={session.exclusions} onChange={session.setExclusions} />
       </ThemedView>
 
       <ThemedView style={styles.section}>

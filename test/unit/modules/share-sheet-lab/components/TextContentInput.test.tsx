@@ -18,7 +18,7 @@ describe('TextContentInput', () => {
 
   it('multiline prop is true', () => {
     const { getByDisplayValue } = render(
-      <TextContentInput value="Hello from spot showcase" onChange={() => {}} />
+      <TextContentInput value="Hello from spot showcase" onChange={() => {}} />,
     );
     const input = getByDisplayValue('Hello from spot showcase');
     expect(input.props.multiline).toBe(true);

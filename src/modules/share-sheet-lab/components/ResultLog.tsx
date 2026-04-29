@@ -46,9 +46,7 @@ export default function ResultLog({ entries, style }: ResultLogProps) {
             {entry.outcome.toUpperCase()}
           </ThemedText>
 
-          {entry.errorMessage && (
-            <ThemedText style={styles.error}>{entry.errorMessage}</ThemedText>
-          )}
+          {entry.errorMessage && <ThemedText style={styles.error}>{entry.errorMessage}</ThemedText>}
         </ThemedView>
       ))}
     </ScrollView>

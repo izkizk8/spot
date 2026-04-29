@@ -20,7 +20,7 @@ describe('UrlContentInput', () => {
 
   it('valid URLs do not show error', () => {
     const onChange = jest.fn();
-    
+
     const { unmount } = render(<UrlContentInput value="https://expo.dev" onChange={onChange} />);
     expect(screen.queryByText(/Invalid URL/i)).toBeNull();
     unmount();

@@ -41,7 +41,7 @@ export const ACTIVITY_TYPES_CATALOG: readonly ActivityTypeCatalogEntry[] = [
   { id: 'com.apple.UIKit.activity.SaveToCameraRoll', label: 'Save Image' },
   { id: 'com.apple.UIKit.activity.OpenInIBooks', label: 'Open in Books' },
   { id: 'com.apple.UIKit.activity.MarkupAsPDF', label: 'Markup' },
-  
+
   // 2 synthetic platform-fallback entries
   {
     id: 'web.clipboard-fallback',
@@ -76,7 +76,5 @@ export function deriveExcludedActivityTypes(
   if (selection.hideAll) {
     return catalog.filter((e) => !e.synthetic).map((e) => e.id);
   }
-  return catalog
-    .filter((e) => !e.synthetic && selection.checked.has(e.id))
-    .map((e) => e.id);
+  return catalog.filter((e) => !e.synthetic && selection.checked.has(e.id)).map((e) => e.id);
 }

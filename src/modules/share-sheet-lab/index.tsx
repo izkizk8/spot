@@ -3,16 +3,21 @@
  * feature 033 / T039.
  */
 
-import type { ModuleManifest } from '@/modules/registry';
+import type { ModuleManifest } from '../types';
 
 import Screen from './screen';
 
 export const manifest: ModuleManifest = {
   id: 'share-sheet',
-  label: 'Share Sheet',
+  title: 'Share Sheet',
+  description: 'UIActivityViewController wrapper with custom activities',
+  icon: {
+    ios: 'square.and.arrow.up',
+    fallback: '↗',
+  },
   platforms: ['ios', 'android', 'web'],
   minIOS: '8.0',
-  Screen,
+  render: () => <Screen />,
 };
 
 export default manifest;

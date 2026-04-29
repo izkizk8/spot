@@ -67,6 +67,11 @@ export const bridge: ShareSheetBridge = Object.freeze({
       );
     }
 
-    return enqueue(() => native.present(opts));
+    const nativeModule = native;
+    if (!nativeModule) {
+      return Promise.reject(new ShareSheetNotSupported('Native module is not available'));
+    }
+
+    return enqueue(() => nativeModule.present(opts));
   },
 });

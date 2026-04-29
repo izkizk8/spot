@@ -11,7 +11,6 @@ import { Button, Platform, ScrollView, StyleSheet } from 'react-native';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
-import type { AnchorRect, ShareContent } from '@/native/share-sheet.types';
 
 import { BUNDLED_IMAGES } from './bundled-images';
 import AnchorSelector from './components/AnchorSelector';
@@ -31,7 +30,7 @@ export default function ShareSheetLabScreen() {
 
   const handleContentKindChange = (kind: 'text' | 'url' | 'image' | 'file') => {
     setContentKind(kind);
-    
+
     // Set default content for the new kind
     switch (kind) {
       case 'text':
@@ -83,7 +82,9 @@ export default function ShareSheetLabScreen() {
         {contentKind === 'image' && (
           <ImageContentPicker
             selectedSource={session.content.kind === 'image' ? session.content.source : null}
-            onSelect={(img) => session.setContent({ kind: 'image', source: img.source, alt: img.alt })}
+            onSelect={(img) =>
+              session.setContent({ kind: 'image', source: img.source, alt: img.alt })
+            }
           />
         )}
         {contentKind === 'file' && (
@@ -96,10 +97,7 @@ export default function ShareSheetLabScreen() {
 
       <ThemedView style={styles.section}>
         <ThemedText style={styles.sectionTitle}>Excluded Activities</ThemedText>
-        <ExcludedActivitiesPicker
-          selection={session.exclusions}
-          onChange={session.setExclusions}
-        />
+        <ExcludedActivitiesPicker selection={session.exclusions} onChange={session.setExclusions} />
       </ThemedView>
 
       <ThemedView style={styles.section}>
@@ -110,7 +108,7 @@ export default function ShareSheetLabScreen() {
         />
       </ThemedView>
 
-      {Platform.isPad && (
+      {Platform.OS === 'ios' && (
         <ThemedView style={styles.section}>
           <AnchorSelector onAnchorChange={session.setAnchor} />
         </ThemedView>

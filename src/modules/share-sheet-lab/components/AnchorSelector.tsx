@@ -6,7 +6,13 @@
  */
 
 import React, { useRef } from 'react';
-import { Platform, Pressable, StyleSheet, type LayoutChangeEvent, type ViewStyle } from 'react-native';
+import {
+  Platform,
+  Pressable,
+  StyleSheet,
+  type LayoutChangeEvent,
+  type ViewStyle,
+} from 'react-native';
 
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
@@ -20,15 +26,20 @@ interface AnchorSelectorProps {
 
 type AnchorPosition = 'top-left' | 'top-right' | 'bottom-left' | 'bottom-right';
 
-const POSITIONS: readonly AnchorPosition[] = ['top-left', 'top-right', 'bottom-left', 'bottom-right'];
+const POSITIONS: readonly AnchorPosition[] = [
+  'top-left',
+  'top-right',
+  'bottom-left',
+  'bottom-right',
+];
 
 export default function AnchorSelector({ onAnchorChange, style }: AnchorSelectorProps) {
-  // Only render on iPad
-  if (!Platform.isPad) {
+  const rectsRef = useRef<Map<AnchorPosition, AnchorRect>>(new Map());
+
+  // Only render on iOS (iPad specifically, but safe to show on iPhone where it's ignored)
+  if (Platform.OS !== 'ios') {
     return null;
   }
-
-  const rectsRef = useRef<Map<AnchorPosition, AnchorRect>>(new Map());
 
   const handleLayout = (position: AnchorPosition, event: LayoutChangeEvent) => {
     const { x, y, width, height } = event.nativeEvent.layout;

@@ -12,11 +12,7 @@
 
 import { useCallback, useReducer, useRef } from 'react';
 import { bridge } from '@/native/share-sheet';
-import type {
-  ShareContent,
-  AnchorRect,
-  ShareResult,
-} from '@/native/share-sheet.types';
+import type { ShareContent, AnchorRect, ShareResult } from '@/native/share-sheet.types';
 import type { ExcludedActivitySelection } from '../activity-types';
 
 /**
@@ -108,10 +104,7 @@ function classifyOutcome(
   error: unknown,
 ): { outcome: ShareLogEntry['outcome']; errorMessage?: string } {
   if (error) {
-    const message =
-      error instanceof Error
-        ? error.message
-        : String(error);
+    const message = error instanceof Error ? error.message : String(error);
     return { outcome: 'error', errorMessage: message };
   }
   if (!result) {

@@ -10,27 +10,24 @@
  * @see specs/033-share-sheet/tasks.md T003
  */
 
-import { ACTIVITY_TYPES_CATALOG, WEB_CLIPBOARD_FALLBACK } from '@/modules/share-sheet-lab/activity-types';
+import {
+  ACTIVITY_TYPES_CATALOG,
+  WEB_CLIPBOARD_FALLBACK,
+} from '@/modules/share-sheet-lab/activity-types';
 
 describe('Activity Types Catalog', () => {
   it('contains exactly 12 iOS entries + 2 synthetic entries', () => {
     expect(ACTIVITY_TYPES_CATALOG).toHaveLength(14);
 
-    const iosEntries = ACTIVITY_TYPES_CATALOG.filter(
-      (e) => !e.synthetic,
-    );
-    const syntheticEntries = ACTIVITY_TYPES_CATALOG.filter(
-      (e) => e.synthetic,
-    );
+    const iosEntries = ACTIVITY_TYPES_CATALOG.filter((e) => !e.synthetic);
+    const syntheticEntries = ACTIVITY_TYPES_CATALOG.filter((e) => e.synthetic);
 
     expect(iosEntries).toHaveLength(12);
     expect(syntheticEntries).toHaveLength(2);
   });
 
   it('each iOS id matches pattern /^com\\.apple\\.UIKit\\.activity\\.[A-Za-z]+$/', () => {
-    const iosEntries = ACTIVITY_TYPES_CATALOG.filter(
-      (e) => !e.synthetic,
-    );
+    const iosEntries = ACTIVITY_TYPES_CATALOG.filter((e) => !e.synthetic);
 
     iosEntries.forEach((entry) => {
       expect(entry.id).toMatch(/^com\.apple\.UIKit\.activity\.[A-Za-z]+$/);
@@ -38,9 +35,7 @@ describe('Activity Types Catalog', () => {
   });
 
   it('synthetic entries match pattern /^(web|android)\\.clipboard-fallback$/', () => {
-    const syntheticEntries = ACTIVITY_TYPES_CATALOG.filter(
-      (e) => e.synthetic,
-    );
+    const syntheticEntries = ACTIVITY_TYPES_CATALOG.filter((e) => e.synthetic);
 
     syntheticEntries.forEach((entry) => {
       expect(entry.id).toMatch(/^(web|android)\.clipboard-fallback$/);
@@ -62,9 +57,7 @@ describe('Activity Types Catalog', () => {
   });
 
   it('synthetic entries are flagged by the synthetic literal field', () => {
-    const syntheticEntries = ACTIVITY_TYPES_CATALOG.filter(
-      (e) => e.synthetic,
-    );
+    const syntheticEntries = ACTIVITY_TYPES_CATALOG.filter((e) => e.synthetic);
 
     expect(syntheticEntries).toHaveLength(2);
     expect(syntheticEntries.some((e) => e.id === 'web.clipboard-fallback')).toBe(true);

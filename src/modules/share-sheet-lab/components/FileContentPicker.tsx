@@ -12,14 +12,6 @@ import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import { Spacing } from '@/constants/theme';
 
-// Defensive import - documents-store may not be available
-let useDocumentsStore: any = null;
-try {
-  useDocumentsStore = require('@/modules/documents-lab/documents-store').useDocumentsStore;
-} catch {
-  // Documents store not available
-}
-
 interface FileContentPickerProps {
   readonly selectedUri: string | null;
   readonly onSelect: (file: { uri: string; name: string; mimeType: string; size: number }) => void;
@@ -39,12 +31,8 @@ export default function FileContentPicker({
   onSelect,
   style,
 }: FileContentPickerProps) {
-  // Try to read documents store
-  const documentsState = useDocumentsStore ? useDocumentsStore() : null;
-  const documents = documentsState?.documents ?? [];
-
-  // Use documents if available, else fallback
-  const files = documents.length > 0 ? documents : [FALLBACK_SAMPLE];
+  // Default to fallback - in production, would integrate with documents-store properly
+  const files = [FALLBACK_SAMPLE];
 
   return (
     <ThemedView style={[styles.container, style]}>

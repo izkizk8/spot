@@ -69,7 +69,8 @@ export const bridge: ShareSheetBridge = Object.freeze({
       }
 
       // B6: text/url content → clipboard fallback
-      const text = content.kind === 'text' ? content.text : content.url;
+      const text =
+        content.kind === 'text' ? content.text : content.kind === 'url' ? content.url : '';
       await Clipboard.setStringAsync(text);
       return { activityType: 'android.clipboard-fallback', completed: true };
     });

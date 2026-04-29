@@ -12,7 +12,7 @@ import ImageContentPicker from '@/modules/share-sheet-lab/components/ImageConten
 describe('ImageContentPicker', () => {
   it('renders 2x2 grid of 4 tiles from bundled-images catalog', () => {
     const { getAllByRole } = render(
-      <ImageContentPicker selectedSource={null} onSelect={() => {}} />
+      <ImageContentPicker selectedSource={null} onSelect={() => {}} />,
     );
     const tiles = getAllByRole('button');
     expect(tiles).toHaveLength(4);
@@ -21,7 +21,7 @@ describe('ImageContentPicker', () => {
   it('tap selects the image', () => {
     const onSelect = jest.fn();
     const { getAllByRole } = render(
-      <ImageContentPicker selectedSource={null} onSelect={onSelect} />
+      <ImageContentPicker selectedSource={null} onSelect={onSelect} />,
     );
 
     const tiles = getAllByRole('button');
@@ -35,7 +35,7 @@ describe('ImageContentPicker', () => {
   it('selection survives re-render', () => {
     const onSelect = jest.fn();
     const { getAllByRole, rerender } = render(
-      <ImageContentPicker selectedSource={123} onSelect={onSelect} />
+      <ImageContentPicker selectedSource={123} onSelect={onSelect} />,
     );
 
     rerender(<ImageContentPicker selectedSource={123} onSelect={onSelect} />);
