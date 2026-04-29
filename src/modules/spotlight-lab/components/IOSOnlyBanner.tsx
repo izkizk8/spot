@@ -15,7 +15,8 @@ interface IOSOnlyBannerProps {
 }
 
 const COPY: Record<string, string> = {
-  'older-ios': 'This device is running an iOS version older than 9. Spotlight indexing is unavailable.',
+  'older-ios':
+    'This device is running an iOS version older than 9. Spotlight indexing is unavailable.',
   'system-disabled': 'Spotlight indexing is disabled or unavailable on this device.',
 };
 

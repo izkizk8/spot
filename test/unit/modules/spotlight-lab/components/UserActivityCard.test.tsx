@@ -51,9 +51,11 @@ describe('UserActivityCard', () => {
       <UserActivityCard state="inactive" onMark={() => undefined} onClear={() => undefined} />,
     );
     // The explainer should mention the contrast between the two APIs
-    const content = JSON.stringify(render(
-      <UserActivityCard state="inactive" onMark={() => undefined} onClear={() => undefined} />,
-    ).toJSON());
+    const content = JSON.stringify(
+      render(
+        <UserActivityCard state="inactive" onMark={() => undefined} onClear={() => undefined} />,
+      ).toJSON(),
+    );
     expect(content).toMatch(/CSSearchableIndex|NSUserActivity/);
   });
 

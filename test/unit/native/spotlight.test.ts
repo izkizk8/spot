@@ -168,9 +168,9 @@ describe('spotlight bridge: native module absent', () => {
     await expect(b.delete(['id'])).rejects.toBeInstanceOf(b.SpotlightNotSupported);
     await expect(b.deleteAll()).rejects.toBeInstanceOf(b.SpotlightNotSupported);
     await expect(b.search('q', 25)).rejects.toBeInstanceOf(b.SpotlightNotSupported);
-    await expect(
-      b.markCurrentActivity({ title: 't', keywords: [] }),
-    ).rejects.toBeInstanceOf(b.SpotlightNotSupported);
+    await expect(b.markCurrentActivity({ title: 't', keywords: [] })).rejects.toBeInstanceOf(
+      b.SpotlightNotSupported,
+    );
     await expect(b.clearCurrentActivity()).rejects.toBeInstanceOf(b.SpotlightNotSupported);
   });
 });
@@ -237,9 +237,7 @@ describe('spotlight bridge: serialised promise chain (R-A / FR-103)', () => {
 
   it('first-call rejection does not poison the chain', async () => {
     const native = freshNativeMock();
-    native.index
-      .mockRejectedValueOnce(new Error('first failed'))
-      .mockResolvedValueOnce(undefined);
+    native.index.mockRejectedValueOnce(new Error('first failed')).mockResolvedValueOnce(undefined);
 
     const b = loadBridge({ os: 'ios', native });
     const item = {

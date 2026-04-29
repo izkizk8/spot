@@ -96,7 +96,9 @@ describe('searchable-items-source: empty-label fallback', () => {
   });
 
   it('source module with undefined title falls back to module.id', () => {
-    const registry: MockRegistryEntry[] = [createMockEntry({ id: 'no-title', description: 'Desc' })];
+    const registry: MockRegistryEntry[] = [
+      createMockEntry({ id: 'no-title', description: 'Desc' }),
+    ];
 
     const result = mapRegistryToItems(registry);
     expect(result[0].title).toBe('no-title');

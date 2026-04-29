@@ -86,7 +86,7 @@ describe('IndexableItemsList', () => {
   it('passes bulkPending flag to disable per-row toggles (FR-032)', () => {
     const onToggle = jest.fn();
     const items = [createItem('haptics', 'Haptics', 'Explore haptic feedback')];
-    const { rerender } = render(
+    render(
       <IndexableItemsList
         items={items}
         indexedIds={new Set()}

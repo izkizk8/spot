@@ -195,11 +195,12 @@ describe('useSpotlightIndex: bulk operations', () => {
   });
 
   it('while bulk action is in flight, isBusy === true (FR-032/FR-043)', async () => {
-    let resolveIndex: () => void = () => {};
+    // Use a deferred pattern that captures resolve in the mock
+    const deferred: { resolve: () => void } = { resolve: () => {} };
     mockIndex.mockImplementation(
       () =>
         new Promise<void>((resolve) => {
-          resolveIndex = resolve;
+          deferred.resolve = resolve;
         }),
     );
 
@@ -215,7 +216,7 @@ describe('useSpotlightIndex: bulk operations', () => {
 
     // Resolve and wait
     await act(async () => {
-      resolveIndex();
+      deferred.resolve();
       await indexPromise;
     });
 

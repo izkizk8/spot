@@ -105,18 +105,13 @@ export interface SpotlightBridge {
    * Runs a CSSearchQuery and resolves with the mapped SearchableItem[].
    * @throws SpotlightNotSupported on non-iOS / iOS < 9.
    */
-  readonly search: (
-    query: string,
-    limit?: number,
-  ) => Promise<readonly SearchableItem[]>;
+  readonly search: (query: string, limit?: number) => Promise<readonly SearchableItem[]>;
 
   /**
    * Creates an NSUserActivity with the given descriptor.
    * @throws SpotlightNotSupported on non-iOS.
    */
-  readonly markCurrentActivity: (
-    descriptor: UserActivityDescriptor,
-  ) => Promise<void>;
+  readonly markCurrentActivity: (descriptor: UserActivityDescriptor) => Promise<void>;
 
   /**
    * Invalidates the current activity.

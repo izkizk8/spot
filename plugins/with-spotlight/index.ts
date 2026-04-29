@@ -26,9 +26,7 @@ const USER_ACTIVITY_TYPES_KEY = 'NSUserActivityTypes';
  * NSUserActivityTypes union-merged. Preserves prior entries' order;
  * appends the ACTIVITY_TYPE if not already present.
  */
-export function applySpotlightInfoPlist(
-  input: Record<string, unknown>,
-): Record<string, unknown> {
+export function applySpotlightInfoPlist(input: Record<string, unknown>): Record<string, unknown> {
   const next: Record<string, unknown> = { ...input };
 
   const priorTypes = Array.isArray(next[USER_ACTIVITY_TYPES_KEY])

@@ -43,7 +43,9 @@ export default function ItemRow({ item, state, bulkPending, onToggle, style }: I
         )}
       </ThemedView>
       <ThemedView style={styles.actions}>
-        <ThemedView style={[styles.badge, state === 'indexed' ? styles.badgeIndexed : styles.badgeNotIndexed]}>
+        <ThemedView
+          style={[styles.badge, state === 'indexed' ? styles.badgeIndexed : styles.badgeNotIndexed]}
+        >
           <ThemedText style={styles.badgeText}>
             {state === 'indexed' ? 'Indexed' : 'Not Indexed'}
           </ThemedText>

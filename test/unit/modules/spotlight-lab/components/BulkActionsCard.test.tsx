@@ -12,7 +12,11 @@ import BulkActionsCard from '@/modules/spotlight-lab/components/BulkActionsCard'
 describe('BulkActionsCard', () => {
   it('renders both CTA labels "Index all" and "Remove all from index" (FR-040)', () => {
     render(
-      <BulkActionsCard pending={false} onIndexAll={() => undefined} onRemoveAll={() => undefined} />,
+      <BulkActionsCard
+        pending={false}
+        onIndexAll={() => undefined}
+        onRemoveAll={() => undefined}
+      />,
     );
     expect(screen.getByText(/index all/i)).toBeTruthy();
     expect(screen.getByText(/remove all/i)).toBeTruthy();
@@ -58,7 +62,11 @@ describe('BulkActionsCard', () => {
 
   it('renders without crashing when pending is false', () => {
     const { toJSON } = render(
-      <BulkActionsCard pending={false} onIndexAll={() => undefined} onRemoveAll={() => undefined} />,
+      <BulkActionsCard
+        pending={false}
+        onIndexAll={() => undefined}
+        onRemoveAll={() => undefined}
+      />,
     );
     expect(toJSON()).toBeTruthy();
   });

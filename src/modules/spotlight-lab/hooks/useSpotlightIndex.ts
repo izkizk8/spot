@@ -11,7 +11,11 @@ import { useCallback, useEffect, useMemo, useReducer, useRef } from 'react';
 
 import { MODULES } from '@/modules/registry';
 import * as bridge from '@/native/spotlight';
-import type { ActivityState, SearchableItem, UserActivityDescriptor } from '@/native/spotlight.types';
+import type {
+  ActivityState,
+  SearchableItem,
+  UserActivityDescriptor,
+} from '@/native/spotlight.types';
 
 import { mapRegistryToItems } from '../searchable-items-source';
 
@@ -89,7 +93,11 @@ export interface UseSpotlightIndexReturn {
 export function useSpotlightIndex(): UseSpotlightIndexReturn {
   const [state, dispatch] = useReducer(reducer, initialState);
   const stateRef = useRef(state);
-  stateRef.current = state;
+
+  // Update ref in effect to avoid setting during render (react-hooks/refs rule)
+  useEffect(() => {
+    stateRef.current = state;
+  }, [state]);
 
   const isAvailable = bridge.isAvailable();
 

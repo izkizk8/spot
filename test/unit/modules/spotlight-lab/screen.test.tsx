@@ -71,17 +71,13 @@ describe('spotlight-lab screen (iOS)', () => {
     const Screen = require('@/modules/spotlight-lab/screen').default;
     render(<Screen />);
     await waitFor(() => screen.getByText('Haptics Playground'));
-    // Find toggle buttons and press one
-    const toggleButtons = screen.getAllByRole('button');
-    const indexButton = toggleButtons.find((b) =>
-      b.props?.children?.props?.children === 'Index',
-    );
-    if (indexButton) {
-      fireEvent.press(indexButton);
-      await waitFor(() => {
-        expect(mockBridge.index).toHaveBeenCalled();
-      });
-    }
+    // Find an "Index" button by its text content and press it
+    const indexButtons = screen.getAllByText('Index');
+    expect(indexButtons.length).toBeGreaterThan(0);
+    fireEvent.press(indexButtons[0]);
+    await waitFor(() => {
+      expect(mockBridge.index).toHaveBeenCalled();
+    });
   });
 
   it('tapping "Index All" invokes indexAll() (US1 AS2)', async () => {
@@ -153,10 +149,7 @@ describe('spotlight-lab screen (iOS)', () => {
   it("does NOT import any prior feature's screen module", () => {
     const fs = require('fs');
     const path = require('path');
-    const filePath = path.resolve(
-      __dirname,
-      '../../../../src/modules/spotlight-lab/screen.tsx',
-    );
+    const filePath = path.resolve(__dirname, '../../../../src/modules/spotlight-lab/screen.tsx');
     const src = fs.readFileSync(filePath, 'utf8');
     // No imports of other feature screen files
     expect(src).not.toMatch(/background-tasks-lab\/screen/);

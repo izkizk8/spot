@@ -20,18 +20,15 @@ interface UserActivityCardProps {
   readonly style?: ViewStyle;
 }
 
-export default function UserActivityCard({
-  state,
-  onMark,
-  onClear,
-  style,
-}: UserActivityCardProps) {
+export default function UserActivityCard({ state, onMark, onClear, style }: UserActivityCardProps) {
   return (
     <ThemedView style={[styles.container, style]}>
       <ThemedText style={styles.heading}>User Activity</ThemedText>
       <ThemedView style={styles.statusRow}>
         <ThemedText style={styles.statusLabel}>Status</ThemedText>
-        <ThemedView style={[styles.pill, state === 'active' ? styles.pillActive : styles.pillInactive]}>
+        <ThemedView
+          style={[styles.pill, state === 'active' ? styles.pillActive : styles.pillInactive]}
+        >
           <ThemedText style={styles.pillText}>
             {state === 'active' ? 'Active' : 'Inactive'}
           </ThemedText>

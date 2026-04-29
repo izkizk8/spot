@@ -4,7 +4,10 @@
  * @jest-environment node
  */
 
-import withSpotlight, { applySpotlightInfoPlist, ACTIVITY_TYPE } from '../../../../plugins/with-spotlight';
+import withSpotlight, {
+  applySpotlightInfoPlist,
+  ACTIVITY_TYPE,
+} from '../../../../plugins/with-spotlight';
 import withCoreLocation from '../../../../plugins/with-core-location';
 import withFocusFilters from '../../../../plugins/with-focus-filters';
 import withBackgroundTasks from '../../../../plugins/with-background-tasks';
@@ -32,10 +35,7 @@ describe('with-spotlight (pure mutation)', () => {
     const out = applySpotlightInfoPlist({
       [USER_ACTIVITY_TYPES_KEY]: ['com.example.shortcut'],
     });
-    expect(out[USER_ACTIVITY_TYPES_KEY]).toEqual([
-      'com.example.shortcut',
-      ACTIVITY_TYPE,
-    ]);
+    expect(out[USER_ACTIVITY_TYPES_KEY]).toEqual(['com.example.shortcut', ACTIVITY_TYPE]);
   });
 
   it('idempotent — second application is byte-identical to first (FR-112 / SC-005)', () => {

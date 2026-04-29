@@ -54,6 +54,13 @@ export default function SpotlightLabScreen() {
     [search],
   );
 
+  const handleMarkActivity = useCallback(async () => {
+    await markActivity({
+      title: 'Spotlight Indexing',
+      keywords: ['spotlight', 'search', 'demo'],
+    });
+  }, [markActivity]);
+
   // Degraded state: isAvailable === false
   if (!isAvailable) {
     return (
@@ -86,14 +93,14 @@ export default function SpotlightLabScreen() {
         style={styles.card}
         pending={isBusy}
         results={results}
-        error={searchError ?? (error?.message ?? null)}
+        error={searchError ?? error?.message ?? null}
         onSearch={handleSearch}
         hasSearched={hasSearched}
       />
       <UserActivityCard
         style={styles.card}
         state={activityActive}
-        onMark={markActivity}
+        onMark={handleMarkActivity}
         onClear={clearActivity}
       />
       <PersistenceNoteCard style={styles.card} />
