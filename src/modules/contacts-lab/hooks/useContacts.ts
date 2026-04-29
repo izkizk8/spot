@@ -103,9 +103,9 @@ function mapPermissionStatus(
   return 'notDetermined';
 }
 
-function mapContact(c: Contacts.Contact): Contact {
+function mapContact(c: Contacts.ExistingContact): Contact {
   return {
-    id: c.id || '',
+    id: c.id,
     name: c.name || 'Unnamed Contact',
     givenName: c.firstName,
     familyName: c.lastName,
@@ -335,8 +335,9 @@ export function useContacts(): ContactsState {
         try {
           safeDispatch({ type: 'SET_IN_FLIGHT', inFlight: true });
           safeDispatch({ type: 'SET_ERROR', error: null });
-          const contactInput: Contacts.Contact = {
-            id: input.id,
+          const id = input.id!;
+          const contactInput: Contacts.Contact & { id: string } = {
+            id,
             contactType: Contacts.ContactTypes.Person,
             name: [input.givenName, input.familyName].filter(Boolean).join(' ') || 'Unnamed',
             firstName: input.givenName,
@@ -413,13 +414,11 @@ export function useContacts(): ContactsState {
   const presentLimitedContactsPicker = useCallback(async (): Promise<void> => {
     if (Platform.OS === 'web') return;
     try {
-      if (
-        typeof (Contacts as { presentLimitedContactsPickerAsync?: unknown })
-          .presentLimitedContactsPickerAsync === 'function'
-      ) {
-        await (
-          Contacts as { presentLimitedContactsPickerAsync: () => Promise<void> }
-        ).presentLimitedContactsPickerAsync();
+      if ('presentLimitedContactsPickerAsync' in Contacts) {
+        const presenter = Contacts as typeof Contacts & {
+          presentLimitedContactsPickerAsync: () => Promise<void>;
+        };
+        await presenter.presentLimitedContactsPickerAsync();
       } else {
         await Contacts.presentContactPickerAsync();
       }

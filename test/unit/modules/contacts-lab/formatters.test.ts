@@ -6,7 +6,7 @@ import {
   formatPhoneNumber,
   formatEmail,
   formatContactName,
-} from '../../../src/modules/contacts-lab/formatters';
+} from '@/modules/contacts-lab/formatters';
 
 describe('formatPhoneNumber', () => {
   it('formats 10-digit US phone numbers', () => {

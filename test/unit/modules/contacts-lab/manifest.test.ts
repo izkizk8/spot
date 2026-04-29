@@ -2,7 +2,7 @@
  * @jest-environment node
  */
 
-import contactsLab from '../../../src/modules/contacts-lab';
+import contactsLab from '@/modules/contacts-lab';
 
 describe('Contacts Lab manifest', () => {
   it('has correct id', () => {
