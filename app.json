@@ -57,6 +57,7 @@
       "./plugins/with-lock-widgets",
       "./plugins/with-standby-widget",
       "./plugins/with-focus-filters",
+      "./plugins/with-background-tasks",
       [
         "expo-sensors",
         {
