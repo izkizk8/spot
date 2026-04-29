@@ -80,6 +80,6 @@ Rules:
 
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at `specs/032-document-picker-quicklook/plan.md`
+at `specs/036-passkit-wallet/plan.md`
 
 <!-- SPECKIT END -->

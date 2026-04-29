@@ -62,6 +62,7 @@
       "./plugins/with-documents",
       "./plugins/with-arkit",
       "./plugins/with-bluetooth",
+      "./plugins/with-passkit",
       [
         "expo-sensors",
         {

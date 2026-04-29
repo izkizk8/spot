@@ -30,6 +30,7 @@ import documentsLab from './documents-lab';
 import shareSheetLab from './share-sheet-lab';
 import arkitLab from './arkit-lab';
 import bluetoothLab from './bluetooth-lab';
+import passkitLab from './passkit-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -79,5 +80,6 @@ export const MODULES: readonly ModuleManifest[] = [
   shareSheetLab,
   arkitLab,
   bluetoothLab,
+  passkitLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

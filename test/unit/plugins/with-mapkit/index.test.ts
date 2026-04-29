@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 035, plugins.length should be 26 (added with-bluetooth after with-arkit)
-    expect(plugins.length).toBe(26);
+    // After feature 036, plugins.length should be 27 (added with-passkit after with-bluetooth)
+    expect(plugins.length).toBe(27);
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(
