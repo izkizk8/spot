@@ -109,7 +109,7 @@ describe('useShareSession', () => {
   });
 
   it('share() success appends completed log entry (FR-013)', async () => {
-    actualMockPresent.mockResolvedValue({
+    actualactualMockPresent.mockResolvedValue({
       activityType: 'com.apple.UIKit.activity.Mail',
       completed: true,
     });
@@ -130,7 +130,7 @@ describe('useShareSession', () => {
   });
 
   it('share() cancel appends cancelled log entry (FR-024)', async () => {
-    actualMockPresent.mockResolvedValue({
+    actualactualMockPresent.mockResolvedValue({
       activityType: null,
       completed: false,
     });
@@ -149,7 +149,7 @@ describe('useShareSession', () => {
   });
 
   it('share() rejection appends error log entry (FR-025)', async () => {
-    actualMockPresent.mockRejectedValue(new Error('Native error'));
+    actualactualMockPresent.mockRejectedValue(new Error('Native error'));
 
     const { result } = renderHook(() => useShareSession());
 
@@ -166,7 +166,7 @@ describe('useShareSession', () => {
   });
 
   it('log clamps to 10 newest-first (FR-012)', async () => {
-    actualMockPresent.mockResolvedValue({ activityType: null, completed: true });
+    actualactualMockPresent.mockResolvedValue({ activityType: null, completed: true });
 
     const { result } = renderHook(() => useShareSession());
 
@@ -187,7 +187,7 @@ describe('useShareSession', () => {
 
   it('concurrent share() while isSharing is no-op', async () => {
     // Simplified version - just check that isSharing flag works
-    actualMockPresent.mockResolvedValue({ activityType: null, completed: true });
+    actualactualMockPresent.mockResolvedValue({ activityType: null, completed: true });
 
     const { result } = renderHook(() => useShareSession());
 
@@ -196,7 +196,7 @@ describe('useShareSession', () => {
     });
 
     // After one share, should have logged once
-    expect(actualMockPresent).toHaveBeenCalledTimes(1);
+    expect(actualactualMockPresent).toHaveBeenCalledTimes(1);
   });
 
   it('setter and share references are stable across renders', () => {
@@ -212,7 +212,7 @@ describe('useShareSession', () => {
   });
 
   it('clipboard fallback is recorded normally (no error path)', async () => {
-    actualMockPresent.mockResolvedValue({
+    actualactualMockPresent.mockResolvedValue({
       activityType: 'android.clipboard-fallback',
       completed: true,
     });
