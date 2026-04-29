@@ -80,13 +80,13 @@ CurrentStateCard.displayName = 'CurrentStateCard';
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.three,
   },
   emptyState: {
     fontSize: 14,
@@ -96,7 +96,7 @@ const styles = StyleSheet.create({
   row: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.two,
   },
   label: {
     fontSize: 14,
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
   accentRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    gap: Spacing.sm,
+    gap: Spacing.two,
   },
   accentSwatch: {
     width: 20,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   eventBadge: {
-    paddingHorizontal: Spacing.sm,
+    paddingHorizontal: Spacing.two,
     paddingVertical: 4,
     borderRadius: 4,
   },

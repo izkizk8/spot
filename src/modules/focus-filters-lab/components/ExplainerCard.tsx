@@ -27,13 +27,13 @@ export default function ExplainerCard({ style }: ExplainerCardProps) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   heading: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.two,
   },
   body: {
     fontSize: 14,

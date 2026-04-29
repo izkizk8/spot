@@ -10,10 +10,7 @@ import { type ConfigPlugin, withXcodeProject } from '@expo/config-plugins';
 import * as path from 'path';
 
 const SWIFT_SRC_DIR = 'native/ios/focus-filters';
-const SWIFT_FILES: readonly string[] = [
-  'ShowcaseModeFilter.swift',
-  'FocusFilterStorage.swift',
-];
+const SWIFT_FILES: readonly string[] = ['ShowcaseModeFilter.swift', 'FocusFilterStorage.swift'];
 
 interface PbxProject {
   getFirstTarget?: () => { uuid: string } | undefined;
@@ -37,9 +34,7 @@ export const withFocusFiltersSwiftSources: ConfigPlugin = (config) => {
 
     const mainTarget = project.pbxTargetByName?.(projectName) ?? project.getFirstTarget?.();
     if (!mainTarget) {
-      throw new Error(
-        'with-focus-filters: main app target not found. Cannot add Swift sources.',
-      );
+      throw new Error('with-focus-filters: main app target not found. Cannot add Swift sources.');
     }
 
     // Create (or reuse) a group for the Focus Filters sources

@@ -68,13 +68,13 @@ export default function EventLog({ entries }: EventLogProps) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.three,
   },
   emptyState: {
     fontSize: 14,
@@ -84,11 +84,11 @@ const styles = StyleSheet.create({
   entryRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
-    marginBottom: Spacing.md,
-    gap: Spacing.sm,
+    marginBottom: Spacing.three,
+    gap: Spacing.two,
   },
   kindBadge: {
-    paddingHorizontal: Spacing.sm,
+    paddingHorizontal: Spacing.two,
     paddingVertical: 4,
     borderRadius: 4,
     minWidth: 80,

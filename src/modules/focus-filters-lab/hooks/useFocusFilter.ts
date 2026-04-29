@@ -49,7 +49,9 @@ export function useFocusFilter() {
 
   // Mount fetch
   useEffect(() => {
-    fetchValues();
+    // Data fetching on mount is a legitimate use of setState in useEffect
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    void fetchValues();
   }, [fetchValues]);
 
   // AppState refetch

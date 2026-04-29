@@ -88,19 +88,19 @@ export default function PretendFilterToggle({
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   title: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.three,
   },
   toggleRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.two,
   },
   toggleLabel: {
     fontSize: 14,
@@ -108,15 +108,15 @@ const styles = StyleSheet.create({
   statusRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.three,
   },
   statusLabel: {
     fontSize: 14,
     fontWeight: '600',
-    marginRight: Spacing.sm,
+    marginRight: Spacing.two,
   },
   statusPill: {
-    paddingHorizontal: Spacing.sm,
+    paddingHorizontal: Spacing.two,
     paddingVertical: 4,
     borderRadius: 12,
   },
@@ -132,19 +132,19 @@ const styles = StyleSheet.create({
     color: '#fff',
   },
   demoBody: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
     borderWidth: 3,
   },
   demoLabel: {
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: Spacing.xs,
+    marginBottom: Spacing.two,
   },
   demoValue: {
     fontSize: 12,
     opacity: 0.7,
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.two,
   },
   accentBar: {
     height: 4,

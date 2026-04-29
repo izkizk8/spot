@@ -18,8 +18,8 @@ export default function IOSOnlyBanner({ style }: IOSOnlyBannerProps) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
     backgroundColor: '#FF9500',
   },
   text: {

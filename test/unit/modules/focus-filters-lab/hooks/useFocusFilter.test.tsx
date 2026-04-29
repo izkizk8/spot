@@ -33,9 +33,8 @@ describe('useFocusFilter hook', () => {
 
     await waitFor(() => {
       expect(mockBridge.getCurrentFilterValues).toHaveBeenCalledTimes(1);
+      expect(result.current.values).toEqual(payload);
     });
-
-    expect(result.current.values).toEqual(payload);
   });
 
   it('AppState refetch: change to "active" triggers another getCurrentFilterValues() call', async () => {
@@ -50,8 +49,7 @@ describe('useFocusFilter hook', () => {
 
     // Simulate AppState change to 'active'
     act(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const listener = (AppState.addEventListener as any).mock.calls[0][1];
+      const listener = (AppState.addEventListener as jest.Mock).mock.calls[0][1];
       listener('active');
     });
 
@@ -72,8 +70,7 @@ describe('useFocusFilter hook', () => {
 
     // Simulate AppState change to 'background' and 'inactive'
     act(() => {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      const listener = (AppState.addEventListener as any).mock.calls[0][1];
+      const listener = (AppState.addEventListener as jest.Mock).mock.calls[0][1];
       listener('background');
       listener('inactive');
     });

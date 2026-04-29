@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react-native';
+import { render, screen, fireEvent } from '@testing-library/react-native';
 import PretendFilterToggle from '@/modules/focus-filters-lab/components/PretendFilterToggle';
-import { DRAFT_DEFAULTS } from '@/modules/focus-filters-lab/filter-modes';
 import type { ShowcaseFilterPersistedPayload } from '@/modules/focus-filters-lab/filter-modes';
 
 describe('PretendFilterToggle', () => {
@@ -69,7 +68,7 @@ describe('PretendFilterToggle', () => {
       event: 'activated',
       updatedAt: '2026-05-07T12:34:56.000Z',
     };
-    const { rerender } = render(
+    render(
       <PretendFilterToggle
         draft={{ mode: 'relaxed', accentColor: 'blue' }}
         persistedPayload={persistedPayload}

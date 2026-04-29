@@ -6,10 +6,19 @@
 
 describe('filter-modes module', () => {
   it('ShowcaseFilterMode exposes the three values relaxed/focused/quiet', () => {
-    const { ShowcaseFilterMode } = require('@/modules/focus-filters-lab/filter-modes');
-    // ShowcaseFilterMode should be a type alias, not a runtime object,
-    // but we can verify via the catalog or parser accepting these strings
-    expect(true).toBe(true); // Type-level check; runtime check via parser below
+    // ShowcaseFilterMode is a type alias, so we verify via the parser accepting these strings
+    const { parseFilterPayload } = require('@/modules/focus-filters-lab/filter-modes');
+    const validModes = ['relaxed', 'focused', 'quiet'];
+    validModes.forEach((mode) => {
+      const payload = parseFilterPayload({
+        mode,
+        accentColor: 'blue',
+        event: 'activated',
+        updatedAt: '2026-05-07T12:34:56.000Z',
+      });
+      expect(payload).not.toBeNull();
+      expect(payload?.mode).toBe(mode);
+    });
   });
 
   it('AccentColor catalog deep-equals [blue, orange, green, purple] in order', () => {

@@ -31,7 +31,7 @@ describe('CurrentStateCard', () => {
       event: 'activated',
       updatedAt: '2026-05-07T12:34:56.000Z',
     };
-    const { queryByText } = render(<CurrentStateCard payload={payload} />);
+    render(<CurrentStateCard payload={payload} />);
     expect(screen.getByText(/relaxed/i)).toBeTruthy();
     expect(screen.getByText(/activated/i)).toBeTruthy();
     // focusName should not appear

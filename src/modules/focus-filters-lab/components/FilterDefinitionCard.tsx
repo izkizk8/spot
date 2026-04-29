@@ -95,34 +95,34 @@ export default function FilterDefinitionCard({
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   title: {
     fontSize: 20,
     fontWeight: '700',
-    marginBottom: Spacing.xs,
+    marginBottom: Spacing.two,
   },
   description: {
     fontSize: 14,
     opacity: 0.7,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.three,
   },
   sectionLabel: {
     fontSize: 14,
     fontWeight: '600',
-    marginBottom: Spacing.sm,
-    marginTop: Spacing.sm,
+    marginBottom: Spacing.two,
+    marginTop: Spacing.two,
   },
   segmentContainer: {
     flexDirection: 'row',
-    gap: Spacing.sm,
+    gap: Spacing.two,
   },
   segment: {
     flex: 1,
-    paddingVertical: Spacing.sm,
-    paddingHorizontal: Spacing.md,
-    borderRadius: Spacing.xs,
+    paddingVertical: Spacing.two,
+    paddingHorizontal: Spacing.three,
+    borderRadius: Spacing.two,
     borderWidth: 1,
     borderColor: '#ccc',
     alignItems: 'center',
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   },
   swatchContainer: {
     flexDirection: 'row',
-    gap: Spacing.md,
+    gap: Spacing.three,
   },
   swatch: {
     width: 48,

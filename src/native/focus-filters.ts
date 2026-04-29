@@ -45,7 +45,7 @@ const MAX_WARN_CACHE = 64;
 function safeStringifyShape(input: unknown): string {
   try {
     if (typeof input === 'object' && input !== null) {
-      return JSON.stringify(Object.keys(input).sort());
+      return JSON.stringify(Object.keys(input).toSorted());
     }
     return typeof input;
   } catch {

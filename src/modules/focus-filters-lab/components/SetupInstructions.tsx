@@ -37,22 +37,22 @@ export default function SetupInstructions({ style }: SetupInstructionsProps) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: Spacing.md,
-    borderRadius: Spacing.sm,
+    padding: Spacing.three,
+    borderRadius: Spacing.two,
   },
   heading: {
     fontSize: 18,
     fontWeight: '600',
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.two,
   },
   intro: {
     fontSize: 14,
-    marginBottom: Spacing.md,
+    marginBottom: Spacing.three,
     opacity: 0.8,
   },
   step: {
     fontSize: 14,
-    marginBottom: Spacing.sm,
+    marginBottom: Spacing.two,
     lineHeight: 20,
   },
 });

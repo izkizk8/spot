@@ -1,7 +1,6 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react-native';
 import FilterDefinitionCard from '@/modules/focus-filters-lab/components/FilterDefinitionCard';
-import type { ShowcaseFilterMode } from '@/modules/focus-filters-lab/filter-modes';
 import * as bridge from '@/native/focus-filters';
 
 jest.mock('@/native/focus-filters', () => ({
