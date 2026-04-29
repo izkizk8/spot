@@ -1,0 +1,6 @@
+{
+  "ios": {
+    "modules": ["ARKitBridge", "ARKitView"]
+  },
+  "platforms": ["ios"]
+}

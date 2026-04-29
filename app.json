@@ -60,6 +60,7 @@
       "./plugins/with-background-tasks",
       "./plugins/with-spotlight",
       "./plugins/with-documents",
+      "./plugins/with-arkit",
       [
         "expo-sensors",
         {
