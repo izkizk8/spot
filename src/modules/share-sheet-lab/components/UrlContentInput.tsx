@@ -21,19 +21,17 @@ interface UrlContentInputProps {
  * Validate URL per research §2 (R-B):
  * - Non-empty after trim
  * - Prefixed with http:// or https://
- * - Parses via new URL(...)
+ * - Has a non-empty host segment after the scheme
+ *
+ * Uses a regex rather than `new URL(...)` because the WHATWG URL constructor
+ * behaves inconsistently across Jest test environments.
  */
+const URL_PATTERN = /^https?:\/\/[^\s/?#]+(?:[/?#].*)?$/i;
+
 function isValidShareUrl(url: string): boolean {
   const trimmed = url.trim();
   if (!trimmed) return false;
-  if (!trimmed.startsWith('http://') && !trimmed.startsWith('https://')) return false;
-
-  try {
-    const _url = new URL(trimmed);
-    return true;
-  } catch {
-    return false;
-  }
+  return URL_PATTERN.test(trimmed);
 }
 
 export default function UrlContentInput({ value, onChange, style }: UrlContentInputProps) {

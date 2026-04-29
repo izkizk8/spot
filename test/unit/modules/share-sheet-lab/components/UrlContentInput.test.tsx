@@ -18,23 +18,23 @@ describe('UrlContentInput', () => {
     expect(input).toBeTruthy();
   });
 
-  it('valid URLs do not show error', () => {
-    const onChange = jest.fn();
-
-    const { unmount } = render(<UrlContentInput value="https://expo.dev" onChange={onChange} />);
-    expect(screen.queryByText(/Invalid URL/i)).toBeNull();
-    unmount();
-
-    render(<UrlContentInput value="http://example.com" onChange={onChange} />);
+  it('valid https URL does not show error', () => {
+    render(<UrlContentInput value="https://expo.dev" onChange={jest.fn()} />);
     expect(screen.queryByText(/Invalid URL/i)).toBeNull();
   });
 
-  it('empty or invalid URLs show inline error', () => {
-    const onChange = jest.fn();
-    const { rerender } = render(<UrlContentInput value="" onChange={onChange} />);
-    expect(screen.getByText(/Invalid URL/i)).toBeTruthy();
+  it('valid http URL does not show error', () => {
+    render(<UrlContentInput value="http://example.com" onChange={jest.fn()} />);
+    expect(screen.queryByText(/Invalid URL/i)).toBeNull();
+  });
 
-    rerender(<UrlContentInput value="not-a-url" onChange={onChange} />);
+  it('empty URL shows inline error', () => {
+    render(<UrlContentInput value="" onChange={jest.fn()} />);
+    expect(screen.getByText(/Invalid URL/i)).toBeTruthy();
+  });
+
+  it('malformed URL shows inline error', () => {
+    render(<UrlContentInput value="not-a-url" onChange={jest.fn()} />);
     expect(screen.getByText(/Invalid URL/i)).toBeTruthy();
   });
 
