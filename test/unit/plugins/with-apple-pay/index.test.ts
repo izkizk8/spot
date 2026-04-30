@@ -8,7 +8,7 @@
  *     merchant id list verbatim.
  *   - applyApplePayEntitlement is byte-stable on re-run.
  *   - applyApplePayEntitlement does not mutate its input.
- *   - app.json plugin chain length bumped to 39.
+ *   - app.json plugin chain length bumped to 40.
  *   - The plugin slots in after with-roomplan.
  *   - Coexistence with the rest of the chain (does not throw).
  *
@@ -130,10 +130,10 @@ describe('with-apple-pay: app.json registration + chain composition', () => {
     expect(count).toBe(1);
   });
 
-  it('app.json plugins array length is 39 after feature 049', () => {
+  it('app.json plugins array length is 40 after feature 050', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(39);
+    expect(plugins.length).toBe(40);
   });
 
   it('with-apple-pay slots in after with-roomplan', () => {

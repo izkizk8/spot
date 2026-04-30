@@ -1,0 +1,35 @@
+/**
+ * StoreKit Lab — Android variant. Renders IOSOnlyBanner +
+ * SetupInstructions only (the catalog would mislead the
+ * operator about what's actually supported).
+ */
+
+import React from 'react';
+import { ScrollView, StyleSheet } from 'react-native';
+
+import { ThemedView } from '@/components/themed-view';
+import { Spacing } from '@/constants/theme';
+
+import IOSOnlyBanner from './components/IOSOnlyBanner';
+import SetupInstructions from './components/SetupInstructions';
+
+export default function StoreKitLabAndroid() {
+  return (
+    <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <IOSOnlyBanner />
+        <SetupInstructions />
+      </ScrollView>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scroll: {
+    padding: Spacing.three,
+    gap: Spacing.three,
+  },
+});
