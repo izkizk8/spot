@@ -1,0 +1,30 @@
+/**
+ * Handoff & Continuity Lab — Android variant.
+ * Renders IOSOnlyBanner only.
+ */
+
+import React from 'react';
+import { StyleSheet, ScrollView } from 'react-native';
+
+import { ThemedView } from '@/components/themed-view';
+import { Spacing } from '@/constants/theme';
+import IOSOnlyBanner from './components/IOSOnlyBanner';
+
+export default function HandoffLabAndroid() {
+  return (
+    <ThemedView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scroll}>
+        <IOSOnlyBanner />
+      </ScrollView>
+    </ThemedView>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  scroll: {
+    padding: Spacing.three,
+  },
+});
