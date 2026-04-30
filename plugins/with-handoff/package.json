@@ -1,0 +1,7 @@
+{
+  "name": "@izkizk8/with-handoff",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Expo config plugin for feature 040 (handoff-lab)",
+  "main": "index.ts"
+}

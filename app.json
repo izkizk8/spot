@@ -66,6 +66,7 @@
       "./plugins/with-eventkit",
       "./plugins/with-contacts",
       "./plugins/with-quick-actions",
+      "./plugins/with-handoff",
       [
         "expo-sensors",
         {
