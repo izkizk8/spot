@@ -94,10 +94,10 @@ describe('with-weatherkit (plugin wrapper + composition)', () => {
     expect(count).toBe(1);
   });
 
-  it('app.json plugins array length is 37 after feature 046', () => {
+  it('app.json plugins array length is 38 after feature 048', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(37);
+    expect(plugins.length).toBe(38);
   });
 
   it('coexists with carplay, homekit, healthkit, app-clips, mapkit, universal-links without throwing', () => {
