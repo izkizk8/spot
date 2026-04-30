@@ -62,7 +62,7 @@ describe('with-mapkit', () => {
     const plugins: unknown[] = appJson.expo.plugins;
 
     // After feature 050, plugins.length should be 40 (added with-storekit after with-apple-pay)
-    expect(plugins.length).toBe(40); // bumped from 39 by feature 050 (with-storekit)
+    expect(plugins.length).toBe(41); // bumped from 39 by feature 050 (with-storekit)
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(

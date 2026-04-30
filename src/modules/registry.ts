@@ -45,6 +45,7 @@ import shareplayLab from './shareplay-lab';
 import lidarRoomplanLab from './lidar-roomplan-lab';
 import applePayLab from './apple-pay-lab';
 import storekitLab from './storekit-lab';
+import tapToPayLab from './tap-to-pay-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -109,5 +110,6 @@ export const MODULES: readonly ModuleManifest[] = [
   lidarRoomplanLab,
   applePayLab,
   storekitLab,
+  tapToPayLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
