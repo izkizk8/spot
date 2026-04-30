@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 045, plugins.length should be 36 (added with-carplay after with-homekit)
-    expect(plugins.length).toBe(36); // bumped from 35 by feature 045 (with-carplay)
+    // After feature 046, plugins.length should be 37 (added with-weatherkit after with-carplay)
+    expect(plugins.length).toBe(37); // bumped from 36 by feature 046 (with-weatherkit)
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(
