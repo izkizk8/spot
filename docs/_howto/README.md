@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-017-camera-vision.md](feature-017-camera-vision.md) | Verify Camera & Vision on iPhone |
+| [feature-018-speech-recognition.md](feature-018-speech-recognition.md) | Verify Speech Recognition on iPhone |

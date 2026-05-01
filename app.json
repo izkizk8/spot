@@ -46,6 +46,7 @@
       "./plugins/with-screentime",
       "./plugins/with-coreml",
       "./plugins/with-vision",
+      "./plugins/with-speech-recognition",
       [
         "expo-sensors",
         {

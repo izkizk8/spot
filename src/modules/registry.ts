@@ -12,6 +12,7 @@ import widgetsLab from './widgets-lab';
 import screentimeLab from './screentime-lab';
 import coremlLab from './coreml-lab';
 import cameraVision from './camera-vision';
+import speechRecognitionLab from './speech-recognition-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -44,5 +45,6 @@ export const MODULES: readonly ModuleManifest[] = [
   screentimeLab,
   coremlLab,
   cameraVision,
+  speechRecognitionLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
