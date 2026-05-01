@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 052, plugins.length should be 42 (added with-coredata-cloudkit after with-tap-to-pay)
-    expect(plugins.length).toBe(42); // bumped from 41 by feature 052 (with-coredata-cloudkit)
+    // After feature 087, plugins.length should be 43 (added with-controls before expo-sensors)
+    expect(plugins.length).toBe(43); // bumped from 42 by feature 087 (with-controls)
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(

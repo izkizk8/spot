@@ -133,7 +133,7 @@ describe('with-apple-pay: app.json registration + chain composition', () => {
   it('app.json plugins array length is 40 after feature 050', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(42);
+    expect(plugins.length).toBe(43); // bumped from 42 by feature 087 (with-controls)
   });
 
   it('with-apple-pay slots in after with-roomplan', () => {
