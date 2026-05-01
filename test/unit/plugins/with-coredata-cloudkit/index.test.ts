@@ -121,7 +121,7 @@ describe('withCoreDataCloudKit (default plugin)', () => {
   it('coexistence: app.json includes with-coredata-cloudkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(42);
+    expect(plugins.length).toBe(43);
     const idx = plugins.findIndex(
       (p: unknown) => typeof p === 'string' && p === './plugins/with-coredata-cloudkit',
     );
