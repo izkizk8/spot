@@ -51,6 +51,7 @@ import coredataCloudKitLab from './coredata-cloudkit-lab';
 import swiftdataLab from './swiftdata-lab';
 import photokitLab from './photokit-lab';
 import visualLookUpLab from './visual-look-up-lab';
+import coreImageLab from './064-core-image';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -121,5 +122,6 @@ export const MODULES: readonly ModuleManifest[] = [
   photokitLab,
   visualLookUpLab,
   realityKitUsdzLab,
+  coreImageLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
