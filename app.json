@@ -51,6 +51,7 @@
       "./plugins/with-sign-in-with-apple",
       "./plugins/with-local-auth",
       "./plugins/with-keychain-services",
+      "./plugins/with-mapkit",
       [
         "expo-sensors",
         {

@@ -77,3 +77,59 @@ jest.mock('@/native/keychain', () => {
   const mock = require('@test/__mocks__/native-keychain');
   return { keychain: mock.keychain };
 });
+
+// Mock react-native-maps (feature 024)
+jest.mock('react-native-maps', () => jest.requireActual('@test/__mocks__/react-native-maps'));
+
+// Mock expo-location (feature 024)
+jest.mock('expo-location', () => jest.requireActual('@test/__mocks__/expo-location'));
+
+// Mock the MapKit native bridges directly (feature 024).
+// Mocking expo-modules-core globally breaks `requireNativeModule` for other
+// consumers (expo-clipboard etc.) because jest-expo's preset doesn't kick in
+// once we replace the module. Mock the bridges at the import boundary instead.
+jest.mock('@/native/mapkit-search', () => {
+  const mock = require('@test/__mocks__/native-mapkit-search');
+  return {
+    __esModule: true,
+    default: {
+      async searchLocations(query: string, region: unknown) {
+        const native = mock.__mockRequireOptionalNativeModule('SpotMapKitSearch');
+        if (!native) {
+          const types = require('@/native/mapkit-search.types');
+          throw new types.MapKitNotSupportedError('searchLocations');
+        }
+        return native.search(query, region);
+      },
+    },
+  };
+});
+jest.mock('@/native/lookaround', () => {
+  const mock = require('@test/__mocks__/native-lookaround');
+  return {
+    __esModule: true,
+    default: {
+      async presentLookAround(lat: number, lng: number) {
+        const native = mock.__mockRequireOptionalNativeModule('SpotLookAround');
+        if (!native) {
+          const types = require('@/native/mapkit-search.types');
+          throw new types.MapKitNotSupportedError('presentLookAround');
+        }
+        return native.presentLookAround(lat, lng);
+      },
+    },
+  };
+});
+
+// Reset mocks before each test
+beforeEach(() => {
+  const mapsMock = jest.requireActual('@test/__mocks__/react-native-maps');
+  const locationMock = jest.requireActual('@test/__mocks__/expo-location');
+  const searchMock = jest.requireActual('@test/__mocks__/native-mapkit-search');
+  const lookAroundMock = jest.requireActual('@test/__mocks__/native-lookaround');
+
+  if (mapsMock.__resetMapsMock) mapsMock.__resetMapsMock();
+  if (locationMock.__resetLocationMock) locationMock.__resetLocationMock();
+  if (searchMock.__resetSearchMock) searchMock.__resetSearchMock();
+  if (lookAroundMock.__resetLookAroundMock) lookAroundMock.__resetLookAroundMock();
+});
