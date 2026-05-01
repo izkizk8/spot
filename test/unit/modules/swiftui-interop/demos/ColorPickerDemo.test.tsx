@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 // Mock @expo/ui/swift-ui
 let capturedOnChange: ((color: string) => void) | undefined;
@@ -38,7 +38,9 @@ describe('ColorPickerDemo (iOS)', () => {
     // Simulate SwiftUI color picker onChange
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {
-      capturedOnChange('#ff8800');
+      act(() => {
+        capturedOnChange!('#ff8800');
+      });
       // In the actual component, this would update the swatch's backgroundColor
     }
   });

@@ -99,11 +99,12 @@ async function flush() {
 }
 
 describe('useHomeKit — init', () => {
-  it('starts with notDetermined / not initialised', () => {
+  it('starts with notDetermined / not initialised', async () => {
     render(<Harness />);
     expect(handle.current?.authStatus).toBe('notDetermined');
     expect(handle.current?.initialised).toBe(false);
     expect(handle.current?.homes).toEqual([]);
+    await act(async () => {});
   });
 
   it('init() loads homes and auto-selects the primary', async () => {
@@ -171,13 +172,13 @@ describe('useHomeKit — selection / accessories', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
     expect(handle.current?.selectedAccessoryId).toBe('a1');
     expect(handle.current?.selectedCharacteristicId).toBe('c1');
-    act(() => {
+    await act(async () => {
       handle.current?.selectHome('h2');
     });
     expect(handle.current?.selectedHomeId).toBe('h2');
@@ -191,7 +192,7 @@ describe('useHomeKit — selection / accessories', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectHome(null);
     });
     expect(handle.current?.accessories).toEqual([]);
@@ -215,7 +216,7 @@ describe('useHomeKit — read / write', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
@@ -232,7 +233,7 @@ describe('useHomeKit — read / write', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
@@ -267,7 +268,7 @@ describe('useHomeKit — read / write', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
@@ -292,32 +293,32 @@ describe('useHomeKit — observer', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
-    act(() => {
+    await act(async () => {
       handle.current?.toggleObserver();
     });
     expect(handle.current?.observerActive).toBe(true);
 
-    act(() => {
+    await act(async () => {
       captured?.(true);
       captured?.(false);
     });
     expect(handle.current?.observerUpdateCount).toBe(2);
     expect(handle.current?.lastReadValue).toBe(false);
 
-    act(() => {
+    await act(async () => {
       handle.current?.toggleObserver();
     });
     expect(handle.current?.observerActive).toBe(false);
     expect(unsubscribe).toHaveBeenCalledTimes(1);
   });
 
-  it('toggleObserver without selection records a lastError', () => {
+  it('toggleObserver without selection records a lastError', async () => {
     render(<Harness />);
-    act(() => {
+    await act(async () => {
       handle.current?.toggleObserver();
     });
     expect(handle.current?.lastError).toMatch(/No characteristic/);
@@ -331,15 +332,15 @@ describe('useHomeKit — observer', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
-    act(() => {
+    await act(async () => {
       handle.current?.toggleObserver();
     });
     expect(handle.current?.observerActive).toBe(true);
-    act(() => {
+    await act(async () => {
       handle.current?.reset();
     });
     expect(handle.current?.observerActive).toBe(false);
@@ -356,11 +357,11 @@ describe('useHomeKit — observer', () => {
       await handle.current?.init();
     });
     await flush();
-    act(() => {
+    await act(async () => {
       handle.current?.selectAccessory('a1');
       handle.current?.selectCharacteristic('c1');
     });
-    act(() => {
+    await act(async () => {
       handle.current?.toggleObserver();
     });
     unmount();

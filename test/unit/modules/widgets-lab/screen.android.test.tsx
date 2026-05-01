@@ -24,13 +24,15 @@ describe('Widgets Lab screen (Android variant)', () => {
   });
 
   it('renders the unavailable banner', async () => {
-    const { getByText } = render(<WidgetsLabScreen />);
-    expect(getByText(/iOS 14\+/i)).toBeTruthy();
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
+    expect(view.getByText(/iOS 14\+/i)).toBeTruthy();
   });
 
   it('renders ConfigPanel with the Push button disabled', async () => {
-    const { getByLabelText } = render(<WidgetsLabScreen />);
-    const btn = getByLabelText('Push to widget');
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
+    const btn = view.getByLabelText('Push to widget');
     const onPushSpy = jest.fn();
     await act(async () => {
       fireEvent.press(btn);
@@ -42,18 +44,20 @@ describe('Widgets Lab screen (Android variant)', () => {
   });
 
   it('renders WidgetPreview wired to the AsyncStorage shadow store', async () => {
-    const { getAllByText } = render(<WidgetsLabScreen />);
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
     await waitFor(() => {
       expect(AsyncStorage.getItem).toHaveBeenCalled();
     });
-    expect(getAllByText(DEFAULT_CONFIG.showcaseValue).length).toBeGreaterThanOrEqual(3);
+    expect(view.getAllByText(DEFAULT_CONFIG.showcaseValue).length).toBeGreaterThanOrEqual(3);
   });
 
   it('does NOT render iOS-only chrome (refresh line, setup, reload log)', async () => {
-    const { queryByLabelText, queryByText } = render(<WidgetsLabScreen />);
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
     await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalled());
-    expect(queryByLabelText('Next refresh time')).toBeNull();
-    expect(queryByText(/Add SpotShowcaseWidget/)).toBeNull();
-    expect(queryByText(/Reload events/)).toBeNull();
+    expect(view.queryByLabelText('Next refresh time')).toBeNull();
+    expect(view.queryByText(/Add SpotShowcaseWidget/)).toBeNull();
+    expect(view.queryByText(/Reload events/)).toBeNull();
   });
 });

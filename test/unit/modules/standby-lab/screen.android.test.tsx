@@ -29,54 +29,61 @@ describe('StandByLabScreen.android (fallback)', () => {
     Object.defineProperty(Platform, 'OS', { configurable: true, value: 'android' });
   });
 
-  it('renders the iOS-17+-only banner at the top', () => {
+  it('renders the iOS-17+-only banner at the top', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { getByText } = render(<Screen />);
-    expect(getByText('StandBy Mode is iOS 17+ only')).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByText('StandBy Mode is iOS 17+ only')).toBeTruthy();
   });
 
-  it('renders the explainer card', () => {
+  it('renders the explainer card', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { getByText } = render(<Screen />);
-    expect(getByText(/about.*standby/i)).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByText(/about.*standby/i)).toBeTruthy();
   });
 
-  it('config panel showcase / counter / tint / mode controls are interactive', () => {
+  it('config panel showcase / counter / tint / mode controls are interactive', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { getByLabelText, getAllByLabelText } = render(<Screen />);
-    expect(getByLabelText(/showcase/i)).toBeTruthy();
-    expect(getByLabelText(/counter/i)).toBeTruthy();
-    expect(getAllByLabelText(/tint/i).length).toBeGreaterThan(0);
-    expect(getByLabelText(/Rendering mode Vibrant/i)).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByLabelText(/showcase/i)).toBeTruthy();
+    expect(view.getByLabelText(/counter/i)).toBeTruthy();
+    expect(view.getAllByLabelText(/tint/i).length).toBeGreaterThan(0);
+    expect(view.getByLabelText(/Rendering mode Vibrant/i)).toBeTruthy();
   });
 
-  it('the live preview reflects edits including the rendering-mode segment', () => {
+  it('the live preview reflects edits including the rendering-mode segment', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { getByLabelText } = render(<Screen />);
-    fireEvent.press(getByLabelText(/Rendering mode Vibrant/i));
-    fireEvent.press(getByLabelText(/Push to StandBy widget/i));
+    const view = render(<Screen />);
+    await act(async () => {});
+    fireEvent.press(view.getByLabelText(/Rendering mode Vibrant/i));
+    fireEvent.press(view.getByLabelText(/Push to StandBy widget/i));
     // Preview's a11y label should now reflect "vibrant"
-    expect(getByLabelText(/systemMedium.*vibrant/i)).toBeTruthy();
+    expect(view.getByLabelText(/systemMedium.*vibrant/i)).toBeTruthy();
   });
 
-  it('Push button is disabled and inline disabled-reason is shown', () => {
+  it('Push button is disabled and inline disabled-reason is shown', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { getByLabelText, getByText } = render(<Screen />);
-    const btn = getByLabelText(/Push to StandBy widget/i);
+    const view = render(<Screen />);
+    await act(async () => {});
+    const btn = view.getByLabelText(/Push to StandBy widget/i);
     expect(btn.props.accessibilityState?.disabled).toBe(true);
-    expect(getByText(/StandBy push requires iOS 17/)).toBeTruthy();
+    expect(view.getByText(/StandBy push requires iOS 17/)).toBeTruthy();
   });
 
-  it('the setup instructions card is hidden', () => {
+  it('the setup instructions card is hidden', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { queryByText } = render(<Screen />);
-    expect(queryByText(/set up standby/i)).toBeNull();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.queryByText(/set up standby/i)).toBeNull();
   });
 
-  it('the reload event log is hidden', () => {
+  it('the reload event log is hidden', async () => {
     const Screen = require('@/modules/standby-lab/screen.android').default;
-    const { queryByText } = render(<Screen />);
-    expect(queryByText(/no.*push/i)).toBeNull();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.queryByText(/no.*push/i)).toBeNull();
   });
 
   it('edits round-trip to AsyncStorage shadow store via saveShadowStandByConfig', async () => {

@@ -29,50 +29,59 @@ describe('StandByLabScreen.web (fallback)', () => {
     Object.defineProperty(Platform, 'OS', { configurable: true, value: 'web' });
   });
 
-  it('renders the banner', () => {
+  it('renders the banner', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { getByText } = render(<Screen />);
-    expect(getByText('StandBy Mode is iOS 17+ only')).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByText('StandBy Mode is iOS 17+ only')).toBeTruthy();
   });
 
-  it('renders the explainer card', () => {
+  it('renders the explainer card', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { getByText } = render(<Screen />);
-    expect(getByText(/about.*standby/i)).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByText(/about.*standby/i)).toBeTruthy();
   });
 
-  it('config panel controls including rendering mode are present and interactive', () => {
+  it('config panel controls including rendering mode are present and interactive', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { getByLabelText } = render(<Screen />);
-    expect(getByLabelText(/showcase/i)).toBeTruthy();
-    expect(getByLabelText(/counter/i)).toBeTruthy();
-    expect(getByLabelText(/Rendering mode Accented/i)).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByLabelText(/showcase/i)).toBeTruthy();
+    expect(view.getByLabelText(/counter/i)).toBeTruthy();
+    expect(view.getByLabelText(/Rendering mode Accented/i)).toBeTruthy();
   });
 
-  it('the live preview reflects edits including rendering-mode', () => {
+  it('the live preview reflects edits including rendering-mode', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { getByLabelText } = render(<Screen />);
-    fireEvent.press(getByLabelText(/Rendering mode Accented/i));
-    expect(getByLabelText(/systemMedium.*accented/i)).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    fireEvent.press(view.getByLabelText(/Rendering mode Accented/i));
+    expect(view.getByLabelText(/systemMedium.*accented/i)).toBeTruthy();
   });
 
-  it('Push button is disabled with inline reason', () => {
+  it('Push button is disabled with inline reason', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { getByLabelText, getByText } = render(<Screen />);
-    expect(getByLabelText(/Push to StandBy widget/i).props.accessibilityState?.disabled).toBe(true);
-    expect(getByText(/StandBy push requires iOS 17/)).toBeTruthy();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.getByLabelText(/Push to StandBy widget/i).props.accessibilityState?.disabled).toBe(
+      true,
+    );
+    expect(view.getByText(/StandBy push requires iOS 17/)).toBeTruthy();
   });
 
-  it('setup instructions card is hidden', () => {
+  it('setup instructions card is hidden', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { queryByText } = render(<Screen />);
-    expect(queryByText(/set up standby/i)).toBeNull();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.queryByText(/set up standby/i)).toBeNull();
   });
 
-  it('reload event log is hidden', () => {
+  it('reload event log is hidden', async () => {
     const Screen = require('@/modules/standby-lab/screen.web').default;
-    const { queryByText } = render(<Screen />);
-    expect(queryByText(/no.*push/i)).toBeNull();
+    const view = render(<Screen />);
+    await act(async () => {});
+    expect(view.queryByText(/no.*push/i)).toBeNull();
   });
 
   it('edits persist to AsyncStorage shadow store via saveShadowStandByConfig', async () => {

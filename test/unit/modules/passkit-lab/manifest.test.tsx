@@ -6,7 +6,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 describe('PassKit Lab manifest', () => {
   it('M2: id is passkit-lab', async () => {
@@ -35,6 +35,7 @@ describe('PassKit Lab manifest', () => {
 
     const Screen = manifest.render;
     expect(() => render(<Screen />)).not.toThrow();
+    await act(async () => {});
   });
 
   it('M1: manifest object shape matches other modules', async () => {

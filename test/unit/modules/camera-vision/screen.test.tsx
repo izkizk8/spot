@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, fireEvent } from '@testing-library/react-native';
+import { act, render, fireEvent } from '@testing-library/react-native';
 
 // Mock expo-camera before import
 const mockTakePictureAsync = jest.fn(() =>
@@ -114,7 +114,7 @@ describe('CameraVisionScreen (iOS)', () => {
     // No need to clean up timers since we're using real timers
   });
 
-  it('asks for camera permission on mount', () => {
+  it('asks for camera permission on mount', async () => {
     const requestPermission = jest.fn();
     mockUseCameraPermissions.mockReturnValue([
       { granted: false, status: 'undetermined', canAskAgain: true, expires: 'never' },
@@ -122,17 +122,20 @@ describe('CameraVisionScreen (iOS)', () => {
     ] as any);
 
     render(<CameraVisionScreen />);
+    await act(async () => {});
     expect(requestPermission).toHaveBeenCalled();
   });
 
-  it('renders permission denied message with retry button when permission denied', () => {
+  it('renders permission denied message with retry button when permission denied', async () => {
     const requestPermission = jest.fn();
     mockUseCameraPermissions.mockReturnValue([
       { granted: false, status: 'denied', canAskAgain: true, expires: 'never' },
       requestPermission,
     ] as any);
 
-    const { getByText } = render(<CameraVisionScreen />);
+    const view = render(<CameraVisionScreen />);
+    await act(async () => {});
+    const { getByText } = view;
     expect(getByText(/camera permission/i)).toBeTruthy();
 
     const retryButton = getByText(/retry/i);
@@ -152,20 +155,24 @@ describe('CameraVisionScreen (iOS)', () => {
     render(<CameraVisionScreen />);
 
     // Wait a bit with real timers
-    await new Promise((resolve) => setTimeout(resolve, 300));
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 300));
+    });
 
     // Bridge analyze should never be called
     expect(mockBridge.analyze).not.toHaveBeenCalled();
   });
 
-  it('renders CameraPreview and ModePicker when permission granted', () => {
+  it('renders CameraPreview and ModePicker when permission granted', async () => {
     const requestPermission = jest.fn();
     mockUseCameraPermissions.mockReturnValue([
       { granted: true, status: 'granted', canAskAgain: true, expires: 'never' },
       requestPermission,
     ] as any);
 
-    const { UNSAFE_getByType, getByText } = render(<CameraVisionScreen />);
+    const view = render(<CameraVisionScreen />);
+    await act(async () => {});
+    const { UNSAFE_getByType, getByText } = view;
     // CameraView is now a component, not a string
     expect(() => UNSAFE_getByType('CameraView' as any)).not.toThrow();
     // ModePicker should be present
@@ -182,7 +189,9 @@ describe('CameraVisionScreen (iOS)', () => {
     const { getByText } = render(<CameraVisionScreen />);
 
     // Wait for first analysis cycle to complete (250ms interval + promise resolution time)
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+    });
 
     // StatsBar should show analysis ms after successful analysis
     expect(getByText('50 ms')).toBeTruthy();
@@ -201,7 +210,9 @@ describe('CameraVisionScreen (iOS)', () => {
     const { queryByText } = render(<CameraVisionScreen />);
 
     // Wait for first analysis cycle to complete
-    await new Promise((resolve) => setTimeout(resolve, 400));
+    await act(async () => {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+    });
 
     // Should render error banner with the error message
     expect(queryByText(/Test error/)).toBeTruthy();

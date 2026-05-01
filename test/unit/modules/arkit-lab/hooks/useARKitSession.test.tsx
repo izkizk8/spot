@@ -54,12 +54,15 @@ describe('useARKitSession', () => {
     });
   });
 
-  afterEach(() => {
-    jest.runOnlyPendingTimers();
+  afterEach(async () => {
+    await act(async () => {
+      jest.runOnlyPendingTimers();
+      await Promise.resolve();
+    });
     jest.useRealTimers();
   });
 
-  it('returns default state on mount', () => {
+  it('returns default state on mount', async () => {
     const arkit = require('@/native/arkit');
     arkit.getSessionInfo.mockResolvedValue({
       state: 'idle',
@@ -77,6 +80,11 @@ describe('useARKitSession', () => {
     expect(result.current.config.peopleOcclusion).toBe(false);
     expect(result.current.config.lightEstimation).toBe(true);
     expect(result.current.config.worldMapPersistence).toBe(false);
+    // Drain mount fetch promise + dispatch via fake timer microtask flush
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
   });
 
   it('placeAnchorAt appends an AnchorRecord from the bridge', async () => {
@@ -311,16 +319,18 @@ describe('useARKitSession', () => {
     });
 
     // Advance 500ms
-    act(() => {
+    await act(async () => {
       jest.advanceTimersByTime(500);
+      await Promise.resolve();
     });
     await waitFor(() => {
       expect(arkit.getSessionInfo).toHaveBeenCalledTimes(2);
     });
 
     // Advance 2000ms (4 more ticks)
-    act(() => {
+    await act(async () => {
       jest.advanceTimersByTime(2000);
+      await Promise.resolve();
     });
     await waitFor(() => {
       expect(arkit.getSessionInfo).toHaveBeenCalledTimes(6);
@@ -364,7 +374,7 @@ describe('useARKitSession', () => {
     expect(arkit.pauseSession).toHaveBeenCalledTimes(1);
   });
 
-  it('action functions have stable identities across renders', () => {
+  it('action functions have stable identities across renders', async () => {
     const arkit = require('@/native/arkit');
     arkit.getSessionInfo.mockResolvedValue({
       state: 'idle',
@@ -375,6 +385,12 @@ describe('useARKitSession', () => {
     });
 
     const { result } = renderHook(() => useARKitSession());
+
+    // Drain mount fetch promise so dispatch settles inside act
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
 
     const firstPlaceAnchorAt = result.current.placeAnchorAt;
     const firstClearAnchors = result.current.clearAnchors;

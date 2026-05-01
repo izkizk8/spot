@@ -3,7 +3,7 @@
  * Feature: 038-contacts
  */
 
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
 import { SearchCard } from '@/modules/contacts-lab/components/SearchCard';
@@ -128,7 +128,9 @@ describe('SearchCard', () => {
       expect(getByText('Searching...')).toBeTruthy();
     });
 
-    resolveSearch!();
-    await searchPromise;
+    await act(async () => {
+      resolveSearch!();
+      await searchPromise;
+    });
   });
 });

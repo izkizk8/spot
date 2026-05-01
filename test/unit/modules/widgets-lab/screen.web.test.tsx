@@ -1,5 +1,5 @@
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { act, render, waitFor } from '@testing-library/react-native';
 
 import WidgetsLabScreen from '@/modules/widgets-lab/screen.web';
 import { DEFAULT_CONFIG } from '@/modules/widgets-lab/widget-config';
@@ -23,27 +23,31 @@ describe('Widgets Lab screen (Web variant)', () => {
     (AsyncStorage.setItem as jest.Mock).mockResolvedValue(undefined);
   });
 
-  it('renders the unavailable banner', () => {
-    const { getByText } = render(<WidgetsLabScreen />);
-    expect(getByText(/iOS 14\+/i)).toBeTruthy();
+  it('renders the unavailable banner', async () => {
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
+    expect(view.getByText(/iOS 14\+/i)).toBeTruthy();
   });
 
-  it('renders ConfigPanel with Push button disabled', () => {
-    const { getByLabelText } = render(<WidgetsLabScreen />);
-    expect(getByLabelText('Push to widget')).toBeTruthy();
+  it('renders ConfigPanel with Push button disabled', async () => {
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
+    expect(view.getByLabelText('Push to widget')).toBeTruthy();
   });
 
   it('renders WidgetPreview wired to AsyncStorage shadow store', async () => {
-    const { getAllByText } = render(<WidgetsLabScreen />);
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
     await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalled());
-    expect(getAllByText(DEFAULT_CONFIG.showcaseValue).length).toBeGreaterThanOrEqual(3);
+    expect(view.getAllByText(DEFAULT_CONFIG.showcaseValue).length).toBeGreaterThanOrEqual(3);
   });
 
   it('does NOT render iOS-only chrome', async () => {
-    const { queryByLabelText, queryByText } = render(<WidgetsLabScreen />);
+    const view = render(<WidgetsLabScreen />);
+    await act(async () => {});
     await waitFor(() => expect(AsyncStorage.getItem).toHaveBeenCalled());
-    expect(queryByLabelText('Next refresh time')).toBeNull();
-    expect(queryByText(/Add SpotShowcaseWidget/)).toBeNull();
-    expect(queryByText(/Reload events/)).toBeNull();
+    expect(view.queryByLabelText('Next refresh time')).toBeNull();
+    expect(view.queryByText(/Add SpotShowcaseWidget/)).toBeNull();
+    expect(view.queryByText(/Reload events/)).toBeNull();
   });
 });

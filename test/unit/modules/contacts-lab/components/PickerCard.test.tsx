@@ -3,7 +3,7 @@
  * Feature: 038-contacts
  */
 
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
 import { PickerCard } from '@/modules/contacts-lab/components/PickerCard';
@@ -98,7 +98,9 @@ describe('PickerCard', () => {
       expect(getByText('Opening...')).toBeTruthy();
     });
 
-    resolvePick!();
-    await pickPromise;
+    await act(async () => {
+      resolvePick!();
+      await pickPromise;
+    });
   });
 });

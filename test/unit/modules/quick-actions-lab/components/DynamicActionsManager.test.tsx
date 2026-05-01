@@ -15,7 +15,7 @@ jest.mock('@/modules/quick-actions-lab/hooks/useQuickActions', () => ({
   }),
 }));
 
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 import { Alert } from 'react-native';
 import React from 'react';
 
@@ -45,11 +45,13 @@ describe('DynamicActionsManager', () => {
     expect(getByText(/dynamic cap = 2/)).toBeTruthy();
   });
 
-  it('Adding pushes a new item and calls setItems', () => {
+  it('Adding pushes a new item and calls setItems', async () => {
     const { getByTestId } = render(<DynamicActionsManager />);
     // pretend 1 static so cap = 3
     fireEvent.press(getByTestId('pretend-static-1'));
-    fireEvent.press(getByTestId('add-dynamic'));
+    await act(async () => {
+      fireEvent.press(getByTestId('add-dynamic'));
+    });
     expect(mockSetItems).toHaveBeenCalledTimes(1);
     expect(mockSetItems.mock.calls[0][0]).toHaveLength(1);
   });
@@ -61,27 +63,37 @@ describe('DynamicActionsManager', () => {
     expect(mockSetItems).not.toHaveBeenCalled();
   });
 
-  it('Reorder up/down arrows call setItems with reordered list', () => {
+  it('Reorder up/down arrows call setItems with reordered list', async () => {
     const { getByTestId } = render(<DynamicActionsManager />);
     fireEvent.press(getByTestId('pretend-static-1')); // cap = 3
-    fireEvent.press(getByTestId('add-dynamic'));
-    fireEvent.press(getByTestId('add-dynamic'));
+    await act(async () => {
+      fireEvent.press(getByTestId('add-dynamic'));
+    });
+    await act(async () => {
+      fireEvent.press(getByTestId('add-dynamic'));
+    });
     expect(mockSetItems).toHaveBeenCalledTimes(2);
 
-    fireEvent.press(getByTestId('move-down-0'));
+    await act(async () => {
+      fireEvent.press(getByTestId('move-down-0'));
+    });
     expect(mockSetItems).toHaveBeenCalledTimes(3);
     const lastCall = mockSetItems.mock.calls[2][0];
     expect(lastCall).toHaveLength(2);
   });
 
-  it('Remove confirms then splices and calls setItems', () => {
+  it('Remove confirms then splices and calls setItems', async () => {
     const alertSpy = jest.spyOn(Alert, 'alert');
     const { getByTestId } = render(<DynamicActionsManager />);
     fireEvent.press(getByTestId('pretend-static-1'));
-    fireEvent.press(getByTestId('add-dynamic'));
+    await act(async () => {
+      fireEvent.press(getByTestId('add-dynamic'));
+    });
     expect(mockSetItems).toHaveBeenCalledTimes(1);
 
-    fireEvent.press(getByTestId('remove-0'));
+    await act(async () => {
+      fireEvent.press(getByTestId('remove-0'));
+    });
     // The remove handler shows an Alert with buttons; simulate confirm via the
     // last button pressed (style: destructive).
     const lastCallButtons = alertSpy.mock.calls.at(-1)?.[2];
@@ -89,7 +101,9 @@ describe('DynamicActionsManager', () => {
     const removeBtn = (lastCallButtons as Array<{ text: string; onPress?: () => void }>).find(
       (b) => b.text === 'Remove',
     );
-    removeBtn?.onPress?.();
+    await act(async () => {
+      removeBtn?.onPress?.();
+    });
     expect(mockSetItems).toHaveBeenCalledTimes(2);
     expect(mockSetItems.mock.calls[1][0]).toHaveLength(0);
   });

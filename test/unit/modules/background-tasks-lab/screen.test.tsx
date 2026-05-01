@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, fireEvent, screen, waitFor } from '@testing-library/react-native';
+import { act, render, fireEvent, screen, waitFor } from '@testing-library/react-native';
 
 import * as bridge from '@/native/background-tasks';
 import * as historyStore from '@/modules/background-tasks-lab/history-store';
@@ -94,6 +94,7 @@ describe('background-tasks-lab screen (iOS)', () => {
     mockBridge.isAvailable.mockReturnValue(false);
     const Screen = require('@/modules/background-tasks-lab/screen').default;
     render(<Screen />);
+    await act(async () => {});
     expect(screen.getByText(/Background Tasks require iOS 13|older than 13/)).toBeTruthy();
     expect(screen.getByText('About Background Tasks')).toBeTruthy();
     expect(screen.getByText(/Test triggers/)).toBeTruthy();

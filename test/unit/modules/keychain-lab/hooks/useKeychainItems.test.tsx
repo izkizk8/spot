@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { renderHook, waitFor } from '@testing-library/react-native';
+import { renderHook, act, waitFor } from '@testing-library/react-native';
 
 // Import hook and mock after React is loaded
 const useKeychainItems = require('@/modules/keychain-lab/hooks/useKeychainItems').useKeychainItems;
@@ -91,14 +91,17 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    const addResult = await result.current.addItem({
-      label: 'new-key',
-      value: 'new-value',
-      accessibilityClass: 'whenUnlockedThisDeviceOnly',
-      biometryRequired: true,
+    let addResult: Awaited<ReturnType<typeof result.current.addItem>>;
+    await act(async () => {
+      addResult = await result.current.addItem({
+        label: 'new-key',
+        value: 'new-value',
+        accessibilityClass: 'whenUnlockedThisDeviceOnly',
+        biometryRequired: true,
+      });
     });
 
-    expect(addResult.kind).toBe('ok');
+    expect(addResult!.kind).toBe('ok');
 
     await waitFor(() => {
       expect(result.current.items).toHaveLength(1);
@@ -120,14 +123,17 @@ describe('useKeychainItems', () => {
     const mock = require('@test/__mocks__/native-keychain');
     mock.__setNextResult({ kind: 'cancelled' });
 
-    const addResult = await result.current.addItem({
-      label: 'cancel-key',
-      value: 'cancel-value',
-      accessibilityClass: 'whenUnlocked',
-      biometryRequired: false,
+    let addResult: Awaited<ReturnType<typeof result.current.addItem>>;
+    await act(async () => {
+      addResult = await result.current.addItem({
+        label: 'cancel-key',
+        value: 'cancel-value',
+        accessibilityClass: 'whenUnlocked',
+        biometryRequired: false,
+      });
     });
 
-    expect(addResult.kind).toBe('cancelled');
+    expect(addResult!.kind).toBe('cancelled');
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
@@ -138,15 +144,20 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    await result.current.addItem({
-      label: 'reveal-key',
-      value: 'secret-text',
-      accessibilityClass: 'whenUnlocked',
-      biometryRequired: false,
+    await act(async () => {
+      await result.current.addItem({
+        label: 'reveal-key',
+        value: 'secret-text',
+        accessibilityClass: 'whenUnlocked',
+        biometryRequired: false,
+      });
     });
 
-    const revealed = await result.current.revealItem('reveal-key');
-    expect(revealed).toBe('secret-text');
+    let revealed: Awaited<ReturnType<typeof result.current.revealItem>>;
+    await act(async () => {
+      revealed = await result.current.revealItem('reveal-key');
+    });
+    expect(revealed!).toBe('secret-text');
   });
 
   it('revealItem returns null on cancelled', async () => {
@@ -158,18 +169,23 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    await result.current.addItem({
-      label: 'auth-key',
-      value: 'secret',
-      accessibilityClass: 'whenUnlocked',
-      biometryRequired: true,
+    await act(async () => {
+      await result.current.addItem({
+        label: 'auth-key',
+        value: 'secret',
+        accessibilityClass: 'whenUnlocked',
+        biometryRequired: true,
+      });
     });
 
     const mock = require('@test/__mocks__/native-keychain');
     mock.__setNextResult({ kind: 'cancelled' });
 
-    const revealed = await result.current.revealItem('auth-key');
-    expect(revealed).toBeNull();
+    let revealed: Awaited<ReturnType<typeof result.current.revealItem>>;
+    await act(async () => {
+      revealed = await result.current.revealItem('auth-key');
+    });
+    expect(revealed!).toBeNull();
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
@@ -185,8 +201,11 @@ describe('useKeychainItems', () => {
     const mock = require('@test/__mocks__/native-keychain');
     mock.__setNextResult({ kind: 'auth-failed' });
 
-    const revealed = await result.current.revealItem('fail-key');
-    expect(revealed).toBeNull();
+    let revealed: Awaited<ReturnType<typeof result.current.revealItem>>;
+    await act(async () => {
+      revealed = await result.current.revealItem('fail-key');
+    });
+    expect(revealed!).toBeNull();
     expect(consoleWarnSpy).not.toHaveBeenCalled();
   });
 
@@ -197,15 +216,20 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    await result.current.addItem({
-      label: 'ephemeral',
-      value: 'cleartext-secret',
-      accessibilityClass: 'whenUnlocked',
-      biometryRequired: false,
+    await act(async () => {
+      await result.current.addItem({
+        label: 'ephemeral',
+        value: 'cleartext-secret',
+        accessibilityClass: 'whenUnlocked',
+        biometryRequired: false,
+      });
     });
 
-    const revealed = await result.current.revealItem('ephemeral');
-    expect(revealed).toBe('cleartext-secret');
+    let revealed: Awaited<ReturnType<typeof result.current.revealItem>>;
+    await act(async () => {
+      revealed = await result.current.revealItem('ephemeral');
+    });
+    expect(revealed!).toBe('cleartext-secret');
 
     // After reveal, the hook state should NOT contain the cleartext
     expect(JSON.stringify(result.current)).not.toContain('cleartext-secret');
@@ -218,27 +242,35 @@ describe('useKeychainItems', () => {
       expect(result.current.loading).toBe(false);
     });
 
-    await result.current.addItem({
-      label: 'delete-me',
-      value: 'value',
-      accessibilityClass: 'whenUnlocked',
-      biometryRequired: false,
+    await act(async () => {
+      await result.current.addItem({
+        label: 'delete-me',
+        value: 'value',
+        accessibilityClass: 'whenUnlocked',
+        biometryRequired: false,
+      });
     });
 
     await waitFor(() => {
       expect(result.current.items).toHaveLength(1);
     });
 
-    const deleteResult = await result.current.deleteItem('delete-me');
-    expect(deleteResult.kind).toBe('ok');
+    let deleteResult: Awaited<ReturnType<typeof result.current.deleteItem>>;
+    await act(async () => {
+      deleteResult = await result.current.deleteItem('delete-me');
+    });
+    expect(deleteResult!.kind).toBe('ok');
 
     await waitFor(() => {
       expect(result.current.items).toHaveLength(0);
     });
 
     // Delete again — should tolerate not-found without error state
-    const deleteResult2 = await result.current.deleteItem('delete-me');
-    expect(deleteResult2.kind).toBe('not-found');
+    let deleteResult2: Awaited<ReturnType<typeof result.current.deleteItem>>;
+    await act(async () => {
+      deleteResult2 = await result.current.deleteItem('delete-me');
+    });
+    expect(deleteResult2!.kind).toBe('not-found');
     expect(result.current.error).toBeNull();
   });
 
@@ -258,7 +290,9 @@ describe('useKeychainItems', () => {
       value: JSON.stringify({ version: 1, items: [] }),
     });
 
-    await result.current.refresh();
+    await act(async () => {
+      await result.current.refresh();
+    });
 
     await waitFor(() => {
       expect(result.current.error).toBeNull();

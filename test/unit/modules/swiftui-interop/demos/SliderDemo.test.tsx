@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 // Mock @expo/ui/swift-ui
 let capturedOnChange: ((value: number) => void) | undefined;
@@ -38,7 +38,9 @@ describe('SliderDemo (iOS)', () => {
     // Simulate SwiftUI slider onChange
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {
-      capturedOnChange(42);
+      act(() => {
+        capturedOnChange!(42);
+      });
       // Component would update bar width to 42%
     }
   });

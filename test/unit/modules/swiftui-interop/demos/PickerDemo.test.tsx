@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 // Mock @expo/ui/swift-ui before importing the component
 let capturedOnChange: ((selection: string) => void) | undefined;
@@ -39,7 +39,9 @@ describe('PickerDemo (iOS)', () => {
     // Simulate SwiftUI picker onChange callback
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {
-      capturedOnChange('option-2'); // Assuming options have IDs like option-1, option-2, etc.
+      act(() => {
+        capturedOnChange!('option-2');
+      }); // Assuming options have IDs like option-1, option-2, etc.
 
       // Should update the echo (rerender needed in real scenario, but test mocks should capture state)
     }

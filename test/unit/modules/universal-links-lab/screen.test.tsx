@@ -5,7 +5,7 @@
  */
 
 import React from 'react';
-import { fireEvent, render } from '@testing-library/react-native';
+import { act, fireEvent, render } from '@testing-library/react-native';
 
 import type { UniversalLinkEvent } from '@/modules/universal-links-lab/types';
 
@@ -34,8 +34,10 @@ describe('universal-links-lab screen (iOS)', () => {
     hookState.log = [];
   });
 
-  it('renders ExplainerCard, DomainsList, TestComposer, AASAPreviewCard, SetupInstructions, InvocationsLog', () => {
-    const { getByText, getAllByText } = render(<UniversalLinksLabScreen />);
+  it('renders ExplainerCard, DomainsList, TestComposer, AASAPreviewCard, SetupInstructions, InvocationsLog', async () => {
+    const view = render(<UniversalLinksLabScreen />);
+    await act(async () => {});
+    const { getByText, getAllByText } = view;
     expect(getByText(/About Universal Links/)).toBeTruthy();
     expect(getByText(/Configured Domains/)).toBeTruthy();
     expect(getByText(/Test Composer/)).toBeTruthy();
@@ -45,12 +47,16 @@ describe('universal-links-lab screen (iOS)', () => {
   });
 
   it('Test Composer dispatch button calls hook.dispatch', async () => {
-    const { getByTestId } = render(<UniversalLinksLabScreen />);
-    fireEvent.press(getByTestId('dispatch-btn'));
+    const view = render(<UniversalLinksLabScreen />);
+    await act(async () => {});
+    const { getByTestId } = view;
+    await act(async () => {
+      fireEvent.press(getByTestId('dispatch-btn'));
+    });
     expect(mockDispatch).toHaveBeenCalledTimes(1);
   });
 
-  it('renders incoming invocations from hook log', () => {
+  it('renders incoming invocations from hook log', async () => {
     hookState.log = [
       {
         url: 'https://spot.example.com/incoming/1',
@@ -59,7 +65,9 @@ describe('universal-links-lab screen (iOS)', () => {
         receivedAt: new Date(0).toISOString(),
       },
     ];
-    const { getByText, getAllByTestId } = render(<UniversalLinksLabScreen />);
+    const view = render(<UniversalLinksLabScreen />);
+    await act(async () => {});
+    const { getByText, getAllByTestId } = view;
     expect(getByText('https://spot.example.com/incoming/1')).toBeTruthy();
     expect(getAllByTestId(/invocation-row-/).length).toBe(1);
   });
