@@ -29,9 +29,9 @@ export function ColorPickerDemo() {
   const [color, setColor] = useState<string>('#FF6B35');
 
   return (
-    <ThemedView testID="color-picker-demo" style={styles.container}>
-      <ThemedText type="smallBold">SwiftUI ColorPicker</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='color-picker-demo' style={styles.container}>
+      <ThemedText type='smallBold'>SwiftUI ColorPicker</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         Real SwiftUI ColorPicker with React Native swatch
       </ThemedText>
 
@@ -40,13 +40,13 @@ export function ColorPickerDemo() {
           <ColorPicker
             selection={color}
             onSelectionChange={(value: string) => setColor(toRNColor(value))}
-            label="Pick a color"
+            label='Pick a color'
           />
         </Host>
 
         <RNHostView matchContents>
           <ThemedView
-            testID="color-swatch"
+            testID='color-swatch'
             style={[
               styles.swatch,
               {

@@ -18,25 +18,25 @@ export function StepperToggleDemo() {
   const theme = useTheme();
 
   return (
-    <ThemedView testID="stepper-toggle-demo" style={styles.container}>
-      <ThemedText type="smallBold">Web Stepper + Toggle Fallback</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='stepper-toggle-demo' style={styles.container}>
+      <ThemedText type='smallBold'>Web Stepper + Toggle Fallback</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         RN-Web fallback: Pressable buttons + Switch
       </ThemedText>
 
       <ThemedView style={styles.controls}>
         <ThemedView style={styles.stepper}>
-          <Pressable onPress={() => setCount(Math.max(0, count - 1))} accessibilityRole="button">
-            <ThemedView type="backgroundSelected" style={styles.button}>
-              <ThemedText type="small">−</ThemedText>
+          <Pressable onPress={() => setCount(Math.max(0, count - 1))} accessibilityRole='button'>
+            <ThemedView type='backgroundSelected' style={styles.button}>
+              <ThemedText type='small'>−</ThemedText>
             </ThemedView>
           </Pressable>
-          <ThemedText type="small" style={styles.countLabel}>
+          <ThemedText type='small' style={styles.countLabel}>
             {count}
           </ThemedText>
-          <Pressable onPress={() => setCount(Math.min(10, count + 1))} accessibilityRole="button">
-            <ThemedView type="backgroundSelected" style={styles.button}>
-              <ThemedText type="small">+</ThemedText>
+          <Pressable onPress={() => setCount(Math.min(10, count + 1))} accessibilityRole='button'>
+            <ThemedView type='backgroundSelected' style={styles.button}>
+              <ThemedText type='small'>+</ThemedText>
             </ThemedView>
           </Pressable>
         </ThemedView>
@@ -45,12 +45,12 @@ export function StepperToggleDemo() {
           value={enabled}
           onValueChange={setEnabled}
           trackColor={{ false: theme.backgroundElement, true: theme.tintA }}
-          thumbColor="#fff"
+          thumbColor='#fff'
         />
       </ThemedView>
 
-      <ThemedView type="backgroundElement" style={styles.echo}>
-        <ThemedText type="small">
+      <ThemedView type='backgroundElement' style={styles.echo}>
+        <ThemedText type='small'>
           Count: {count} • Status: {enabled ? 'on' : 'off'}
         </ThemedText>
       </ThemedView>

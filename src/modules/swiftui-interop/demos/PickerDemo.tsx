@@ -25,9 +25,9 @@ export function PickerDemo() {
   const selectedLabel = OPTIONS.find((opt) => opt.id === selected)?.label ?? 'Unknown';
 
   return (
-    <ThemedView testID="picker-demo" style={styles.container}>
-      <ThemedText type="smallBold">SwiftUI Picker</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='picker-demo' style={styles.container}>
+      <ThemedText type='smallBold'>SwiftUI Picker</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         Real SwiftUI Picker control with React Native echo
       </ThemedText>
 
@@ -36,7 +36,7 @@ export function PickerDemo() {
           <Picker
             selection={selected}
             onSelectionChange={(value: string) => setSelected(value)}
-            label="Choose fruit"
+            label='Choose fruit'
           >
             {OPTIONS.map((opt) => (
               <Text key={opt.id}>{opt.label}</Text>
@@ -45,8 +45,8 @@ export function PickerDemo() {
         </Host>
 
         <RNHostView matchContents>
-          <ThemedView type="backgroundElement" style={styles.echo}>
-            <ThemedText type="small">Selected: {selectedLabel}</ThemedText>
+          <ThemedView type='backgroundElement' style={styles.echo}>
+            <ThemedText type='small'>Selected: {selectedLabel}</ThemedText>
           </ThemedView>
         </RNHostView>
       </View>

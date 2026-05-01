@@ -29,26 +29,26 @@ export function DatePickerDemo() {
   };
 
   return (
-    <ThemedView testID="date-picker-demo" style={styles.container}>
-      <ThemedText type="smallBold">RN DatePicker Fallback</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='date-picker-demo' style={styles.container}>
+      <ThemedText type='smallBold'>RN DatePicker Fallback</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         RN fallback: +/- day buttons
       </ThemedText>
 
       <ThemedView style={styles.controls}>
-        <Pressable onPress={() => adjustDate(-1)} accessibilityRole="button">
-          <ThemedView type="backgroundSelected" style={styles.button}>
-            <ThemedText type="small">−1 day</ThemedText>
+        <Pressable onPress={() => adjustDate(-1)} accessibilityRole='button'>
+          <ThemedView type='backgroundSelected' style={styles.button}>
+            <ThemedText type='small'>−1 day</ThemedText>
           </ThemedView>
         </Pressable>
 
-        <ThemedView type="backgroundElement" style={styles.echo}>
-          <ThemedText type="small">{formatDate(date)}</ThemedText>
+        <ThemedView type='backgroundElement' style={styles.echo}>
+          <ThemedText type='small'>{formatDate(date)}</ThemedText>
         </ThemedView>
 
-        <Pressable onPress={() => adjustDate(1)} accessibilityRole="button">
-          <ThemedView type="backgroundSelected" style={styles.button}>
-            <ThemedText type="small">+1 day</ThemedText>
+        <Pressable onPress={() => adjustDate(1)} accessibilityRole='button'>
+          <ThemedView type='backgroundSelected' style={styles.button}>
+            <ThemedText type='small'>+1 day</ThemedText>
           </ThemedView>
         </Pressable>
       </ThemedView>

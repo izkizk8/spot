@@ -26,9 +26,9 @@ export function ColorPickerDemo() {
   const [color, setColor] = useState<string>(COLORS[0]);
 
   return (
-    <ThemedView testID="color-picker-demo" style={styles.container}>
-      <ThemedText type="smallBold">Web ColorPicker Fallback</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='color-picker-demo' style={styles.container}>
+      <ThemedText type='smallBold'>Web ColorPicker Fallback</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         RN-Web fallback: swatch grid
       </ThemedText>
 
@@ -38,13 +38,13 @@ export function ColorPickerDemo() {
             key={c}
             onPress={() => setColor(c)}
             style={[styles.swatch, { backgroundColor: c }]}
-            accessibilityRole="button"
+            accessibilityRole='button'
           />
         ))}
       </ThemedView>
 
       <ThemedView
-        testID="color-swatch"
+        testID='color-swatch'
         style={[styles.previewSwatch, { backgroundColor: color }]}
       />
     </ThemedView>

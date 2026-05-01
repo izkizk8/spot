@@ -21,7 +21,7 @@ export default function SwiftUIInteropScreen() {
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
-      testID="swiftui-interop-screen"
+      testID='swiftui-interop-screen'
     >
       <ThemedView style={styles.demoSection}>
         <PickerDemo />

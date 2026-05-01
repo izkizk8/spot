@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-010-swiftui-interop.md](feature-010-swiftui-interop.md) | Verify SwiftUI Interop on iPhone |
+| [feature-011-sensors-playground.md](feature-011-sensors-playground.md) | Verify Sensors Playground on iPhone |

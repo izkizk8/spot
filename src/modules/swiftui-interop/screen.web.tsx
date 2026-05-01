@@ -21,11 +21,11 @@ export default function SwiftUIInteropScreen() {
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
-      testID="swiftui-interop-screen"
+      testID='swiftui-interop-screen'
     >
       {/* Web banner (FR-015) */}
-      <ThemedView type="backgroundElement" style={styles.banner}>
-        <ThemedText type="smallBold">Native SwiftUI is iOS-only</ThemedText>
+      <ThemedView type='backgroundElement' style={styles.banner}>
+        <ThemedText type='smallBold'>Native SwiftUI is iOS-only</ThemedText>
       </ThemedView>
 
       <ThemedView style={styles.demoSection}>

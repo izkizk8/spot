@@ -17,9 +17,9 @@ export function StepperToggleDemo() {
   const [enabled, setEnabled] = useState<boolean>(false);
 
   return (
-    <ThemedView testID="stepper-toggle-demo" style={styles.container}>
-      <ThemedText type="smallBold">SwiftUI Stepper + Toggle</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='stepper-toggle-demo' style={styles.container}>
+      <ThemedText type='smallBold'>SwiftUI Stepper + Toggle</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         Real SwiftUI Stepper and Toggle with React Native echo
       </ThemedText>
 
@@ -31,7 +31,7 @@ export function StepperToggleDemo() {
             max={10}
             step={1}
             onValueChange={(value: number) => setCount(value)}
-            label="Count"
+            label='Count'
           />
         </Host>
 
@@ -39,13 +39,13 @@ export function StepperToggleDemo() {
           <Toggle
             isOn={enabled}
             onIsOnChange={(value: boolean) => setEnabled(value)}
-            label="Enabled"
+            label='Enabled'
           />
         </Host>
 
         <RNHostView matchContents>
-          <ThemedView type="backgroundElement" style={styles.echo}>
-            <ThemedText type="small">
+          <ThemedView type='backgroundElement' style={styles.echo}>
+            <ThemedText type='small'>
               Count: {count} • Status: {enabled ? 'on' : 'off'}
             </ThemedText>
           </ThemedView>

@@ -27,9 +27,9 @@ export function DatePickerDemo() {
   const [date, setDate] = useState<Date>(new Date());
 
   return (
-    <ThemedView testID="date-picker-demo" style={styles.container}>
-      <ThemedText type="smallBold">SwiftUI DatePicker</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='date-picker-demo' style={styles.container}>
+      <ThemedText type='smallBold'>SwiftUI DatePicker</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         Real SwiftUI DatePicker (compact & wheel styles)
       </ThemedText>
 
@@ -39,14 +39,14 @@ export function DatePickerDemo() {
           <DatePicker
             selection={date}
             onDateChange={(value: Date) => setDate(value)}
-            title="Pick date"
+            title='Pick date'
             displayedComponents={['date']}
           />
         </Host>
 
         <RNHostView matchContents>
-          <ThemedView type="backgroundElement" style={styles.echo}>
-            <ThemedText type="small">{formatDate(date)}</ThemedText>
+          <ThemedView type='backgroundElement' style={styles.echo}>
+            <ThemedText type='small'>{formatDate(date)}</ThemedText>
           </ThemedView>
         </RNHostView>
       </View>

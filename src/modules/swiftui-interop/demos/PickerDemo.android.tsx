@@ -26,9 +26,9 @@ export function PickerDemo() {
   const selectedLabel = OPTIONS.find((opt) => opt.id === selected)?.label ?? 'Unknown';
 
   return (
-    <ThemedView testID="picker-demo" style={styles.container}>
-      <ThemedText type="smallBold">RN Picker Fallback</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='picker-demo' style={styles.container}>
+      <ThemedText type='smallBold'>RN Picker Fallback</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         RN fallback for SwiftUI Picker (segmented chip row)
       </ThemedText>
 
@@ -37,7 +37,7 @@ export function PickerDemo() {
           <Pressable
             key={opt.id}
             onPress={() => setSelected(opt.id)}
-            role="button"
+            role='button'
             style={[
               styles.chip,
               {
@@ -46,13 +46,13 @@ export function PickerDemo() {
               },
             ]}
           >
-            <ThemedText type="small">{opt.label}</ThemedText>
+            <ThemedText type='small'>{opt.label}</ThemedText>
           </Pressable>
         ))}
       </ThemedView>
 
-      <ThemedView type="backgroundElement" style={styles.echo}>
-        <ThemedText type="small">Selected: {selectedLabel}</ThemedText>
+      <ThemedView type='backgroundElement' style={styles.echo}>
+        <ThemedText type='small'>Selected: {selectedLabel}</ThemedText>
       </ThemedView>
     </ThemedView>
   );

@@ -21,11 +21,11 @@ export default function SwiftUIInteropScreen() {
     <ScrollView
       style={styles.container}
       contentContainerStyle={styles.content}
-      testID="swiftui-interop-screen"
+      testID='swiftui-interop-screen'
     >
       {/* Android banner (FR-012) */}
-      <ThemedView type="backgroundElement" style={styles.banner}>
-        <ThemedText type="smallBold">
+      <ThemedView type='backgroundElement' style={styles.banner}>
+        <ThemedText type='smallBold'>
           SwiftUI is iOS-only — here's the Material counterpart
         </ThemedText>
       </ThemedView>

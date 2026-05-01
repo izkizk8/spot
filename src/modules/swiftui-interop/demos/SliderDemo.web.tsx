@@ -19,9 +19,9 @@ export function SliderDemo() {
   const theme = useTheme();
 
   return (
-    <ThemedView testID="slider-demo" style={styles.container}>
-      <ThemedText type="smallBold">Web Slider Fallback</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='slider-demo' style={styles.container}>
+      <ThemedText type='smallBold'>Web Slider Fallback</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         RN-Web fallback: segmented chip row
       </ThemedText>
 
@@ -30,7 +30,7 @@ export function SliderDemo() {
           <Pressable
             key={step}
             onPress={() => setValue(step)}
-            role="button"
+            role='button'
             style={[
               styles.chip,
               {
@@ -39,14 +39,14 @@ export function SliderDemo() {
               },
             ]}
           >
-            <ThemedText type="small">{step}</ThemedText>
+            <ThemedText type='small'>{step}</ThemedText>
           </Pressable>
         ))}
       </ThemedView>
 
-      <ThemedView type="backgroundElement" style={styles.barContainer}>
+      <ThemedView type='backgroundElement' style={styles.barContainer}>
         <ThemedView
-          testID="slider-bar"
+          testID='slider-bar'
           style={[
             styles.bar,
             {
@@ -55,7 +55,7 @@ export function SliderDemo() {
             },
           ]}
         />
-        <ThemedText type="small" style={styles.barLabel}>
+        <ThemedText type='small' style={styles.barLabel}>
           {value}%
         </ThemedText>
       </ThemedView>

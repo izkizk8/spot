@@ -18,9 +18,9 @@ export function SliderDemo() {
   const theme = useTheme();
 
   return (
-    <ThemedView testID="slider-demo" style={styles.container}>
-      <ThemedText type="smallBold">SwiftUI Slider</ThemedText>
-      <ThemedText type="small" themeColor="textSecondary" style={styles.caption}>
+    <ThemedView testID='slider-demo' style={styles.container}>
+      <ThemedText type='smallBold'>SwiftUI Slider</ThemedText>
+      <ThemedText type='small' themeColor='textSecondary' style={styles.caption}>
         Real SwiftUI Slider with React Native bar width echo
       </ThemedText>
 
@@ -31,14 +31,14 @@ export function SliderDemo() {
             min={0}
             max={100}
             onValueChange={(newValue: number) => setValue(Math.round(newValue))}
-            label="Adjust slider"
+            label='Adjust slider'
           />
         </Host>
 
         <RNHostView matchContents>
-          <ThemedView type="backgroundElement" style={styles.barContainer}>
+          <ThemedView type='backgroundElement' style={styles.barContainer}>
             <ThemedView
-              testID="slider-bar"
+              testID='slider-bar'
               style={[
                 styles.bar,
                 {
@@ -47,7 +47,7 @@ export function SliderDemo() {
                 },
               ]}
             />
-            <ThemedText type="small" style={styles.barLabel}>
+            <ThemedText type='small' style={styles.barLabel}>
               {value}%
             </ThemedText>
           </ThemedView>
