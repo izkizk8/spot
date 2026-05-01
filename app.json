@@ -64,6 +64,7 @@
       "./plugins/with-bluetooth",
       "./plugins/with-passkit",
       "./plugins/with-eventkit",
+      "./plugins/with-contacts",
       [
         "expo-sensors",
         {

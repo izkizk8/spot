@@ -32,6 +32,7 @@ import arkitLab from './arkit-lab';
 import bluetoothLab from './bluetooth-lab';
 import passkitLab from './passkit-lab';
 import eventkitLab from './eventkit-lab';
+import contactsLab from './contacts-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -83,5 +84,6 @@ export const MODULES: readonly ModuleManifest[] = [
   bluetoothLab,
   passkitLab,
   eventkitLab,
+  contactsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
