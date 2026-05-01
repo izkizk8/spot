@@ -26,3 +26,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | [feature-053-swiftdata.md](feature-053-swiftdata.md) | Verify SwiftData on iPhone |
 | [feature-057-photokit.md](feature-057-photokit.md) | Verify PhotoKit / PHPicker on iPhone |
 | [feature-060-visual-look-up.md](feature-060-visual-look-up.md) | Verify Visual Look Up (long-press image recognition, iOS 15+) on iPhone |
+| [feature-062-realitykit-usdz.md](feature-062-realitykit-usdz.md) | Verify RealityKit USDZ AR Quick Look on iPhone |
