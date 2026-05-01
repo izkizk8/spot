@@ -42,6 +42,7 @@ import homekitLab from './homekit-lab';
 import carplayLab from './carplay-lab';
 import weatherkitLab from './weatherkit-lab';
 import shareplayLab from './shareplay-lab';
+import lidarRoomplanLab from './lidar-roomplan-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -103,5 +104,6 @@ export const MODULES: readonly ModuleManifest[] = [
   carplayLab,
   weatherkitLab,
   shareplayLab,
+  lidarRoomplanLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
