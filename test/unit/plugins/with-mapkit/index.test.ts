@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 049, plugins.length should be 39 (added with-apple-pay after with-roomplan)
-    expect(plugins.length).toBe(39); // bumped from 38 by feature 049 (with-apple-pay)
+    // After feature 050, plugins.length should be 40 (added with-storekit after with-apple-pay)
+    expect(plugins.length).toBe(40); // bumped from 39 by feature 050 (with-storekit)
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(

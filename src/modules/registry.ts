@@ -44,6 +44,7 @@ import weatherkitLab from './weatherkit-lab';
 import shareplayLab from './shareplay-lab';
 import lidarRoomplanLab from './lidar-roomplan-lab';
 import applePayLab from './apple-pay-lab';
+import storekitLab from './storekit-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -107,5 +108,6 @@ export const MODULES: readonly ModuleManifest[] = [
   shareplayLab,
   lidarRoomplanLab,
   applePayLab,
+  storekitLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

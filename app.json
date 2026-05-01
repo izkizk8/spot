@@ -76,6 +76,7 @@
       "./plugins/with-weatherkit",
       "./plugins/with-roomplan",
       "./plugins/with-apple-pay",
+      "./plugins/with-storekit",
       [
         "expo-sensors",
         {
