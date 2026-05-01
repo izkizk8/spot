@@ -48,6 +48,7 @@ import applePayLab from './apple-pay-lab';
 import storekitLab from './storekit-lab';
 import tapToPayLab from './tap-to-pay-lab';
 import coredataCloudKitLab from './coredata-cloudkit-lab';
+import shortcutsSnippetsLab from './shortcuts-snippets-lab';
 import swiftdataLab from './swiftdata-lab';
 import photokitLab from './photokit-lab';
 import visualLookUpLab from './visual-look-up-lab';
@@ -127,5 +128,6 @@ export const MODULES: readonly ModuleManifest[] = [
   coreImageLab,
   iCloudDriveLab,
   siriKitLab,
+  shortcutsSnippetsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
