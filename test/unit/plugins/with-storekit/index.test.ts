@@ -133,7 +133,7 @@ describe('with-storekit: app.json registration + chain composition', () => {
   it('app.json plugins array length is 40 after feature 050', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(45);
+    expect(plugins.length).toBe(46);
   });
 
   it('with-storekit slots in after with-apple-pay', () => {

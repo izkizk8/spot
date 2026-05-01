@@ -29,3 +29,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | [feature-062-realitykit-usdz.md](feature-062-realitykit-usdz.md) | Verify RealityKit USDZ AR Quick Look on iPhone |
 | [feature-064-core-image.md](feature-064-core-image.md) | Verify Core Image filters (CIFilter) on iPhone |
 | [feature-070-icloud-drive.md](feature-070-icloud-drive.md) | Verify iCloud Drive (requires paid Apple Developer account) on iPhone |
+| [feature-071-sirikit.md](feature-071-sirikit.md) | Verify SiriKit Custom Intents on iPhone |

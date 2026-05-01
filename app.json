@@ -82,6 +82,7 @@
       "./plugins/with-photokit",
       "./plugins/with-visual-look-up",
       "./plugins/with-icloud-drive",
+      "./plugins/with-sirikit",
       [
         "expo-sensors",
         {

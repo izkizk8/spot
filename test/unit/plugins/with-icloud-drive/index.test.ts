@@ -121,7 +121,7 @@ describe('withICloudDrive (ConfigPlugin)', () => {
     const plugins: unknown[] = appJson.expo.plugins;
 
     // After feature 070, plugins.length should be 43
-    expect(plugins.length).toBe(45);
+    expect(plugins.length).toBe(46);
 
     const stringPlugins = plugins.filter((p: unknown) => typeof p === 'string');
     expect(stringPlugins).toContain('./plugins/with-icloud-drive');
