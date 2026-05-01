@@ -79,6 +79,7 @@
       "./plugins/with-storekit",
       "./plugins/with-tap-to-pay",
       "./plugins/with-coredata-cloudkit",
+      "./plugins/with-live-stickers",
       [
         "expo-sensors",
         {

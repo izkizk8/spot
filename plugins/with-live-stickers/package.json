@@ -1,0 +1,7 @@
+{
+  "name": "with-live-stickers",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Expo config plugin – Live Stickers (iOS 17+)",
+  "main": "index.ts"
+}
