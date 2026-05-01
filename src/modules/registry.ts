@@ -14,6 +14,7 @@ import coremlLab from './coreml-lab';
 import cameraVision from './camera-vision';
 import speechRecognitionLab from './speech-recognition-lab';
 import speechSynthesisLab from './speech-synthesis-lab';
+import audioLab from './audio-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -48,5 +49,6 @@ export const MODULES: readonly ModuleManifest[] = [
   cameraVision,
   speechRecognitionLab,
   speechSynthesisLab,
+  audioLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
