@@ -1,0 +1,24 @@
+# Tasks — Feature 057 PhotoKit Lab
+
+- [x] Create `specs/057-photokit/` artifacts (spec, plan, tasks, quickstart)
+- [x] Create `src/native/photokit.types.ts`
+- [x] Create `src/native/photokit.ts` (iOS bridge)
+- [x] Create `src/native/photokit.android.ts` (stub)
+- [x] Create `src/native/photokit.web.ts` (stub)
+- [x] Create `src/modules/photokit-lab/hooks/usePhotoKit.ts`
+- [x] Create `src/modules/photokit-lab/components/IOSOnlyBanner.tsx`
+- [x] Create `src/modules/photokit-lab/components/CapabilityCard.tsx`
+- [x] Create `src/modules/photokit-lab/components/PhotoGrid.tsx`
+- [x] Create `src/modules/photokit-lab/components/PhotoPicker.tsx`
+- [x] Create `src/modules/photokit-lab/components/SetupInstructions.tsx`
+- [x] Create `src/modules/photokit-lab/screen.tsx`
+- [x] Create `src/modules/photokit-lab/screen.android.tsx`
+- [x] Create `src/modules/photokit-lab/screen.web.tsx`
+- [x] Create `src/modules/photokit-lab/index.tsx`
+- [x] Register in `src/modules/registry.ts`
+- [x] Create `plugins/with-photokit/index.ts` + `package.json`
+- [x] Append `./plugins/with-photokit` to `app.json` plugins
+- [x] Write unit tests (module + plugin)
+- [x] Bump with-mapkit coexistence count 42→43
+- [x] `pnpm format && pnpm check` green
+- [x] Commit

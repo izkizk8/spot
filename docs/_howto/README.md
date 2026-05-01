@@ -24,3 +24,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
 | [feature-053-swiftdata.md](feature-053-swiftdata.md) | Verify SwiftData on iPhone |
+| [feature-057-photokit.md](feature-057-photokit.md) | Verify PhotoKit / PHPicker on iPhone |
