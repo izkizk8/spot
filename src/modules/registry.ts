@@ -36,6 +36,7 @@ import contactsLab from './contacts-lab';
 import quickActionsLab from './quick-actions-lab';
 import handoffLab from './handoff-lab';
 import universalLinksLab from './universal-links-lab';
+import appClipsLab from './app-clips-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -91,5 +92,6 @@ export const MODULES: readonly ModuleManifest[] = [
   quickActionsLab,
   handoffLab,
   universalLinksLab,
+  appClipsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

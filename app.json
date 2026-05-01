@@ -69,6 +69,7 @@
       "./plugins/with-quick-actions",
       "./plugins/with-handoff",
       "./plugins/with-universal-links",
+      "./plugins/with-app-clips",
       [
         "expo-sensors",
         {

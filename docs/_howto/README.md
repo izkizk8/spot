@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-041-universal-links.md](feature-041-universal-links.md) | Verify Universal Links on iPhone |
+| [feature-042-app-clips.md](feature-042-app-clips.md) | Verify App Clips on iPhone |
