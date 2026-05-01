@@ -84,6 +84,7 @@
       "./plugins/with-icloud-drive",
       "./plugins/with-sirikit",
       "./plugins/with-shortcuts-snippets",
+      "./plugins/with-live-text",
       [
         "expo-sensors",
         {

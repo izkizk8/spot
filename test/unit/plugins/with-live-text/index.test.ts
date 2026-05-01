@@ -1,6 +1,6 @@
 /**
- * with-sirikit Plugin Test
- * Feature: 071-sirikit
+ * with-live-text Plugin Test
+ * Feature: 080-live-text
  *
  * @jest-environment node
  */
@@ -32,46 +32,43 @@ jest.mock('@expo/config-plugins', () => ({
   },
 }));
 
-import withSiriKit, {
-  applySiriKitInfoPlist,
-  SIRI_USAGE_KEY,
-  SIRI_USAGE_COPY,
-} from '../../../../plugins/with-sirikit';
+import withLiveText, {
+  applyLiveTextInfoPlist,
+  CAMERA_USAGE_KEY,
+  CAMERA_USAGE_COPY,
+} from '../../../../plugins/with-live-text';
 
-describe('applySiriKitInfoPlist (pure helper)', () => {
-  it('adds NSSiriUsageDescription when absent', () => {
-    const out = applySiriKitInfoPlist({});
-    expect(out[SIRI_USAGE_KEY]).toBe(SIRI_USAGE_COPY);
+describe('applyLiveTextInfoPlist (pure helper)', () => {
+  it('adds NSCameraUsageDescription when absent', () => {
+    const out = applyLiveTextInfoPlist({});
+    expect(out[CAMERA_USAGE_KEY]).toBe(CAMERA_USAGE_COPY);
   });
 
-  it('preserves an operator-supplied value verbatim', () => {
-    const out = applySiriKitInfoPlist({
-      [SIRI_USAGE_KEY]: 'Custom description',
-    });
-    expect(out[SIRI_USAGE_KEY]).toBe('Custom description');
+  it('overwrites an existing NSCameraUsageDescription', () => {
+    const out = applyLiveTextInfoPlist({ [CAMERA_USAGE_KEY]: 'old copy' });
+    expect(out[CAMERA_USAGE_KEY]).toBe(CAMERA_USAGE_COPY);
   });
 
-  it('is byte-stable on re-run', () => {
-    const once = applySiriKitInfoPlist({});
-    const twice = applySiriKitInfoPlist(once);
+  it('is idempotent (running twice produces a deep-equal result)', () => {
+    const once = applyLiveTextInfoPlist({});
+    const twice = applyLiveTextInfoPlist(once);
     expect(JSON.stringify(twice)).toBe(JSON.stringify(once));
   });
 
   it('does not mutate the input object', () => {
     const input: Record<string, unknown> = {};
-    const out = applySiriKitInfoPlist(input);
+    const out = applyLiveTextInfoPlist(input);
     expect(out).not.toBe(input);
-    expect(input[SIRI_USAGE_KEY]).toBeUndefined();
+    expect(input[CAMERA_USAGE_KEY]).toBeUndefined();
   });
 
   it('preserves unrelated Info.plist keys', () => {
-    const out = applySiriKitInfoPlist({ NSCameraUsageDescription: 'camera' });
-    expect(out['NSCameraUsageDescription']).toBe('camera');
-    expect(out[SIRI_USAGE_KEY]).toBe(SIRI_USAGE_COPY);
+    const out = applyLiveTextInfoPlist({ NSLocationWhenInUseUsageDescription: 'location' });
+    expect(out['NSLocationWhenInUseUsageDescription']).toBe('location');
   });
 });
 
-describe('with-sirikit (config plugin)', () => {
+describe('with-live-text (config plugin)', () => {
   const baseConfig: ExpoConfig = {
     name: 'test-app',
     slug: 'test-app',
@@ -79,57 +76,45 @@ describe('with-sirikit (config plugin)', () => {
   };
 
   it('exports a config plugin function', () => {
-    expect(typeof withSiriKit).toBe('function');
+    expect(typeof withLiveText).toBe('function');
   });
 
-  it('seeds NSSiriUsageDescription on a baseline config', () => {
-    const out = withSiriKit(baseConfig);
-    expect((out.ios?.infoPlist as Record<string, unknown> | undefined)?.[SIRI_USAGE_KEY]).toBe(
-      SIRI_USAGE_COPY,
-    );
-  });
-
-  it('preserves an operator-supplied value', () => {
-    const cfg: ExpoConfig = {
-      ...baseConfig,
-      ios: { infoPlist: { [SIRI_USAGE_KEY]: 'Custom' } },
-    };
-    const out = withSiriKit(cfg);
-    expect((out.ios?.infoPlist as Record<string, unknown> | undefined)?.[SIRI_USAGE_KEY]).toBe(
-      'Custom',
-    );
+  it('seeds NSCameraUsageDescription on a baseline config', () => {
+    const out = withLiveText(baseConfig);
+    const plist = out.ios?.infoPlist as Record<string, unknown> | undefined;
+    expect(plist?.[CAMERA_USAGE_KEY]).toBe(CAMERA_USAGE_COPY);
   });
 
   it('running twice yields a deep-equal config (idempotency)', () => {
-    const once = withSiriKit(baseConfig);
-    const twice = withSiriKit(once);
+    const once = withLiveText(baseConfig);
+    const twice = withLiveText(once);
     expect(twice).toEqual(once);
   });
 
-  it('only edits NSSiriUsageDescription', () => {
-    const out = withSiriKit(baseConfig);
+  it('only edits NSCameraUsageDescription', () => {
+    const out = withLiveText(baseConfig);
     expect(out.name).toBe(baseConfig.name);
     expect(out.slug).toBe(baseConfig.slug);
   });
 });
 
-describe('with-sirikit: app.json registration + chain composition', () => {
+describe('with-live-text: app.json registration + chain composition', () => {
   const baseConfig: ExpoConfig = {
     name: 'test-app',
     slug: 'test-app',
     ios: { bundleIdentifier: 'com.test.app' },
   };
 
-  it('app.json plugins array contains ./plugins/with-sirikit exactly once', () => {
+  it('app.json plugins array contains ./plugins/with-live-text exactly once', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
     const count = plugins.filter(
-      (p) => typeof p === 'string' && p === './plugins/with-sirikit',
+      (p) => typeof p === 'string' && p === './plugins/with-live-text',
     ).length;
     expect(count).toBe(1);
   });
 
-  it('app.json plugins array length is 43 after feature 071', () => {
+  it('app.json plugins array length is 43 after feature 080', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
     expect(plugins.length).toBe(48);
@@ -142,7 +127,7 @@ describe('with-sirikit: app.json registration + chain composition', () => {
       require('../../../../plugins/with-apple-pay').default,
       require('../../../../plugins/with-weatherkit').default,
       require('../../../../plugins/with-coredata-cloudkit').default,
-      withSiriKit,
+      withLiveText,
     ];
     let config: ExpoConfig = baseConfig;
     expect(() => {

@@ -77,7 +77,7 @@ describe('withPhotoKit (default plugin)', () => {
   it('coexistence: app.json includes with-photokit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(47);
+    expect(plugins.length).toBe(48);
     const idx = plugins.findIndex(
       (p: unknown) => typeof p === 'string' && p === './plugins/with-photokit',
     );

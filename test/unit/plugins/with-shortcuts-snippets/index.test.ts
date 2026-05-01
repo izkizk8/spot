@@ -137,7 +137,7 @@ describe('with-shortcuts-snippets: app.json registration + chain composition', (
   it('app.json plugins array length is 43 after feature 072', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(47);
+    expect(plugins.length).toBe(48);
   });
 
   it('coexists with prior plugins without throwing', () => {
