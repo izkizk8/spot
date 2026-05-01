@@ -1,0 +1,142 @@
+// LogMoodIntent.swift — App Intents Showcase (spec 013)
+//
+// Defines:
+//   • SpotMood enum (happy / neutral / sad)
+//   • LogMoodIntent: appends a MoodRecord to the shared store and
+//     returns a localized confirmation string.
+//   • The Expo native module `AppIntents` exposing logMood,
+//     getLastMood, greetUser to the JS bridge.
+//
+// Verified manually on device per specs/013-app-intents/quickstart.md §1.
+
+import AppIntents
+import ExpoModulesCore
+import Foundation
+
+@available(iOS 16.0, *)
+enum SpotMood: String, AppEnum, CaseIterable {
+    case happy
+    case neutral
+    case sad
+
+    static var typeDisplayRepresentation: TypeDisplayRepresentation = "Mood"
+    static var caseDisplayRepresentations: [SpotMood: DisplayRepresentation] = [
+        .happy: "Happy",
+        .neutral: "Neutral",
+        .sad: "Sad",
+    ]
+}
+
+// MARK: - Shared on-disk store
+
+/// On-disk JSON written to the app's Documents directory under
+/// `spot-app-intents-moods.json`. The JS `mood-store.ts` mirrors the
+/// same shape; the JS path is responsible for keeping the
+/// AsyncStorage and the JSON file in sync.
+struct MoodRecord: Codable {
+    let mood: String
+    let timestamp: Double
+}
+
+@available(iOS 16.0, *)
+enum MoodStoreSwift {
+    static let fileName = "spot-app-intents-moods.json"
+    static let cap = 100
+
+    static func storeURL() -> URL {
+        let docs = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+        return docs.appendingPathComponent(fileName)
+    }
+
+    static func read() -> [MoodRecord] {
+        let url = storeURL()
+        guard FileManager.default.fileExists(atPath: url.path) else { return [] }
+        guard let data = try? Data(contentsOf: url) else { return [] }
+        return (try? JSONDecoder().decode([MoodRecord].self, from: data)) ?? []
+    }
+
+    static func append(_ rec: MoodRecord) throws {
+        var all = read()
+        all.append(rec)
+        if all.count > cap {
+            all = Array(all.suffix(cap))
+        }
+        let data = try JSONEncoder().encode(all)
+        try data.write(to: storeURL(), options: .atomic)
+    }
+
+    static func last() -> MoodRecord? {
+        return read().last
+    }
+}
+
+// MARK: - LogMoodIntent
+
+@available(iOS 16.0, *)
+struct LogMoodIntent: AppIntent {
+    static var title: LocalizedStringResource = "Log mood"
+    static var description = IntentDescription("Append a mood entry to the Spot mood history.")
+
+    @Parameter(title: "Mood")
+    var mood: SpotMood
+
+    func perform() async throws -> some IntentResult & ProvidesDialog & ReturnsValue<String> {
+        let timestamp = Date().timeIntervalSince1970 * 1000
+        let rec = MoodRecord(mood: mood.rawValue, timestamp: timestamp)
+        try MoodStoreSwift.append(rec)
+        let formatter = DateFormatter()
+        formatter.dateFormat = "HH:mm:ss"
+        let when = formatter.string(from: Date())
+        let summary = "Logged \(mood.rawValue) at \(when)"
+        return .result(value: summary, dialog: IntentDialog(stringLiteral: summary))
+    }
+}
+
+// MARK: - Expo native module bridge
+
+public class AppIntentsModule: Module {
+    public func definition() -> ModuleDefinition {
+        Name("AppIntents")
+
+        AsyncFunction("logMood") { (args: [String: Any]) -> [String: Any] in
+            guard #available(iOS 16.0, *) else {
+                throw NSError(
+                    domain: "AppIntents", code: 0,
+                    userInfo: [NSLocalizedDescriptionKey: "NOT_SUPPORTED"])
+            }
+            guard let moodStr = args["mood"] as? String,
+                let mood = SpotMood(rawValue: moodStr)
+            else {
+                throw NSError(
+                    domain: "AppIntents", code: 1,
+                    userInfo: [NSLocalizedDescriptionKey: "Invalid mood"])
+            }
+            let timestamp = Date().timeIntervalSince1970 * 1000
+            let rec = MoodRecord(mood: mood.rawValue, timestamp: timestamp)
+            try MoodStoreSwift.append(rec)
+            return ["logged": mood.rawValue, "timestamp": timestamp]
+        }
+
+        AsyncFunction("getLastMood") { () -> [String: Any?] in
+            guard #available(iOS 16.0, *) else {
+                throw NSError(
+                    domain: "AppIntents", code: 0,
+                    userInfo: [NSLocalizedDescriptionKey: "NOT_SUPPORTED"])
+            }
+            let last = MoodStoreSwift.last()
+            return ["mood": last?.mood as Any?]
+        }
+
+        AsyncFunction("greetUser") { (args: [String: Any]) -> [String: Any] in
+            guard #available(iOS 16.0, *) else {
+                throw NSError(
+                    domain: "AppIntents", code: 0,
+                    userInfo: [NSLocalizedDescriptionKey: "NOT_SUPPORTED"])
+            }
+            let raw = (args["name"] as? String) ?? ""
+            let trimmed = raw.trimmingCharacters(in: .whitespaces)
+            let greeting = trimmed.isEmpty ? "Hello, there!" : "Hello, \(trimmed)!"
+            return ["greeting": greeting]
+        }
+    }
+}

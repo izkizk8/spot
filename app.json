@@ -41,6 +41,7 @@
       ],
       "expo-image",
       "./plugins/with-live-activity",
+      "./plugins/with-app-intents",
       [
         "expo-sensors",
         {
