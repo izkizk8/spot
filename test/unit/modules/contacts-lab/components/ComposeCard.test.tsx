@@ -3,7 +3,7 @@
  * Feature: 038-contacts
  */
 
-import { fireEvent, render, waitFor } from '@testing-library/react-native';
+import { act, fireEvent, render, waitFor } from '@testing-library/react-native';
 import React from 'react';
 
 import { ComposeCard } from '@/modules/contacts-lab/components/ComposeCard';
@@ -115,7 +115,9 @@ describe('ComposeCard', () => {
       expect(getByText('Saving...')).toBeTruthy();
     });
 
-    resolveSave!();
-    await savePromise;
+    await act(async () => {
+      resolveSave!();
+      await savePromise;
+    });
   });
 });

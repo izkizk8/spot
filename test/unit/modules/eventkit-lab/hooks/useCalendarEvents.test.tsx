@@ -94,7 +94,7 @@ describe('useCalendarEvents hook', () => {
   });
 
   // ─── H2: default state ────────────────────────────────────────────
-  it('H2: default state on mount', () => {
+  it('H2: default state on mount', async () => {
     const { result } = renderHook(() => useCalendarEvents());
     expect(result.current.status).toBe('notDetermined');
     expect(result.current.calendars).toEqual([]);
@@ -102,6 +102,7 @@ describe('useCalendarEvents hook', () => {
     expect(result.current.range).toBe('today');
     expect(result.current.inFlight).toBe(false);
     expect(result.current.lastError).toBeNull();
+    await act(async () => {});
   });
 
   // ─── H3: mount checks permissions exactly once ───────────────────
@@ -139,7 +140,7 @@ describe('useCalendarEvents hook', () => {
       expect(result.current.status).toBe('authorized');
     });
 
-    act(() => {
+    await act(async () => {
       void result.current.createEvent({
         title: 'T',
         startDate: new Date('2025-01-01T10:00:00Z'),
@@ -316,7 +317,7 @@ describe('useCalendarEvents hook', () => {
 
     const callsBefore = mockCalendar.getEventsAsync.mock.calls.length;
 
-    act(() => {
+    await act(async () => {
       result.current.setRange('next7');
     });
 

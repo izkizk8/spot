@@ -92,7 +92,7 @@ describe('useReminders hook', () => {
   });
 
   // ─── H2: default state ───────────────────────────────────────────
-  it('H2: default state on mount', () => {
+  it('H2: default state on mount', async () => {
     const { result } = renderHook(() => useReminders());
     expect(result.current.status).toBe('notDetermined');
     expect(result.current.lists).toEqual([]);
@@ -100,6 +100,7 @@ describe('useReminders hook', () => {
     expect(result.current.filter).toBe('incomplete');
     expect(result.current.inFlight).toBe(false);
     expect(result.current.lastError).toBeNull();
+    await act(async () => {});
   });
 
   // ─── H3: mount checks permissions exactly once ───────────────────
@@ -164,7 +165,7 @@ describe('useReminders hook', () => {
 
     const callsBefore = mockCalendar.getRemindersAsync.mock.calls.length;
 
-    act(() => {
+    await act(async () => {
       result.current.setFilter('completed');
     });
 

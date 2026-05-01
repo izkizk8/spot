@@ -113,13 +113,14 @@ describe('useContacts hook', () => {
   });
 
   // ─── Default state ────────────────────────────────────────────
-  it('default state on mount', () => {
+  it('default state on mount', async () => {
     const { result } = renderHook(() => useContacts());
     expect(result.current.status).toBe('notDetermined');
     expect(result.current.contacts).toEqual([]);
     expect(result.current.hasNextPage).toBe(false);
     expect(result.current.inFlight).toBe(false);
     expect(result.current.lastError).toBe(null);
+    await act(async () => {});
   });
 
   it('initializes status from getPermissionsAsync', async () => {
@@ -384,7 +385,17 @@ describe('useContacts hook', () => {
   });
 
   it('updateContact requires id', async () => {
+    mockContacts.getPermissionsAsync.mockResolvedValue({
+      status: 'granted',
+      granted: true,
+      canAskAgain: true,
+      expires: 'never',
+    });
     const { result } = renderHook(() => useContacts());
+    // Wait for mount fetch to settle (status transitions from notDetermined)
+    await waitFor(() => {
+      expect(result.current.status).toBe('authorized');
+    });
 
     await expect(result.current.updateContact({ givenName: 'Test' })).rejects.toThrow(
       'Contact ID is required for update',
@@ -534,7 +545,11 @@ describe('useContacts hook', () => {
 
     const { result } = renderHook(() => useContacts());
 
-    await expect(result.current.addContact({ givenName: 'Test' })).rejects.toThrow('Create failed');
+    await act(async () => {
+      await expect(result.current.addContact({ givenName: 'Test' })).rejects.toThrow(
+        'Create failed',
+      );
+    });
 
     await waitFor(() => {
       expect(result.current.lastError).toBe('Create failed');
@@ -551,7 +566,7 @@ describe('useContacts hook', () => {
 
     const { result } = renderHook(() => useContacts());
 
-    act(() => {
+    await act(async () => {
       void result.current.refresh();
     });
 

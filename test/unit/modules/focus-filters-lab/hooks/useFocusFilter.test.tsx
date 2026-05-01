@@ -112,13 +112,17 @@ describe('useFocusFilter hook', () => {
     });
   });
 
-  it('simulateActivation(values) prepends a simulated entry to eventLog', () => {
-    jest.useFakeTimers();
+  it('simulateActivation(values) prepends a simulated entry to eventLog', async () => {
     mockBridge.getCurrentFilterValues.mockResolvedValue(null);
 
     const { useFocusFilter } = require('@/modules/focus-filters-lab/hooks/useFocusFilter');
     const { result } = renderHook(() => useFocusFilter());
 
+    await waitFor(() => {
+      expect(mockBridge.getCurrentFilterValues).toHaveBeenCalledTimes(1);
+    });
+
+    jest.useFakeTimers();
     act(() => {
       result.current.simulateActivation({ mode: 'focused', accentColor: 'orange' });
       jest.advanceTimersByTime(300); // Flush debounce
@@ -133,11 +137,16 @@ describe('useFocusFilter hook', () => {
   });
 
   it('event log ring buffer caps at 10', async () => {
-    jest.useFakeTimers();
     mockBridge.getCurrentFilterValues.mockResolvedValue(null);
 
     const { useFocusFilter } = require('@/modules/focus-filters-lab/hooks/useFocusFilter');
     const { result } = renderHook(() => useFocusFilter());
+
+    await waitFor(() => {
+      expect(mockBridge.getCurrentFilterValues).toHaveBeenCalledTimes(1);
+    });
+
+    jest.useFakeTimers();
 
     // Prepend 11 entries
     for (let i = 0; i < 11; i++) {
@@ -151,12 +160,17 @@ describe('useFocusFilter hook', () => {
     jest.useRealTimers();
   });
 
-  it('debounce ~300 ms: 5 rapid calls produce one entry after debounce flush', () => {
-    jest.useFakeTimers();
+  it('debounce ~300 ms: 5 rapid calls produce one entry after debounce flush', async () => {
     mockBridge.getCurrentFilterValues.mockResolvedValue(null);
 
     const { useFocusFilter } = require('@/modules/focus-filters-lab/hooks/useFocusFilter');
     const { result } = renderHook(() => useFocusFilter());
+
+    await waitFor(() => {
+      expect(mockBridge.getCurrentFilterValues).toHaveBeenCalledTimes(1);
+    });
+
+    jest.useFakeTimers();
 
     // 5 rapid calls
     act(() => {
@@ -179,7 +193,7 @@ describe('useFocusFilter hook', () => {
     jest.useRealTimers();
   });
 
-  it('unmount cleanup: removes AppState listener', () => {
+  it('unmount cleanup: removes AppState listener', async () => {
     mockBridge.getCurrentFilterValues.mockResolvedValue(null);
 
     const mockRemove = jest.fn();
@@ -187,6 +201,10 @@ describe('useFocusFilter hook', () => {
 
     const { useFocusFilter } = require('@/modules/focus-filters-lab/hooks/useFocusFilter');
     const { unmount } = renderHook(() => useFocusFilter());
+
+    await waitFor(() => {
+      expect(mockBridge.getCurrentFilterValues).toHaveBeenCalledTimes(1);
+    });
 
     unmount();
 

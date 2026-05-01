@@ -80,6 +80,7 @@ describe('usePassKit hook', () => {
       canAddPasses: false,
     });
     expect(result.current.passes).toEqual([]);
+    await act(async () => {});
   });
 
   it('H3: mount calls refresh() exactly once', async () => {
@@ -92,6 +93,7 @@ describe('usePassKit hook', () => {
       expect(mockBridge.isPassLibraryAvailable).toHaveBeenCalledTimes(1);
       expect(mockBridge.passes).toHaveBeenCalledTimes(1);
     });
+    await act(async () => {});
   });
 
   it('H4: refresh() updates capabilities and passes atomically', async () => {
@@ -252,6 +254,12 @@ describe('usePassKit hook', () => {
     expect(result.current.addFromBytes).toBe(firstAddFromBytes);
     expect(result.current.addFromURL).toBe(firstAddFromURL);
     expect(result.current.openPass).toBe(firstOpenPass);
+
+    // Drain mount fetch dispatch so it settles inside act
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
   });
 
   it('H9/FR-024: unmount during in-flight call does not throw', async () => {
@@ -284,11 +292,20 @@ describe('usePassKit hook', () => {
     mockConfig.PASSKIT_ENTITLEMENT = ['$(TeamIdentifierPrefix)pass.example.placeholder'];
     const { result } = renderHook(() => usePassKit());
     expect(result.current.entitlementStatus.isPlaceholder).toBe(true);
+    // Drain mount fetch dispatch so it settles inside act
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
   });
 
   it('H10: real Pass Type ID flips placeholder flag to false', async () => {
     mockConfig.PASSKIT_ENTITLEMENT = ['$(TeamIdentifierPrefix)pass.acme.real'];
     const { result } = renderHook(() => usePassKit());
     expect(result.current.entitlementStatus.isPlaceholder).toBe(false);
+    await act(async () => {
+      await Promise.resolve();
+      await Promise.resolve();
+    });
   });
 });

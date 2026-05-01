@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 // Mock @expo/ui/swift-ui
 let capturedOnChange: ((date: Date) => void) | undefined;
@@ -39,7 +39,9 @@ describe('DatePickerDemo (iOS)', () => {
     expect(capturedOnChange).toBeDefined();
     if (capturedOnChange) {
       const testDate = new Date('2026-05-15');
-      capturedOnChange(testDate);
+      act(() => {
+        capturedOnChange!(testDate);
+      });
       // Component would update to show this date
     }
   });

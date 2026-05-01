@@ -3,7 +3,7 @@
  */
 
 import React from 'react';
-import { render, waitFor } from '@testing-library/react-native';
+import { act, render, waitFor } from '@testing-library/react-native';
 
 import { __setStoreKitBridgeForTests } from '@/modules/storekit-lab/hooks/useStoreKit';
 import type { StoreKitBridge } from '@/native/storekit.types';
@@ -33,8 +33,9 @@ afterEach(() => {
 import StoreKitLabScreen from '@/modules/storekit-lab/screen';
 
 describe('storekit-lab screen (iOS)', () => {
-  it('renders all primary sections', () => {
+  it('renders all primary sections', async () => {
     const { getByTestId } = render(<StoreKitLabScreen />);
+    await act(async () => {});
     expect(getByTestId('storekit-capability-card')).toBeTruthy();
     expect(getByTestId('storekit-products-list')).toBeTruthy();
     expect(getByTestId('storekit-entitlements-list')).toBeTruthy();

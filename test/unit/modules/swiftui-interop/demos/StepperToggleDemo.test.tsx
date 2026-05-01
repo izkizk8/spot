@@ -4,7 +4,7 @@
  */
 
 import React from 'react';
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 
 // Mock @expo/ui/swift-ui
 let capturedStepperOnChange: ((value: number) => void) | undefined;
@@ -44,7 +44,9 @@ describe('StepperToggleDemo (iOS)', () => {
     // Simulate SwiftUI stepper onChange
     expect(capturedStepperOnChange).toBeDefined();
     if (capturedStepperOnChange) {
-      capturedStepperOnChange(5);
+      act(() => {
+        capturedStepperOnChange!(5);
+      });
       // Component would update to show count 5
     }
   });
@@ -58,7 +60,9 @@ describe('StepperToggleDemo (iOS)', () => {
     // Simulate SwiftUI toggle onChange
     expect(capturedToggleOnChange).toBeDefined();
     if (capturedToggleOnChange) {
-      capturedToggleOnChange(true);
+      act(() => {
+        capturedToggleOnChange!(true);
+      });
       // Component would update to show "on" or similar
     }
   });

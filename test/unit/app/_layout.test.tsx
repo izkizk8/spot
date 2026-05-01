@@ -21,7 +21,7 @@ jest.mock('@/components/app-tabs', () => ({
   default: () => null,
 }));
 
-import { render } from '@testing-library/react-native';
+import { act, render } from '@testing-library/react-native';
 import React from 'react';
 
 import TabLayout from '@/app/_layout';
@@ -32,8 +32,9 @@ describe('Root layout', () => {
     (useQuickActions as jest.Mock).mockClear();
   });
 
-  it('invokes useQuickActions() on mount', () => {
+  it('invokes useQuickActions() on mount', async () => {
     render(<TabLayout />);
+    await act(async () => {});
     expect(useQuickActions).toHaveBeenCalled();
   });
 });
