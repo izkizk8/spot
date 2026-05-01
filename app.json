@@ -86,6 +86,7 @@
       "./plugins/with-shortcuts-snippets",
       "./plugins/with-live-text",
       "./plugins/with-live-stickers",
+      "./plugins/with-controls",
       [
         "expo-sensors",
         {

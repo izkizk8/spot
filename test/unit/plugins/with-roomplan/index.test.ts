@@ -129,7 +129,7 @@ describe('with-roomplan: app.json registration + chain composition', () => {
   it('app.json plugins array length is 38 after feature 048', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(49);
+    expect(plugins.length).toBe(50);
   });
 
   it('with-roomplan slots in after with-weatherkit', () => {

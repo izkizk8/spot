@@ -1,0 +1,7 @@
+{
+  "name": "with-controls",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Expo config plugin — Control Center custom controls (feature 087)",
+  "main": "index.ts"
+}

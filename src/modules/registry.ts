@@ -58,6 +58,7 @@ import siriKitLab from './sirikit-lab';
 import liveTextLab from './live-text-lab';
 import pencilkitLab from './pencilkit-lab';
 import liveStickersLab from './live-stickers-lab';
+import controlsLab from './controls-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -135,5 +136,6 @@ export const MODULES: readonly ModuleManifest[] = [
   liveTextLab,
   pencilkitLab,
   liveStickersLab,
+  controlsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

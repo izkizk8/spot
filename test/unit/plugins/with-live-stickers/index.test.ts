@@ -117,7 +117,7 @@ describe('with-live-stickers: app.json registration + chain composition', () => 
   it('app.json plugins array length is 43 after feature 083', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
-    expect(plugins.length).toBe(49);
+    expect(plugins.length).toBe(50);
   });
 
   it('with-live-stickers slots in after with-coredata-cloudkit', () => {

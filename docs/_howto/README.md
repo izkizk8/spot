@@ -34,3 +34,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | [feature-080-live-text.md](feature-080-live-text.md) | Verify Live Text OCR (iOS 16+) on iPhone |
 | [feature-082-pencilkit.md](feature-082-pencilkit.md) | Verify PencilKit drawing canvas on iPhone |
 | [feature-083-live-stickers.md](feature-083-live-stickers.md) | Verify Live Stickers cut-out subjects (iOS 17+) on iPhone |
+| [feature-087-controls.md](feature-087-controls.md) | Verify Control Center custom Controls (iOS 18+) on iPhone |
