@@ -55,6 +55,7 @@
       "./plugins/with-core-location",
       "./plugins/with-rich-notifications",
       "./plugins/with-lock-widgets",
+      "./plugins/with-standby-widget",
       [
         "expo-sensors",
         {

@@ -1,7 +1,12 @@
 // src/native/widget-center.ts (iOS implementation)
 import { Platform } from 'react-native';
 import { requireOptionalNativeModule } from 'expo-modules-core';
-import type { WidgetCenterBridge, WidgetConfig, LockConfig } from './widget-center.types';
+import type {
+  WidgetCenterBridge,
+  WidgetConfig,
+  LockConfig,
+  StandByConfig,
+} from './widget-center.types';
 import { WidgetCenterNotSupportedError, WidgetCenterBridgeError } from './widget-center.types';
 
 interface NativeModule {
@@ -11,6 +16,8 @@ interface NativeModule {
   reloadTimelinesByKind(kind: string): Promise<void>;
   getLockConfig(): Promise<LockConfig>;
   setLockConfig(config: LockConfig): Promise<void>;
+  getStandByConfig(): Promise<StandByConfig>;
+  setStandByConfig(config: StandByConfig): Promise<void>;
 }
 
 const nativeModule = requireOptionalNativeModule<NativeModule>('SpotWidgetCenter');
@@ -106,6 +113,45 @@ const bridge: WidgetCenterBridge = {
     }
     try {
       await nativeModule.setLockConfig(config);
+    } catch (err: any) {
+      if (err?.code === 'NOT_SUPPORTED') {
+        throw new WidgetCenterNotSupportedError(err.message);
+      }
+      throw new WidgetCenterBridgeError(err?.message ?? String(err));
+    }
+  },
+
+  async getStandByConfig(): Promise<StandByConfig> {
+    // StandBy widget requires iOS 17+
+    if (Platform.OS !== 'ios' || getIOSVersion() < 17 || nativeModule === null) {
+      throw new WidgetCenterNotSupportedError('StandBy widget requires iOS 17+');
+    }
+    try {
+      return await nativeModule.getStandByConfig();
+    } catch (err: any) {
+      if (err?.code === 'NOT_SUPPORTED') {
+        throw new WidgetCenterNotSupportedError(err.message);
+      }
+      throw new WidgetCenterBridgeError(err?.message ?? String(err));
+    }
+  },
+
+  async setStandByConfig(config: StandByConfig): Promise<void> {
+    // StandBy widget requires iOS 17+
+    if (Platform.OS !== 'ios' || getIOSVersion() < 17 || nativeModule === null) {
+      throw new WidgetCenterNotSupportedError('StandBy widget requires iOS 17+');
+    }
+    // Defensive validation at the bridge boundary (FR-SB-022).
+    const validTints = ['blue', 'green', 'orange', 'pink'];
+    const validModes = ['fullColor', 'accented', 'vibrant'];
+    if (!validTints.includes(config.tint)) {
+      throw new WidgetCenterBridgeError(`invalid tint: ${String(config.tint)}`);
+    }
+    if (!validModes.includes(config.mode)) {
+      throw new WidgetCenterBridgeError(`invalid mode: ${String(config.mode)}`);
+    }
+    try {
+      await nativeModule.setStandByConfig(config);
     } catch (err: any) {
       if (err?.code === 'NOT_SUPPORTED') {
         throw new WidgetCenterNotSupportedError(err.message);

@@ -1,5 +1,10 @@
 // src/native/widget-center.android.ts
-import type { WidgetCenterBridge, WidgetConfig, LockConfig } from './widget-center.types';
+import type {
+  WidgetCenterBridge,
+  WidgetConfig,
+  LockConfig,
+  StandByConfig,
+} from './widget-center.types';
 import { WidgetCenterNotSupportedError } from './widget-center.types';
 
 const bridge: WidgetCenterBridge = {
@@ -29,6 +34,14 @@ const bridge: WidgetCenterBridge = {
 
   async setLockConfig(_config: LockConfig): Promise<void> {
     throw new WidgetCenterNotSupportedError('Lock screen widgets are iOS-only');
+  },
+
+  async getStandByConfig(): Promise<StandByConfig> {
+    throw new WidgetCenterNotSupportedError('StandBy widget is iOS-only');
+  },
+
+  async setStandByConfig(_config: StandByConfig): Promise<void> {
+    throw new WidgetCenterNotSupportedError('StandBy widget is iOS-only');
   },
 };
 

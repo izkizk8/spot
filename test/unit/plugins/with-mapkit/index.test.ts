@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 027, plugins.length should be 19 (added with-lock-widgets)
-    expect(plugins.length).toBe(19);
+    // After feature 028, plugins.length should be 20 (added with-standby-widget)
+    expect(plugins.length).toBe(20);
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(
