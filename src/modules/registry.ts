@@ -49,6 +49,7 @@ import tapToPayLab from './tap-to-pay-lab';
 import coredataCloudKitLab from './coredata-cloudkit-lab';
 import swiftdataLab from './swiftdata-lab';
 import photokitLab from './photokit-lab';
+import visualLookUpLab from './visual-look-up-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -117,5 +118,6 @@ export const MODULES: readonly ModuleManifest[] = [
   coredataCloudKitLab,
   swiftdataLab,
   photokitLab,
+  visualLookUpLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

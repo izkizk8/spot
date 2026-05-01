@@ -80,6 +80,7 @@
       "./plugins/with-tap-to-pay",
       "./plugins/with-coredata-cloudkit",
       "./plugins/with-photokit",
+      "./plugins/with-visual-look-up",
       [
         "expo-sensors",
         {
