@@ -241,4 +241,90 @@ describe('with-home-widgets plugin', () => {
       expect(() => withHomeWidgets(afterLA)).not.toThrow();
     });
   });
+
+  describe('bundle markers (027 prerequisite)', () => {
+    it('emits // MARK: spot-widgets:bundle:additional-widgets:start marker', () => {
+      const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-markers-'));
+      const widgetDir = path.join(tmpRoot, 'ios-widget');
+      fs.mkdirSync(widgetDir, { recursive: true });
+      const liveActivityFile = path.join(widgetDir, 'LiveActivityDemoWidget.swift');
+      fs.writeFileSync(liveActivityFile, '@main\nstruct X { }\n', 'utf8');
+
+      const {
+        applyBundleSynthesis,
+      } = require('../../../../plugins/with-home-widgets/add-widget-bundle');
+      applyBundleSynthesis(tmpRoot);
+
+      const bundlePath = path.join(widgetDir, 'SpotWidgetBundle.swift');
+      const bundleSrc = fs.readFileSync(bundlePath, 'utf8');
+      expect(bundleSrc).toContain('// MARK: spot-widgets:bundle:additional-widgets:start');
+
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    });
+
+    it('emits // MARK: spot-widgets:bundle:additional-widgets:end marker', () => {
+      const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-markers-'));
+      const widgetDir = path.join(tmpRoot, 'ios-widget');
+      fs.mkdirSync(widgetDir, { recursive: true });
+      const liveActivityFile = path.join(widgetDir, 'LiveActivityDemoWidget.swift');
+      fs.writeFileSync(liveActivityFile, '@main\nstruct X { }\n', 'utf8');
+
+      const {
+        applyBundleSynthesis,
+      } = require('../../../../plugins/with-home-widgets/add-widget-bundle');
+      applyBundleSynthesis(tmpRoot);
+
+      const bundlePath = path.join(widgetDir, 'SpotWidgetBundle.swift');
+      const bundleSrc = fs.readFileSync(bundlePath, 'utf8');
+      expect(bundleSrc).toContain('// MARK: spot-widgets:bundle:additional-widgets:end');
+
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    });
+
+    it('places start marker before end marker', () => {
+      const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-markers-'));
+      const widgetDir = path.join(tmpRoot, 'ios-widget');
+      fs.mkdirSync(widgetDir, { recursive: true });
+      const liveActivityFile = path.join(widgetDir, 'LiveActivityDemoWidget.swift');
+      fs.writeFileSync(liveActivityFile, '@main\nstruct X { }\n', 'utf8');
+
+      const {
+        applyBundleSynthesis,
+      } = require('../../../../plugins/with-home-widgets/add-widget-bundle');
+      applyBundleSynthesis(tmpRoot);
+
+      const bundlePath = path.join(widgetDir, 'SpotWidgetBundle.swift');
+      const bundleSrc = fs.readFileSync(bundlePath, 'utf8');
+      const startIdx = bundleSrc.indexOf('// MARK: spot-widgets:bundle:additional-widgets:start');
+      const endIdx = bundleSrc.indexOf('// MARK: spot-widgets:bundle:additional-widgets:end');
+      expect(startIdx).toBeGreaterThan(-1);
+      expect(endIdx).toBeGreaterThan(-1);
+      expect(startIdx).toBeLessThan(endIdx);
+
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    });
+
+    it('places both markers after ShowcaseWidget() call site', () => {
+      const tmpRoot = fs.mkdtempSync(path.join(os.tmpdir(), 'bundle-markers-'));
+      const widgetDir = path.join(tmpRoot, 'ios-widget');
+      fs.mkdirSync(widgetDir, { recursive: true });
+      const liveActivityFile = path.join(widgetDir, 'LiveActivityDemoWidget.swift');
+      fs.writeFileSync(liveActivityFile, '@main\nstruct X { }\n', 'utf8');
+
+      const {
+        applyBundleSynthesis,
+      } = require('../../../../plugins/with-home-widgets/add-widget-bundle');
+      applyBundleSynthesis(tmpRoot);
+
+      const bundlePath = path.join(widgetDir, 'SpotWidgetBundle.swift');
+      const bundleSrc = fs.readFileSync(bundlePath, 'utf8');
+      const showcaseIdx = bundleSrc.indexOf('ShowcaseWidget()');
+      const startIdx = bundleSrc.indexOf('// MARK: spot-widgets:bundle:additional-widgets:start');
+      expect(showcaseIdx).toBeGreaterThan(-1);
+      expect(startIdx).toBeGreaterThan(-1);
+      expect(showcaseIdx).toBeLessThan(startIdx);
+
+      fs.rmSync(tmpRoot, { recursive: true, force: true });
+    });
+  });
 });

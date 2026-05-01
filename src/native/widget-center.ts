@@ -1,13 +1,16 @@
 // src/native/widget-center.ts (iOS implementation)
 import { Platform } from 'react-native';
 import { requireOptionalNativeModule } from 'expo-modules-core';
-import type { WidgetCenterBridge, WidgetConfig } from './widget-center.types';
+import type { WidgetCenterBridge, WidgetConfig, LockConfig } from './widget-center.types';
 import { WidgetCenterNotSupportedError, WidgetCenterBridgeError } from './widget-center.types';
 
 interface NativeModule {
   getCurrentConfig(): Promise<WidgetConfig>;
   setConfig(config: WidgetConfig): Promise<void>;
   reloadAllTimelines(): Promise<void>;
+  reloadTimelinesByKind(kind: string): Promise<void>;
+  getLockConfig(): Promise<LockConfig>;
+  setLockConfig(config: LockConfig): Promise<void>;
 }
 
 const nativeModule = requireOptionalNativeModule<NativeModule>('SpotWidgetCenter');
@@ -58,6 +61,51 @@ const bridge: WidgetCenterBridge = {
     }
     try {
       await nativeModule!.reloadAllTimelines();
+    } catch (err: any) {
+      if (err?.code === 'NOT_SUPPORTED') {
+        throw new WidgetCenterNotSupportedError(err.message);
+      }
+      throw new WidgetCenterBridgeError(err?.message ?? String(err));
+    }
+  },
+
+  async reloadTimelinesByKind(kind: string): Promise<void> {
+    // Lock screen widgets require iOS 16+
+    if (Platform.OS !== 'ios' || getIOSVersion() < 16 || nativeModule === null) {
+      throw new WidgetCenterNotSupportedError('Lock screen widgets require iOS 16+');
+    }
+    try {
+      await nativeModule.reloadTimelinesByKind(kind);
+    } catch (err: any) {
+      if (err?.code === 'NOT_SUPPORTED') {
+        throw new WidgetCenterNotSupportedError(err.message);
+      }
+      throw new WidgetCenterBridgeError(err?.message ?? String(err));
+    }
+  },
+
+  async getLockConfig(): Promise<LockConfig> {
+    // Lock screen widgets require iOS 16+
+    if (Platform.OS !== 'ios' || getIOSVersion() < 16 || nativeModule === null) {
+      throw new WidgetCenterNotSupportedError('Lock screen widgets require iOS 16+');
+    }
+    try {
+      return await nativeModule.getLockConfig();
+    } catch (err: any) {
+      if (err?.code === 'NOT_SUPPORTED') {
+        throw new WidgetCenterNotSupportedError(err.message);
+      }
+      throw new WidgetCenterBridgeError(err?.message ?? String(err));
+    }
+  },
+
+  async setLockConfig(config: LockConfig): Promise<void> {
+    // Lock screen widgets require iOS 16+
+    if (Platform.OS !== 'ios' || getIOSVersion() < 16 || nativeModule === null) {
+      throw new WidgetCenterNotSupportedError('Lock screen widgets require iOS 16+');
+    }
+    try {
+      await nativeModule.setLockConfig(config);
     } catch (err: any) {
       if (err?.code === 'NOT_SUPPORTED') {
         throw new WidgetCenterNotSupportedError(err.message);

@@ -52,6 +52,8 @@ struct SpotWidgetBundle: WidgetBundle {
         if #available(iOS 14.0, *) {
             ShowcaseWidget()
         }
+        // MARK: spot-widgets:bundle:additional-widgets:start
+        // MARK: spot-widgets:bundle:additional-widgets:end
     }
 }
 `;
