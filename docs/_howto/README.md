@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-032-document-picker-quicklook.md](feature-032-document-picker-quicklook.md) | Verify Document Picker & QuickLook on iPhone |
+| [feature-033-share-sheet.md](feature-033-share-sheet.md) | Verify Share Sheet on iPhone |
