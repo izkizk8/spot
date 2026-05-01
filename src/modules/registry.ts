@@ -1,5 +1,6 @@
 import type { ModuleManifest } from './types';
 // Add new modules here ↓ One import line per module.
+import liveActivityDemo from './live-activity-demo';
 import liquidGlassPlayground from './liquid-glass-playground';
 
 /**
@@ -22,5 +23,6 @@ import liquidGlassPlayground from './liquid-glass-playground';
  */
 export const MODULES: readonly ModuleManifest[] = [
   liquidGlassPlayground,
+  liveActivityDemo,
   // ↑ Append new manifests here in the order they should appear.
 ];

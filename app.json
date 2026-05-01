@@ -39,7 +39,8 @@
           }
         }
       ],
-      "expo-image"
+      "expo-image",
+      "./plugins/with-live-activity"
     ],
     "experiments": {
       "typedRoutes": true,

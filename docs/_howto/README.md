@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-006-ios-feature-showcase.md](feature-006-ios-feature-showcase.md) | Verify App Shell, Modules Tab & Liquid Glass on iPhone |
+| [feature-007-live-activities-dynamic-island.md](feature-007-live-activities-dynamic-island.md) | Verify Live Activities & Dynamic Island on iPhone |
