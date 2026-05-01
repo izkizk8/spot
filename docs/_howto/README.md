@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-030-background-tasks.md](feature-030-background-tasks.md) | Verify Background Tasks on iPhone |
+| [feature-031-spotlight-indexing.md](feature-031-spotlight-indexing.md) | Verify Spotlight Indexing on iPhone |
