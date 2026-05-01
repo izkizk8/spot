@@ -75,6 +75,7 @@
       "./plugins/with-carplay",
       "./plugins/with-weatherkit",
       "./plugins/with-roomplan",
+      "./plugins/with-apple-pay",
       [
         "expo-sensors",
         {

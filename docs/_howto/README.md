@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-048-lidar-roomplan.md](feature-048-lidar-roomplan.md) | Verify LiDAR & RoomPlan on iPhone |
+| [feature-049-apple-pay.md](feature-049-apple-pay.md) | Verify Apple Pay on iPhone |
