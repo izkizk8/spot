@@ -1,0 +1,7 @@
+{
+  "name": "with-live-text",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Expo config plugin — Live Text OCR (feature 080)",
+  "main": "index.ts"
+}
