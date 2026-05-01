@@ -10,6 +10,7 @@
     "ios": {
       "icon": "./assets/expo.icon",
       "bundleIdentifier": "com.izkizk8.spot",
+      "associatedDomains": ["applinks:spot.example.com"],
       "infoPlist": {
         "ITSAppUsesNonExemptEncryption": false
       }
@@ -67,6 +68,7 @@
       "./plugins/with-contacts",
       "./plugins/with-quick-actions",
       "./plugins/with-handoff",
+      "./plugins/with-universal-links",
       [
         "expo-sensors",
         {
