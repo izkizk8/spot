@@ -11,8 +11,8 @@
 
 import React from 'react';
 
-import SpeechRecognitionLabScreen from './screen';
-import OfflineSpeechRecognitionLabScreen from './screen.android';
+import SpeechRecognitionLabScreen from './screen.tsx';
+import OfflineSpeechRecognitionLabScreen from './screen.android.tsx';
 
 function detectWebkit(): boolean {
   return typeof (globalThis as any).webkitSpeechRecognition === 'function';

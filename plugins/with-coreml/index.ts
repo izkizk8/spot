@@ -14,8 +14,10 @@
  * @see specs/016-coreml-playground/tasks.md T019, T020
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withDangerousMod } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withDangerousMod } = configPlugins;
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 

@@ -8,8 +8,10 @@
  * @see specs/014-home-widgets/tasks.md T017
  */
 
-import { ConfigPlugin, IOSConfig, withEntitlementsPlist } from '@expo/config-plugins';
-
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { IOSConfig, withEntitlementsPlist } = configPlugins;
 const APP_GROUPS_KEY = 'com.apple.security.application-groups';
 
 function suiteFor(bundleId: string): string {

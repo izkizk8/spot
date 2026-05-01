@@ -15,9 +15,10 @@
  * @see specs/036-passkit-wallet/contracts/with-passkit-plugin.md
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withEntitlementsPlist, withXcodeProject } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist, withXcodeProject } = configPlugins;
 const PLACEHOLDER_PASS_TYPE_IDS = ['$(TeamIdentifierPrefix)pass.example.placeholder'];
 
 /**

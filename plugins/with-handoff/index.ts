@@ -12,9 +12,11 @@
  * the full mod runner.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-import { HANDOFF_DEMO_ACTIVITY_TYPE } from '../../src/modules/handoff-lab/activity-types';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
+import { HANDOFF_DEMO_ACTIVITY_TYPE } from '../../src/modules/handoff-lab/activity-types.ts';
 
 const USER_ACTIVITY_TYPES_KEY = 'NSUserActivityTypes';
 

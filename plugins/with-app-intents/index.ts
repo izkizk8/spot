@@ -11,8 +11,9 @@
  * @see specs/013-app-intents/plan.md § Library decision
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withAppIntentsSources } from './add-app-intents-sources';
+import { withAppIntentsSources } from './add-app-intents-sources.ts';
 
 const withAppIntents: ConfigPlugin = (config) => {
   return withAppIntentsSources(config);

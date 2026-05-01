@@ -7,7 +7,10 @@
  * @see specs/007-live-activities-dynamic-island/tasks.md T010
  */
 
-import { ConfigPlugin, withXcodeProject, IOSConfig } from '@expo/config-plugins';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withXcodeProject, IOSConfig } = configPlugins;
 import * as path from 'path';
 import * as fs from 'fs';
 

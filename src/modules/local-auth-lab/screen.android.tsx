@@ -6,4 +6,4 @@
  * therefore identical to the iOS variant.
  */
 
-export { default } from './screen';
+export { default } from './screen.tsx';

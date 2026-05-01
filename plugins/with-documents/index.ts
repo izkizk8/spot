@@ -13,9 +13,10 @@
  * @see specs/032-document-picker-quicklook/contracts/with-documents-plugin.contract.ts
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 export const KEY_OPEN_IN_PLACE = 'LSSupportsOpeningDocumentsInPlace' as const;
 export const KEY_FILE_SHARING = 'UIFileSharingEnabled' as const;
 export const MANAGED_VALUE = true as const;

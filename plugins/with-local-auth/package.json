@@ -1,6 +1,7 @@
 {
   "name": "with-local-auth",
   "version": "1.0.0",
+  "type": "module",
   "main": "./index.ts",
   "types": "./index.ts"
 }

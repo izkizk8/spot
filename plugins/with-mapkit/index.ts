@@ -1,6 +1,7 @@
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 const KEY = 'NSLocationWhenInUseUsageDescription';
 const COPY =
   'Spot uses your location to center the MapKit Lab map on you and to drop pins at your current position.';

@@ -12,7 +12,10 @@
  * Idempotent — re-running the plugin does not duplicate the target.
  */
 
-import { type ConfigPlugin, IOSConfig, withXcodeProject } from '@expo/config-plugins';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { IOSConfig, withXcodeProject } = configPlugins;
 import * as path from 'path';
 
 export const MONITOR_TARGET_NAME = 'SpotScreenTimeMonitor';

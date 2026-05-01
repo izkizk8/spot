@@ -13,12 +13,12 @@ spot/
 +-- package.json                 # Expo entry point, scripts, runtime/dev dependencies
 +-- pnpm-workspace.yaml          # pnpm nodeLinker: hoisted
 +-- tsconfig.json                # TypeScript strict config and path aliases
-+-- eslint.config.js             # ESLint flat config for official React Hooks rules
++-- eslint.config.cjs             # ESLint flat config for official React Hooks rules
 +-- oxlint.json                  # OXC lint configuration
 +-- .oxfmtrc.json                # OXC formatter configuration
 +-- .gitattributes               # Git CRLF working-tree policy
 +-- .editorconfig                # Editor CRLF and whitespace policy
-+-- jest.config.js               # Jest Expo + React Native Testing Library config
++-- jest.config.cjs               # Jest Expo + React Native Testing Library config
 +-- scripts/
 +|   +-- check-docs.ps1           # Documentation and CRLF gate
 +-- .eas/
@@ -395,9 +395,9 @@ flowchart LR
 | Format | [../.oxfmtrc.json](../.oxfmtrc.json) | Repository, excluding generated/third-party/heavy directories including `docs`, `specs`, `.specify`, assets, lockfiles |
 | Documentation gate | [../scripts/check-docs.ps1](../scripts/check-docs.ps1) | CRLF, generated-profile boundary, JSON index, Markdown link, and stale-reference checks |
 | General lint | [../oxlint.json](../oxlint.json) | Correctness and suspicious categories as errors; TypeScript, React, Jest, import rules enabled |
-| React Hooks lint | [../eslint.config.js](../eslint.config.js) | `src/**/*` and `test/**/*`; official `eslint-plugin-react-hooks` recommended flat config plus `exhaustive-deps: error` |
+| React Hooks lint | [../eslint.config.cjs](../eslint.config.cjs) | `src/**/*` and `test/**/*`; official `eslint-plugin-react-hooks` recommended flat config plus `exhaustive-deps: error` |
 | Typecheck | [../tsconfig.json](../tsconfig.json) | Strict TypeScript across TS/TSX and Expo generated types |
-| Unit tests | [../jest.config.js](../jest.config.js) | `test/unit/**/*.test.ts(x)` with Jest Expo preset |
+| Unit tests | [../jest.config.cjs](../jest.config.cjs) | `test/unit/**/*.test.ts(x)` with Jest Expo preset |
 
 ### EAS Custom Unsigned iOS Build
 

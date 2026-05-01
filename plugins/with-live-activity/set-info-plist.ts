@@ -6,8 +6,10 @@
  * @see specs/007-live-activities-dynamic-island/tasks.md T009
  */
 
-import { ConfigPlugin, withInfoPlist } from '@expo/config-plugins';
-
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 /**
  * Adds `NSSupportsLiveActivities = true` to the iOS app's Info.plist.
  */

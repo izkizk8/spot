@@ -10,9 +10,10 @@
  * Info.plist keys this feature owns.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 const DEFAULT_SPEECH_USAGE = 'Used to demonstrate live speech-to-text recognition';
 const DEFAULT_MIC_USAGE = 'Used to capture audio for live speech-to-text';
 

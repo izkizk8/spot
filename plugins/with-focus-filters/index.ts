@@ -8,8 +8,9 @@
  * @see specs/029-focus-filters/tasks.md T048, T049
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withFocusFiltersSwiftSources } from './add-swift-sources';
+import { withFocusFiltersSwiftSources } from './add-swift-sources.ts';
 
 const withFocusFilters: ConfigPlugin = (config) => {
   return withFocusFiltersSwiftSources(config);

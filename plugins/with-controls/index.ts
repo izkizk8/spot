@@ -10,9 +10,10 @@
  * Running the plugin twice on the same Expo config produces a
  * deep-equal config.
  */
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 export const CONTROLS_KEY = 'NSSupportsControlCenter' as const;
 export const CONTROLS_VALUE = true as const;
 

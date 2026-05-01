@@ -8,7 +8,10 @@
  * @see specs/027-lock-screen-widgets/tasks.md T044, T047
  */
 
-import { ConfigPlugin, withXcodeProject } from '@expo/config-plugins';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withXcodeProject } = configPlugins;
 import * as path from 'path';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';

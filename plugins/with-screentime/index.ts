@@ -22,11 +22,11 @@
  * @see specs/015-screentime-api/tasks.md T018, T022
  */
 
-import { type ConfigPlugin } from '@expo/config-plugins';
-
-import { withScreenTimeEntitlement } from './add-entitlement';
-import { withScreenTimeMonitorExtension } from './add-monitor-extension';
-import { withScreenTimeAppGroup } from './consume-app-group';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+import { withScreenTimeEntitlement } from './add-entitlement.ts';
+import { withScreenTimeMonitorExtension } from './add-monitor-extension.ts';
+import { withScreenTimeAppGroup } from './consume-app-group.ts';
 
 const withScreenTime: ConfigPlugin = (config) => {
   config = withScreenTimeEntitlement(config);

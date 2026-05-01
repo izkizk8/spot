@@ -21,10 +21,11 @@
  * without driving the full mod runner.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withEntitlementsPlist, withInfoPlist } from '@expo/config-plugins';
-
-import { CARPLAY_SCENE_ROLE } from '../../src/native/carplay.types';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist, withInfoPlist } = configPlugins;
+import { CARPLAY_SCENE_ROLE } from '../../src/native/carplay.types.ts';
 
 export const CARPLAY_AUDIO_ENTITLEMENT_KEY = 'com.apple.developer.carplay-audio' as const;
 

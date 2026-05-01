@@ -12,11 +12,11 @@
  * @see specs/014-home-widgets/tasks.md T020
  */
 
-import { ConfigPlugin } from '@expo/config-plugins';
-
-import { withHomeWidgetsAppGroup } from './add-app-group';
-import { withHomeWidgetsSwiftSources } from './add-swift-sources';
-import { withHomeWidgetsBundle } from './add-widget-bundle';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+import { withHomeWidgetsAppGroup } from './add-app-group.ts';
+import { withHomeWidgetsSwiftSources } from './add-swift-sources.ts';
+import { withHomeWidgetsBundle } from './add-widget-bundle.ts';
 
 const withHomeWidgets: ConfigPlugin = (config) => {
   config = withHomeWidgetsAppGroup(config);

@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, TextInput, type ViewStyle } from 'react-native';
+import { StyleSheet, TextInput, type StyleProp, type TextStyle } from 'react-native';
 
 import { Spacing } from '@/constants/theme';
 
 interface TextContentInputProps {
   readonly value: string;
   readonly onChange: (text: string) => void;
-  readonly style?: ViewStyle;
+  readonly style?: StyleProp<TextStyle>;
 }
 
 export default function TextContentInput({ value, onChange, style }: TextContentInputProps) {
