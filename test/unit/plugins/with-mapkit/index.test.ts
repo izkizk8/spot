@@ -61,8 +61,8 @@ describe('with-mapkit', () => {
     const appJson = require('../../../../app.json');
     const plugins: unknown[] = appJson.expo.plugins;
 
-    // After feature 037, plugins.length should be 28 (added with-eventkit after with-passkit)
-    expect(plugins.length).toBe(29);
+    // After feature 039, plugins.length should be 30 (added with-quick-actions after with-contacts)
+    expect(plugins.length).toBe(30);
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(
