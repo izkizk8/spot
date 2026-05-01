@@ -1,0 +1,192 @@
+name: Release AltStore source
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Existing tag to (re)release, e.g. v1.2.3'
+        required: true
+        type: string
+
+concurrency:
+  group: release-altstore
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  build-and-publish:
+    name: Build IPA, publish release, update source.json
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.resolve.outputs.tag }}
+      version: ${{ steps.resolve.outputs.version }}
+    steps:
+      - name: Resolve tag and version
+        id: resolve
+        env:
+          REF_NAME: ${{ github.ref_name }}
+          INPUT_TAG: ${{ github.event.inputs.tag }}
+        run: |
+          TAG="${INPUT_TAG:-$REF_NAME}"
+          if [[ ! "$TAG" =~ ^v[0-9]+\.[0-9]+\.[0-9]+(-[A-Za-z0-9.-]+)?$ ]]; then
+            echo "::error::tag '$TAG' is not vX.Y.Z[-prerelease]"
+            exit 1
+          fi
+          VERSION="${TAG#v}"
+          echo "tag=$TAG" >>"$GITHUB_OUTPUT"
+          echo "version=$VERSION" >>"$GITHUB_OUTPUT"
+
+      - name: Checkout tag
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.resolve.outputs.tag }}
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+
+      - name: Setup Node 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'pnpm'
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify version sync
+        env:
+          VERSION: ${{ steps.resolve.outputs.version }}
+        run: |
+          PKG_VERSION=$(node -p "require('./package.json').version")
+          APP_VERSION=$(node -p "require('./app.json').expo.version")
+          if [[ "$PKG_VERSION" != "$VERSION" ]]; then
+            echo "::error::package.json version ($PKG_VERSION) != tag version ($VERSION)"
+            exit 1
+          fi
+          if [[ "$APP_VERSION" != "$VERSION" ]]; then
+            echo "::error::app.json expo.version ($APP_VERSION) != tag version ($VERSION)"
+            exit 1
+          fi
+          echo "Version sync OK: $VERSION"
+
+      - name: Setup EAS CLI
+        uses: expo/expo-github-action@v8
+        with:
+          eas-version: latest
+          token: ${{ secrets.EXPO_TOKEN }}
+
+      - name: Build unsigned IPA on EAS
+        id: build
+        run: |
+          set -e
+          eas build \
+            --platform ios \
+            --profile sideload \
+            --non-interactive \
+            --wait \
+            --json \
+            --message "Tag ${{ steps.resolve.outputs.tag }}" \
+            > build.json
+          BUILD_URL=$(jq -r '.[0].artifacts.buildUrl' build.json)
+          BUILD_VERSION=$(jq -r '.[0].appBuildVersion' build.json)
+          if [[ -z "$BUILD_URL" || "$BUILD_URL" == "null" ]]; then
+            echo "::error::EAS build did not return artifacts.buildUrl"
+            cat build.json
+            exit 1
+          fi
+          echo "build_url=$BUILD_URL" >>"$GITHUB_OUTPUT"
+          echo "build_version=$BUILD_VERSION" >>"$GITHUB_OUTPUT"
+
+      - name: Download IPA
+        env:
+          BUILD_URL: ${{ steps.build.outputs.build_url }}
+          VERSION: ${{ steps.resolve.outputs.version }}
+        run: |
+          curl -fL --retry 3 --retry-delay 5 -o "spot-${VERSION}.ipa" "$BUILD_URL"
+          ls -lh "spot-${VERSION}.ipa"
+
+      - name: Create or update GitHub release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ steps.resolve.outputs.tag }}
+          VERSION: ${{ steps.resolve.outputs.version }}
+        run: |
+          IPA="spot-${VERSION}.ipa"
+          if gh release view "$TAG" >/dev/null 2>&1; then
+            echo "Release $TAG already exists; uploading asset with --clobber"
+            gh release upload "$TAG" "$IPA" --clobber
+          else
+            gh release create "$TAG" "$IPA" \
+              --title "$TAG" \
+              --notes "Built from $(git rev-parse --short HEAD). Install via the AltStore source: https://izkizk8.github.io/spot/altstore/source.json"
+          fi
+
+      - name: Stage IPA outside the worktree
+        env:
+          VERSION: ${{ steps.resolve.outputs.version }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/altstore"
+          cp "spot-${VERSION}.ipa" "$RUNNER_TEMP/altstore/"
+          cp scripts/altstore/build-source.js "$RUNNER_TEMP/altstore/"
+          cp app.json "$RUNNER_TEMP/altstore/"
+
+      - name: Switch to dev and update source.json
+        env:
+          VERSION: ${{ steps.resolve.outputs.version }}
+          BUILD_VERSION: ${{ steps.build.outputs.build_version }}
+        run: |
+          set -e
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git fetch origin dev
+          git checkout -B dev origin/dev
+          mkdir -p docs/altstore
+          DATE=$(date -u +%Y-%m-%d)
+          SOURCE_ARG=""
+          if [[ -f docs/altstore/source.json ]]; then
+            SOURCE_ARG="--source-json docs/altstore/source.json"
+          fi
+          # shellcheck disable=SC2086
+          node scripts/altstore/build-source.js \
+            --version "$VERSION" \
+            --build-version "$BUILD_VERSION" \
+            --ipa "$RUNNER_TEMP/altstore/spot-${VERSION}.ipa" \
+            --date "$DATE" \
+            --out docs/altstore/source.json \
+            $SOURCE_ARG
+          if git diff --quiet docs/altstore/source.json; then
+            echo "source.json unchanged; skipping commit"
+          else
+            git add docs/altstore/source.json
+            git commit -m "chore(altstore): publish v${VERSION}"
+            git push origin dev
+          fi
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: docs/altstore
+
+  deploy-pages:
+    name: Deploy source.json to Pages
+    needs: build-and-publish
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v4
