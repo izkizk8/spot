@@ -62,7 +62,7 @@ describe('with-mapkit', () => {
     const plugins: unknown[] = appJson.expo.plugins;
 
     // After feature 039, plugins.length should be 30 (added with-quick-actions after with-contacts)
-    expect(plugins.length).toBe(33); // bumped from 32 by feature 042 (with-app-clips)
+    expect(plugins.length).toBe(34); // bumped from 33 by feature 043 (with-healthkit)
 
     // './plugins/with-mapkit' should appear exactly once at index 14
     const mapkitIndex = plugins.findIndex(
