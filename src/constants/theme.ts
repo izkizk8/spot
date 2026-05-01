@@ -14,6 +14,8 @@ export const Colors = {
     backgroundElement: '#F0F0F3',
     backgroundSelected: '#E0E1E6',
     textSecondary: '#60646C',
+    tintA: '#007AFF', // iOS blue accent
+    tintB: '#FF9500', // iOS orange accent
   },
   dark: {
     text: '#ffffff',
@@ -21,6 +23,8 @@ export const Colors = {
     backgroundElement: '#212225',
     backgroundSelected: '#2E3135',
     textSecondary: '#B0B4BA',
+    tintA: '#0A84FF', // iOS blue accent (dark mode)
+    tintB: '#FF9F0A', // iOS orange accent (dark mode)
   },
 } as const;
 

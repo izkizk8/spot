@@ -102,20 +102,20 @@ export function PatternSequencer({ onSave, onCellFire }: PatternSequencerProps) 
             key={idx}
             testID={`cell-${idx}`}
             accessibilityLabel={`cell ${idx} ${cellLabel(cell)}`}
-            accessibilityRole="button"
+            accessibilityRole='button'
             onPress={() => cycleCell(idx)}
             style={styles.cell}
           >
-            <ThemedText type="small">{cellGlyph(cell)}</ThemedText>
+            <ThemedText type='small'>{cellGlyph(cell)}</ThemedText>
           </Pressable>
         ))}
       </View>
       <View style={styles.controls}>
-        <Pressable onPress={handlePlay} style={styles.button} accessibilityRole="button">
-          <ThemedText type="smallBold">Play</ThemedText>
+        <Pressable onPress={handlePlay} style={styles.button} accessibilityRole='button'>
+          <ThemedText type='smallBold'>Play</ThemedText>
         </Pressable>
-        <Pressable onPress={handleSave} style={styles.button} accessibilityRole="button">
-          <ThemedText type="smallBold">Save Preset</ThemedText>
+        <Pressable onPress={handleSave} style={styles.button} accessibilityRole='button'>
+          <ThemedText type='smallBold'>Save Preset</ThemedText>
         </Pressable>
       </View>
     </ThemedView>

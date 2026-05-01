@@ -43,19 +43,19 @@ describe('HapticButton', () => {
   });
 
   it('renders the label', () => {
-    const { getByText } = render(<HapticButton kind="impact" intensity="medium" label="Medium" />);
+    const { getByText } = render(<HapticButton kind='impact' intensity='medium' label='Medium' />);
     expect(getByText('Medium')).toBeTruthy();
   });
 
   it('calls driver.play with (kind, intensity) on press', () => {
-    const { getByText } = render(<HapticButton kind="impact" intensity="medium" label="Medium" />);
+    const { getByText } = render(<HapticButton kind='impact' intensity='medium' label='Medium' />);
     fireEvent.press(getByText('Medium'));
     expect(play).toHaveBeenCalledTimes(1);
     expect(play).toHaveBeenCalledWith('impact', 'medium');
   });
 
   it('routes selection without intensity', () => {
-    const { getByText } = render(<HapticButton kind="selection" label="Tick" />);
+    const { getByText } = render(<HapticButton kind='selection' label='Tick' />);
     fireEvent.press(getByText('Tick'));
     expect(play).toHaveBeenCalledWith('selection', undefined);
   });

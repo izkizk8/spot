@@ -17,7 +17,7 @@ export function PresetList({ presets, onPlay, onDelete }: PresetListProps) {
   if (presets.length === 0) {
     return (
       <ThemedView style={styles.empty}>
-        <ThemedText type="small" themeColor="textSecondary">
+        <ThemedText type='small' themeColor='textSecondary'>
           No presets yet — compose a pattern and tap Save Preset.
         </ThemedText>
       </ThemedView>
@@ -28,17 +28,17 @@ export function PresetList({ presets, onPlay, onDelete }: PresetListProps) {
     <ThemedView style={styles.root}>
       {presets.map((p) => (
         <View key={p.id} style={styles.row}>
-          <Pressable onPress={() => onPlay(p)} style={styles.name} accessibilityRole="button">
-            <ThemedText type="smallBold">{p.name}</ThemedText>
+          <Pressable onPress={() => onPlay(p)} style={styles.name} accessibilityRole='button'>
+            <ThemedText type='smallBold'>{p.name}</ThemedText>
           </Pressable>
           <Pressable
             testID={`delete-${p.id}`}
             onPress={() => onDelete(p.id)}
             style={styles.delete}
-            accessibilityRole="button"
+            accessibilityRole='button'
             accessibilityLabel={`Delete ${p.name}`}
           >
-            <ThemedText type="small">✕</ThemedText>
+            <ThemedText type='small'>✕</ThemedText>
           </Pressable>
         </View>
       ))}

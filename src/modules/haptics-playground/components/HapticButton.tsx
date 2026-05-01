@@ -31,8 +31,8 @@ export function HapticButton({ kind, intensity, label }: HapticButtonProps) {
   return (
     <View style={styles.wrapper}>
       <Animated.View key={pulseKey} entering={pulseKeyframe.duration(180)}>
-        <Pressable onPress={handlePress} style={styles.pressable} accessibilityRole="button">
-          <ThemedText type="smallBold">{label}</ThemedText>
+        <Pressable onPress={handlePress} style={styles.pressable} accessibilityRole='button'>
+          <ThemedText type='smallBold'>{label}</ThemedText>
         </Pressable>
       </Animated.View>
     </View>

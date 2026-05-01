@@ -144,14 +144,14 @@ export function LiveActivityDemoScreen() {
           ]}
         >
           <ThemedView style={styles.header}>
-            <ThemedText type="subtitle">Live Activity Demo</ThemedText>
-            <ThemedText type="default" themeColor="textSecondary">
+            <ThemedText type='subtitle'>Live Activity Demo</ThemedText>
+            <ThemedText type='default' themeColor='textSecondary'>
               Live Activities are not available on this platform.
             </ThemedText>
           </ThemedView>
 
-          <ThemedView type="backgroundElement" style={styles.noticeCard}>
-            <ThemedText type="default">
+          <ThemedView type='backgroundElement' style={styles.noticeCard}>
+            <ThemedText type='default'>
               This feature requires iOS 16.1 or later with Live Activities enabled.
             </ThemedText>
           </ThemedView>
@@ -161,36 +161,36 @@ export function LiveActivityDemoScreen() {
             <Pressable
               style={[styles.button, styles.buttonDisabled]}
               disabled={true}
-              accessibilityRole="button"
-              accessibilityLabel="Start activity"
+              accessibilityRole='button'
+              accessibilityLabel='Start activity'
               accessibilityState={{ disabled: true }}
-              testID="start-button"
+              testID='start-button'
             >
-              <ThemedText type="default" themeColor="textSecondary">
+              <ThemedText type='default' themeColor='textSecondary'>
                 Start
               </ThemedText>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonDisabled]}
               disabled={true}
-              accessibilityRole="button"
-              accessibilityLabel="Update activity"
+              accessibilityRole='button'
+              accessibilityLabel='Update activity'
               accessibilityState={{ disabled: true }}
-              testID="update-button"
+              testID='update-button'
             >
-              <ThemedText type="default" themeColor="textSecondary">
+              <ThemedText type='default' themeColor='textSecondary'>
                 Update
               </ThemedText>
             </Pressable>
             <Pressable
               style={[styles.button, styles.buttonDisabled]}
               disabled={true}
-              accessibilityRole="button"
-              accessibilityLabel="End activity"
+              accessibilityRole='button'
+              accessibilityLabel='End activity'
               accessibilityState={{ disabled: true }}
-              testID="end-button"
+              testID='end-button'
             >
-              <ThemedText type="default" themeColor="textSecondary">
+              <ThemedText type='default' themeColor='textSecondary'>
                 End
               </ThemedText>
             </Pressable>
@@ -213,21 +213,21 @@ export function LiveActivityDemoScreen() {
         ]}
       >
         <ThemedView style={styles.header}>
-          <ThemedText type="subtitle">Live Activity Demo</ThemedText>
-          <ThemedText type="default" themeColor="textSecondary">
+          <ThemedText type='subtitle'>Live Activity Demo</ThemedText>
+          <ThemedText type='default' themeColor='textSecondary'>
             Control a counter displayed on your Lock Screen and Dynamic Island.
           </ThemedText>
         </ThemedView>
 
         {/* Status display */}
-        <ThemedView type="backgroundElement" style={styles.statusCard}>
-          <ThemedText type="smallBold">Status</ThemedText>
+        <ThemedView type='backgroundElement' style={styles.statusCard}>
+          <ThemedText type='smallBold'>Status</ThemedText>
           {session ? (
-            <ThemedText type="default" testID="status-text">
+            <ThemedText type='default' testID='status-text'>
               Activity running — counter {session.state.counter}
             </ThemedText>
           ) : (
-            <ThemedText type="default" themeColor="textSecondary" testID="status-text">
+            <ThemedText type='default' themeColor='textSecondary' testID='status-text'>
               No activity running
             </ThemedText>
           )}
@@ -235,8 +235,8 @@ export function LiveActivityDemoScreen() {
 
         {/* Error message */}
         {errorMessage && (
-          <ThemedView type="backgroundElement" style={styles.errorCard}>
-            <ThemedText type="default" testID="error-text">
+          <ThemedView type='backgroundElement' style={styles.errorCard}>
+            <ThemedText type='default' testID='error-text'>
               {errorMessage}
             </ThemedText>
           </ThemedView>
@@ -248,12 +248,12 @@ export function LiveActivityDemoScreen() {
             style={[styles.button, !canStart && styles.buttonDisabled]}
             onPress={handleStart}
             disabled={!canStart}
-            accessibilityRole="button"
-            accessibilityLabel="Start activity"
+            accessibilityRole='button'
+            accessibilityLabel='Start activity'
             accessibilityState={{ disabled: !canStart }}
-            testID="start-button"
+            testID='start-button'
           >
-            <ThemedText type="default" themeColor={canStart ? 'text' : 'textSecondary'}>
+            <ThemedText type='default' themeColor={canStart ? 'text' : 'textSecondary'}>
               Start
             </ThemedText>
           </Pressable>
@@ -262,12 +262,12 @@ export function LiveActivityDemoScreen() {
             style={[styles.button, !canUpdate && styles.buttonDisabled]}
             onPress={handleUpdate}
             disabled={!canUpdate}
-            accessibilityRole="button"
-            accessibilityLabel="Update activity"
+            accessibilityRole='button'
+            accessibilityLabel='Update activity'
             accessibilityState={{ disabled: !canUpdate }}
-            testID="update-button"
+            testID='update-button'
           >
-            <ThemedText type="default" themeColor={canUpdate ? 'text' : 'textSecondary'}>
+            <ThemedText type='default' themeColor={canUpdate ? 'text' : 'textSecondary'}>
               Update
             </ThemedText>
           </Pressable>
@@ -276,27 +276,27 @@ export function LiveActivityDemoScreen() {
             style={[styles.button, !canEnd && styles.buttonDisabled]}
             onPress={handleEnd}
             disabled={!canEnd}
-            accessibilityRole="button"
-            accessibilityLabel="End activity"
+            accessibilityRole='button'
+            accessibilityLabel='End activity'
             accessibilityState={{ disabled: !canEnd }}
-            testID="end-button"
+            testID='end-button'
           >
-            <ThemedText type="default" themeColor={canEnd ? 'text' : 'textSecondary'}>
+            <ThemedText type='default' themeColor={canEnd ? 'text' : 'textSecondary'}>
               End
             </ThemedText>
           </Pressable>
         </ThemedView>
 
         {/* Instructions */}
-        <ThemedView type="backgroundElement" style={styles.instructionsCard}>
-          <ThemedText type="smallBold">How it works</ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
+        <ThemedView type='backgroundElement' style={styles.instructionsCard}>
+          <ThemedText type='smallBold'>How it works</ThemedText>
+          <ThemedText type='small' themeColor='textSecondary'>
             1. Tap Start to begin a Live Activity on your Lock Screen and Dynamic Island.
           </ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
+          <ThemedText type='small' themeColor='textSecondary'>
             2. Tap Update to increment the counter — watch it update everywhere.
           </ThemedText>
-          <ThemedText type="small" themeColor="textSecondary">
+          <ThemedText type='small' themeColor='textSecondary'>
             3. Tap End to dismiss the activity from all surfaces.
           </ThemedText>
         </ThemedView>

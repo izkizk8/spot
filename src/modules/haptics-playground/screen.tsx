@@ -88,64 +88,64 @@ export function HapticsPlaygroundScreen() {
   return (
     <ScrollView contentContainerStyle={styles.content}>
       <ThemedView style={styles.section}>
-        <ThemedText type="subtitle">Haptics Playground</ThemedText>
-        <ThemedText type="small" themeColor="textSecondary">
+        <ThemedText type='subtitle'>Haptics Playground</ThemedText>
+        <ThemedText type='small' themeColor='textSecondary'>
           Tap any button to feel a single haptic, or compose a pattern below.
         </ThemedText>
       </ThemedView>
 
       {Platform.OS === 'web' ? (
         <ThemedView style={styles.banner}>
-          <ThemedText type="small">Haptics not supported on this platform</ThemedText>
+          <ThemedText type='small'>Haptics not supported on this platform</ThemedText>
         </ThemedView>
       ) : null}
 
       <ThemedView style={styles.section}>
-        <ThemedText type="smallBold">Notification</ThemedText>
+        <ThemedText type='smallBold'>Notification</ThemedText>
         <View style={styles.buttonRow}>
           {NOTIFICATION_BUTTONS.map((b) => (
             <View key={b.intensity} testID={`haptic-btn-notification-${b.intensity}`}>
-              <HapticButton kind="notification" intensity={b.intensity} label={b.label} />
+              <HapticButton kind='notification' intensity={b.intensity} label={b.label} />
             </View>
           ))}
         </View>
       </ThemedView>
 
       <ThemedView style={styles.section}>
-        <ThemedText type="smallBold">Impact</ThemedText>
+        <ThemedText type='smallBold'>Impact</ThemedText>
         <View style={styles.buttonRow}>
           {IMPACT_BUTTONS.map((b) => (
             <View key={b.intensity} testID={`haptic-btn-impact-${b.intensity}`}>
-              <HapticButton kind="impact" intensity={b.intensity} label={b.label} />
+              <HapticButton kind='impact' intensity={b.intensity} label={b.label} />
             </View>
           ))}
         </View>
       </ThemedView>
 
       <ThemedView style={styles.section}>
-        <ThemedText type="smallBold">Selection</ThemedText>
+        <ThemedText type='smallBold'>Selection</ThemedText>
         <View style={styles.buttonRow}>
           {SELECTION_BUTTONS.map((b, i) => (
             <View key={b.label} testID={`haptic-btn-selection-${i}`}>
-              <HapticButton kind="selection" label={b.label} />
+              <HapticButton kind='selection' label={b.label} />
             </View>
           ))}
         </View>
       </ThemedView>
 
       <ThemedView style={styles.section}>
-        <ThemedText type="smallBold">Composer</ThemedText>
+        <ThemedText type='smallBold'>Composer</ThemedText>
         <PatternSequencer onSave={handleSave} />
       </ThemedView>
 
       {error ? (
         <ThemedView style={styles.error}>
-          <ThemedText type="small">{error}</ThemedText>
+          <ThemedText type='small'>{error}</ThemedText>
         </ThemedView>
       ) : null}
 
       <ThemedView style={styles.section}>
-        <ThemedText type="smallBold">Presets</ThemedText>
+        <ThemedText type='smallBold'>Presets</ThemedText>
         <PresetList
           presets={presets}
           onPlay={(p) => playPattern(p.pattern)}
