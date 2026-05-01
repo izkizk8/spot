@@ -5,6 +5,7 @@
   "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
+    "reset-project": "node ./scripts/reset-project.js",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
@@ -15,13 +16,14 @@
     "lint:ox": "oxlint -c oxlint.json --deny-warnings .",
     "lint:hooks": "eslint --max-warnings 0 \"src/**/*.{js,jsx,ts,tsx}\" \"test/**/*.{js,jsx,ts,tsx}\"",
     "lint": "pnpm lint:ox && pnpm lint:hooks",
-    "docs:check": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/check-docs.ps1",
     "typecheck": "tsc --noEmit",
     "test": "jest --runInBand",
     "test:watch": "jest --watch",
-    "check": "pnpm format:check && pnpm lint && pnpm docs:check && pnpm typecheck && pnpm test"
+    "check": "pnpm format:check && pnpm lint && pnpm docs:check && pnpm typecheck && pnpm test",
+    "docs:check": "pwsh -NoProfile -ExecutionPolicy Bypass -File ./scripts/check-docs.ps1"
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "2.2.0",
     "@react-navigation/bottom-tabs": "^7.15.5",
     "@react-navigation/elements": "^2.9.10",
     "@react-navigation/native": "^7.1.33",

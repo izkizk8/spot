@@ -10,7 +10,7 @@ Step-by-step procedures that involve **information from outside this repo** (ext
 
 ## When NOT
 
-- "How to run lint" → that's just `pnpm lint`, lives in [tooling_profile.md](../tooling_profile.md)
+- "How to run lint" → that's just `pnpm lint`, lives in (future generated) `tooling_profile.md`
 - Architecture explanation → `architecture.md` (generated)
 - Why we chose X → `_decisions/`
 
@@ -23,3 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
+| [feature-006-ios-feature-showcase.md](feature-006-ios-feature-showcase.md) | Verify App Shell, Modules Tab & Liquid Glass on iPhone |
