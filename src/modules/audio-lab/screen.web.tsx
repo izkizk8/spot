@@ -19,5 +19,5 @@
  * quality preset — the entire user-facing surface stays parity-equivalent.
  */
 
-export { default } from './screen';
-export type { AudioLabScreenProps } from './screen';
+export { default } from './screen.tsx';
+export type { AudioLabScreenProps } from './screen.tsx';

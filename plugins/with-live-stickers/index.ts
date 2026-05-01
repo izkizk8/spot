@@ -11,9 +11,10 @@
  * deep-equal config (idempotent).
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 export const PHOTO_LIBRARY_KEY = 'NSPhotoLibraryUsageDescription' as const;
 
 export const PHOTO_LIBRARY_USAGE =

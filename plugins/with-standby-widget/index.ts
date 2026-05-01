@@ -12,12 +12,15 @@
  * @see specs/028-standby-mode/tasks.md T045, T048
  */
 
-import { ConfigPlugin, withDangerousMod } from '@expo/config-plugins';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withDangerousMod } = configPlugins;
 import * as fs from 'fs';
 import * as path from 'path';
 
-import { withStandByWidgetSwiftSources } from './add-swift-sources';
-import { insertBundleEntry } from './insert-bundle-entry';
+import { withStandByWidgetSwiftSources } from './add-swift-sources.ts';
+import { insertBundleEntry } from './insert-bundle-entry.ts';
 
 const BUNDLE_FILE_PATH = 'ios/LiveActivityDemoWidget/SpotWidgetBundle.swift';
 

@@ -3,8 +3,10 @@
  * Adds NSContactsUsageDescription to Info.plist
  */
 
-import { ConfigPlugin, withInfoPlist } from '@expo/config-plugins';
-
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 interface ContactsPluginProps {
   contactsUsageDescription?: string;
 }

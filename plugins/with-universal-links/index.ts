@@ -15,9 +15,10 @@
  * the full mod runner.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withEntitlementsPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist } = configPlugins;
 const ASSOCIATED_DOMAINS_KEY = 'com.apple.developer.associated-domains';
 export const DEMO_DOMAIN = 'applinks:spot.example.com';
 

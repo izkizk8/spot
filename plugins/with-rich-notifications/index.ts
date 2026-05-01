@@ -5,9 +5,10 @@
  * registers the expo-notifications plugin block, and declares
  * the Android default notification channel.
  */
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withAndroidManifest, withInfoPlist, withPlugins } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withAndroidManifest, withInfoPlist, withPlugins } = configPlugins;
 const USAGE_KEY = 'NSUserNotificationsUsageDescription';
 const USAGE_COPY =
   "Spot uses notifications to demonstrate Apple's User Notifications framework in the Notifications Lab.";

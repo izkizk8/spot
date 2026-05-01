@@ -14,9 +14,10 @@
  * entitlements, or App Groups.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 const DEFAULT_MIC_USAGE = 'Audio Lab uses the microphone to demonstrate recording and playback.';
 
 const withAudioRecording: ConfigPlugin = (config) =>

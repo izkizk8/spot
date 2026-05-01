@@ -17,5 +17,5 @@
  * of drift between the two surfaces.
  */
 
-export { default } from './screen';
-export type { AudioLabScreenProps } from './screen';
+export { default } from './screen.tsx';
+export type { AudioLabScreenProps } from './screen.tsx';

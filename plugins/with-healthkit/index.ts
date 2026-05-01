@@ -24,9 +24,10 @@
  * mutation rules without driving the full mod runner.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withEntitlementsPlist, withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist, withInfoPlist } = configPlugins;
 export const HEALTHKIT_SHARE_KEY = 'NSHealthShareUsageDescription';
 export const HEALTHKIT_UPDATE_KEY = 'NSHealthUpdateUsageDescription';
 export const HEALTHKIT_ENTITLEMENT_KEY = 'com.apple.developer.healthkit';

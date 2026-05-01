@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import type { GlassProps, GlassShape } from './index';
+import type { GlassProps, GlassShape } from './index.tsx';
 
-export type { GlassProps, GlassShape } from './index';
+export type { GlassProps, GlassShape } from './index.tsx';
 
 function shapeStyle(shape: GlassShape): ViewStyle {
   switch (shape) {
@@ -29,8 +29,8 @@ export function Glass({ intensity = 0.6, tint, shape = 'rounded', style, childre
   // Inline backdrop-filter style: documented exception. Cast to ViewStyle
   // because RN's typings don't include the web-only property.
   const backdrop: StyleProp<ViewStyle> = {
-    // @ts-expect-error -- web-only CSS property not modeled by RN typings.
     backdropFilter: `blur(${blurPx}px) saturate(180%)`,
+    // @ts-expect-error -- web-only vendor-prefixed CSS property not modeled by RN typings.
     WebkitBackdropFilter: `blur(${blurPx}px) saturate(180%)`,
   };
 

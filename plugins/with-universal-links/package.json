@@ -3,5 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "description": "Expo config plugin for feature 041 (universal-links-lab)",
+  "type": "module",
   "main": "index.ts"
 }

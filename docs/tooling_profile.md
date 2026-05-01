@@ -30,9 +30,9 @@ The module is configuration-first. Its source of truth is the root package and t
 | CRLF policy | [.gitattributes](../.gitattributes), [.editorconfig](../.editorconfig), [.oxfmtrc.json](../.oxfmtrc.json) | Consistent Windows-first line endings. |
 | Documentation gate | [scripts/check-docs.ps1](../scripts/check-docs.ps1) | Automated doc-system health and stale-reference checks. |
 | OXC lint | [oxlint.json](../oxlint.json) | Fast correctness, suspicious, React, Jest, import, and TypeScript checks. |
-| Official Hooks lint | [eslint.config.js](../eslint.config.js) | Authoritative `eslint-plugin-react-hooks` rules. |
+| Official Hooks lint | [eslint.config.cjs](../eslint.config.cjs) | Authoritative `eslint-plugin-react-hooks` rules. |
 | Strict TypeScript | [tsconfig.json](../tsconfig.json) | Expo base config, strict mode, and aliases. |
-| Jest Expo test harness | [jest.config.js](../jest.config.js), [test/setup.ts](../test/setup.ts) | Unit test runtime, alias mapping, transforms, and mocks. |
+| Jest Expo test harness | [jest.config.cjs](../jest.config.cjs), [test/setup.ts](../test/setup.ts) | Unit test runtime, alias mapping, transforms, and mocks. |
 | Test examples | [test/unit/README.md](../test/unit/README.md), [test/unit/examples](../test/unit/examples) | Copyable patterns for new tests. |
 
 ### Use Cases
@@ -75,8 +75,8 @@ app.json                      Expo app metadata, plugins, typed routes, React Co
 .editorconfig                 Editor CRLF and whitespace policy
 .oxfmtrc.json                 OXC formatter settings and ignore list
 oxlint.json                   OXC lint plugins, environments, categories, rules
-eslint.config.js              Official React Hooks ESLint flat config
-jest.config.js                Jest Expo preset, test globs, aliases, transforms
+eslint.config.cjs              Official React Hooks ESLint flat config
+jest.config.cjs                Jest Expo preset, test globs, aliases, transforms
 scripts/check-docs.ps1        Automated documentation system checks
 test/setup.ts                 Shared Jest setup and Expo/native mocks
 test/unit/README.md           Unit-test examples guide
@@ -146,7 +146,7 @@ Project-specific OXC rules include:
 
 ### Official React Hooks ESLint Layer
 
-[eslint.config.js](../eslint.config.js) keeps a focused ESLint flat config for `src/**/*.{js,jsx,ts,tsx}` and `test/**/*.{js,jsx,ts,tsx}`. It uses `typescript-eslint` as the parser and `eslint-plugin-react-hooks` flat recommended config, then explicitly sets `react-hooks/exhaustive-deps` to `error`.
+[eslint.config.cjs](../eslint.config.cjs) keeps a focused ESLint flat config for `src/**/*.{js,jsx,ts,tsx}` and `test/**/*.{js,jsx,ts,tsx}`. It uses `typescript-eslint` as the parser and `eslint-plugin-react-hooks` flat recommended config, then explicitly sets `react-hooks/exhaustive-deps` to `error`.
 
 This layer is intentionally separate from OXC. OXC provides fast general linting, while the official Hooks plugin remains the authoritative source for React Hooks and React Compiler-era checks. See [ADR 0002](_decisions/0002-toolchain.md) for the tradeoffs.
 
@@ -161,7 +161,7 @@ This layer is intentionally separate from OXC. OXC provides fast general linting
 
 ### Jest Expo And React Native Testing Library
 
-[jest.config.js](../jest.config.js) uses the `jest-expo` preset and limits test discovery to `test/unit/**/*.test.ts` and `test/unit/**/*.test.tsx`. It mirrors the TypeScript path aliases for Jest and maps CSS-like imports to [test/style-mock.js](../test/style-mock.js).
+[jest.config.cjs](../jest.config.cjs) uses the `jest-expo` preset and limits test discovery to `test/unit/**/*.test.ts` and `test/unit/**/*.test.tsx`. It mirrors the TypeScript path aliases for Jest and maps CSS-like imports to [test/style-mock.js](../test/style-mock.js).
 
 The transform ignore pattern allows React Native, Expo, Expo namespace packages, React Navigation, Reanimated, and Worklets packages to be transformed correctly under Jest.
 
@@ -209,7 +209,7 @@ The gate is intentionally local and deterministic. It checks formatting first, t
 sequenceDiagram
     participant Jest
     participant Setup as test/setup.ts
-    participant Config as jest.config.js
+    participant Config as jest.config.cjs
     participant Test as test/unit examples
     participant App as src/*
 
@@ -297,7 +297,7 @@ erDiagram
 #### Lint Configuration
 
 - **Purpose**: Split general lint from official hooks lint.
-- **Storage**: [oxlint.json](../oxlint.json) and [eslint.config.js](../eslint.config.js).
+- **Storage**: [oxlint.json](../oxlint.json) and [eslint.config.cjs](../eslint.config.cjs).
 - **Important fields**: OXC `plugins`, `categories`, `env`, `rules`; ESLint `files`, `parser`, `plugins`, `rules`.
 
 #### TypeScript Configuration
@@ -309,7 +309,7 @@ erDiagram
 #### Jest Configuration
 
 - **Purpose**: Run Expo-compatible unit tests with alias and transform support.
-- **Storage**: [jest.config.js](../jest.config.js).
+- **Storage**: [jest.config.cjs](../jest.config.cjs).
 - **Important fields**: `preset`, `setupFilesAfterEnv`, `testMatch`, `moduleNameMapper`, `transformIgnorePatterns`.
 
 #### Shared Mock
@@ -338,8 +338,8 @@ erDiagram
 | [app.json](../app.json) | Expo typed routes, React Compiler, plugin, and web output flags. |
 | [.oxfmtrc.json](../.oxfmtrc.json) | Formatter behavior. |
 | [oxlint.json](../oxlint.json) | OXC lint behavior. |
-| [eslint.config.js](../eslint.config.js) | Official Hooks lint behavior. |
-| [jest.config.js](../jest.config.js) | Unit test runtime behavior. |
+| [eslint.config.cjs](../eslint.config.cjs) | Official Hooks lint behavior. |
+| [jest.config.cjs](../jest.config.cjs) | Unit test runtime behavior. |
 | [test/setup.ts](../test/setup.ts) | Shared test mocks. |
 | [test/unit/README.md](../test/unit/README.md) | Test authoring guide. |
 | [ADR 0002](_decisions/0002-toolchain.md) | Rationale and revisit conditions for the toolchain. |
@@ -386,8 +386,8 @@ erDiagram
 | Line-ending configuration | 2 | `.gitattributes`, `.editorconfig` |
 | Type configuration | 1 | `tsconfig.json` |
 | Format configuration | 1 | `.oxfmtrc.json` |
-| Lint configuration | 2 | `oxlint.json`, `eslint.config.js` |
-| Test configuration/setup | 2 | `jest.config.js`, `test/setup.ts` |
+| Lint configuration | 2 | `oxlint.json`, `eslint.config.cjs` |
+| Test configuration/setup | 2 | `jest.config.cjs`, `test/setup.ts` |
 | Documentation automation | 1 | `scripts/check-docs.ps1` |
 | Test documentation/examples | 4 | `test/unit/README.md`, 3 example tests |
 | Decision record | 1 | `docs/_decisions/0002-toolchain.md` |
@@ -400,9 +400,9 @@ erDiagram
 3. **[.oxfmtrc.json](../.oxfmtrc.json)**: OXC formatter settings and ignored paths.
 4. **[scripts/check-docs.ps1](../scripts/check-docs.ps1)**: Documentation automation gate.
 5. **[oxlint.json](../oxlint.json)**: OXC lint plugins, categories, environments, and rules.
-6. **[eslint.config.js](../eslint.config.js)**: Official React Hooks ESLint layer.
+6. **[eslint.config.cjs](../eslint.config.cjs)**: Official React Hooks ESLint layer.
 7. **[tsconfig.json](../tsconfig.json)**: Strict TypeScript and aliases.
-8. **[jest.config.js](../jest.config.js)**: Jest Expo preset, aliases, CSS mocks, and transform exceptions.
+8. **[jest.config.cjs](../jest.config.cjs)**: Jest Expo preset, aliases, CSS mocks, and transform exceptions.
 9. **[test/setup.ts](../test/setup.ts)**: Shared native/Expo mocks.
 10. **[test/unit/README.md](../test/unit/README.md)**: Unit-test authoring guidance.
 11. **[ADR 0002](_decisions/0002-toolchain.md)** and ADR **[0005](_decisions/0005-crlf-and-doc-automation.md)**: Rationale and revisit conditions.

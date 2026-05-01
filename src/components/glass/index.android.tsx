@@ -1,9 +1,9 @@
 import React from 'react';
 import { StyleSheet, View, type StyleProp, type ViewStyle } from 'react-native';
 
-import type { GlassProps, GlassShape } from './index';
+import type { GlassProps, GlassShape } from './index.tsx';
 
-export type { GlassProps, GlassShape } from './index';
+export type { GlassProps, GlassShape } from './index.tsx';
 
 function shapeStyle(shape: GlassShape): ViewStyle {
   switch (shape) {

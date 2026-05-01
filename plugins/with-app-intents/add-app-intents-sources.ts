@@ -6,7 +6,10 @@
  * @see specs/013-app-intents/contracts/module-manifest.md
  */
 
-import { type ConfigPlugin, withXcodeProject } from '@expo/config-plugins';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withXcodeProject } = configPlugins;
 import * as path from 'path';
 
 const SWIFT_SRC_DIR = 'native/ios/app-intents';

@@ -1,5 +1,6 @@
 {
   "name": "@spot/with-coredata-cloudkit",
   "version": "1.0.0",
+  "type": "module",
   "main": "index.ts"
 }

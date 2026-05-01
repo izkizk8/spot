@@ -17,9 +17,10 @@
  * deep-equal config.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withEntitlementsPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist } = configPlugins;
 export const ICLOUD_SERVICES_KEY = 'com.apple.developer.icloud-services' as const;
 export const ICLOUD_CONTAINERS_KEY = 'com.apple.developer.icloud-container-identifiers' as const;
 export const APS_ENVIRONMENT_KEY = 'aps-environment' as const;

@@ -9,9 +9,11 @@
  * @see specs/039-quick-actions/research.md §Decision 2
  */
 
-import { ConfigPlugin, withInfoPlist } from '@expo/config-plugins';
-
-import { DEFAULT_QUICK_ACTIONS } from '../../src/modules/quick-actions-lab/default-actions';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
+import { DEFAULT_QUICK_ACTIONS } from '../../src/modules/quick-actions-lab/default-actions.ts';
 
 interface ShortcutItem {
   UIApplicationShortcutItemType: string;

@@ -8,7 +8,7 @@ import {
 } from 'expo-router/ui';
 import { SymbolView } from 'expo-symbols';
 import React from 'react';
-import { Pressable, useColorScheme, View, StyleSheet } from 'react-native';
+import { Pressable, useColorScheme, StyleSheet } from 'react-native';
 
 import { ExternalLink } from './external-link';
 import { ThemedText } from './themed-text';
@@ -25,8 +25,7 @@ export const TAB_IDS = ['index', 'explore', 'modules', 'settings'] as const;
 
 export default function AppTabs() {
   return (
-    <Tabs>
-      <TabSlot style={{ height: '100%' }} />
+    <Tabs style={styles.tabsRoot}>
       <TabList asChild>
         <CustomTabList>
           <TabTrigger name='index' href='/' asChild>
@@ -43,6 +42,7 @@ export default function AppTabs() {
           </TabTrigger>
         </CustomTabList>
       </TabList>
+      <TabSlot style={styles.tabSlot} />
     </Tabs>
   );
 }
@@ -67,7 +67,7 @@ export function CustomTabList(props: TabListProps) {
   const colors = Colors[scheme === 'unspecified' ? 'light' : scheme];
 
   return (
-    <View {...props} style={styles.tabListContainer}>
+    <ThemedView {...props} type='background' style={styles.tabListContainer}>
       <ThemedView type='backgroundElement' style={styles.innerContainer}>
         <ThemedText type='smallBold' style={styles.brandText}>
           Expo Starter
@@ -86,13 +86,18 @@ export function CustomTabList(props: TabListProps) {
           </Pressable>
         </ExternalLink>
       </ThemedView>
-    </View>
+    </ThemedView>
   );
 }
 
 const styles = StyleSheet.create({
+  tabsRoot: {
+    flex: 1,
+  },
+  tabSlot: {
+    flex: 1,
+  },
   tabListContainer: {
-    position: 'absolute',
     width: '100%',
     padding: Spacing.three,
     justifyContent: 'center',

@@ -16,9 +16,10 @@
  * assert the mutation rules without driving the full mod runner.
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist } = configPlugins;
 export const HOMEKIT_USAGE_KEY = 'NSHomeKitUsageDescription';
 
 export const DEFAULT_USAGE_COPY =

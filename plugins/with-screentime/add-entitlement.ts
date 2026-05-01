@@ -12,8 +12,10 @@
  * Idempotent.
  */
 
-import { type ConfigPlugin, withEntitlementsPlist } from '@expo/config-plugins';
-
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist } = configPlugins;
 export const FAMILY_CONTROLS_KEY = 'com.apple.developer.family-controls';
 
 export const withScreenTimeEntitlement: ConfigPlugin = (config) => {

@@ -27,9 +27,10 @@
  * @see specs/070-icloud-drive/tasks.md T011
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withEntitlementsPlist, withInfoPlist } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withEntitlementsPlist, withInfoPlist } = configPlugins;
 export const ICLOUD_CONTAINERS_KEY = 'com.apple.developer.icloud-container-identifiers' as const;
 export const UBIQUITY_CONTAINERS_KEY =
   'com.apple.developer.ubiquity-container-identifiers' as const;

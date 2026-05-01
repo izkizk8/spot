@@ -18,9 +18,10 @@
  * @see specs/035-core-bluetooth/contracts/with-bluetooth-plugin.md
  */
 
+import * as _cp from '@expo/config-plugins';
 import type { ConfigPlugin } from '@expo/config-plugins';
-import { withInfoPlist, withPlugins } from '@expo/config-plugins';
-
+const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
+const { withInfoPlist, withPlugins } = configPlugins;
 const DEFAULT_BT_USAGE =
   'Used to demonstrate Core Bluetooth central scanning, connection, and characteristic operations.';
 

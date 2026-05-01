@@ -11,9 +11,10 @@
  * @see specs/007-live-activities-dynamic-island/tasks.md T011
  */
 
-import { ConfigPlugin } from '@expo/config-plugins';
-import { withLiveActivityInfoPlist } from './set-info-plist';
-import { withLiveActivityWidgetExtension } from './add-widget-extension';
+import * as _cp from '@expo/config-plugins';
+import type { ConfigPlugin } from '@expo/config-plugins';
+import { withLiveActivityInfoPlist } from './set-info-plist.ts';
+import { withLiveActivityWidgetExtension } from './add-widget-extension.ts';
 
 /**
  * Main config plugin that sets up Live Activities support.
