@@ -56,6 +56,7 @@ import coreImageLab from './064-core-image';
 import iCloudDriveLab from './icloud-drive-lab';
 import siriKitLab from './sirikit-lab';
 import liveTextLab from './live-text-lab';
+import pencilkitLab from './pencilkit-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -131,5 +132,6 @@ export const MODULES: readonly ModuleManifest[] = [
   siriKitLab,
   shortcutsSnippetsLab,
   liveTextLab,
+  pencilkitLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
