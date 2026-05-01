@@ -28,7 +28,7 @@ import backgroundTasksLab from './background-tasks-lab';
 import spotlightLab from './spotlight-lab';
 import documentsLab from './documents-lab';
 import shareSheetLab from './share-sheet-lab';
-
+import arkitLab from './arkit-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -76,5 +76,6 @@ export const MODULES: readonly ModuleManifest[] = [
   spotlightLab,
   documentsLab,
   shareSheetLab,
+  arkitLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

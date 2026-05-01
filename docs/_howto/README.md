@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-033-share-sheet.md](feature-033-share-sheet.md) | Verify Share Sheet on iPhone |
+| [feature-034-arkit-basics.md](feature-034-arkit-basics.md) | Verify ARKit Basics on iPhone |
