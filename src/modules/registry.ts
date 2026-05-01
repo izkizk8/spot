@@ -26,6 +26,7 @@ import standbyLab from './standby-lab';
 import focusFiltersLab from './focus-filters-lab';
 import backgroundTasksLab from './background-tasks-lab';
 import spotlightLab from './spotlight-lab';
+import documentsLab from './documents-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -72,5 +73,6 @@ export const MODULES: readonly ModuleManifest[] = [
   focusFiltersLab,
   backgroundTasksLab,
   spotlightLab,
+  documentsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
