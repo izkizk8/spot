@@ -71,6 +71,7 @@
       "./plugins/with-universal-links",
       "./plugins/with-app-clips",
       "./plugins/with-healthkit",
+      "./plugins/with-homekit",
       [
         "expo-sensors",
         {

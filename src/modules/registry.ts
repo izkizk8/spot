@@ -38,6 +38,7 @@ import handoffLab from './handoff-lab';
 import universalLinksLab from './universal-links-lab';
 import appClipsLab from './app-clips-lab';
 import healthkitLab from './healthkit-lab';
+import homekitLab from './homekit-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
  * and routable at `/modules/[id]`.
@@ -95,5 +96,6 @@ export const MODULES: readonly ModuleManifest[] = [
   universalLinksLab,
   appClipsLab,
   healthkitLab,
+  homekitLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
