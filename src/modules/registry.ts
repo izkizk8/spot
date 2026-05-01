@@ -1,5 +1,6 @@
 import type { ModuleManifest } from './types';
 // Add new modules here ↓ One import line per module.
+import realityKitUsdzLab from './062-realitykit-usdz';
 import liveActivityDemo from './live-activity-demo';
 import liquidGlassPlayground from './liquid-glass-playground';
 import hapticsPlayground from './haptics-playground';
@@ -115,5 +116,6 @@ export const MODULES: readonly ModuleManifest[] = [
   tapToPayLab,
   coredataCloudKitLab,
   swiftdataLab,
+  realityKitUsdzLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
