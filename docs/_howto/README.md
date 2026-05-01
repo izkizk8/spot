@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-022-local-authentication.md](feature-022-local-authentication.md) | Verify Local Authentication (Face ID / Touch ID) on iPhone |
+| [feature-023-keychain-services.md](feature-023-keychain-services.md) | Verify Keychain Services on iPhone |

@@ -17,6 +17,7 @@ import speechSynthesisLab from './speech-synthesis-lab';
 import audioLab from './audio-lab';
 import signInWithApple from './sign-in-with-apple';
 import localAuthLab from './local-auth-lab';
+import keychainLab from './keychain-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -54,5 +55,6 @@ export const MODULES: readonly ModuleManifest[] = [
   audioLab,
   signInWithApple,
   localAuthLab,
+  keychainLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
