@@ -23,6 +23,7 @@ import coreLocationLab from './core-location-lab';
 import notificationsLab from './notifications-lab';
 import lockWidgetsLab from './lock-widgets-lab';
 import standbyLab from './standby-lab';
+import focusFiltersLab from './focus-filters-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -66,5 +67,6 @@ export const MODULES: readonly ModuleManifest[] = [
   notificationsLab,
   lockWidgetsLab,
   standbyLab,
+  focusFiltersLab,
   // ↑ Append new manifests here in the order they should appear.
 ];

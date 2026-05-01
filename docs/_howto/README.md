@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-028-standby-mode.md](feature-028-standby-mode.md) | Verify StandBy Mode Widget on iPhone |
+| [feature-029-focus-filters.md](feature-029-focus-filters.md) | Verify Focus Filters on iPhone |
