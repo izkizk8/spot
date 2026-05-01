@@ -47,6 +47,7 @@ import applePayLab from './apple-pay-lab';
 import storekitLab from './storekit-lab';
 import tapToPayLab from './tap-to-pay-lab';
 import coredataCloudKitLab from './coredata-cloudkit-lab';
+import shortcutsSnippetsLab from './shortcuts-snippets-lab';
 import swiftdataLab from './swiftdata-lab';
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -115,5 +116,6 @@ export const MODULES: readonly ModuleManifest[] = [
   tapToPayLab,
   coredataCloudKitLab,
   swiftdataLab,
+  shortcutsSnippetsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
