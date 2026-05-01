@@ -78,6 +78,35 @@ jest.mock('@/native/keychain', () => {
   return { keychain: mock.keychain };
 });
 
+// Mock react-native-ble-plx globally so tests that traverse the module
+// registry don't try to evaluate the upstream library's ESM source
+// (feature 035). Tests that need to drive the bridge can re-mock this
+// module with `jest.doMock` inside their own scope.
+jest.mock(
+  'react-native-ble-plx',
+  () => ({
+    BleManager: class {
+      public startDeviceScan = jest.fn();
+      public stopDeviceScan = jest.fn();
+      public connectToDevice = jest.fn();
+      public cancelDeviceConnection = jest.fn();
+      public discoverAllServicesAndCharacteristicsForDevice = jest.fn();
+      public onStateChange = jest.fn(() => ({ remove: jest.fn() }));
+      public destroy = jest.fn();
+    },
+    BleErrorCode: {
+      BluetoothUnsupported: 100,
+      BluetoothUnauthorized: 101,
+      BluetoothPoweredOff: 102,
+      OperationCancelled: 200,
+      OperationTimedOut: 201,
+      DeviceDisconnected: 300,
+      DeviceConnectionFailed: 301,
+    },
+  }),
+  { virtual: false },
+);
+
 // Mock react-native-maps (feature 024)
 jest.mock('react-native-maps', () => jest.requireActual('@test/__mocks__/react-native-maps'));
 
