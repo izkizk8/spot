@@ -11,6 +11,7 @@
     "web": "expo start --web",
     "ios:ipa": "eas build --platform ios --profile sideload --non-interactive",
     "ios:simulator": "eas build --platform ios --profile development --non-interactive",
+    "altstore:source": "node ./scripts/altstore/build-source.js",
     "format": "oxfmt --write .",
     "format:check": "oxfmt --check .",
     "lint:ox": "oxlint -c oxlint.json --deny-warnings .",

@@ -63,7 +63,7 @@ Free Apple ID certificates expire after 7 days. When the app stops working:
 2. Open Sideloadly → drag the **same `.ipa`** (no rebuild needed)
 3. Click **Start** → re-trust on device
 
-Alternative: [AltStore](https://altstore.io/) auto-renews over Wi-Fi.
+Alternative: [AltStore](https://altstore.io/) auto-renews over Wi-Fi. See [`altstore-source.md`](altstore-source.md) for the OTA install path.
 
 ## Verify
 
@@ -87,5 +87,6 @@ Open the app on the iPhone — it launches and runs the latest bundled code.
 ## See Also
 
 - ADR [0003](../_decisions/0003-unsigned-ipa-custom-build.md) — why we use a custom build YAML
+- [`altstore-source.md`](altstore-source.md) — OTA install path via AltStore source (no USB after first setup)
 - Generated profile: [eas-sideload_profile.md](../eas-sideload_profile.md) — full EAS sideload module reference
 - EAS docs: <https://docs.expo.dev/build/introduction/>, <https://docs.expo.dev/custom-builds/schema/>
