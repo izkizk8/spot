@@ -20,6 +20,7 @@ import localAuthLab from './local-auth-lab';
 import keychainLab from './keychain-lab';
 import mapkitLab from './mapkit-lab';
 import coreLocationLab from './core-location-lab';
+import notificationsLab from './notifications-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -60,5 +61,6 @@ export const MODULES: readonly ModuleManifest[] = [
   keychainLab,
   mapkitLab,
   coreLocationLab,
+  notificationsLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
