@@ -81,6 +81,7 @@
       "./plugins/with-coredata-cloudkit",
       "./plugins/with-photokit",
       "./plugins/with-visual-look-up",
+      "./plugins/with-icloud-drive",
       [
         "expo-sensors",
         {
