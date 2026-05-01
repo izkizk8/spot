@@ -52,3 +52,8 @@ app-example
 # generated native folders
 /ios
 /android
+
+# CoreML model artifacts (operator-supplied; not redistributed)
+native/ios/coreml/models/*.mlmodel
+native/ios/coreml/models/*.mlmodelc
+native/ios/coreml/models/*.mlpackage

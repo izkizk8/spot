@@ -1,0 +1,5 @@
+# Operator-supplied model files (not committed to the repository)
+*.mlmodel
+*.mlmodelc
+*.mlpackage
+!.gitkeep

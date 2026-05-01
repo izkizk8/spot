@@ -23,4 +23,4 @@ Copy `_template.md` to `<short-slug>.md`. Keep it task-focused.
 | File | Topic |
 |------|-------|
 | [sideload-iphone.md](sideload-iphone.md) | Install free unsigned IPA on iPhone (Windows → iOS sideload) |
-| [feature-015-screentime-api.md](feature-015-screentime-api.md) | Verify Screen Time API on iPhone |
+| [feature-016-coreml-playground.md](feature-016-coreml-playground.md) | Verify Core ML Playground on iPhone |

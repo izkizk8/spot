@@ -10,6 +10,7 @@ import swiftChartsLab from './swift-charts-lab';
 import appIntentsLab from './app-intents-lab';
 import widgetsLab from './widgets-lab';
 import screentimeLab from './screentime-lab';
+import coremlLab from './coreml-lab';
 
 /**
  * The source-order list of module manifests rendered in the Modules tab
@@ -40,5 +41,6 @@ export const MODULES: readonly ModuleManifest[] = [
   appIntentsLab,
   widgetsLab,
   screentimeLab,
+  coremlLab,
   // ↑ Append new manifests here in the order they should appear.
 ];
