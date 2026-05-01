@@ -73,6 +73,7 @@
       "./plugins/with-healthkit",
       "./plugins/with-homekit",
       "./plugins/with-carplay",
+      "./plugins/with-weatherkit",
       [
         "expo-sensors",
         {
