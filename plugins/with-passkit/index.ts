@@ -46,29 +46,18 @@ const withPassKitFramework: ConfigPlugin = (config) => {
     const project = cfg.modResults;
     const frameworkName = 'PassKit.framework';
 
-    // Find the main target
-    const targets = project.getTargetsByType('application');
-    if (targets.length === 0) return cfg;
+    // Locate the iOS application target. Prefer an explicit lookup by product
+    // type so we don't accidentally attach to a widget / share extension if the
+    // ordering of native targets ever changes; fall back to the first native
+    // target for safety.
+    const target =
+      project.getTarget('com.apple.product-type.application') ?? project.getFirstTarget();
+    if (!target) return cfg;
 
-    const mainTarget = targets[0];
-    const frameworksBuildPhase = project.getTargetAttribute(
-      'PBXFrameworksBuildPhase',
-      mainTarget.uuid,
-    );
-
-    if (!frameworksBuildPhase) return cfg;
-
-    // Check if PassKit.framework is already linked
-    const files = project.pbxFrameworksBuildPhaseObj(frameworksBuildPhase)['files'] || [];
-    const isLinked = files.some((file: any) => {
-      const fileRef = project.pbxFileReferenceSection()[file.value];
-      return fileRef && fileRef.name === frameworkName;
-    });
-
-    if (!isLinked) {
-      // Add PassKit.framework
-      project.addFramework(frameworkName, { target: mainTarget.uuid });
-    }
+    // `addFramework` from the `xcode` package is idempotent: it short-circuits
+    // via `hasFile(file.path)` when the framework is already present in the
+    // project, so calling it on every prebuild is safe.
+    project.addFramework(frameworkName, { target: target.uuid });
 
     return cfg;
   });
