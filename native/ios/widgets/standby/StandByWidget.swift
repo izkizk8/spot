@@ -3,7 +3,9 @@
 //
 // - kind: "SpotStandByWidget" (matches the JS-side reload key).
 // - Supported families: .systemMedium, .systemLarge.
-// - Honours .widgetAccentedRenderingMode(.accented) when system surfaces it.
+// - Tinted-mode appearance is driven by the `widgetRenderingMode` env in
+//   StandByViews; widgetAccentedRenderingMode is an Image-only iOS 18 modifier
+//   and isn't useful here (the StandBy views render Text only).
 
 import WidgetKit
 import SwiftUI
@@ -13,21 +15,11 @@ struct StandByWidget: Widget {
     let kind: String = "SpotStandByWidget"
 
     var body: some WidgetConfiguration {
-        if #available(iOS 18.0, *) {
-            StaticConfiguration(kind: kind, provider: StandByProvider()) { entry in
-                StandByRootView(entry: entry)
-            }
-            .configurationDisplayName("Spot StandBy")
-            .description("Showcase value, counter, tint, and rendering mode in StandBy.")
-            .supportedFamilies([.systemMedium, .systemLarge])
-            .widgetAccentedRenderingMode(.accented)
-        } else {
-            StaticConfiguration(kind: kind, provider: StandByProvider()) { entry in
-                StandByRootView(entry: entry)
-            }
-            .configurationDisplayName("Spot StandBy")
-            .description("Showcase value, counter, tint, and rendering mode in StandBy.")
-            .supportedFamilies([.systemMedium, .systemLarge])
+        StaticConfiguration(kind: kind, provider: StandByProvider()) { entry in
+            StandByRootView(entry: entry)
         }
+        .configurationDisplayName("Spot StandBy")
+        .description("Showcase value, counter, tint, and rendering mode in StandBy.")
+        .supportedFamilies([.systemMedium, .systemLarge])
     }
 }
