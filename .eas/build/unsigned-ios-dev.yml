@@ -39,16 +39,20 @@ build:
           set -euo pipefail
 
           SCHEME="spot"
-          echo "Building scheme: $SCHEME (Release native, dev JS bundle)"
+          echo "Building scheme: $SCHEME (Debug native, dev JS bundle)"
 
-          # We build Release native to avoid the Xcode 16 Debug-dylib indirection
-          # (a 70+ MB spot.debug.dylib that some sideload tools mis-handle).
-          # The "dev-ness" we care about lives in the JS bundle, which we
-          # overwrite below with our pre-bundled __DEV__=true output.
+          # Build Debug configuration so expo-dev-client's launcher + dev menu
+          # bundles get linked (they're stripped in Release builds). Without
+          # them the user can't shake-to-open the dev menu or paste a Metro
+          # tunnel URL for streaming logs to their Windows host.
+          #
+          # Note: Xcode 16's Debug builds produce a small stub `spot` binary
+          # plus a large `spot.debug.dylib` ("Debug Dylib for Hot Reload").
+          # Sideloadly / AltStore handle this layout correctly when resigning.
           xcodebuild \
             -workspace spot.xcworkspace \
             -scheme "$SCHEME" \
-            -configuration Release \
+            -configuration Debug \
             -sdk iphoneos \
             -derivedDataPath build \
             CODE_SIGNING_REQUIRED=NO \
@@ -57,12 +61,12 @@ build:
             CODE_SIGN_ENTITLEMENTS="" \
             -quiet
 
-          APP_PATH=$(find build/Build/Products/Release-iphoneos -name "$SCHEME.app" -type d | head -1)
+          APP_PATH=$(find build/Build/Products/Debug-iphoneos -name "$SCHEME.app" -type d | head -1)
           echo "App built at: $APP_PATH"
 
-          # Replace the production __DEV__=false bundle the build phase produced
-          # with our pre-built __DEV__=true bundle. Same with assets so any
-          # require()'d images resolve at the dev hashes.
+          # The Debug build phase skipped JS bundling (it expects Metro), so
+          # the .app has no main.jsbundle. Drop our pre-built dev bundle in
+          # so the app can launch standalone.
           cp devbundle/main.jsbundle "$APP_PATH/main.jsbundle"
           if [ -d devbundle/assets ]; then
             rm -rf "$APP_PATH/assets"
