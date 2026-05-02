@@ -66,7 +66,7 @@ export const withStandByWidgetSwiftSources: ConfigPlugin = (config) => {
       }
       addSwiftSourceFile(project, filePath, standbyGroup.uuid, {
         target: widgetTarget.uuid,
-        sourceTree: '"<group>"',
+        sourceTree: 'SOURCE_ROOT',
       });
     }
 

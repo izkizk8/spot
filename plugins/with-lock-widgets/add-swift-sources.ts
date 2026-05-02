@@ -68,7 +68,7 @@ export const withLockWidgetsSwiftSources: ConfigPlugin = (config) => {
 
       addSwiftSourceFile(project, filePath, lockGroup.uuid, {
         target: widgetTarget.uuid,
-        sourceTree: '"<group>"',
+        sourceTree: 'SOURCE_ROOT',
       });
     }
 
