@@ -162,42 +162,28 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
       }
     }
 
-    // Add "Embed App Extensions" build phase to main target
-    if (mainTarget) {
-      // Check if embed phase already exists. The xcode npm package doesn't
-      // expose a `pbxCopyFilesBuildPhaseSection()` accessor (only the named
-      // PBXBuildFile / XCBuildConfiguration / etc. helpers exist), so reach
-      // into the raw section directly.
-      const embedPhases =
-        (project.hash?.project?.objects?.['PBXCopyFilesBuildPhase'] as
-          | Record<string, unknown>
-          | undefined) ?? {};
-      let hasEmbedPhase = false;
-      for (const key of Object.keys(embedPhases)) {
-        const phase = embedPhases[key];
-        if (
-          phase &&
-          typeof phase === 'object' &&
-          'name' in phase &&
-          (phase as { name?: string }).name === '"Embed App Extensions"'
-        ) {
-          hasEmbedPhase = true;
-          break;
-        }
-      }
+    // NOTE: We intentionally do NOT call `project.addBuildPhase(...,
+    // 'PBXCopyFilesBuildPhase', 'Embed App Extensions', ...)` here.
+    //
+    // `project.addTarget(name, 'app_extension', ...)` already creates a
+    // `PBXCopyFilesBuildPhase` (with `dstSubfolderSpec = 13`, the
+    // `app_extensions` folder) on the first/main target and pushes the
+    // widget's productFile into it (xcode npm pbxProject.js: addTarget
+    // → addBuildPhase('Copy Files') → addToPbxCopyfilesBuildPhase).
+    //
+    // Functionally this IS the "Embed App Extensions" phase Xcode shows in
+    // the UI — `dstSubfolderSpec = 13` is what makes it embed extensions.
+    // Adding a second phase here would put the same PBXBuildFile into two
+    // PBXBuildPhases, which CocoaPods' xcodeproj gem rejects with:
+    //   [Xcodeproj] Consistency issue: no parent for object
+    //   `<name>.appex`: `Copy Files`, `Embed App Extensions`
 
-      if (!hasEmbedPhase) {
-        project.addBuildPhase(
-          [`${WIDGET_TARGET_NAME}.appex`],
-          'PBXCopyFilesBuildPhase',
-          'Embed App Extensions',
-          mainTarget.uuid,
-          'app_extension',
-        );
-      }
-    }
-
-    // Add target dependency from main app to widget
+    // Add target dependency from main app to widget. addTarget also calls
+    // this internally, but only if PBXTargetDependency / PBXContainerItemProxy
+    // sections already exist in the pbxproj. In a fresh Expo prebuild they
+    // typically don't, so we re-call here to make sure the dependency is
+    // recorded once those sections appear later in the mod chain. The xcode
+    // npm helper bails out cleanly when sections are missing.
     if (mainTarget) {
       project.addTargetDependency(mainTarget.uuid, [widgetTarget.uuid]);
     }
