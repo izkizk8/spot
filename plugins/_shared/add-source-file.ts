@@ -113,6 +113,7 @@ function attachExistingFileToTarget(
 ): XcodeFileLike | null {
   const projectAny = project as {
     hasFile?: HasFileFn;
+    pbxFileReferenceSection?: () => Record<string, { path?: string }>;
     generateUuid?: GenerateUuidFn;
     addToPbxBuildFileSection?: AddToPbxBuildFileSectionFn;
     addToPbxSourcesBuildPhase?: AddToPbxSourcesBuildPhaseFn;
@@ -120,6 +121,7 @@ function attachExistingFileToTarget(
 
   if (
     typeof projectAny.hasFile !== 'function' ||
+    typeof projectAny.pbxFileReferenceSection !== 'function' ||
     typeof projectAny.generateUuid !== 'function' ||
     typeof projectAny.addToPbxBuildFileSection !== 'function' ||
     typeof projectAny.addToPbxSourcesBuildPhase !== 'function'
@@ -127,8 +129,25 @@ function attachExistingFileToTarget(
     return null;
   }
 
-  const existing = projectAny.hasFile(filePath);
-  if (!existing || !existing.fileRef) {
+  // hasFile() returns the PBXFileReference VALUE object, but xcode npm stores
+  // the UUID as the KEY in pbxFileReferenceSection. We must scan the section
+  // ourselves to recover the UUID (which is the fileRef we need).
+  const section = projectAny.pbxFileReferenceSection();
+  let fileRefUuid: string | undefined;
+  let existing: { path?: string } | undefined;
+  for (const key of Object.keys(section)) {
+    if (key.endsWith('_comment')) continue;
+    const entry = section[key];
+    if (!entry || typeof entry !== 'object') continue;
+    const entryPath = (entry as { path?: string }).path;
+    if (entryPath === filePath || entryPath === `"${filePath}"`) {
+      fileRefUuid = key;
+      existing = entry as { path?: string };
+      break;
+    }
+  }
+
+  if (!fileRefUuid || !existing) {
     return null;
   }
 
@@ -136,17 +155,17 @@ function attachExistingFileToTarget(
   // file.uuid as the BuildFile UUID and file.fileRef + file.basename for the
   // PBXBuildFile entry; pbxBuildPhaseObj uses file.uuid + longComment(file)
   // (= "<basename> in <group>") for the sources-phase entry. Pre-existing
-  // PBXFileReference entries store `path` already wrapped in quotes, so strip
+  // PBXFileReference paths are stored already wrapped in quotes, so strip
   // them when computing the basename for comments.
   const cleanPath =
     typeof existing.path === 'string'
       ? existing.path.replace(/^"|"$/g, '')
       : filePath;
-  const basename = existing.basename ?? path.posix.basename(cleanPath);
+  const basename = path.posix.basename(cleanPath);
 
   const dupFile: XcodeFileLike = {
     uuid: projectAny.generateUuid(),
-    fileRef: existing.fileRef,
+    fileRef: fileRefUuid,
     basename,
     group: 'Sources',
     target: targetUuid,
