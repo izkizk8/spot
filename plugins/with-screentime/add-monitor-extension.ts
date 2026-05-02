@@ -93,6 +93,45 @@ export const withScreenTimeMonitorExtension: ConfigPlugin = (config) => {
       });
     }
 
+    // Reference the Info.plist file (project organization only — INFOPLIST_FILE
+    // build setting below is what xcodebuild actually uses to find it).
+    const infoPlistRelPath = `../${SWIFT_SRC_DIR}/Info.plist`;
+    if (!project.hasFile(infoPlistRelPath)) {
+      project.addFile(infoPlistRelPath, monitorGroup.uuid, {
+        sourceTree: 'SOURCE_ROOT',
+      });
+    }
+
+    // xcode npm's addTarget() defaults INFOPLIST_FILE to
+    // '<targetSubfolder>/<targetSubfolder>-Info.plist' (i.e.
+    // 'SpotScreenTimeMonitor/SpotScreenTimeMonitor-Info.plist'), but we don't
+    // create that file on disk. Override INFOPLIST_FILE to point at the
+    // checked-in plist under native/ios/screentime/ and disable auto-generation
+    // so xcodebuild doesn't try to read the missing default path.
+    const projectWithBuildSettings = project as unknown as {
+      pbxXCBuildConfigurationSection?: () => Record<string, unknown>;
+    };
+    if (typeof projectWithBuildSettings.pbxXCBuildConfigurationSection === 'function') {
+      const buildConfigs = projectWithBuildSettings.pbxXCBuildConfigurationSection();
+      for (const key of Object.keys(buildConfigs)) {
+        const cfgEntry = buildConfigs[key] as
+          | { buildSettings?: Record<string, string> }
+          | undefined;
+        const buildSettings = cfgEntry?.buildSettings;
+        if (!buildSettings) continue;
+        if (buildSettings.PRODUCT_NAME === `"${MONITOR_TARGET_NAME}"`) {
+          buildSettings.INFOPLIST_FILE = `"../${SWIFT_SRC_DIR}/Info.plist"`;
+          buildSettings.GENERATE_INFOPLIST_FILE = 'NO';
+          buildSettings.IPHONEOS_DEPLOYMENT_TARGET = `"${MONITOR_DEPLOYMENT_TARGET}"`;
+          buildSettings.SWIFT_VERSION = '"5.0"';
+          buildSettings.TARGETED_DEVICE_FAMILY = '"1,2"';
+          buildSettings.SKIP_INSTALL = 'YES';
+          buildSettings.CURRENT_PROJECT_VERSION = '"1"';
+          buildSettings.MARKETING_VERSION = '"1.0"';
+        }
+      }
+    }
+
     return cfg;
   });
 };
