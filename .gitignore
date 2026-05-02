@@ -7,6 +7,11 @@ node_modules/
 .expo/
 dist/
 build/
+# EAS Build needs the custom-build YAML at .eas/build/<file>.yml. The `build/`
+# rule above also matches `.eas/build/`, and EAS's archive filter (the `ignore`
+# npm package) strips it during upload even though git tracks it. Negate so the
+# config file reaches the build worker. See ADR 0003.
+!.eas/build
 web-build/
 expo-env.d.ts
 coverage/
