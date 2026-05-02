@@ -1,0 +1,55 @@
+build:
+  name: Unsigned iOS device build (dev-client)
+  steps:
+    - eas/checkout
+    - eas/install_node_modules
+    - eas/resolve_build_config
+    - eas/prebuild
+    - run:
+        name: Install pods
+        working_directory: ./ios
+        command: pod install
+    - run:
+        name: Build unsigned dev-client IPA
+        working_directory: ./ios
+        command: |
+          set -euo pipefail
+
+          SCHEME="spot"
+          echo "Building scheme: $SCHEME (Debug, dev-client, embedded JS bundle)"
+
+          # FORCE_BUNDLING=true: tell react-native-xcode.sh to bundle the JS
+          #   even in Debug configuration (it normally skips bundling in Debug
+          #   and expects Metro). Without this the .app would launch with no
+          #   bundle and crash trying to load from localhost:8081.
+          # DEV=true: produce a development bundle so __DEV__ === true at
+          #   runtime, which keeps LogBox / RedBox / dev menu wired up. This
+          #   is what lets uncaught JS errors surface visually on device.
+          # CODE_SIGN_*: keep the IPA unsigned so sideload tools (Sideloadly,
+          #   AltStore, SideStore, TrollStore) can resign with the user's
+          #   chosen identity, identical to the Release sideload profile.
+          xcodebuild \
+            -workspace spot.xcworkspace \
+            -scheme "$SCHEME" \
+            -configuration Debug \
+            -sdk iphoneos \
+            -derivedDataPath build \
+            FORCE_BUNDLING=true \
+            DEV=true \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGN_IDENTITY="" \
+            CODE_SIGN_ENTITLEMENTS="" \
+            -quiet
+
+          APP_PATH=$(find build/Build/Products/Debug-iphoneos -name "$SCHEME.app" -type d | head -1)
+          echo "App built at: $APP_PATH"
+
+          mkdir -p ../Payload
+          cp -r "$APP_PATH" ../Payload/
+          cd ..
+          zip -r unsigned-dev.ipa Payload
+          echo "IPA created: unsigned-dev.ipa"
+    - eas/upload_artifact:
+        inputs:
+          path: unsigned-dev.ipa
