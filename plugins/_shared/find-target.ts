@@ -21,20 +21,22 @@ export interface FoundTarget {
   target: { name?: string; productType?: string; [key: string]: unknown };
 }
 
-interface XcodeProjectLike {
-  pbxNativeTargetSection?: () => Record<string, unknown>;
-  hash?: { project?: { objects?: Record<string, unknown> } };
-}
+// Loose project shape -- callers each have their own narrower PbxProject
+// interface, so we accept any object and probe at runtime.
+type XcodeProjectLike = object;
 
 export function findTargetByName(
   project: XcodeProjectLike,
   targetName: string,
 ): FoundTarget | null {
+  const sectionFn = (project as { pbxNativeTargetSection?: () => Record<string, unknown> })
+    .pbxNativeTargetSection;
   const section =
-    (project.pbxNativeTargetSection?.() as Record<string, unknown> | undefined) ??
-    (project.hash?.project?.objects?.['PBXNativeTarget'] as
-      | Record<string, unknown>
-      | undefined) ??
+    (typeof sectionFn === 'function'
+      ? (sectionFn.call(project) as Record<string, unknown> | undefined)
+      : undefined) ??
+    ((project as { hash?: { project?: { objects?: Record<string, unknown> } } }).hash?.project
+      ?.objects?.['PBXNativeTarget'] as Record<string, unknown> | undefined) ??
     {};
 
   for (const [key, value] of Object.entries(section)) {
@@ -54,9 +56,11 @@ export function findTargetByName(
   // the underlying section is not exposed). The built-in lookup compares
   // commentKey values, which for parsed targets are unquoted, so it will
   // succeed there too.
-  const fromBuiltin = (
+  const builtinLookup = (
     project as { pbxTargetByName?: (name: string) => { uuid?: string } | null | undefined }
-  ).pbxTargetByName?.(targetName);
+  ).pbxTargetByName;
+  const fromBuiltin =
+    typeof builtinLookup === 'function' ? builtinLookup.call(project, targetName) : undefined;
   if (fromBuiltin && typeof fromBuiltin === 'object') {
     return {
       uuid: (fromBuiltin as { uuid?: string }).uuid ?? '',

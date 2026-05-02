@@ -14,6 +14,7 @@ const { withXcodeProject, IOSConfig } = configPlugins;
 import * as path from 'path';
 import * as fs from 'fs';
 import { findTargetByName } from '../_shared/find-target.ts';
+import { addSwiftSourceFile } from '../_shared/add-source-file.ts';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';
 const WIDGET_BUNDLE_ID_SUFFIX = '.LiveActivityDemoWidget';
@@ -91,25 +92,19 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
     // Add widget-specific Swift files
     for (const file of WIDGET_FILES.filter((f) => f.endsWith('.swift'))) {
       const filePath = path.join(`../${IOS_WIDGET_SRC_DIR}`, file);
-      const fileRef = project.addFile(filePath, widgetGroup.uuid, {
+      addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
         target: widgetTarget.uuid,
         sourceTree: 'SOURCE_ROOT',
       });
-      if (fileRef) {
-        project.addToPbxSourcesBuildPhase(fileRef, widgetTarget.uuid);
-      }
     }
 
     // Add shared files to widget target
     for (const file of SHARED_FILES) {
       const filePath = path.join(`../${IOS_WIDGET_SRC_DIR}`, file);
-      const fileRef = project.addFile(filePath, widgetGroup.uuid, {
+      addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
         target: widgetTarget.uuid,
         sourceTree: 'SOURCE_ROOT',
       });
-      if (fileRef) {
-        project.addToPbxSourcesBuildPhase(fileRef, widgetTarget.uuid);
-      }
     }
 
     // Add shared files to main app target's compile sources
@@ -120,12 +115,10 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
         // Check if file already added to main target
         const existingFile = project.hasFile(filePath);
         if (!existingFile) {
-          const fileRef = project.addFile(filePath, widgetGroup.uuid, {
+          addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
             sourceTree: 'SOURCE_ROOT',
+            target: mainTarget.uuid,
           });
-          if (fileRef) {
-            project.addToPbxSourcesBuildPhase(fileRef, mainTarget.uuid);
-          }
         }
       }
 
@@ -134,12 +127,10 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
         const filePath = path.join(`../${IOS_WIDGET_SRC_DIR}`, file);
         const existingFile = project.hasFile(filePath);
         if (!existingFile) {
-          const fileRef = project.addFile(filePath, widgetGroup.uuid, {
+          addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
             sourceTree: 'SOURCE_ROOT',
+            target: mainTarget.uuid,
           });
-          if (fileRef) {
-            project.addToPbxSourcesBuildPhase(fileRef, mainTarget.uuid);
-          }
         }
       }
     }

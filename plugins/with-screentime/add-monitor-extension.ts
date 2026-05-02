@@ -18,6 +18,7 @@ const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
 const { IOSConfig, withXcodeProject } = configPlugins;
 import * as path from 'path';
 import { findTargetByName } from '../_shared/find-target.ts';
+import { addSwiftSourceFile } from '../_shared/add-source-file.ts';
 
 export const MONITOR_TARGET_NAME = 'SpotScreenTimeMonitor';
 export const MONITOR_BUNDLE_SUFFIX = '.screentimemonitor';
@@ -86,13 +87,10 @@ export const withScreenTimeMonitorExtension: ConfigPlugin = (config) => {
     for (const file of MONITOR_SWIFT_FILES) {
       const relPath = path.posix.join(`../${SWIFT_SRC_DIR}`, file);
       if (project.hasFile(relPath)) continue;
-      const fileRef = project.addFile(relPath, monitorGroup.uuid, {
+      addSwiftSourceFile(project, relPath, monitorGroup.uuid, {
         target: monitorTarget.uuid,
         sourceTree: 'SOURCE_ROOT',
       });
-      if (fileRef) {
-        project.addToPbxSourcesBuildPhase(fileRef, monitorTarget.uuid);
-      }
     }
 
     return cfg;

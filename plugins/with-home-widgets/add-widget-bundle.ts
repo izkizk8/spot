@@ -32,6 +32,7 @@ const { withDangerousMod, withXcodeProject } = configPlugins;
 import * as fs from 'fs';
 import * as path from 'path';
 import { findTargetByName } from '../_shared/find-target.ts';
+import { addSwiftSourceFile } from '../_shared/add-source-file.ts';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';
 const IOS_WIDGET_DIR = 'ios-widget';
@@ -144,13 +145,10 @@ const withBundleInXcode: ConfigPlugin = (config) => {
     const mainGroupUuid = project.getFirstProject().firstProject.mainGroup;
     project.addToPbxGroup(bundleGroup.uuid, mainGroupUuid);
 
-    const fileRef = project.addFile(BUNDLE_REL, bundleGroup.uuid, {
+    addSwiftSourceFile(project, BUNDLE_REL, bundleGroup.uuid, {
       target: widgetTarget.uuid,
       sourceTree: 'SOURCE_ROOT',
     });
-    if (fileRef) {
-      project.addToPbxSourcesBuildPhase(fileRef, widgetTarget.uuid);
-    }
     return cfg;
   });
 };

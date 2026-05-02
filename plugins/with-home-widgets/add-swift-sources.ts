@@ -14,6 +14,7 @@ const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
 const { withXcodeProject } = configPlugins;
 import * as path from 'path';
 import { findTargetByName } from '../_shared/find-target.ts';
+import { addSwiftSourceFile } from '../_shared/add-source-file.ts';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';
 const SOURCE_DIR_REL = '../native/ios/widgets';
@@ -65,13 +66,10 @@ export const withHomeWidgetsSwiftSources: ConfigPlugin = (config) => {
       if (project.hasFile(filePath)) {
         continue;
       }
-      const fileRef = project.addFile(filePath, showcaseGroup.uuid, {
+      addSwiftSourceFile(project, filePath, showcaseGroup.uuid, {
         target: widgetTarget.uuid,
         sourceTree: 'SOURCE_ROOT',
       });
-      if (fileRef) {
-        project.addToPbxSourcesBuildPhase(fileRef, widgetTarget.uuid);
-      }
     }
 
     return cfg;

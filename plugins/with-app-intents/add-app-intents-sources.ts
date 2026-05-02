@@ -11,6 +11,7 @@ import type { ConfigPlugin } from '@expo/config-plugins';
 const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
 const { withXcodeProject } = configPlugins;
 import * as path from 'path';
+import { addSwiftSourceFile } from '../_shared/add-source-file.ts';
 
 const SWIFT_SRC_DIR = 'native/ios/app-intents';
 const SWIFT_FILES: readonly string[] = [
@@ -63,13 +64,10 @@ export const withAppIntentsSources: ConfigPlugin = (config) => {
       if (project.hasFile?.(relPath)) {
         continue;
       }
-      const fileRef = project.addFile?.(relPath, group?.uuid, {
+      addSwiftSourceFile(project, relPath, group?.uuid, {
         sourceTree: 'SOURCE_ROOT',
         target: mainTarget.uuid,
       });
-      if (fileRef) {
-        project.addToPbxSourcesBuildPhase?.(fileRef, mainTarget.uuid);
-      }
     }
 
     return cfg;
