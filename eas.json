@@ -13,6 +13,8 @@
       "ios": {
         "withoutCredentials": true,
         "simulator": false,
+        "image": "macos-sequoia-15.6-xcode-26.2",
+        "node": "22.18.0",
         "config": "unsigned-ios.yml"
       }
     },
