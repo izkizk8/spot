@@ -77,6 +77,19 @@ Open the app on the iPhone — it launches and runs the latest bundled code.
 - **"Maximum 3 apps" error from Apple** → uninstall an existing sideloaded app, or use a different Apple ID
 - **Sideloadly can't see device** → reinstall iTunes for Windows; try a different USB cable/port
 - **App stopped working after a week** → re-run Steps 3 + 4; no rebuild needed
+- **Black screen / instant exit on launch** → the JS bundle threw before any UI rendered. Build the dev variant instead and read the on-screen / Metro logs:
+
+  ```bash
+  pnpm ios:ipa:dev
+  # equivalent to: npx eas build --platform ios --profile sideload-dev
+  ```
+
+  The resulting IPA includes `expo-dev-client` and is built in Debug with the JS bundle embedded in dev mode (`__DEV__ === true`). After installing it via Sideloadly:
+  - LogBox / RedBox will show any JS warning or error directly on screen.
+  - Shake the device to open the dev menu (toggle inspector, performance monitor, view in-app logs).
+  - To stream logs to your Windows machine: `pnpm start --dev-client --tunnel` and tap the resulting URL inside the dev-client launcher.
+
+  This profile is for diagnostics only — the binary is larger and slower than the Release `sideload` profile.
 
 ## Free Apple ID Limits
 

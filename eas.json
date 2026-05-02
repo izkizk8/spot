@@ -18,6 +18,17 @@
         "config": "unsigned-ios.yml"
       }
     },
+    "sideload-dev": {
+      "extends": "sideload",
+      "developmentClient": true,
+      "ios": {
+        "withoutCredentials": true,
+        "simulator": false,
+        "image": "macos-sequoia-15.6-xcode-26.2",
+        "node": "22.18.0",
+        "config": "unsigned-ios-dev.yml"
+      }
+    },
     "production": {}
   }
 }
