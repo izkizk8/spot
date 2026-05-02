@@ -169,8 +169,14 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
 
     // Add "Embed App Extensions" build phase to main target
     if (mainTarget) {
-      // Check if embed phase already exists
-      const embedPhases = project.pbxCopyFilesBuildPhaseSection();
+      // Check if embed phase already exists. The xcode npm package doesn't
+      // expose a `pbxCopyFilesBuildPhaseSection()` accessor (only the named
+      // PBXBuildFile / XCBuildConfiguration / etc. helpers exist), so reach
+      // into the raw section directly.
+      const embedPhases =
+        (project.hash?.project?.objects?.['PBXCopyFilesBuildPhase'] as
+          | Record<string, unknown>
+          | undefined) ?? {};
       let hasEmbedPhase = false;
       for (const key of Object.keys(embedPhases)) {
         const phase = embedPhases[key];
@@ -178,7 +184,7 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
           phase &&
           typeof phase === 'object' &&
           'name' in phase &&
-          phase.name === '"Embed App Extensions"'
+          (phase as { name?: string }).name === '"Embed App Extensions"'
         ) {
           hasEmbedPhase = true;
           break;
