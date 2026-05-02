@@ -77,19 +77,29 @@ Open the app on the iPhone — it launches and runs the latest bundled code.
 - **"Maximum 3 apps" error from Apple** → uninstall an existing sideloaded app, or use a different Apple ID
 - **Sideloadly can't see device** → reinstall iTunes for Windows; try a different USB cable/port
 - **App stopped working after a week** → re-run Steps 3 + 4; no rebuild needed
-- **Black screen / instant exit on launch** → the JS bundle threw before any UI rendered. Build the dev variant instead and read the on-screen / Metro logs:
+- **Black screen / instant exit on launch** → the app crashed before its UI rendered. Most often this is a privileged entitlement (FamilyControls, HealthKit, HomeKit, WeatherKit, Apple Pay, PassKit, CarPlay, iCloud, App Clips, ...) or an embedded app extension that free-tier sideload signing cannot satisfy. Build the dev-client diagnostic IPA instead:
 
   ```bash
   pnpm ios:ipa:dev
   # equivalent to: npx eas build --platform ios --profile sideload-dev
   ```
 
-  The resulting IPA includes `expo-dev-client` and is built in Debug with the JS bundle embedded in dev mode (`__DEV__ === true`). After installing it via Sideloadly:
-  - LogBox / RedBox will show any JS warning or error directly on screen.
-  - Shake the device to open the dev menu (toggle inspector, performance monitor, view in-app logs).
-  - To stream logs to your Windows machine: `pnpm start --dev-client --tunnel` and tap the resulting URL inside the dev-client launcher.
+  This profile uses [`app.config.ts`](../../app.config.ts) to strip every local `./plugins/with-*` entry plus `associatedDomains` (gated on `EAS_BUILD_PROFILE === 'sideload-dev'`), so the resulting IPA installs and launches into the `expo-dev-client` launcher reliably. The IPA is built in Debug with the JS bundle embedded in dev mode (`__DEV__ === true`).
 
-  This profile is for diagnostics only — the binary is larger and slower than the Release `sideload` profile.
+  After installing it via Sideloadly:
+  - You'll land in the dev-client launcher (Home / Updates / Settings tabs).
+  - Stream the full app's JS over Metro so you don't have to rebuild for every change:
+
+    ```bash
+    pnpm start --dev-client --tunnel
+    ```
+
+    Then either scan the terminal QR code with iPhone's Camera app, or paste the displayed `https://*.exp.direct/...` URL into the launcher's "Enter URL manually" field.
+  - LogBox / RedBox surface any JS warning or error directly on screen.
+  - Shake the device to open the dev menu (inspector, perf monitor, in-app logs).
+  - Native modules from npm dependencies remain auto-linked in the IPA; only APIs requiring stripped entitlements (HealthKit etc.) throw at call time, which usually pinpoints the offending plugin.
+
+  This profile is for diagnostics only — the binary is larger and slower than the Release `sideload` profile, and `app.config.ts` reverts to the full plugin set for any other build profile.
 
 ## Free Apple ID Limits
 
