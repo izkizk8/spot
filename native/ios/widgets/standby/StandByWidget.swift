@@ -13,12 +13,21 @@ struct StandByWidget: Widget {
     let kind: String = "SpotStandByWidget"
 
     var body: some WidgetConfiguration {
-        StaticConfiguration(kind: kind, provider: StandByProvider()) { entry in
-            StandByRootView(entry: entry)
+        if #available(iOS 18.0, *) {
+            StaticConfiguration(kind: kind, provider: StandByProvider()) { entry in
+                StandByRootView(entry: entry)
+            }
+            .configurationDisplayName("Spot StandBy")
+            .description("Showcase value, counter, tint, and rendering mode in StandBy.")
+            .supportedFamilies([.systemMedium, .systemLarge])
+            .widgetAccentedRenderingMode(.accented)
+        } else {
+            StaticConfiguration(kind: kind, provider: StandByProvider()) { entry in
+                StandByRootView(entry: entry)
+            }
+            .configurationDisplayName("Spot StandBy")
+            .description("Showcase value, counter, tint, and rendering mode in StandBy.")
+            .supportedFamilies([.systemMedium, .systemLarge])
         }
-        .configurationDisplayName("Spot StandBy")
-        .description("Showcase value, counter, tint, and rendering mode in StandBy.")
-        .supportedFamilies([.systemMedium, .systemLarge])
-        .widgetAccentedRenderingMode(.accented)
     }
 }
