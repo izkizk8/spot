@@ -10,40 +10,64 @@ build:
         working_directory: ./ios
         command: pod install
     - run:
+        name: Pre-bundle JS in dev mode
+        command: |
+          set -euo pipefail
+
+          # We pre-bundle here (rather than relying on the xcodebuild "Bundle
+          # React Native code and images" build phase) for two reasons:
+          #   1. In Debug configuration the build phase skips bundling unless
+          #      FORCE_BUNDLING is set in the script's env, and xcodebuild
+          #      KEY=VALUE arguments don't always propagate to script phases.
+          #   2. In Release configuration the build phase always bundles with
+          #      __DEV__=false, which strips LogBox/RedBox - exactly what we
+          #      need on-device for diagnostics.
+          # Pre-bundling sidesteps both issues: we get a __DEV__=true bundle
+          # we can drop into the Release .app after xcodebuild finishes.
+          mkdir -p ios/devbundle
+          npx expo export:embed \
+            --platform ios \
+            --dev true \
+            --bytecode \
+            --bundle-output ios/devbundle/main.jsbundle \
+            --assets-dest ios/devbundle
+          ls -la ios/devbundle/
+    - run:
         name: Build unsigned dev-client IPA
         working_directory: ./ios
         command: |
           set -euo pipefail
 
           SCHEME="spot"
-          echo "Building scheme: $SCHEME (Debug, dev-client, embedded JS bundle)"
+          echo "Building scheme: $SCHEME (Release native, dev JS bundle)"
 
-          # FORCE_BUNDLING=true: tell react-native-xcode.sh to bundle the JS
-          #   even in Debug configuration (it normally skips bundling in Debug
-          #   and expects Metro). Without this the .app would launch with no
-          #   bundle and crash trying to load from localhost:8081.
-          # DEV=true: produce a development bundle so __DEV__ === true at
-          #   runtime, which keeps LogBox / RedBox / dev menu wired up. This
-          #   is what lets uncaught JS errors surface visually on device.
-          # CODE_SIGN_*: keep the IPA unsigned so sideload tools (Sideloadly,
-          #   AltStore, SideStore, TrollStore) can resign with the user's
-          #   chosen identity, identical to the Release sideload profile.
+          # We build Release native to avoid the Xcode 16 Debug-dylib indirection
+          # (a 70+ MB spot.debug.dylib that some sideload tools mis-handle).
+          # The "dev-ness" we care about lives in the JS bundle, which we
+          # overwrite below with our pre-bundled __DEV__=true output.
           xcodebuild \
             -workspace spot.xcworkspace \
             -scheme "$SCHEME" \
-            -configuration Debug \
+            -configuration Release \
             -sdk iphoneos \
             -derivedDataPath build \
-            FORCE_BUNDLING=true \
-            DEV=true \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGN_ENTITLEMENTS="" \
             -quiet
 
-          APP_PATH=$(find build/Build/Products/Debug-iphoneos -name "$SCHEME.app" -type d | head -1)
+          APP_PATH=$(find build/Build/Products/Release-iphoneos -name "$SCHEME.app" -type d | head -1)
           echo "App built at: $APP_PATH"
+
+          # Replace the production __DEV__=false bundle the build phase produced
+          # with our pre-built __DEV__=true bundle. Same with assets so any
+          # require()'d images resolve at the dev hashes.
+          cp devbundle/main.jsbundle "$APP_PATH/main.jsbundle"
+          if [ -d devbundle/assets ]; then
+            rm -rf "$APP_PATH/assets"
+            cp -R devbundle/assets "$APP_PATH/"
+          fi
 
           mkdir -p ../Payload
           cp -r "$APP_PATH" ../Payload/
