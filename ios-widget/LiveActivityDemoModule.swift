@@ -16,7 +16,7 @@
  */
 
 import ActivityKit
-import ExpoModulesCore
+internal import ExpoModulesCore
 
 public class LiveActivityDemoModule: Module {
     public func definition() -> ModuleDefinition {

@@ -23,13 +23,24 @@
  *   This helper prefers `addSourceFile` (correct on real xcode projects).
  *   For unit-test stubs that only mock `addFile` + `addToPbxSourcesBuildPhase`,
  *   we fall back to that pair so existing tests continue to pass.
+ *
+ *   When the file is ALREADY registered (xcode npm's addSourceFile/addFile
+ *   bail out via hasFile() if the path matches an existing PBXFileReference),
+ *   we look up the existing fileRef and create a NEW PBXBuildFile pointing to
+ *   it for the requested target. This is required to share a single source
+ *   file across multiple targets (e.g. LiveActivityDemoAttributes.swift on
+ *   both the widget extension and the main app).
  */
+
+import * as path from 'path';
 
 interface XcodeFileLike {
   fileRef?: string;
   uuid?: string;
   target?: string;
   path?: string;
+  basename?: string;
+  group?: string;
   [key: string]: unknown;
 }
 
@@ -55,6 +66,9 @@ type AddFileFn = (
 ) => XcodeFileLike | false | null;
 
 type AddToPbxSourcesBuildPhaseFn = (file: XcodeFileLike, targetUuid?: string) => void;
+type AddToPbxBuildFileSectionFn = (file: XcodeFileLike) => void;
+type HasFileFn = (filePath: string) => XcodeFileLike | false;
+type GenerateUuidFn = () => string;
 
 export function addSwiftSourceFile(
   project: XcodeProjectLike,
@@ -67,7 +81,13 @@ export function addSwiftSourceFile(
   // PBXBuildFile, and PBXSourcesBuildPhase entries with matching UUIDs.
   if (typeof addSourceFile === 'function') {
     const file = addSourceFile.call(project, filePath, opts, groupUuid);
-    return file === false || file == null ? null : file;
+    if (file !== false && file != null) {
+      return file;
+    }
+    // addSourceFile returned false: the PBXFileReference already exists for
+    // this path. Reuse the existing fileRef and create a new PBXBuildFile so
+    // the file compiles into the requested target as well.
+    return attachExistingFileToTarget(project, filePath, opts.target);
   }
 
   // Fallback path: unit-test stubs that don't implement addSourceFile.
@@ -84,4 +104,56 @@ export function addSwiftSourceFile(
   ).addToPbxSourcesBuildPhase;
   addToPbxSourcesBuildPhase?.call(project, fileRef, opts.target);
   return fileRef;
+}
+
+function attachExistingFileToTarget(
+  project: XcodeProjectLike,
+  filePath: string,
+  targetUuid: string,
+): XcodeFileLike | null {
+  const projectAny = project as {
+    hasFile?: HasFileFn;
+    generateUuid?: GenerateUuidFn;
+    addToPbxBuildFileSection?: AddToPbxBuildFileSectionFn;
+    addToPbxSourcesBuildPhase?: AddToPbxSourcesBuildPhaseFn;
+  };
+
+  if (
+    typeof projectAny.hasFile !== 'function' ||
+    typeof projectAny.generateUuid !== 'function' ||
+    typeof projectAny.addToPbxBuildFileSection !== 'function' ||
+    typeof projectAny.addToPbxSourcesBuildPhase !== 'function'
+  ) {
+    return null;
+  }
+
+  const existing = projectAny.hasFile(filePath);
+  if (!existing || !existing.fileRef) {
+    return null;
+  }
+
+  // Build a fresh pbxFile-shaped record. xcode npm's pbxBuildFileObj uses
+  // file.uuid as the BuildFile UUID and file.fileRef + file.basename for the
+  // PBXBuildFile entry; pbxBuildPhaseObj uses file.uuid + longComment(file)
+  // (= "<basename> in <group>") for the sources-phase entry. Pre-existing
+  // PBXFileReference entries store `path` already wrapped in quotes, so strip
+  // them when computing the basename for comments.
+  const cleanPath =
+    typeof existing.path === 'string'
+      ? existing.path.replace(/^"|"$/g, '')
+      : filePath;
+  const basename = existing.basename ?? path.posix.basename(cleanPath);
+
+  const dupFile: XcodeFileLike = {
+    uuid: projectAny.generateUuid(),
+    fileRef: existing.fileRef,
+    basename,
+    group: 'Sources',
+    target: targetUuid,
+    path: cleanPath,
+  };
+
+  projectAny.addToPbxBuildFileSection(dupFile);
+  projectAny.addToPbxSourcesBuildPhase(dupFile);
+  return dupFile;
 }

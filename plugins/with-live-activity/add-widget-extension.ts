@@ -107,31 +107,34 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
       });
     }
 
-    // Add shared files to main app target's compile sources
+    // Add shared files to main app target's compile sources.
+    //
+    // Note: we deliberately do NOT use project.hasFile() here as a guard.
+    // The shared file was just registered against the widget target above,
+    // so hasFile (which is project-wide) would return truthy and we'd skip
+    // adding it to the main target — causing 'cannot find type
+    // LiveActivityDemoAttributes in scope' errors when the main app's
+    // LiveActivityDemoModule references the shared type. The outer
+    // findTargetByName(WIDGET_TARGET_NAME) early-return at the top of this
+    // mod handles re-run idempotency, so this loop only runs once per
+    // prebuild.
     const mainTarget = project.getFirstTarget();
     if (mainTarget) {
       for (const file of SHARED_FILES) {
         const filePath = path.join(`../${IOS_WIDGET_SRC_DIR}`, file);
-        // Check if file already added to main target
-        const existingFile = project.hasFile(filePath);
-        if (!existingFile) {
-          addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
-            sourceTree: 'SOURCE_ROOT',
-            target: mainTarget.uuid,
-          });
-        }
+        addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
+          sourceTree: 'SOURCE_ROOT',
+          target: mainTarget.uuid,
+        });
       }
 
       // Add the Expo native module file to main app target only
       for (const file of MAIN_APP_FILES) {
         const filePath = path.join(`../${IOS_WIDGET_SRC_DIR}`, file);
-        const existingFile = project.hasFile(filePath);
-        if (!existingFile) {
-          addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
-            sourceTree: 'SOURCE_ROOT',
-            target: mainTarget.uuid,
-          });
-        }
+        addSwiftSourceFile(project, filePath, widgetGroup.uuid, {
+          sourceTree: 'SOURCE_ROOT',
+          target: mainTarget.uuid,
+        });
       }
     }
 

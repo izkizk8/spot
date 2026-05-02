@@ -10,7 +10,7 @@
 // Verified manually on device per specs/013-app-intents/quickstart.md §1.
 
 import AppIntents
-import ExpoModulesCore
+internal import ExpoModulesCore
 import Foundation
 
 @available(iOS 16.0, *)
