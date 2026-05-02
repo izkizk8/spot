@@ -52,6 +52,13 @@ export const withScreenTimeMonitorExtension: ConfigPlugin = (config) => {
         ref: { uuid: string; filePath: string },
         targetUuid: string,
       ) => void;
+      addBuildPhase?: (
+        filePathsArray: string[],
+        buildPhaseType: string,
+        comment: string,
+        targetUuid: string,
+      ) => unknown;
+      addTargetDependency?: (mainTargetUuid: string, dependencyUuids: string[]) => unknown;
       getFirstProject: () => { firstProject: { mainGroup: string } };
       getFirstTarget?: () => { uuid: string } | undefined;
     };
@@ -76,6 +83,25 @@ export const withScreenTimeMonitorExtension: ConfigPlugin = (config) => {
     if (!monitorTarget) {
       // Tests using stub PBX without addTarget — bail gracefully.
       return cfg;
+    }
+
+    // xcode npm's addTarget() initializes buildPhases: [] on the new
+    // target. Without an explicit Sources phase, addSwiftSourceFile's
+    // downstream addToPbxSourcesBuildPhase() falls back via
+    // buildPhaseObject() to the FIRST 'Sources' phase in the project
+    // (= main app target's Sources phase) and our extension binary is
+    // never produced. The .appex skeleton is still copied via the Embed
+    // App Extensions phase, but it lacks a Mach-O executable. Sideload
+    // tools (Sideloadly / AltStore / TrollStore via ldid) then fail with
+    //   ldid.cpp(1325): _assert0: errno=2 (ENOENT)
+    // when they walk PlugIns/ and try to resign each extension's
+    // CFBundleExecutable.
+    //
+    // Fix: explicitly create the Sources phase on the monitor target
+    // BEFORE adding source files, so addSwiftSourceFile finds and uses
+    // the right phase.
+    if (typeof project.addBuildPhase === 'function') {
+      project.addBuildPhase([], 'PBXSourcesBuildPhase', 'Sources', monitorTarget.uuid);
     }
 
     const groupName = MONITOR_TARGET_NAME;
@@ -130,6 +156,21 @@ export const withScreenTimeMonitorExtension: ConfigPlugin = (config) => {
           buildSettings.MARKETING_VERSION = '"1.0"';
         }
       }
+    }
+
+    // xcode npm's addTarget() tries to record a PBXTargetDependency from
+    // the first/main target to this new extension, but only succeeds if
+    // PBXTargetDependency / PBXContainerItemProxy sections already exist
+    // in the pbxproj. In a fresh Expo prebuild they typically don't, so
+    // the dependency is dropped. Without a target dependency, xcodebuild
+    // building the `spot` scheme does NOT build the extension target,
+    // and we ship a half-empty .appex (Info.plist only, no binary). Re-
+    // call addTargetDependency here so it lands once those sections
+    // appear later in the mod chain. The xcode npm helper bails out
+    // cleanly when sections are still missing.
+    const mainAppTarget = project.getFirstTarget?.();
+    if (mainAppTarget && typeof project.addTargetDependency === 'function') {
+      project.addTargetDependency(mainAppTarget.uuid, [monitorTarget.uuid]);
     }
 
     return cfg;
