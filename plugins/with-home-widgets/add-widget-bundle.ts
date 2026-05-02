@@ -31,6 +31,7 @@ const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
 const { withDangerousMod, withXcodeProject } = configPlugins;
 import * as fs from 'fs';
 import * as path from 'path';
+import { findTargetByName } from '../_shared/find-target.ts';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';
 const IOS_WIDGET_DIR = 'ios-widget';
@@ -134,7 +135,7 @@ const withBundleInXcode: ConfigPlugin = (config) => {
       getFirstProject: () => { firstProject: { mainGroup: string } };
     };
 
-    const widgetTarget = project.pbxTargetByName(WIDGET_TARGET_NAME);
+    const widgetTarget = findTargetByName(project, WIDGET_TARGET_NAME);
     if (!widgetTarget) return cfg;
     if (project.hasFile(BUNDLE_REL)) return cfg;
 

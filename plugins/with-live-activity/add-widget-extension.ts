@@ -13,6 +13,7 @@ const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
 const { withXcodeProject, IOSConfig } = configPlugins;
 import * as path from 'path';
 import * as fs from 'fs';
+import { findTargetByName } from '../_shared/find-target.ts';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';
 const WIDGET_BUNDLE_ID_SUFFIX = '.LiveActivityDemoWidget';
@@ -38,8 +39,11 @@ export const withLiveActivityWidgetExtension: ConfigPlugin = (config) => {
     const mainBundleId =
       IOSConfig.BundleIdentifier.getBundleIdentifier(cfg) ?? `com.example.${appName}`;
 
-    // Check if target already exists (idempotency)
-    const existingTarget = project.pbxTargetByName(WIDGET_TARGET_NAME);
+    // Check if target already exists (idempotency).
+    // Use findTargetByName instead of pbxTargetByName: the xcode npm package
+    // stores added-target names with surrounding quotes, which pbxTargetByName
+    // cannot match (see plugins/_shared/find-target.ts).
+    const existingTarget = findTargetByName(project, WIDGET_TARGET_NAME);
     if (existingTarget) {
       // Target already exists, nothing to do
       return cfg;

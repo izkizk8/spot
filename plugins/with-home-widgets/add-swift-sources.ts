@@ -13,6 +13,7 @@ import type { ConfigPlugin } from '@expo/config-plugins';
 const configPlugins = (_cp as { default?: typeof _cp }).default ?? _cp;
 const { withXcodeProject } = configPlugins;
 import * as path from 'path';
+import { findTargetByName } from '../_shared/find-target.ts';
 
 const WIDGET_TARGET_NAME = 'LiveActivityDemoWidget';
 const SOURCE_DIR_REL = '../native/ios/widgets';
@@ -44,7 +45,7 @@ export const withHomeWidgetsSwiftSources: ConfigPlugin = (config) => {
       getFirstProject: () => { firstProject: { mainGroup: string } };
     };
 
-    const widgetTarget = project.pbxTargetByName(WIDGET_TARGET_NAME);
+    const widgetTarget = findTargetByName(project, WIDGET_TARGET_NAME);
     if (!widgetTarget) {
       // Extension target not yet created (with-live-activity not run).
       // Nothing to do — the live-activity plugin will run first in the
