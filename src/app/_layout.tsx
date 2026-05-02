@@ -3,6 +3,7 @@ import React from 'react';
 
 import { AnimatedSplashOverlay } from '@/components/animated-icon';
 import AppTabs from '@/components/app-tabs';
+import { StartupErrorOverlay } from '@/components/error-overlay';
 import { useQuickActions } from '@/modules/quick-actions-lab/hooks/useQuickActions';
 import { ThemePreferenceProvider } from '@/theme/preference-provider';
 import { useTheme } from '@/hooks/use-theme';
@@ -22,8 +23,10 @@ function ThemedShell() {
 
 export default function TabLayout() {
   return (
-    <ThemePreferenceProvider>
-      <ThemedShell />
-    </ThemePreferenceProvider>
+    <StartupErrorOverlay>
+      <ThemePreferenceProvider>
+        <ThemedShell />
+      </ThemePreferenceProvider>
+    </StartupErrorOverlay>
   );
 }
