@@ -38,15 +38,30 @@ public struct ShowcaseModeFilter: SetFocusFilterIntent {
   public static var description: IntentDescription = IntentDescription(
     "Tints the spot showcase to match your focus."
   )
-  
-  @Parameter(title: "Mode")
-  public var mode: ShowcaseFilterMode = .relaxed
-  
-  @Parameter(title: "Accent Color")
-  public var accentColor: String = "blue"
-  
+
+  // Note on @Parameter defaults: Xcode 26 / iOS 18 SDK changed the
+  // @Parameter property wrapper so that providing a default via plain
+  // assignment (= .relaxed) is interpreted as a `wrappedValue` argument
+  // and is rejected ("extra argument 'wrappedValue' in call"). The
+  // supported form is `@Parameter(title:, default:)`.
+  @Parameter(title: "Mode", default: .relaxed)
+  public var mode: ShowcaseFilterMode
+
+  @Parameter(title: "Accent Color", default: "blue")
+  public var accentColor: String
+
+  // SetFocusFilterIntent now requires InstanceDisplayRepresentable
+  // conformance under iOS 18 / Xcode 26. Provide a representation derived
+  // from the current parameters so the system can show it in Settings.
+  public var displayRepresentation: DisplayRepresentation {
+    DisplayRepresentation(
+      title: "Showcase Mode",
+      subtitle: "\(mode.rawValue.capitalized) · \(accentColor.capitalized)"
+    )
+  }
+
   public init() {}
-  
+
   public init(mode: ShowcaseFilterMode, accentColor: String) {
     self.mode = mode
     self.accentColor = accentColor
