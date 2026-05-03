@@ -158,9 +158,7 @@ function attachExistingFileToTarget(
   // PBXFileReference paths are stored already wrapped in quotes, so strip
   // them when computing the basename for comments.
   const cleanPath =
-    typeof existing.path === 'string'
-      ? existing.path.replace(/^"|"$/g, '')
-      : filePath;
+    typeof existing.path === 'string' ? existing.path.replace(/^"|"$/g, '') : filePath;
   const basename = path.posix.basename(cleanPath);
 
   const dupFile: XcodeFileLike = {

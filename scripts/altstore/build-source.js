@@ -25,8 +25,7 @@ const REPO = 'izkizk8/spot';
 const SOURCE_DEFAULTS = {
   name: 'spot dev',
   subtitle: 'Personal Expo lab build',
-  description:
-    'OTA channel for spot. Re-signed on-device by AltStore using your free Apple ID.',
+  description: 'OTA channel for spot. Re-signed on-device by AltStore using your free Apple ID.',
   iconURL: `https://raw.githubusercontent.com/${REPO}/dev/assets/images/icon.png`,
   tintColor: '#0A84FF',
   website: `https://github.com/${REPO}`,
@@ -206,8 +205,7 @@ function main() {
   if (!Array.isArray(source.apps) || source.apps.length === 0) {
     fail('source.json has no apps[]; cannot merge version');
   }
-  const app =
-    source.apps.find((a) => a.bundleIdentifier === bundleIdentifier) ?? source.apps[0];
+  const app = source.apps.find((a) => a.bundleIdentifier === bundleIdentifier) ?? source.apps[0];
   if (app.bundleIdentifier !== bundleIdentifier) {
     fail(
       `bundleIdentifier mismatch: source.json has ${app.bundleIdentifier}, app.json has ${bundleIdentifier}`,

@@ -46,6 +46,17 @@ export default function HomeScreen() {
                 Explore the Modules tab to try Liquid Glass and what comes next. Use Settings to
                 pick System, Light, or Dark.
               </ThemedText>
+              <Link href='/what-am-i' asChild>
+                <Pressable
+                  accessibilityRole='link'
+                  accessibilityLabel='What is Spot'
+                  style={({ pressed }) => [styles.cta, pressed && styles.ctaPressed]}
+                >
+                  <ThemedText type='smallBold' themeColor='text'>
+                    你是什么 →
+                  </ThemedText>
+                </Pressable>
+              </Link>
               <Link href='/modules' asChild>
                 <Pressable
                   accessibilityRole='link'
