@@ -10,6 +10,7 @@ pnpm start            # Metro dev server
 pnpm ios              # iOS simulator
 pnpm android          # Android emulator
 pnpm web              # Web
+pnpm web:build        # Production web export to dist/
 ```
 
 Quality gate before committing:

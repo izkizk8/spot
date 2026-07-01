@@ -10,6 +10,7 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
+    "web:build": "expo export --platform web",
     "ios:ipa": "eas build --platform ios --profile sideload --non-interactive",
     "ios:ipa:dev": "eas build --platform ios --profile sideload-dev --non-interactive",
     "ios:simulator": "eas build --platform ios --profile development --non-interactive",
